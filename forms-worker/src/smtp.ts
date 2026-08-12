@@ -22,7 +22,7 @@ export type SmtpConfig = {
 export type SmtpMessage = {
   from: string;
   fromName?: string; // display name on the From header — defaults to "Ironwood Livigno"
-  to: string;
+  to: string | string[]; // multiple recipients (e.g. the internal notification + a failure alert to a personal address) get one RCPT TO each
   replyTo?: string;
   subject: string;
   text: string;
@@ -117,15 +117,18 @@ export async function sendMail(config: SmtpConfig, message: SmtpMessage): Promis
     await sendAll(secureWriter, `MAIL FROM:<${message.from}>\r\n`);
     await readResponse(secureReader, secureState);
 
-    await sendAll(secureWriter, `RCPT TO:<${message.to}>\r\n`);
-    await readResponse(secureReader, secureState);
+    const recipients = Array.isArray(message.to) ? message.to : [message.to];
+    for (const recipient of recipients) {
+      await sendAll(secureWriter, `RCPT TO:<${recipient}>\r\n`);
+      await readResponse(secureReader, secureState);
+    }
 
     await sendAll(secureWriter, `DATA\r\n`);
     await readResponse(secureReader, secureState); // 354 start mail input
 
     const commonHeaders = [
       `From: "${(message.fromName ?? 'Ironwood Livigno').replace(/"/g, "'")}" <${message.from}>`,
-      `To: ${message.to}`,
+      `To: ${recipients.join(', ')}`,
       message.replyTo ? `Reply-To: ${message.replyTo}` : null,
       `Subject: ${message.subject}`,
       'MIME-Version: 1.0'

@@ -43,6 +43,13 @@ const SMTP_PORT = 587;
 // under one account) requires SMTP AUTH with the primary account address,
 // not the alias, even though the mail is sent/received as the alias.
 const SMTP_USER = 'info@guanafoto.com';
+// Personal address to alert alongside the business inbox when something is
+// actually broken (not just "a translation didn't work") — best-effort:
+// this alert goes out over the same SMTP connection as everything else, so
+// if mailbox.org itself is unreachable, the alert won't arrive either.
+// There's currently no second, independent channel to catch that specific
+// case without adding a paid service.
+const ALERT_TO = 'gkemag@gmail.com';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const MAX_MESSAGE_LEN = 2000;
@@ -98,6 +105,29 @@ function validate(data: Partial<Submission>): string | null {
 
 function isSpam(data: Partial<Submission>): boolean {
   return Boolean(data.company && data.company.trim().length > 0);
+}
+
+// Fires on real failures — a submission that couldn't be saved, or one
+// that was saved but whose notification never went out — sent to both the
+// business inbox and the personal address, so a broken system doesn't go
+// unnoticed just because nobody happened to check the D1 table.
+async function sendAlert(env: Env, subject: string, details: string) {
+  try {
+    await sendMail(
+      { host: SMTP_HOST, port: SMTP_PORT, user: SMTP_USER, password: env.SMTP_PASSWORD },
+      {
+        from: NOTIFY_TO,
+        fromName: 'Ironwood Livigno — Avviso di sistema',
+        to: [NOTIFY_TO, ALERT_TO],
+        subject: `⚠ ${subject}`,
+        text: `${details}\n\n(Avviso automatico da forms.ironwoodlivigno.com — ${new Date().toISOString()})`
+      }
+    );
+  } catch (err) {
+    // Nothing further to fall back to — logged so it's at least visible in
+    // Workers Logs even if no email made it out.
+    console.error('alert email itself failed to send', err);
+  }
 }
 
 async function sendNotification(env: Env, data: Submission, country: string, id: number, token: string) {
@@ -263,6 +293,14 @@ export default {
           await sendNotification(env, data as Submission, country, Number(result.meta.last_row_id), token);
         } catch (err) {
           console.error('notification email failed (submission was still saved)', err);
+          // This is the case most worth an alert: a real guest request
+          // exists in D1 but nobody was told — without this, it would sit
+          // unnoticed until someone happened to check the database.
+          await sendAlert(
+            env,
+            'Notifica non inviata per una richiesta salvata',
+            `La richiesta #${result.meta.last_row_id} (${data.name ?? '-'}, ${data.email ?? '-'}) e' stata salvata correttamente ma l'email di notifica non e' partita.\n\nErrore: ${err instanceof Error ? err.message : String(err)}\n\nControlla la riga nel database: SELECT * FROM submissions WHERE id = ${result.meta.last_row_id}`
+          );
         }
       }
 
@@ -271,6 +309,11 @@ export default {
       // Never leak stack traces, D1 error text, or binding details to the
       // client — log server-side (Workers Logs) and return a generic error.
       console.error('submission failed', err);
+      await sendAlert(
+        env,
+        'Richiesta form non salvata — errore di sistema',
+        `Un tentativo di invio dal form non e' andato a buon fine e la richiesta NON e' stata salvata.\n\nErrore: ${err instanceof Error ? err.message : String(err)}`
+      );
       return json({ ok: false, error: 'internal error' }, 500, origin);
     }
   },

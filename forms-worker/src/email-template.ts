@@ -10,6 +10,7 @@
 // sans-serif for body — since email clients don't load @font-face reliably.
 import type { Submission } from './index';
 import { localeDisplayName, type Translation } from './translate';
+import { replyLabelsFor } from './reply-labels';
 
 const FONT_DISPLAY = "Georgia,'Times New Roman',serif";
 const FONT_BODY = "-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
@@ -40,42 +41,52 @@ function row(label: string, value: string): string {
 
 // Pre-fills the reply with the guest's own request quoted underneath, so
 // Francesco can start typing straight away without switching back to this
-// email to check dates/message — cursor lands on the two blank lines above
-// the quote.
+// email to check dates/message — cursor lands on the three blank lines
+// above the quote, meant for HIS OWN greeting (not a pre-written "Ciao
+// {name}," — he may want to write it in the guest's language, or phrase it
+// differently, and a hardcoded Italian greeting isn't his to have decided
+// for him). The quote itself opens with the Ironwood Livigno name and the
+// stay dates instead, as a neutral reference header.
+//
+// Subject and field labels are localized to the guest's own site language
+// (data.locale) via reply-labels.ts — a German guest shouldn't get a reply
+// whose subject and labels are in Italian. Only the guest's own free-text
+// message is left exactly as they wrote it.
+//
 // mailto: bodies are plain text everywhere — no client renders HTML/CSS in
 // a compose window pre-filled via the `body` param, so this leans on
 // simple ASCII structure (a divider rule, ALL-CAPS section labels) to keep
-// EXTRA and NOTA scannable without any formatting to lean on.
+// EXTRA and NOTE scannable without any formatting to lean on.
 function buildReplyMailto(data: Submission, nights: number | null): string {
-  const firstName = data.name.trim().split(/\s+/)[0] || data.name;
-  const extras = [data.extra_breakfast ? 'Colazione' : null, data.extra_ebike ? 'Noleggio e-bike' : null].filter(Boolean).join(' + ');
+  const t = replyLabelsFor(data.locale);
+  const extras = [data.extra_breakfast ? t.breakfast : null, data.extra_ebike ? t.ebike : null].filter(Boolean).join(' + ');
+  const nightsWord = nights === 1 ? t.night : t.nights;
   const quoteLines = [
-    `Ciao ${firstName},`,
     '',
     '',
     '',
     '────────────────────',
-    'LA TUA RICHIESTA',
+    'IRONWOOD LIVIGNO',
+    t.requestHeading,
     '────────────────────',
-    `Check-in:  ${data.checkin}`,
-    `Check-out: ${data.checkout}${nights ? ` (${nights} ${nights === 1 ? 'notte' : 'notti'})` : ''}`,
-    `Ospiti:    ${data.guests}`,
-    extras ? `EXTRA:     ${extras}` : null,
+    `${t.checkin}:  ${data.checkin}`,
+    `${t.checkout}: ${data.checkout}${nights !== null ? ` (${nights} ${nightsWord})` : ''}`,
+    `${t.guests}:   ${data.guests}`,
+    extras ? `${t.extra.toUpperCase()}: ${extras}` : null,
     data.message ? '' : null,
-    data.message ? 'NOTA DEL CLIENTE:' : null,
+    data.message ? `${t.note.toUpperCase()}:` : null,
     data.message ? `"${data.message}"` : null,
     '',
-    // No label text here on purpose — the guest may not read Italian, and
-    // a bare URL with a camera emoji needs no translation to be
-    // understood. The destination (the site's own photo gallery section)
-    // already scrolls through the real photos, so nothing further to
-    // build for that.
+    // No label text here on purpose — a bare URL with a camera emoji needs
+    // no translation to be understood. The destination (the site's own
+    // photo gallery section) already scrolls through the real photos, so
+    // nothing further to build for that.
     `📷 ${PHOTOS_URL}`
   ]
     .filter((l) => l !== null)
     .join('\n');
 
-  const subject = encodeURIComponent('Re: la tua richiesta a Ironwood Livigno');
+  const subject = encodeURIComponent(t.subject);
   const body = encodeURIComponent(quoteLines);
   return `mailto:${encodeURIComponent(data.email)}?subject=${subject}&body=${body}`;
 }
