@@ -24,6 +24,13 @@
     }
   ],
 
+  // Translates the guest's free-text message to Italian for the
+  // notification (Francesco reads Italian) using Cloudflare's own
+  // m2m100 model — same account, no third-party translation API/key.
+  "ai": {
+    "binding": "AI"
+  },
+
   // No send_email binding: ironwoodlivigno.com's MX records already point
   // to mailbox.org (the real, working inbox) and Cloudflare's Email
   // Service can only deliver to destination addresses verified through

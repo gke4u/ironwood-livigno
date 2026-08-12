@@ -24,10 +24,12 @@
 
 import { sendMail } from './smtp';
 import { buildNotificationHtml } from './email-template';
+import { translateMessageToItalian } from './translate';
 
 export interface Env {
   DB: D1Database;
   FORM_RATE_LIMITER: RateLimit;
+  AI: Ai;
   SMTP_PASSWORD: string;
 }
 
@@ -117,6 +119,8 @@ async function sendNotification(env: Env, data: Submission, country: string, id:
     data.message ? `Messaggio: ${data.message}` : null
   ].filter(Boolean);
 
+  const translation = data.message ? await translateMessageToItalian(env.AI, data.message, data.locale) : null;
+
   await sendMail(
     { host: SMTP_HOST, port: SMTP_PORT, user: SMTP_USER, password: env.SMTP_PASSWORD },
     {
@@ -126,7 +130,7 @@ async function sendNotification(env: Env, data: Submission, country: string, id:
       replyTo: data.email,
       subject: `${data.name} — richiesta disponibilità Ironwood Livigno`,
       text: lines.join('\n'),
-      html: buildNotificationHtml(data, id, country)
+      html: buildNotificationHtml(data, id, country, translation)
     }
   );
 }

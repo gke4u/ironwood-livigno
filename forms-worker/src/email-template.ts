@@ -9,9 +9,11 @@
 // aren't available (globals.css) — Georgia/serif for display, system-ui
 // sans-serif for body — since email clients don't load @font-face reliably.
 import type { Submission } from './index';
+import { localeDisplayName, type Translation } from './translate';
 
 const FONT_DISPLAY = "Georgia,'Times New Roman',serif";
 const FONT_BODY = "-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+const PHOTOS_URL = 'https://ironwoodlivigno.com/it#galleria';
 
 function escapeHtml(value: string): string {
   return value
@@ -71,7 +73,7 @@ function buildReplyMailto(data: Submission, nights: number | null): string {
   return `mailto:${encodeURIComponent(data.email)}?subject=${subject}&body=${body}`;
 }
 
-export function buildNotificationHtml(data: Submission, id: number, country: string): string {
+export function buildNotificationHtml(data: Submission, id: number, country: string, translation: Translation): string {
   const nights = nightsBetween(data.checkin_iso, data.checkout_iso);
   const firstName = escapeHtml(data.name.trim().split(/\s+/)[0] || data.name);
 
@@ -81,7 +83,7 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
     data.phone ? row('Telefono', `<a href="tel:${escapeHtml(data.phone)}" style="color:#A8462F;text-decoration:none;">${escapeHtml(data.phone)}</a>`) : '',
     row('Ospiti', String(data.guests)),
     data.source ? row('Come ci ha trovato', escapeHtml(data.source)) : '',
-    data.locale ? row('Lingua sito', escapeHtml(data.locale)) : '',
+    data.locale ? row('Lingua sito', escapeHtml(localeDisplayName(data.locale))) : '',
     country ? row('Paese (da IP)', escapeHtml(country)) : ''
   ]
     .filter(Boolean)
@@ -168,13 +170,40 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
                 ? `
             <!-- Note: the highest-priority freeform content in the email —
                  heavier border, warm tinted background, bold label, so it
-                 can't be skimmed past the way a table row would be. -->
+                 can't be skimmed past the way a table row would be. When
+                 translated, the language it was written in gets its own
+                 loud badge — easy to miss as plain text buried in a
+                 sentence, easy to spot as a colored tag. -->
             <tr>
               <td style="padding:24px 36px 0;">
-                <p style="margin:0 0 10px;font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#A8462F;">✎ Nota di ${firstName}</p>
+                <table role="presentation" cellpadding="0" cellspacing="0" style="margin-bottom:10px;">
+                  <tr>
+                    <td style="font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#A8462F;padding-right:8px;">✎ Nota di ${firstName}</td>
+                    ${
+                      translation
+                        ? `<td><table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="background-color:#241C15;border-radius:999px;padding:3px 12px;"><span style="font-family:${FONT_BODY};font-size:11px;font-weight:700;color:#EFE6D8;white-space:nowrap;">Scritta in ${escapeHtml(translation.sourceLanguageLabel)}</span></td></tr></table></td>`
+                        : ''
+                    }
+                  </tr>
+                </table>
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#FBF1E7;border-radius:14px;border:1px solid #EAD9BE;border-left:5px solid #A8462F;">
                   <tr>
-                    <td style="padding:18px 20px;font-family:${FONT_BODY};font-size:16px;font-weight:500;color:#241C15;line-height:1.6;">${escapeHtml(data.message).replace(/\n/g, '<br>')}</td>
+                    <td style="padding:18px 20px;font-family:${FONT_BODY};font-size:16px;font-weight:500;color:#241C15;line-height:1.6;">
+                      ${escapeHtml(translation ? translation.translatedText : data.message).replace(/\n/g, '<br>')}
+                      ${
+                        translation
+                          ? `
+                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:14px;padding-top:14px;border-top:1px dashed #EAD9BE;">
+                        <tr>
+                          <td style="font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#241C15;opacity:0.45;padding-bottom:6px;">Testo originale (${escapeHtml(translation.sourceLanguageLabel)})</td>
+                        </tr>
+                        <tr>
+                          <td style="font-family:${FONT_BODY};font-size:14px;color:#241C15;opacity:0.65;font-style:italic;line-height:1.5;">${escapeHtml(data.message).replace(/\n/g, '<br>')}</td>
+                        </tr>
+                      </table>`
+                          : ''
+                      }
+                    </td>
                   </tr>
                 </table>
               </td>
@@ -201,6 +230,13 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
                       <a href="${replyHref}"
                          style="display:inline-block;color:#ffffff;text-decoration:none;font-family:${FONT_BODY};font-size:15px;font-weight:600;padding:14px 30px;">
                         Rispondi a ${firstName} →
+                      </a>
+                    </td>
+                    <td style="width:12px;"></td>
+                    <td style="border-radius:999px;border:1px solid #EFE6D8;">
+                      <a href="${PHOTOS_URL}"
+                         style="display:inline-block;color:#241C15;text-decoration:none;font-family:${FONT_BODY};font-size:15px;font-weight:600;padding:14px 24px;">
+                        Foto dell'appartamento
                       </a>
                     </td>
                   </tr>
