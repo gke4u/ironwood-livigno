@@ -187,3 +187,49 @@
 /cs/sauna /cs 301
 /en/ironwoodlivigno /en 301
 /prova /it 301
+
+# ------------------------------------------------------------------
+# Second wave of legacy URLs, found via Search Console → Indicizzazione →
+# Pagine → "Non trovata (404)" drilldown export on 2026-08-12. Most of
+# these are the "bare" (no .html) twin of a URL whose .html version was
+# already mapped above — old links/bookmarks/search-engine index entries
+# to the extensionless form were missed the first time. A few are entirely
+# new legacy paths not covered by any prior rule. Targets follow the same
+# convention used throughout this file: dedicated page where one exists,
+# otherwise the matching homepage anchor (#camere, #esperienza, #posizione,
+# #prenota, #tariffe — this last one for the rates table specifically).
+# Every target was cross-checked against src/i18n/routing.ts (contactSlugs)
+# and the real section ids in src/components/*.tsx, not guessed.
+/home /it 301
+/appartamento /it#camere 301
+/Ironwood_livigno /it 301
+/it/contact /it/contatti 301
+
+/en/dove-siamo /en#posizione 301
+/en/book /en#prenota 301
+/en/apartment /en#camere 301
+/en/prices.html /en#tariffe 301
+
+/de/jahreszeiten /de 301
+
+/fr/reserver.html /fr#prenota 301
+/fr/avis /fr 301
+/fr/saisons /fr 301
+/fr/blog/ /blog 301
+
+/nl/diensten /nl#esperienza 301
+/nl/seizoenen /nl 301
+/nl/appartement /nl#camere 301
+
+/da/faq /da 301
+
+/no/sesonger /no 301
+
+/pl/sezony /pl 301
+/pl/sezony.html /pl 301
+/pl/lokalizacja /pl#posizione 301
+/pl/polityka-prywatnosci /pl/privacy 301
+/pl/apartament /pl#camere 301
+/pl/rezerwacja /pl#prenota 301
+
+/cs/ochrana-soukromi /cs/privacy 301
