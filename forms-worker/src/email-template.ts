@@ -12,11 +12,20 @@ import type { Submission } from './index';
 import { localeDisplayName, type Translation } from './translate';
 import { replyLabelsFor } from './reply-labels';
 import type { Draft } from './draft';
-import { buildQuickReplies } from './quick-replies';
+import { buildQuickReplies, type QuickReplyId } from './quick-replies';
 
 const FONT_DISPLAY = "Georgia,'Times New Roman',serif";
 const FONT_BODY = "-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
 const PHOTOS_URL = 'https://ironwoodlivigno.com/it#galleria';
+
+// Per-option accent for the quick-reply buttons — brick for the good-news
+// case, gold for "pending", a plain muted border/text for "unavailable" —
+// using only colors already in the site's own palette.
+const QUICK_REPLY_ACCENT: Record<QuickReplyId, { border: string; text: string }> = {
+  available: { border: '#A8462F', text: '#A8462F' },
+  unavailable: { border: '#241C15', text: '#241C15' },
+  pending: { border: '#C9A059', text: '#8A6B2E' }
+};
 
 function escapeHtml(value: string): string {
   return value
@@ -295,10 +304,14 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
                 <p style="margin:0 0 10px;font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#241C15;opacity:0.45;">⚡ Risposte rapide</p>
                 <div>
                   ${quickReplies
-                    .map(
-                      (qr) =>
-                        `<a href="${escapeHtml(qr.mailtoHref)}" style="display:inline-block;color:#241C15;text-decoration:none;font-family:${FONT_BODY};font-size:14px;font-weight:600;padding:10px 18px;background-color:#F7F3EC;border:1px solid #EFE6D8;border-radius:999px;margin:0 8px 8px 0;">${qr.label}</a>`
-                    )
+                    .map((qr) => {
+                      // Accent color per option instead of a leading emoji
+                      // (✗/⏳ didn't render reliably in every mail client/
+                      // font) — brick for the good-news case, gold for
+                      // "pending", a plain muted border for "unavailable".
+                      const accent = QUICK_REPLY_ACCENT[qr.id];
+                      return `<a href="${escapeHtml(qr.mailtoHref)}" style="display:inline-block;color:${accent.text};text-decoration:none;font-family:${FONT_BODY};font-size:14px;font-weight:600;padding:10px 18px;background-color:#F7F3EC;border:1px solid ${accent.border};border-radius:999px;margin:0 8px 8px 0;">${qr.label}</a>`;
+                    })
                     .join('')}
                 </div>
                 ${quickReplies
@@ -307,7 +320,7 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F3EC;border-radius:14px;margin-top:8px;">
                   <tr>
                     <td style="padding:12px 16px;">
-                      <p style="margin:0 0 4px;font-family:${FONT_BODY};font-size:11px;font-weight:700;color:#241C15;opacity:0.5;text-transform:uppercase;letter-spacing:0.05em;">${qr.label}</p>
+                      <p style="margin:0 0 4px;font-family:${FONT_BODY};font-size:11px;font-weight:700;color:${QUICK_REPLY_ACCENT[qr.id].text};opacity:0.8;text-transform:uppercase;letter-spacing:0.05em;">${qr.label}</p>
                       <p style="margin:0;font-family:${FONT_BODY};font-size:13px;color:#241C15;opacity:0.75;line-height:1.5;">${escapeHtml(qr.italianPreview).replace(/\n/g, '<br>')}</p>
                     </td>
                   </tr>

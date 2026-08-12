@@ -349,10 +349,16 @@ const QUICK_REPLIES: Record<string, QuickReplyContent> = {
   ja: JA
 };
 
+// Only the checkmark (U+2713) is used as a leading glyph — it has
+// near-universal font support (part of the long-established Dingbats
+// block). The "unavailable"/"pending" symbols originally used (✗, ⏳) don't
+// render reliably in every mail client/font and showed up as broken
+// placeholder glyphs — dropped in favor of plain text plus a distinct
+// accent color per button (see email-template.ts) to tell them apart.
 const BUTTON_LABELS: Record<QuickReplyId, string> = {
   available: '✓ Disponibile',
-  unavailable: '✗ Non disponibile',
-  pending: '⏳ Confermiamo a breve'
+  unavailable: 'Non disponibile',
+  pending: 'Confermiamo a breve'
 };
 
 export type QuickReplyOption = {
