@@ -8,6 +8,7 @@ import { locales, contactSlugs } from '@/i18n/routing';
 export const dynamic = 'force-static';
 import { blogPosts } from '@/content/blog';
 import { blogTranslations, translatedBlogLocales } from '@/content/blogTranslations';
+import { landingPageTranslations, translatedLandingLocales } from '@/content/landingPageTranslations';
 
 // Generated automatically at build time from the site's own content
 // (blogPosts, blogTranslations, routing locales) instead of the old
@@ -151,16 +152,35 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   });
 
-  // 5. Satellite / landing pages (Italian-only, own top-level URL)
+  // 5. Satellite / landing pages (Italian original + any translated /slug/<locale> pages)
   satellitePages.forEach(({ path, image, priority, changeFrequency }) => {
-    const url = `${siteUrl}/${path}`;
+    const itUrl = `${siteUrl}/${path}`;
+    const translations = landingPageTranslations[path] ?? {};
+    const languages: Record<string, string> = { it: itUrl };
+    translatedLandingLocales.forEach((l) => {
+      if (translations[l]) languages[l] = `${siteUrl}/${path}/${l}`;
+    });
+    languages['x-default'] = itUrl;
+
     entries.push({
-      url,
+      url: itUrl,
       lastModified: now,
       changeFrequency,
       priority,
-      alternates: { languages: { it: url, 'x-default': url } },
+      alternates: { languages },
       images: [`${siteUrl}${image}`]
+    });
+
+    translatedLandingLocales.forEach((l) => {
+      if (!translations[l]) return;
+      entries.push({
+        url: `${siteUrl}/${path}/${l}`,
+        lastModified: now,
+        changeFrequency,
+        priority: Math.max(priority - 0.1, 0.1),
+        alternates: { languages },
+        images: [`${siteUrl}${image}`]
+      });
     });
   });
 

@@ -1,15 +1,39 @@
 import type { LandingPage } from '@/content/landingPages';
 import Pic from './Pic';
 
+export type LandingUiStrings = {
+  backLabel: string;
+  backHref: string;
+  whyTitle: string;
+  discoverMoreLabel: string;
+  faqTitle: string;
+  ctaHref: string;
+};
+
+const defaultUi: LandingUiStrings = {
+  backLabel: '← Torna alla home',
+  backHref: '/it',
+  whyTitle: 'Perché Ironwood',
+  discoverMoreLabel: 'Scopri di più →',
+  faqTitle: 'Domande frequenti',
+  ctaHref: '/it#prenota'
+};
+
 // Shared body for the standalone SEO landing pages (/inverno, /estate,
-// /famiglie, /benessere, /come-arrivare). Header/footer/WhatsApp CTA come
-// from BlogChrome — this only renders the article content itself, kept
-// separate so each page.tsx stays a thin wrapper around its data.
-export default function LandingPageBody({ page }: { page: LandingPage }) {
+// /famiglie, /benessere, /come-arrivare, ...) in Italian AND their
+// translated /slug/[locale] variants. `ui` supplies the few bits of chrome
+// text that live in this component rather than in `page` itself (back
+// link, section headings, CTA hrefs) — defaults reproduce the original
+// Italian strings exactly, so the 9 existing IT page.tsx call sites (which
+// don't pass locale/ui) render byte-for-byte the same as before this was
+// parametrized. Header/footer/WhatsApp CTA come from BlogChrome — this
+// only renders the article content itself.
+export default function LandingPageBody({ page, ui }: { page: LandingPage; ui?: Partial<LandingUiStrings> }) {
+  const t = { ...defaultUi, ...ui };
   return (
     <div className="max-w-content mx-auto px-6 md:px-10 py-16 md:py-20">
-      <a href="/it" className="text-brick text-sm font-medium hover:underline">
-        ← Torna alla home
+      <a href={t.backHref} className="text-brick text-sm font-medium hover:underline">
+        {t.backLabel}
       </a>
 
       <p className="text-brick tracking-[0.2em] uppercase text-xs md:text-sm mt-6 mb-3">{page.eyebrow}</p>
@@ -47,7 +71,7 @@ export default function LandingPageBody({ page }: { page: LandingPage }) {
 
           <aside className="md:col-span-1">
             <div className="bg-white rounded-3xl shadow-soft p-6 sticky top-24">
-              <p className="font-display text-lg text-ink mb-4">Perché Ironwood</p>
+              <p className="font-display text-lg text-ink mb-4">{t.whyTitle}</p>
               <ul className="space-y-3 mb-6">
                 {page.highlights.map((h) => (
                   <li key={h} className="flex items-start gap-3 text-ink/75 text-sm">
@@ -57,7 +81,7 @@ export default function LandingPageBody({ page }: { page: LandingPage }) {
                 ))}
               </ul>
               <a
-                href="/it#prenota"
+                href={t.ctaHref}
                 className="block text-center bg-brick text-mist rounded-full px-6 py-3 font-medium hover:bg-brick/90 transition-colors"
               >
                 {page.ctaText}
@@ -94,7 +118,7 @@ export default function LandingPageBody({ page }: { page: LandingPage }) {
 
         {page.faq && page.faq.length > 0 && (
           <div className="mt-14">
-            <h2 className="font-display text-xl md:text-2xl text-ink mb-6">Domande frequenti</h2>
+            <h2 className="font-display text-xl md:text-2xl text-ink mb-6">{t.faqTitle}</h2>
             <div className="space-y-6">
               {page.faq.map((item) => (
                 <div key={item.q}>
@@ -112,7 +136,7 @@ export default function LandingPageBody({ page }: { page: LandingPage }) {
             href={page.relatedLink.href}
             className="border border-ink/20 text-ink rounded-full px-6 py-3 font-medium hover:bg-ink/5 transition-colors whitespace-nowrap"
           >
-            Scopri di più →
+            {t.discoverMoreLabel}
           </a>
         </div>
       </div>

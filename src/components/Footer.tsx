@@ -1,6 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { contactSlugs, locales, localeLabels, type Locale } from '@/i18n/routing';
-import { SATELLITE_PAGES } from '@/data/satellite-pages';
+import { getSatellitePages } from '@/data/satellite-pages';
 import Logo from './Logo';
 
 const CIN = 'IT014037C274OJ27T8';
@@ -16,13 +16,12 @@ export default function Footer({ locale }: { locale: Locale }) {
   const t = useTranslations('footer');
   const tNav = useTranslations('nav');
 
-  // The 5 SEO landing pages (/inverno, /estate, /famiglie, /benessere,
-  // /come-arrivare) are Italian-only content living outside the [locale]
-  // tree (same rationale as /blog — see README). Only worth surfacing here
-  // for the 'it' locale: linking Italian-only pages from e.g. the German or
-  // Japanese footer would just lead visitors to content in a language they
-  // didn't choose.
-  const itLandingPages = locale === 'it' ? SATELLITE_PAGES : [];
+  // The 9 SEO landing pages (src/data/satellite-pages.ts) live outside the
+  // [locale] tree. getSatellitePages resolves each to its translated
+  // /<slug>/<locale> variant where one exists (src/content/
+  // landingPageTranslations.ts), falling back to the Italian original for
+  // any locale/page combination not translated yet.
+  const landingPages = getSatellitePages(locale);
 
   const sectionLinks = [
     { href: `/${locale}#esperienza`, label: tNav('experience') },
@@ -34,9 +33,9 @@ export default function Footer({ locale }: { locale: Locale }) {
   return (
     <footer className="bg-ink text-mist/70 py-10">
       <div className="max-w-content mx-auto px-6 md:px-10">
-        {itLandingPages.length > 0 && (
+        {landingPages.length > 0 && (
           <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs uppercase tracking-widest mb-8 pb-8 border-b border-mist/10">
-            {itLandingPages.map((p) => (
+            {landingPages.map((p) => (
               <a key={p.href} href={p.href} className="hover:text-mist transition-colors">
                 {p.label}
               </a>
