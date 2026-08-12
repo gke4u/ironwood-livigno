@@ -25,6 +25,7 @@ export type SmtpMessage = {
   replyTo?: string;
   subject: string;
   text: string;
+  html?: string;
 };
 
 class SmtpError extends Error {}
@@ -121,18 +122,41 @@ export async function sendMail(config: SmtpConfig, message: SmtpMessage): Promis
     await sendAll(secureWriter, `DATA\r\n`);
     await readResponse(secureReader, secureState); // 354 start mail input
 
-    const headers = [
+    const commonHeaders = [
       `From: Ironwood Livigno <${message.from}>`,
       `To: ${message.to}`,
       message.replyTo ? `Reply-To: ${message.replyTo}` : null,
       `Subject: ${message.subject}`,
-      'MIME-Version: 1.0',
-      'Content-Type: text/plain; charset="UTF-8"',
-      'Content-Transfer-Encoding: 8bit'
-    ]
-      .filter(Boolean)
-      .join('\r\n');
-    const body = `${headers}\r\n\r\n${message.text}`;
+      'MIME-Version: 1.0'
+    ].filter(Boolean);
+
+    let body: string;
+    if (message.html) {
+      // multipart/alternative: mail clients that render HTML show the
+      // formatted version; anything that can't (or is set to prefer plain
+      // text) falls back to the text part instead of showing raw markup.
+      const boundary = `ironwood_${crypto.randomUUID().replace(/-/g, '')}`;
+      const parts = [
+        `--${boundary}`,
+        'Content-Type: text/plain; charset="UTF-8"',
+        'Content-Transfer-Encoding: 8bit',
+        '',
+        message.text,
+        '',
+        `--${boundary}`,
+        'Content-Type: text/html; charset="UTF-8"',
+        'Content-Transfer-Encoding: 8bit',
+        '',
+        message.html,
+        '',
+        `--${boundary}--`
+      ].join('\r\n');
+      body = [...commonHeaders, `Content-Type: multipart/alternative; boundary="${boundary}"`, '', parts].join('\r\n');
+    } else {
+      body = [...commonHeaders, 'Content-Type: text/plain; charset="UTF-8"', 'Content-Transfer-Encoding: 8bit', '', message.text].join(
+        '\r\n'
+      );
+    }
     await sendAll(secureWriter, `${stuffDots(body)}\r\n.\r\n`);
     await readResponse(secureReader, secureState); // 250 message accepted
 

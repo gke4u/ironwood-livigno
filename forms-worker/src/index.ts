@@ -23,6 +23,7 @@
 // authenticated implicitly by the deployment itself.
 
 import { sendMail } from './smtp';
+import { buildNotificationHtml } from './email-template';
 
 export interface Env {
   DB: D1Database;
@@ -45,7 +46,7 @@ const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const MAX_MESSAGE_LEN = 2000;
 const RETENTION_MONTHS = 24;
 
-type Submission = {
+export type Submission = {
   name: string;
   email: string;
   phone?: string;
@@ -97,7 +98,7 @@ function isSpam(data: Partial<Submission>): boolean {
   return Boolean(data.company && data.company.trim().length > 0);
 }
 
-async function sendNotification(env: Env, data: Submission, country: string) {
+async function sendNotification(env: Env, data: Submission, country: string, id: number) {
   const extras = [data.extra_breakfast ? 'Colazione' : null, data.extra_ebike ? 'Noleggio e-bike' : null]
     .filter(Boolean)
     .join(' + ');
@@ -123,7 +124,8 @@ async function sendNotification(env: Env, data: Submission, country: string) {
       to: NOTIFY_TO,
       replyTo: data.email,
       subject: 'Richiesta disponibilità — Ironwood Livigno',
-      text: lines.join('\n')
+      text: lines.join('\n'),
+      html: buildNotificationHtml(data, id, country)
     }
   );
 }
@@ -207,7 +209,7 @@ export default {
       // honeypot already used, now enforced server-side too.
       if (!spam) {
         try {
-          await sendNotification(env, data as Submission, country);
+          await sendNotification(env, data as Submission, country, Number(result.meta.last_row_id));
         } catch (err) {
           console.error('notification email failed (submission was still saved)', err);
         }
