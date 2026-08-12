@@ -88,7 +88,12 @@ function buildReplyMailto(data: Submission, nights: number | null): string {
 
   const subject = encodeURIComponent(t.subject);
   const body = encodeURIComponent(quoteLines);
-  return `mailto:${encodeURIComponent(data.email)}?subject=${subject}&body=${body}`;
+  // Only the query params (subject/body) get percent-encoded — the
+  // recipient address before the "?" must stay as plain addr-spec per
+  // RFC 6068. Running encodeURIComponent on it too turns "@" into "%40",
+  // which some mail clients paste verbatim into the To field instead of
+  // decoding it back.
+  return `mailto:${data.email}?subject=${subject}&body=${body}`;
 }
 
 export function buildNotificationHtml(data: Submission, id: number, country: string, token: string): string {
