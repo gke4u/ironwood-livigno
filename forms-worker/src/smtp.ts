@@ -130,33 +130,15 @@ export async function sendMail(config: SmtpConfig, message: SmtpMessage): Promis
       'MIME-Version: 1.0'
     ].filter(Boolean);
 
-    let body: string;
-    if (message.html) {
-      // multipart/alternative: mail clients that render HTML show the
-      // formatted version; anything that can't (or is set to prefer plain
-      // text) falls back to the text part instead of showing raw markup.
-      const boundary = `ironwood_${crypto.randomUUID().replace(/-/g, '')}`;
-      const parts = [
-        `--${boundary}`,
-        'Content-Type: text/plain; charset="UTF-8"',
-        'Content-Transfer-Encoding: 8bit',
-        '',
-        message.text,
-        '',
-        `--${boundary}`,
-        'Content-Type: text/html; charset="UTF-8"',
-        'Content-Transfer-Encoding: 8bit',
-        '',
-        message.html,
-        '',
-        `--${boundary}--`
-      ].join('\r\n');
-      body = [...commonHeaders, `Content-Type: multipart/alternative; boundary="${boundary}"`, '', parts].join('\r\n');
-    } else {
-      body = [...commonHeaders, 'Content-Type: text/plain; charset="UTF-8"', 'Content-Transfer-Encoding: 8bit', '', message.text].join(
-        '\r\n'
-      );
-    }
+    // Single-part HTML (no multipart/alternative): a hand-rolled multipart
+    // boundary was rendering unreliably across mail clients (no styling,
+    // dead links) — one Content-Type is simpler and has far fewer ways to
+    // go wrong for an internal notification email that doesn't need a
+    // plain-text fallback.
+    const contentType = message.html ? 'text/html; charset="UTF-8"' : 'text/plain; charset="UTF-8"';
+    const body = [...commonHeaders, `Content-Type: ${contentType}`, 'Content-Transfer-Encoding: 8bit', '', message.html ?? message.text].join(
+      '\r\n'
+    );
     await sendAll(secureWriter, `${stuffDots(body)}\r\n.\r\n`);
     await readResponse(secureReader, secureState); // 250 message accepted
 
