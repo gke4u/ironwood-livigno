@@ -107,7 +107,7 @@ function buildReplyMailto(data: Submission, nights: number | null): string {
   return `mailto:${data.email}?subject=${subject}&body=${body}`;
 }
 
-export function buildNotificationHtml(data: Submission, id: number, country: string, translation: Translation, token: string): string {
+export function buildNotificationHtml(data: Submission, id: number, country: string, translation: Translation): string {
   const nights = nightsBetween(data.checkin_iso, data.checkout_iso);
   const firstName = escapeHtml(data.name.trim().split(/\s+/)[0] || data.name);
 
@@ -298,12 +298,13 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
                  the owner can necessarily read, the Italian master text
                  (not a translation — it's what the other 11 versions were
                  translated FROM) is always shown right below each button,
-                 so it's always clear what a click is about to send.
-                 Buttons open GET /reply/:token/:id (not a direct mailto:)
-                 so the owner can pick the channel — email, WhatsApp (if
-                 the guest left a phone number), or just copy the text for
-                 anything else — instead of always going straight to
-                 email. -->
+                 so it's always clear what a click is about to send. Each
+                 button is a direct mailto: link — not an intermediate
+                 page — so clicking it opens the mail client immediately,
+                 ready to send with one more click there. (A version that
+                 routed through a page offering email/WhatsApp/copy was
+                 tried and reverted per the owner's feedback — he wanted
+                 the one-click-to-mail-client behavior back.) -->
             <tr>
               <td style="padding:0 36px 36px;">
                 <p style="margin:0 0 10px;font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#241C15;opacity:0.45;">⚡ Risposte rapide</p>
@@ -315,8 +316,7 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
                       // font) — brick for the good-news case, gold for
                       // "pending", a plain muted border for "unavailable".
                       const accent = QUICK_REPLY_ACCENT[qr.id];
-                      const href = `https://forms.ironwoodlivigno.com/reply/${token}/${qr.id}`;
-                      return `<a href="${href}" style="display:inline-block;color:${accent.text};text-decoration:none;font-family:${FONT_BODY};font-size:14px;font-weight:600;padding:10px 18px;background-color:#F7F3EC;border:1px solid ${accent.border};border-radius:999px;margin:0 8px 8px 0;">${qr.label}</a>`;
+                      return `<a href="${escapeHtml(qr.mailtoHref)}" style="display:inline-block;color:${accent.text};text-decoration:none;font-family:${FONT_BODY};font-size:14px;font-weight:600;padding:10px 18px;background-color:#F7F3EC;border:1px solid ${accent.border};border-radius:999px;margin:0 8px 8px 0;">${qr.label}</a>`;
                     })
                     // A real newline between anchors, not concatenated onto
                     // one line — see the CTA comment above (buildReplyMailto)
@@ -443,101 +443,3 @@ export function renderDraftPage(
 </html>`;
 }
 
-// Best-effort: strips everything but digits from the guest's free-text
-// phone field so it can be used in a wa.me link, which requires a bare
-// international number (no "+", spaces, or punctuation). There's no
-// reliable way to validate an arbitrary phone string is actually a valid,
-// WhatsApp-reachable number without a real phone-parsing library — if the
-// guest didn't include a country code, the resulting link just won't
-// resolve to a chat, which is no worse than not offering the option at
-// all (the button is only shown when a phone number exists in the first
-// place).
-function phoneToWhatsAppDigits(phone: string): string {
-  return phone.replace(/\D/g, '');
-}
-
-// Standalone page for GET /reply/:token/:id — same fonts/colors as the
-// notification email. Shows one of the three pre-written quick-reply
-// templates (already filled in with this guest's dates/name, in their own
-// site language) in an editable textarea, with a choice of how to send
-// it: copy the text (for anything — Telegram, SMS, whatever), open it in
-// the mail client, or open a WhatsApp chat pre-filled with the same text
-// (only offered if the guest left a phone number) — instead of always
-// going straight to email, per the owner's request to be able to pick the
-// channel the guest actually prefers.
-export function renderQuickReplyPage(
-  params: { error: string } | { label: string; email: string; phone: string | null; subject: string; guestBody: string; italianPreview: string }
-): string {
-  const body =
-    'error' in params
-      ? `<p style="margin:0;font-family:${FONT_BODY};font-size:16px;color:#241C15;">${escapeHtml(params.error)}</p>`
-      : `
-      <p style="margin:0 0 6px;font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#A8462F;">Risposta rapida · ${escapeHtml(params.label)}</p>
-      <textarea id="replyBody" style="width:100%;box-sizing:border-box;min-height:220px;padding:16px;border-radius:14px;border:1px solid #EAD9BE;background-color:#FBF1E7;font-family:${FONT_BODY};font-size:15px;color:#241C15;line-height:1.6;resize:vertical;">${escapeHtml(params.guestBody)}</textarea>
-      <div style="margin:14px 0 0;">
-        <button type="button" id="copyBtn" style="cursor:pointer;background-color:#A8462F;color:#ffffff;border:none;border-radius:999px;padding:12px 22px;font-family:${FONT_BODY};font-size:14px;font-weight:600;margin:0 10px 10px 0;">📋 Copia testo</button>
-        <button type="button" id="mailBtn" style="cursor:pointer;background-color:#ffffff;color:#241C15;border:1px solid #EFE6D8;border-radius:999px;padding:12px 22px;font-family:${FONT_BODY};font-size:14px;font-weight:600;margin:0 10px 10px 0;">✉️ Invia via Email</button>
-        ${
-          params.phone
-            ? `<button type="button" id="waBtn" style="cursor:pointer;background-color:#ffffff;color:#241C15;border:1px solid #EFE6D8;border-radius:999px;padding:12px 22px;font-family:${FONT_BODY};font-size:14px;font-weight:600;margin:0 10px 10px 0;">📱 Invia via WhatsApp</button>`
-            : ''
-        }
-      </div>
-      <p style="margin:22px 0 6px;font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#241C15;opacity:0.45;">In italiano (per verifica)</p>
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F3EC;border-radius:14px;"><tr><td style="padding:16px 20px;font-family:${FONT_BODY};font-size:15px;color:#241C15;opacity:0.85;line-height:1.6;">${escapeHtml(params.italianPreview).replace(/\n/g, '<br>')}</td></tr></table>
-      <script>
-        (function () {
-          var ta = document.getElementById('replyBody');
-          var copyBtn = document.getElementById('copyBtn');
-          var mailBtn = document.getElementById('mailBtn');
-          var waBtn = document.getElementById('waBtn');
-          var to = ${jsonForScript(params.email)};
-          var subject = ${jsonForScript(params.subject)};
-          var waDigits = ${jsonForScript(params.phone ? phoneToWhatsAppDigits(params.phone) : '')};
-          copyBtn.addEventListener('click', function () {
-            navigator.clipboard.writeText(ta.value).then(function () {
-              var original = copyBtn.textContent;
-              copyBtn.textContent = 'Copiato ✓';
-              setTimeout(function () { copyBtn.textContent = original; }, 1800);
-            });
-          });
-          mailBtn.addEventListener('click', function () {
-            window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(ta.value);
-          });
-          if (waBtn) {
-            waBtn.addEventListener('click', function () {
-              window.open('https://wa.me/' + waDigits + '?text=' + encodeURIComponent(ta.value), '_blank');
-            });
-          }
-        })();
-      </script>`;
-
-  return `<!doctype html>
-<html lang="it">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Risposta rapida — Ironwood Livigno</title>
-  </head>
-  <body style="margin:0;padding:0;background-color:#F7F3EC;font-family:${FONT_BODY};">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:40px 16px;">
-      <tr>
-        <td align="center">
-          <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;background-color:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(36,28,21,0.10);">
-            <tr>
-              <td style="background-color:#241C15;padding:24px 32px;">
-                <p style="margin:0;color:#C9A059;font-family:${FONT_BODY};font-size:11px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;">Ironwood Livigno</p>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding:28px 32px 32px;">
-                ${body}
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-  </body>
-</html>`;
-}

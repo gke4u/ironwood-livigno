@@ -23,11 +23,10 @@
 // authenticated implicitly by the deployment itself.
 
 import { sendMail, checkSmtpConnection } from './smtp';
-import { buildNotificationHtml, nightsBetween, renderDraftPage, renderQuickReplyPage } from './email-template';
+import { buildNotificationHtml, nightsBetween, renderDraftPage } from './email-template';
 import { translateMessageToItalian } from './translate';
 import { draftReply } from './draft';
 import { replyLabelsFor } from './reply-labels';
-import { buildQuickReplies, type QuickReplyId } from './quick-replies';
 
 export interface Env {
   DB: D1Database;
@@ -147,7 +146,7 @@ async function sendAlert(env: Env, subject: string, details: string) {
   }
 }
 
-async function sendNotification(env: Env, data: Submission, country: string, id: number, token: string) {
+async function sendNotification(env: Env, data: Submission, country: string, id: number) {
   const extras = [data.extra_breakfast ? 'Colazione' : null, data.extra_ebike ? 'Noleggio e-bike' : null]
     .filter(Boolean)
     .join(' + ');
@@ -187,7 +186,7 @@ async function sendNotification(env: Env, data: Submission, country: string, id:
       replyTo: data.email,
       subject: `${data.name} — richiesta disponibilità Ironwood Livigno`,
       text: lines.join('\n'),
-      html: buildNotificationHtml(data, id, country, translation, token)
+      html: buildNotificationHtml(data, id, country, translation)
     }
   );
 }
@@ -247,88 +246,17 @@ async function handleDraftPage(env: Env, token: string): Promise<Response> {
   return htmlPage(renderDraftPage({ name: row.name, email: row.email, subject: replyLabelsFor(row.locale ?? undefined).subject, draft }));
 }
 
-const QUICK_REPLY_IDS: QuickReplyId[] = ['available', 'unavailable', 'pending'];
-
-// Branded page — same fonts/colors as the notification email — shown when
-// Francesco clicks one of the "Risposte rapide" buttons. Looks up the
-// submission by its random token (same as /draft/:token) and rebuilds
-// that one quick-reply option, then lets him choose how to actually send
-// it: copy, email, or WhatsApp (only offered if the guest left a phone
-// number) — instead of the button always jumping straight to email.
-async function handleQuickReplyPage(env: Env, token: string, replyId: string): Promise<Response> {
-  if (!QUICK_REPLY_IDS.includes(replyId as QuickReplyId)) {
-    return htmlPage(renderQuickReplyPage({ error: 'Risposta non valida.' }), 404);
-  }
-
-  const row = await env.DB.prepare(
-    `SELECT name, email, phone, message, locale, checkin_display, checkin_iso, checkout_display, checkout_iso, guests, extra_breakfast, extra_ebike
-     FROM submissions WHERE token = ?`
-  )
-    .bind(token)
-    .first<{
-      name: string;
-      email: string;
-      phone: string | null;
-      message: string | null;
-      locale: string | null;
-      checkin_display: string;
-      checkin_iso: string;
-      checkout_display: string;
-      checkout_iso: string;
-      guests: number;
-      extra_breakfast: number;
-      extra_ebike: number;
-    }>();
-
-  if (!row) return htmlPage(renderQuickReplyPage({ error: 'Richiesta non trovata.' }), 404);
-
-  const submission: Submission = {
-    name: row.name,
-    email: row.email,
-    phone: row.phone ?? undefined,
-    checkin: row.checkin_display,
-    checkin_iso: row.checkin_iso,
-    checkout: row.checkout_display,
-    checkout_iso: row.checkout_iso,
-    guests: row.guests,
-    extra_breakfast: Boolean(row.extra_breakfast),
-    extra_ebike: Boolean(row.extra_ebike),
-    message: row.message ?? undefined,
-    locale: row.locale ?? undefined
-  };
-  const nights = nightsBetween(row.checkin_iso, row.checkout_iso);
-  const option = buildQuickReplies(submission, nights).find((qr) => qr.id === replyId);
-  if (!option) return htmlPage(renderQuickReplyPage({ error: 'Risposta non valida.' }), 404);
-
-  return htmlPage(
-    renderQuickReplyPage({
-      label: option.label,
-      email: row.email,
-      phone: row.phone,
-      subject: option.subject,
-      guestBody: option.guestBody,
-      italianPreview: option.italianPreview
-    })
-  );
-}
-
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const origin = request.headers.get('Origin');
     const url = new URL(request.url);
 
-    // /draft/:token and /reply/:token/:id — opened directly in a browser
-    // from a link in the notification email (not an AJAX call from the
-    // site), so both are plain GETs returning an HTML page, no CORS/Origin
-    // check needed here.
+    // /draft/:token — opened directly in a browser from a link in the
+    // notification email (not an AJAX call from the site), so it's a plain
+    // GET returning an HTML page, no CORS/Origin check needed here.
     const draftMatch = /^\/draft\/([a-f0-9-]{36})$/.exec(url.pathname);
     if (draftMatch && request.method === 'GET') {
       return handleDraftPage(env, draftMatch[1]);
-    }
-
-    const replyMatch = /^\/reply\/([a-f0-9-]{36})\/([a-z]+)$/.exec(url.pathname);
-    if (replyMatch && request.method === 'GET') {
-      return handleQuickReplyPage(env, replyMatch[1], replyMatch[2]);
     }
 
     if (request.method === 'OPTIONS') {
@@ -408,7 +336,7 @@ export default {
       // honeypot already used, now enforced server-side too.
       if (!spam) {
         try {
-          await sendNotification(env, data as Submission, country, Number(result.meta.last_row_id), token);
+          await sendNotification(env, data as Submission, country, Number(result.meta.last_row_id));
         } catch (err) {
           console.error('notification email failed (submission was still saved)', err);
           // This is the case most worth an alert: a real guest request

@@ -412,8 +412,7 @@ const BUTTON_LABELS: Record<QuickReplyId, string> = {
 export type QuickReplyOption = {
   id: QuickReplyId;
   label: string; // always Italian — this is what the owner clicks, not what the guest reads
-  subject: string;
-  guestBody: string; // raw, unencoded — the /reply/:token/:id page needs the plain text (editable textarea, wa.me text=, etc.), not a pre-built URI
+  mailtoHref: string;
   italianPreview: string; // the IT master text, shown so the owner always knows what a click sends regardless of the guest's language
 };
 
@@ -437,12 +436,18 @@ export function buildQuickReplies(data: Submission, nights: number | null): Quic
   const content = (data.locale && QUICK_REPLIES[data.locale]) || IT;
   const nightsWord = nights === 1 ? labels.night : labels.nights;
   const nightsPhrase = nights !== null ? ` (${nights} ${nightsWord})` : '';
+  const subject = encodeURIComponent(labels.subject);
 
-  return (Object.keys(BUTTON_LABELS) as QuickReplyId[]).map((id) => ({
-    id,
-    label: BUTTON_LABELS[id],
-    subject: labels.subject,
-    guestBody: fillTemplate(content[id], content.placeholder, data, nightsPhrase),
-    italianPreview: fillTemplate(IT[id], IT.placeholder, data, nightsPhrase)
-  }));
+  return (Object.keys(BUTTON_LABELS) as QuickReplyId[]).map((id) => {
+    const guestBody = fillTemplate(content[id], content.placeholder, data, nightsPhrase);
+    const body = encodeURIComponent(guestBody);
+    return {
+      id,
+      label: BUTTON_LABELS[id],
+      // Same RFC 6068 rule as buildReplyMailto: the recipient address
+      // before "?" stays unencoded, only subject/body are percent-encoded.
+      mailtoHref: `mailto:${data.email}?subject=${subject}&body=${body}`,
+      italianPreview: fillTemplate(IT[id], IT.placeholder, data, nightsPhrase)
+    };
+  });
 }
