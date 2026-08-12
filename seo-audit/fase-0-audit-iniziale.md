@@ -158,7 +158,35 @@ Export "Bloccata a causa di un accesso non autorizzato (403)" (`ironwoodlivigno.
 
 Verificato live: `www.ironwoodlivigno.com/cs/prenota` → 301 pulito verso l'apex (1 hop), ma l'apex `/cs/prenota` non aveva nessuna regola in `_redirects` e cadeva su un 404 nudo (probabile causa del 403 osservato da Google a metà giugno su un'infrastruttura diversa da quella attuale). Aggiunta la regola mancante `/cs/prenota → /cs#prenota`, stessa convenzione di `/en/prenota` e `/de/prenota` già chiuse nel punto 6ter. Build e check hreflang rieseguiti dopo la modifica: puliti.
 
-**Tutti i finding "Alta" e "Media/Bassa" con dato reale disponibile della Fase 0 sono ora chiusi.** Resta aperto solo il punto Media "18 pagine scansionate ma non indicizzate" — serve il relativo export se si vuole procedere.
+### 6sexies. Le 18 pagine scansionate ma non indicizzate (drilldown Search Console, Fase 1)
+
+Export "Pagina scansionata, ma attualmente non indicizzata" (`ironwoodlivigno.com-Coverage-Drilldown-2026-08-12 (6).zip`), 18 URL. A differenza di tutti i gruppi precedenti, qui non è un problema di redirect — sono due categorie diverse per natura.
+
+**10 URL legacy (scansionati tra il 2026-02-12 e il 2026-04-07)** — le date più vecchie viste finora nell'intero audit, precedenti a praticamente tutto il lavoro fatto su `_redirects`:
+
+| URL | Stato live (2026-08-12) | Azione |
+|---|---|---|
+| `www.ironwoodlivigno.com/sauna` | apex 404, nessuna regola | **Fix**: `/sauna → /sauna-bagno-turco-privato-livigno` |
+| `www.ironwoodlivigno.com/en/sauna` | apex 404, nessuna regola | **Fix**: `/en/sauna → /sauna-bagno-turco-privato-livigno` (pagina satellite più vicina, anche se IT-only) |
+| `www.ironwoodlivigno.com/it/photogallery` | apex 404, nessuna regola | **Fix**: `/it/photogallery → /it` |
+| `www.ironwoodlivigno.com/it/dove-siamo` | apex 404, nessuna regola | **Fix**: `/it/dove-siamo → /it#posizione` |
+| `www.ironwoodlivigno.com/contatti?l=en` | 200, già risolve via regola `/contatti` esistente | Nessuna azione |
+| `www.ironwoodlivigno.com/contatti?l=it` | 200, idem | Nessuna azione |
+| `www.ironwoodlivigno.com/it/contatti` | 200, pagina reale corrente | Nessuna azione |
+| `www.ironwoodlivigno.com/photogallery?l=it` | 200, già risolve via regola `/photogallery` esistente | Nessuna azione |
+| `www.ironwoodlivigno.com/dove-siamo?l=it` | 200, già risolve via regola `/dove-siamo` esistente | Nessuna azione |
+| `www.ironwoodlivigno.com/home?l=it` | 200, già risolve via regola `/home` esistente | Nessuna azione |
+
+Aggiunte le 4 regole mancanti. Le altre 6 (varianti con query string `?l=...`) già passano correttamente attraverso le regole esistenti — la query string sopravvive al redirect ma non ha alcun effetto funzionale sul sito (nessun codice legge quel parametro).
+
+**8 URL di contenuto reale e attuale** (articoli blog + `/ja/contact`), tutti live e rispondono `200` — qui non c'è nulla da reindirizzare, il problema (se c'è) è editoriale, non tecnico:
+
+- **5 articoli del blog** (`natale-capodanno-a-livigno`, `migliori-piste-sci-livigno-famiglie`, `quanto-costa-sciare-a-livigno-guida-prezzi` IT+EN, `carosello-3000-vs-mottolino-quale-scegliere/en`, più le versioni IT già in indice) risultano **pubblicati il 2026-08-03/06** — scansionati da Google appena 1-2 giorni dopo (7-8 agosto), 6-9 giorni prima di questo audit. È il ritardo fisiologico tra prima scansione e decisione di indicizzazione, non un segnale di contenuto sottile: coerente con il trend di crescita reale dell'indicizzazione già documentato al punto 6 (14→142 pagine in 3 mesi). Nessuna azione consigliata, da ricontrollare tra qualche settimana se restano fuori indice.
+- **`/ja/contact`**: verificato che la dimensione della pagina (69 KB) è paragonabile a `/en/contact` (63 KB) — non è contenuto sottile. Stessa causa già ipotizzata per `/pl/kontakt` nel punto 6ter: le 12 pagine di contatto condividono template e differiscono solo per traduzione, e Google talvolta ne "assorbe" una nel cluster invece di indicizzarla separatamente. Nessuna azione di codice consigliata.
+
+Build e check hreflang rieseguiti dopo le modifiche: puliti.
+
+**Con questo, tutti i finding della Fase 0 con dato reale disponibile sono chiusi.**
 
 ## 7. Core Web Vitals (PageSpeed Insights)
 
@@ -174,7 +202,7 @@ Ho provato a interrogare l'API pubblica di PageSpeed Insights su `/it`, `/invern
 | Alta | ~~Pagine satellite (9, priorità 0.8) non linkate da Nav della homepage~~ — dropdown "Scopri" aggiunto in Nav/MobileMenu, tutte e 12 le lingue | ✅ Fase 1 |
 | Alta | ~~Script `check-hreflang-reciprocity.mjs` rotto~~ — fixato, punta a `out/sitemap.xml` | ✅ Fase 1 |
 | Media | ~~6 pagine dove Google sceglie un canonical diverso~~ — 5/6 erano il Gruppo C (www, redirect ora funzionante ma mancava la regola apex, aggiunta); 1/6 (`/pl/kontakt`) è contenuto duplicato tra i 12 template di contatto, probabilmente benigno | ✅ Fase 1 |
-| Media | 18 pagine scansionate ma non indicizzate (possibile segnale di contenuto sottile) | Fase 1 / Fase 3 |
+| Media | ~~18 pagine scansionate ma non indicizzate~~ — 10 legacy (4 avevano bisogno di una regola, aggiunta), 8 contenuto reale (5 articoli appena pubblicati, `/ja/contact` benigno come `/pl/kontakt`) | ✅ Fase 1 |
 | Media | Pagine satellite solo in italiano nonostante mercati target multilingua | Fase 2 / Fase 5 |
 | Media | Core Web Vitals non ancora misurati (serve secondo export Search Console o retry PSI) | Fase 9 |
 | Bassa | `CF_ANALYTICS_TOKEN` in `src/app/[locale]/layout.tsx` è ancora il placeholder — nessun analytics attivo | Fase 11 |

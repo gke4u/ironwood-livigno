@@ -260,3 +260,20 @@
 # Google's crawler had evidently seen as 403 at the time, on whatever
 # infra existed mid-June).
 /cs/prenota /cs#prenota 301
+
+# ------------------------------------------------------------------
+# Found via Search Console -> Indicizzazione -> Pagine -> "Pagina
+# scansionata, ma attualmente non indicizzata" drilldown export on
+# 2026-08-12. Unlike every other block above (all discovered from
+# recent, 2026-08 crawl dates), these 4 were last crawled by Google
+# between 2026-02-12 and 2026-04-07 -- old enough that they predate
+# essentially all the redirect work in this file. Confirmed live on
+# 2026-08-12 that the apex targets 404 with no rule in place. The other
+# 6 URLs in that same drilldown export (query-string legacy variants
+# like /contatti?l=it, /dove-siamo?l=it, /home?l=it, and /it/contatti)
+# already resolve correctly through existing rules above and needed no
+# new entry.
+/sauna /sauna-bagno-turco-privato-livigno 301
+/en/sauna /sauna-bagno-turco-privato-livigno 301
+/it/photogallery /it 301
+/it/dove-siamo /it#posizione 301
