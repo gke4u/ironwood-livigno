@@ -1,25 +1,23 @@
 # ironwood-forms
 
-Backend del form di richiesta disponibilità di Ironwood Livigno. Cloudflare Worker + D1 + Email Service — nessun VPS, nessun Docker, nessun secret da gestire. Sostituisce la precedente integrazione diretta con Web3Forms.
+Backend del form di richiesta disponibilità di Ironwood Livigno. Cloudflare Worker + D1 + invio via SMTP diretto a mailbox.org — nessun VPS, nessun Docker, nessun servizio email di terze parti. Sostituisce la precedente integrazione diretta con Web3Forms.
 
 Deployato su `forms.ironwoodlivigno.com`, separato dal Worker del sito principale (`ironwood-livigno`) così un problema nell'uno non tocca l'altro.
 
-## Passaggio che manca — da fare tu, una volta sola
+## Perché SMTP diretto e non il binding email di Cloudflare
 
-Il binding email (`env.EMAIL`) può inviare solo a un indirizzo del dominio già **onboardato per Email Sending** su Cloudflare — oggi non lo è ancora, quindi la notifica interna non parte finché non lo fai (i dati della richiesta vengono comunque salvati regolarmente in D1, questo passaggio riguarda solo l'email di avviso).
+Il binding nativo `send_email` di Cloudflare può inviare solo a indirizzi verificati tramite **Email Routing**, che richiede Email Routing attivo sul dominio — cioè sostituire i record MX. `ironwoodlivigno.com` ha già 4 record MX attivi su **mailbox.org**, la casella reale e funzionante di `info@ironwoodlivigno.com`: attivare Email Routing li avrebbe rotti. Scartata anche l'idea di un servizio email transazionale di terze parti (Resend/Postmark/ecc.) su richiesta esplicita dell'utente, per non introdurre un nuovo attore esterno.
 
-1. Vai su [dash.cloudflare.com](https://dash.cloudflare.com) → il tuo account → **Compute** → **Email Service** → **Email Sending**.
-2. **Onboard Domain** → seleziona `ironwoodlivigno.com`.
-3. Rivedi i record DNS che Cloudflare propone di aggiungere (MX di bounce su `cf-bounce`, SPF, DKIM, DMARC su `_dmarc`) → **Done**. Sono aggiunti in automatico, non serve toccare nulla a mano.
-4. Aspetta la propagazione (di solito 5-15 minuti, dominio già su Cloudflare DNS).
+La soluzione: il Worker si collega direttamente al server SMTP di mailbox.org (`smtp.mailbox.org:587`, STARTTLS) usando l'API `connect()` di Cloudflare Workers (`cloudflare:sockets` — la porta 587 non è bloccata, solo la 25 lo è). Client SMTP scritto a mano in `src/smtp.ts` (niente libreria: l'ecosistema npm per SMTP assume moduli Node `net`/`tls` non disponibili in Workers).
 
-Fatto questo, le notifiche partiranno da sole — nessuna modifica di codice necessaria.
+**Nota sulle credenziali**: l'account mailbox.org usato per l'autenticazione SMTP è `info@guanafoto.com` (non `info@ironwoodlivigno.com`) — `info@ironwoodlivigno.com` è un alias sullo stesso account. mailbox.org richiede l'autenticazione con l'indirizzo principale dell'account anche quando si invia "come" un alias. Vedi `SMTP_USER` in `src/index.ts` se l'account cambia in futuro.
 
 ## Struttura
 
 ```
-wrangler.jsonc   # binding D1/send_email/ratelimit, custom domain, cron retention
+wrangler.jsonc   # binding D1/ratelimit, custom domain, cron retention (niente send_email)
 schema.sql       # tabella submissions
+src/smtp.ts      # client SMTP minimale (EHLO/STARTTLS/AUTH LOGIN/MAIL FROM/RCPT TO/DATA)
 src/index.ts     # handler fetch (submit) + scheduled (retention mensile)
 ```
 
@@ -30,6 +28,14 @@ npm install                # una tantum
 npm run deploy              # wrangler deploy
 npm run db:schema           # riapplica schema.sql al DB remoto (idempotente solo se le tabelle non esistono già)
 ```
+
+## Secret
+
+```bash
+npx wrangler secret put SMTP_PASSWORD
+```
+
+Password dell'account mailbox.org `info@guanafoto.com` usato per l'autenticazione SMTP. Se cambia, va aggiornata con lo stesso comando (richiede conferma interattiva, non si può scriptare senza incollarla) — non è mai nel codice né nel repo.
 
 ## Verificare le richieste ricevute
 
@@ -61,4 +67,6 @@ Cron mensile (`scheduled()` in `src/index.ts`, trigger `0 3 1 * *` in `wrangler.
 
 ## Perché non Formlander, e perché niente autorisponditore al cliente
 
-Vedi il commento in testa a `src/index.ts` e la cronologia della conversazione che ha portato a questa architettura: Formlander (self-hosted) richiede un filesystem persistente reale che Cloudflare Containers non garantisce (disco effimero), rischio concreto di perdita dati. Il binding email nativo di Cloudflare può inviare solo a indirizzi verificati sull'account (adatto a notifiche interne, non a rispondere in automatico a indirizzi arbitrari di ospiti) — l'autorisposta al cliente non è quindi possibile restando 100% Cloudflare-nativi; il sito mostra già una conferma a schermo dopo l'invio, che copre la stessa esigenza senza dipendenze esterne.
+Formlander (self-hosted, la richiesta iniziale) richiede un filesystem persistente reale che Cloudflare Containers non garantisce (disco effimero), rischio concreto di perdita dati — scartato.
+
+L'autorisposta automatica al cliente (email di conferma ricezione, richiesta nel brief iniziale) non è implementata: il client SMTP qui parla solo con mailbox.org per la notifica interna a `info@ironwoodlivigno.com`, non è pensato per inviare a indirizzi arbitrari di ospiti con la stessa affidabilità di un servizio email dedicato (reputazione IP, gestione bounce, retry). Il sito mostra già una conferma a schermo dopo l'invio, che copre la stessa esigenza UX. Se in futuro si vuole comunque l'autorisposta, è un'aggiunta isolata (richiederebbe probabilmente tornare a valutare un servizio email dedicato solo per quello, mantenendo la notifica interna via SMTP com'è).

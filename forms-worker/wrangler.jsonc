@@ -24,16 +24,13 @@
     }
   ],
 
-  // Sends the internal notification to info@ironwoodlivigno.com only — see
-  // README.md for why a guest-facing autoresponder isn't possible with this
-  // binding (Cloudflare Email Service can only send to verified addresses on
-  // the account, not to arbitrary third-party recipients).
-  "send_email": [
-    {
-      "name": "EMAIL",
-      "destination_address": "info@ironwoodlivigno.com"
-    }
-  ],
+  // No send_email binding: ironwoodlivigno.com's MX records already point
+  // to mailbox.org (the real, working inbox) and Cloudflare's Email
+  // Service can only deliver to destination addresses verified through
+  // Email Routing — which requires Email Routing enabled on the domain,
+  // i.e. replacing those MX records. Not an option. The notification is
+  // sent over SMTP directly to mailbox.org instead (see src/smtp.ts),
+  // authenticated with the SMTP_PASSWORD secret (`wrangler secret put`).
 
   // 5 requests / 60s per IP (CF-Connecting-IP). Cloudflare's `simple` rate
   // limiter only supports a 10s or 60s window, so this is the tightest

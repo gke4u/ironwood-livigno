@@ -2,27 +2,44 @@
 //
 // Replaces Web3Forms (a third-party SaaS the site used to POST directly to)
 // with a small Cloudflare-native service the site owner fully controls: D1
-// for durable storage, the native send_email binding for the internal
-// notification, and the native ratelimit binding for abuse protection.
+// for durable storage, and the ratelimit binding for abuse protection.
 // Deliberately NOT Formlander (the self-hosted project originally
 // requested) — Formlander needs a real persistent filesystem for its
 // SQLite file, which Cloudflare Containers cannot give it (container disk
-// is ephemeral there); this rebuilds the same outcome — self-owned data,
-// no third-party SaaS, ready for a future booking-system webhook — on
-// primitives that are actually durable on this platform.
+// is ephemeral there).
 //
-// No secrets anywhere: D1/send_email/ratelimit are Worker bindings,
-// authenticated implicitly by the deployment itself. Unlike the old
-// Web3Forms integration, there is no access key sitting in client-side JS.
+// The notification email is sent over SMTP directly to the site owner's
+// existing mailbox.org mailbox (see smtp.ts) — NOT Cloudflare's own
+// send_email binding. That binding can only deliver to destination
+// addresses "verified" through Email Routing, which requires Email Routing
+// to be enabled on the domain — and ironwoodlivigno.com's MX records
+// already point to mailbox.org for the real, working inbox. Enabling
+// Email Routing would mean replacing those MX records, breaking live
+// mail delivery. Reusing the existing mailbox.org SMTP credentials avoids
+// that entirely and introduces no third-party email service.
+//
+// Only SMTP_PASSWORD is a secret (`wrangler secret put`, encrypted, never
+// in this repo). D1/ratelimit need no secrets at all — bindings,
+// authenticated implicitly by the deployment itself.
+
+import { sendMail } from './smtp';
 
 export interface Env {
   DB: D1Database;
-  EMAIL: SendEmail;
   FORM_RATE_LIMITER: RateLimit;
+  SMTP_PASSWORD: string;
 }
 
 const ALLOWED_ORIGIN = 'https://ironwoodlivigno.com';
 const NOTIFY_TO = 'info@ironwoodlivigno.com';
+const SMTP_HOST = 'smtp.mailbox.org';
+const SMTP_PORT = 587;
+// The mailbox.org account login is a different address (guanafoto.com)
+// than the ironwoodlivigno.com alias that actually receives the
+// notification — mailbox.org (like most providers with multiple aliases
+// under one account) requires SMTP AUTH with the primary account address,
+// not the alias, even though the mail is sent/received as the alias.
+const SMTP_USER = 'info@guanafoto.com';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const MAX_MESSAGE_LEN = 2000;
@@ -99,24 +116,16 @@ async function sendNotification(env: Env, data: Submission, country: string) {
     data.message ? `Messaggio: ${data.message}` : null
   ].filter(Boolean);
 
-  // Built as a raw MIME message rather than the createMimeMessage() helper
-  // shown in Cloudflare's docs, to avoid pulling in the extra
-  // `mimetext` dependency for what is a single plain-text email.
-  const raw = [
-    `From: Ironwood Livigno <${NOTIFY_TO}>`,
-    `To: ${NOTIFY_TO}`,
-    `Reply-To: ${data.email}`,
-    `Subject: Richiesta disponibilità — Ironwood Livigno`,
-    'MIME-Version: 1.0',
-    `Content-Type: text/plain; charset="UTF-8"`,
-    'Content-Transfer-Encoding: 7bit',
-    '',
-    lines.join('\n')
-  ].join('\r\n');
-
-  const { EmailMessage } = await import('cloudflare:email');
-  const message = new EmailMessage(NOTIFY_TO, NOTIFY_TO, raw);
-  await env.EMAIL.send(message);
+  await sendMail(
+    { host: SMTP_HOST, port: SMTP_PORT, user: SMTP_USER, password: env.SMTP_PASSWORD },
+    {
+      from: NOTIFY_TO,
+      to: NOTIFY_TO,
+      replyTo: data.email,
+      subject: 'Richiesta disponibilità — Ironwood Livigno',
+      text: lines.join('\n')
+    }
+  );
 }
 
 export default {
