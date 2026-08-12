@@ -209,6 +209,47 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       breadcrumbName: 'Hiver à Livigno',
       navLabel: 'Hiver',
       relatedLinkLabel: 'Lisez le guide complet du domaine skiable Carosello 3000'
+    },
+    da: {
+      title: 'Vinter i Livigno: skiløb, privat sauna og komfort tæt på pisterne',
+      metaTitle: 'Vinterferie i Livigno | Lejlighed med sauna 100 m fra liftene',
+      metaDescription: 'Privat infrarød sauna og dampbad 100 m fra Carosello 3000: oplev vinteren i Livigno hos Ironwood.',
+      eyebrow: 'Vinter i Livigno',
+      intro:
+        'Livigno har en af de længste skisæsoner i de italienske Alper: pisterne er åbne fra slutningen af november til begyndelsen af maj, skiområdet når over 3.000 meter, og efter dagens sidste tur venter den sjældne komfort ved en privat sauna.',
+      sections: [
+        {
+          heading: 'Skiområdet: Carosello 3000 og Mottolino',
+          body: [
+            'Livigno strækker sig over to hovedsider. Carosello 3000, det største af de to områder, har pister til alle niveauer og udsigter, der når over 3.000 meters højde. Mottolino er det oplagte valg for freeride og mere teknisk terræn, og bliver om sommeren til byens bikepark. Sammen dækker de to områder alt fra familier med begyndere til erfarne skiløbere.',
+            'Livigno er også kendt for langrend: nogle af sporene løber gennem selve byen og dalen — en roligere aktivitet at veksle med dage på nedfartspisterne, god for familier med børn eller for alle, der bare vil have en pause.'
+          ]
+        },
+        {
+          heading: 'En længere sæson end de fleste',
+          body: [
+            'Vintersæsonen i Livigno varer typisk fra slutningen af november til begyndelsen af maj — længere end mange andre italienske alpebyer. Det betyder, du kan stå på ski helt i starten eller slutningen af sæsonen, når liftene andre steder allerede er lukket — ofte med mindre trængsel på pisterne og lavere priser uden for højsæsonen (jul, nytår, februar).'
+          ]
+        },
+        {
+          heading: 'Fordelen ved at bo 100 meter fra pisterne',
+          body: [
+            'Ironwood Livigno ligger kun 100 meter til fods fra skiliftene og 50 meter fra skiskole og udstyrsudlejning: du kan stå på ski hele formiddagen uden at flytte bilen, komme hjem til frokost hvis du vil, og være tilbage på pisten om eftermiddagen uden at spilde tid på transport.',
+            'Men det er efter dagens sidste tur, at forskellen for alvor mærkes. I lejligheden er den infrarøde sauna og dampbadet privat — aldrig delt med andre gæster, i modsætning til et hotelspa. Det er da, musklerne rigtig varmes op, endnu inden du tænker på aftensmaden, ved stuens elektriske pejs.',
+            'Lejligheden har desuden et eget opbevaringsrum til ski, støvler og udstyr, så du ikke behøver bære alt ind hver aften, plus en gratis parkeringsplads for dem, der ankommer i bil.'
+          ]
+        }
+      ],
+      highlights: [
+        '100 m fra skiliftene, 50 m fra skiskole og udlejning',
+        'Privat infrarød sauna og dampbad, aldrig delt',
+        'Eget opbevaringsrum til ski og støvler',
+        '3 soveværelser og 2 badeværelser til familier og grupper på op til 6 personer'
+      ],
+      ctaText: 'Tjek ledighed for din vinter i Livigno',
+      breadcrumbName: 'Vinter i Livigno',
+      navLabel: 'Vinter',
+      relatedLinkLabel: 'Læs den fulde guide til skiområdet Carosello 3000'
     }
   },
   estate: {
