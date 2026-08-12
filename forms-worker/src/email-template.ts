@@ -63,7 +63,9 @@ function buildReplyMailto(data: Submission, nights: number | null): string {
     extras ? `EXTRA:     ${extras}` : null,
     data.message ? '' : null,
     data.message ? 'NOTA DEL CLIENTE:' : null,
-    data.message ? `"${data.message}"` : null
+    data.message ? `"${data.message}"` : null,
+    '',
+    `Foto dell'appartamento: ${PHOTOS_URL}`
   ]
     .filter((l) => l !== null)
     .join('\n');

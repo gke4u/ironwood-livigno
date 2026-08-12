@@ -2,14 +2,20 @@
 // Workers AI (env.AI binding) — same Cloudflare account as everything else
 // in this Worker, no third-party translation API/key.
 //
-// Uses a general chat model (llama-3.1-8b-instruct) with a translation
-// prompt rather than the dedicated m2m100 translation model: m2m100 is a
-// small, lightly-provisioned model that returned "Capacity temporarily
-// exceeded" on every attempt when this was first tested (verified
-// directly against the API, not a fluke — three retries, same error).
-// Llama is Cloudflare's most heavily provisioned model and translates
-// perfectly well with a direct instruction, so it's simply more reliably
-// available for something a real guest is waiting on an answer to.
+// Uses a general chat model (GLM-4.7-flash) with a translation prompt
+// rather than the dedicated m2m100 translation model: m2m100 is a small,
+// lightly-provisioned model that returned "Capacity temporarily exceeded"
+// on every attempt when this was first tested (verified directly against
+// the API, not a fluke — three retries, same error). An earlier attempt
+// with @cf/meta/llama-3.1-8b-instruct also failed — that specific model
+// was deprecated 2026-05-30; GLM-4.7-flash is Cloudflare's own recommended
+// replacement for multilingual tasks and was verified working directly
+// against the API before wiring it in here.
+//
+// GLM-4.7-flash is a reasoning model: its response includes a long
+// `reasoning`/`reasoning_content` field (visible chain-of-thought) plus
+// `choices[0].message.content` (the actual answer) — only the latter is
+// used here.
 //
 // Source language is taken from the site locale the guest was browsing
 // (already captured as `data.locale`) rather than running language
@@ -63,7 +69,7 @@ export async function translateMessageToItalian(ai: Ai, message: string, locale:
   if (!languageName) return null; // unrecognized locale — skip rather than guess
 
   try {
-    const result = (await ai.run('@cf/meta/llama-3.1-8b-instruct', {
+    const result = (await ai.run('@cf/zai-org/glm-4.7-flash', {
       messages: [
         {
           role: 'system',
@@ -71,12 +77,13 @@ export async function translateMessageToItalian(ai: Ai, message: string, locale:
         },
         { role: 'user', content: message }
       ]
-    })) as { response?: string };
+    })) as { choices?: { message?: { content?: string } }[] };
 
-    const translatedText = result?.response?.trim();
+    const translatedText = result?.choices?.[0]?.message?.content?.trim();
     if (!translatedText) return null;
     return { translatedText, sourceLanguageLabel: localeDisplayName(locale) };
-  } catch {
+  } catch (err) {
+    console.error('translation call threw', err);
     // Translation is a nice-to-have on top of the notification, not a
     // reason to fail the whole submission — the original text is always
     // shown regardless, so nothing is lost if this errors.
