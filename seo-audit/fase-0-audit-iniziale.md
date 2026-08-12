@@ -41,11 +41,42 @@ Error: ENOENT: no such file or directory, open '...\public\sitemap.xml'
 ```
 Ho verificato manualmente la reciprocità hreflang contro `out/sitemap.xml` (generato da una build fresca): **tutto corretto**, ma lo script di controllo automatico è rotto e va aggiornato per puntare a `out/sitemap.xml` post-build (o essere eseguito dopo `npm run build`). Fix semplice, da includere in Fase 1.
 
-## 6. Indicizzazione Google — serve il tuo aiuto
+## 6. Indicizzazione Google — dati reali da Search Console
 
-Non ho accesso diretto al tuo account Search Console. La ricerca `site:ironwoodlivigno.com` via strumento di ricerca generico non ha restituito risultati attendibili (probabilmente perché non supporta l'operatore `site:` in modo affidabile, non perché il sito non sia indicizzato). Per completare questo punto della Fase 0 mi servirebbe che tu condivida (screenshot o copia-incolla):
-- Search Console → **Copertura/Indicizzazione delle pagine**: quante pagine indicizzate vs escluse, e i motivi di esclusione se presenti.
-- Search Console → **Esperienza → Core Web Vitals**: stato mobile/desktop (URL "Good"/"Need improvement"/"Poor").
+Export "Copertura" fornito dall'utente (`ironwoodlivigno.com-Coverage-2026-08-12.zip`), dati aggiornati al 2026-08-07.
+
+**Trend indicizzazione** (da `Grafico.csv`):
+
+| Data | Non indicizzate | Indicizzate |
+|---|---|---|
+| 2026-05-15 | 48 | 14 |
+| 2026-06-30 | 39 | 15 |
+| 2026-07-01 | 166 | 99 |
+| 2026-07-11 | 162 | 123 |
+| 2026-08-07 | **199** | **142** |
+
+Crescita reale e continua delle pagine indicizzate (14 → 142 in meno di 3 mesi), con un salto netto l'11 luglio accompagnato da un'impennata di impressioni giornaliere (da ~10-30 a 60-172/giorno) — coerente con l'espansione recente di contenuti (blog, traduzioni, pagine satellite). Buon segnale di trazione organica in corso.
+
+**Pagine non indicizzate (199 totali) — breakdown per motivo** (da `Problemi critici.csv`, somma = 199, coerente col grafico):
+
+| Motivo | Pagine | Sorgente | Stato convalida | Gravità |
+|---|---|---|---|---|
+| **Non trovata (404)** | **41** | Sito web | **Non riuscita** ⚠️ | **Alta — fix già tentato e fallito secondo Google** |
+| Pagina alternativa con tag canonical appropriato | 82 | Sito web | Non iniziata | Bassa — normalmente non è un errore (duplicati/varianti che puntano correttamente a un canonical) |
+| Esclusa per tag "noindex" | 10 | Sito web | Non iniziata | Da verificare — intenzionale? |
+| Pagina con reindirizzamento | 40 | Sito web | Iniziata | Bassa — atteso, coerente con le ~80 regole in `_redirects` |
+| Pagina scansionata ma non indicizzata | 18 | Google | Non iniziata | Media — possibile segnale di contenuto sottile/duplicato |
+| Pagina duplicata, canonical scelto da Google diverso da quello dichiarato | 6 | Google | Non iniziata | Media — Google non si fida del canonical dichiarato su queste pagine |
+| Errore del server (5xx) | 1 | Sito web | Non iniziata | Media — singola pagina, da identificare |
+| Bloccata per accesso non autorizzato (403) | 1 | Sito web | Iniziata | Media — singola pagina, da identificare |
+
+`Problemi non critici.csv` è vuoto — nessun problema non critico segnalato.
+
+**Il finding più urgente**: i **41 errori 404** hanno stato di convalida **"Non riuscita"** — significa che in passato è già stato inviato un fix a Google ("Convalida la correzione" in Search Console) ma alla riverifica le pagine risultavano ancora 404. Considerando che `public/_redirects` copre già ~80 URL legacy con successo, questi 41 sono probabilmente URL scoperti *dopo* l'ultima validazione, oppure casi non coperti dalle regole attuali. **Serve l'elenco esatto degli URL** (Search Console → Indicizzazione → Pagine → clic su "Non trovata (404)" → tabella esportabile) per poterli mappare uno a uno in Fase 1, con lo stesso approccio chirurgico già usato per il resto del file.
+
+Anche i **6 casi di canonical non rispettato da Google** meritano l'elenco URL: possono indicare un problema reale di contenuti troppo simili tra loro (es. tra pagine satellite e sezioni della homepage, un rischio già segnalato al punto 1).
+
+**Core Web Vitals**: questo export è solo "Copertura/Indicizzazione", non contiene i dati di Segnali web essenziali. Serve un secondo export da Search Console → Esperienza → Segnali web essenziali (mobile + desktop), oppure il via libera a ritentare PageSpeed Insights.
 
 ## 7. Core Web Vitals (PageSpeed Insights)
 
@@ -57,15 +88,20 @@ Ho provato a interrogare l'API pubblica di PageSpeed Insights su `/it`, `/invern
 
 | Priorità | Finding | Fase di intervento |
 |---|---|---|
+| Alta | 41 pagine 404 in Search Console con convalida "Non riuscita" — serve elenco URL per fix mirato | Fase 1 |
 | Alta | Pagine satellite (9, priorità 0.8) non linkate da Nav/Footer della homepage in nessuna lingua | Fase 1 / Fase 3 |
 | Alta | Script `check-hreflang-reciprocity.mjs` rotto (punta a file inesistente) | Fase 1 |
+| Media | 6 pagine dove Google sceglie un canonical diverso da quello dichiarato | Fase 1 |
+| Media | 18 pagine scansionate ma non indicizzate (possibile segnale di contenuto sottile) | Fase 1 / Fase 3 |
 | Media | Pagine satellite solo in italiano nonostante mercati target multilingua | Fase 2 / Fase 5 |
-| Media | Core Web Vitals non ancora misurati in questa sessione (serve Search Console o retry PSI) | Fase 9 |
+| Media | Core Web Vitals non ancora misurati (serve secondo export Search Console o retry PSI) | Fase 9 |
 | Bassa | `CF_ANALYTICS_TOKEN` in `src/app/[locale]/layout.tsx` è ancora il placeholder — nessun analytics attivo | Fase 11 |
+| Bassa | 1 pagina in errore 5xx, 1 pagina bloccata 403 — da identificare | Fase 1 |
 | — | hreflang: **nessun problema**, tutto reciproco | — |
 | — | Redirect: **nessuna catena**, mapping legacy già curato con dati reali Search Console | — |
 | — | robots.txt / llms.txt: **già ben configurati**, buona base per GEO | — |
 | — | Build: **pulita**, 97/97 pagine generate senza errori | — |
+| — | Indicizzazione in crescita reale: 14→142 pagine indicizzate e impressioni in salita da maggio ad oggi | — |
 
 ## Cosa mi serve da te per chiudere la Fase 0
 
