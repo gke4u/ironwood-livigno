@@ -12,6 +12,7 @@ import type { Submission } from './index';
 import { localeDisplayName, type Translation } from './translate';
 import { replyLabelsFor } from './reply-labels';
 import type { Draft } from './draft';
+import { buildQuickReplies } from './quick-replies';
 
 const FONT_DISPLAY = "Georgia,'Times New Roman',serif";
 const FONT_BODY = "-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
@@ -127,6 +128,7 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
     .join('');
 
   const replyHref = buildReplyMailto(data, nights);
+  const quickReplies = buildQuickReplies(data, nights);
 
   return `<!doctype html>
 <html lang="it">
@@ -275,6 +277,43 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
                 </div>
                 <p style="margin:2px 0 0;font-family:${FONT_BODY};font-size:12px;color:#241C15;opacity:0.45;">La risposta parte già con la richiesta di ${firstName} in citazione.</p>
                 <p style="margin:10px 0 0;"><a href="https://www.kimi.com/" target="_blank" rel="noopener noreferrer" style="font-family:${FONT_BODY};font-size:13px;font-weight:600;color:#A8462F;text-decoration:none;">✍️ Genera bozza di risposta con l'AI →</a></p>
+              </td>
+            </tr>
+
+            <!-- Quick replies: three pre-written, one-click templates for
+                 the most common scenarios — no AI call, so no wait. Each
+                 opens the mail client with the reply already written in
+                 the GUEST's own language (data.locale) and a clearly
+                 marked placeholder for price/notes to fill in before
+                 sending. Since the guest-language text isn't something
+                 the owner can necessarily read, the Italian master text
+                 (not a translation — it's what the other 11 versions were
+                 translated FROM) is always shown right below each button,
+                 so it's always clear what a click is about to send. -->
+            <tr>
+              <td style="padding:0 36px 36px;">
+                <p style="margin:0 0 10px;font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#241C15;opacity:0.45;">⚡ Risposte rapide</p>
+                <div>
+                  ${quickReplies
+                    .map(
+                      (qr) =>
+                        `<a href="${escapeHtml(qr.mailtoHref)}" style="display:inline-block;color:#241C15;text-decoration:none;font-family:${FONT_BODY};font-size:14px;font-weight:600;padding:10px 18px;background-color:#F7F3EC;border:1px solid #EFE6D8;border-radius:999px;margin:0 8px 8px 0;">${qr.label}</a>`
+                    )
+                    .join('')}
+                </div>
+                ${quickReplies
+                  .map(
+                    (qr) => `
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F3EC;border-radius:14px;margin-top:8px;">
+                  <tr>
+                    <td style="padding:12px 16px;">
+                      <p style="margin:0 0 4px;font-family:${FONT_BODY};font-size:11px;font-weight:700;color:#241C15;opacity:0.5;text-transform:uppercase;letter-spacing:0.05em;">${qr.label}</p>
+                      <p style="margin:0;font-family:${FONT_BODY};font-size:13px;color:#241C15;opacity:0.75;line-height:1.5;">${escapeHtml(qr.italianPreview).replace(/\n/g, '<br>')}</p>
+                    </td>
+                  </tr>
+                </table>`
+                  )
+                  .join('')}
               </td>
             </tr>
 
