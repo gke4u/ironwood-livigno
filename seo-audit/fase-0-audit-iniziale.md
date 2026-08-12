@@ -190,9 +190,9 @@ Build e check hreflang rieseguiti dopo le modifiche: puliti.
 
 ## 7. Core Web Vitals (PageSpeed Insights)
 
-Ho provato a interrogare l'API pubblica di PageSpeed Insights su `/it`, `/inverno`, `/camere-appartamento-livigno` (mobile) ma sono stato rate-limitato (HTTP 429) dopo pochi tentativi — l'API pubblica senza chiave ha una quota condivisa molto bassa. Due strade, a tua scelta:
-1. Ti fornisco il report Search Console Core Web Vitals (punto 6) come dato reale sugli utenti (più affidabile dei dati lab di PSI).
-2. Riprovo PageSpeed Insights più avanti con richieste distanziate nel tempo, oppure se hai una API key Google (gratuita) la uso per bypassare il rate limit.
+Ho provato a interrogare l'API pubblica di PageSpeed Insights su `/it`, `/inverno`, `/camere-appartamento-livigno` (mobile) ma sono stato rate-limitato (HTTP 429, quota giornaliera esaurita) — l'API pubblica senza chiave ha una quota condivisa molto bassa. Tentata anche la via manuale: link a `pagespeed.web.dev/analysis/...it` condiviso dall'utente, ma i risultati Lighthouse sono renderizzati via JavaScript lato client e il fetch statico non li vede — riesce solo a leggere che **il Chrome UX Report non ha dati reali sufficienti per `/it`** (traffico ancora troppo basso perché Google raccolga dati "field", coerente col volume di impressioni ancora modesto documentato al punto 6).
+
+**Deciso con l'utente di rimandare**: né API key né Search Console CWV export forniti per ora. Da riprendere quando disponibile uno dei due, o uno screenshot dei risultati pagespeed.web.dev.
 
 ## Riepilogo priorità emerse dalla Fase 0
 
