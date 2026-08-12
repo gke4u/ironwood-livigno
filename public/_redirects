@@ -251,3 +251,12 @@
 /de/prenota /de#prenota 301
 /de/dove-siamo /de#posizione 301
 /de/prova /de 301
+
+# Same pattern, found via the "Bloccata a causa di un accesso non
+# autorizzato (403)" drilldown export on 2026-08-12: scanned by Google
+# at www on 2026-06-15, well before the www->apex redirect existed.
+# Live check on 2026-08-12: www->apex now redirects cleanly (301, 1
+# hop) but the apex target had no rule and fell through to 404 (which
+# Google's crawler had evidently seen as 403 at the time, on whatever
+# infra existed mid-June).
+/cs/prenota /cs#prenota 301

@@ -152,7 +152,13 @@ Nessun 5xx riprodotto. Diagnosi: probabile blip transitorio del 30 luglio (deplo
 
 Unica osservazione non urgente: la catena è a 2 hop (HTTP→HTTPS, poi www→apex) invece di 1, perché sono due redirect di zona Cloudflare distinti. Accorciarla a un solo hop richiederebbe una configurazione lato dashboard Cloudflare (una singola Redirect Rule che normalizza schema e host insieme) — fuori dalla portata del codice in questo repo, e comunque non un problema segnalato altrove nell'audit.
 
-**403 non identificato**: l'export per "Bloccata per accesso non autorizzato (403)" non è ancora stato fornito — stesso procedimento delle altre drilldown (Search Console → Indicizzazione → Pagine → click sulla riga "403" → esporta) quando vuoi che lo analizzi.
+### 6quinquies. L'unica pagina bloccata 403 (drilldown Search Console, Fase 1)
+
+Export "Bloccata a causa di un accesso non autorizzato (403)" (`ironwoodlivigno.com-Coverage-Drilldown-2026-08-12 (5).zip`), 1 URL: `https://www.ironwoodlivigno.com/cs/prenota`, ultima scansione **2026-06-15** — stesso pattern stale già visto per Gruppo C, 5xx e 5 dei 6 casi di canonical.
+
+Verificato live: `www.ironwoodlivigno.com/cs/prenota` → 301 pulito verso l'apex (1 hop), ma l'apex `/cs/prenota` non aveva nessuna regola in `_redirects` e cadeva su un 404 nudo (probabile causa del 403 osservato da Google a metà giugno su un'infrastruttura diversa da quella attuale). Aggiunta la regola mancante `/cs/prenota → /cs#prenota`, stessa convenzione di `/en/prenota` e `/de/prenota` già chiuse nel punto 6ter. Build e check hreflang rieseguiti dopo la modifica: puliti.
+
+**Tutti i finding "Alta" e "Media/Bassa" con dato reale disponibile della Fase 0 sono ora chiusi.** Resta aperto solo il punto Media "18 pagine scansionate ma non indicizzate" — serve il relativo export se si vuole procedere.
 
 ## 7. Core Web Vitals (PageSpeed Insights)
 
@@ -173,7 +179,7 @@ Ho provato a interrogare l'API pubblica di PageSpeed Insights su `/it`, `/invern
 | Media | Core Web Vitals non ancora misurati (serve secondo export Search Console o retry PSI) | Fase 9 |
 | Bassa | `CF_ANALYTICS_TOKEN` in `src/app/[locale]/layout.tsx` è ancora il placeholder — nessun analytics attivo | Fase 11 |
 | Bassa | ~~1 pagina in errore 5xx~~ — verificato live, dato stale del 30/07, oggi risolve pulito (200) | ✅ Fase 1 |
-| Bassa | 1 pagina bloccata 403 — elenco URL non ancora fornito | Fase 1 |
+| Bassa | ~~1 pagina bloccata 403~~ — `/cs/prenota`, stesso pattern www stale, regola redirect aggiunta | ✅ Fase 1 |
 | — | hreflang: **nessun problema**, tutto reciproco | — |
 | — | Redirect: **nessuna catena**, mapping legacy già curato con dati reali Search Console | — |
 | — | robots.txt / llms.txt: **già ben configurati**, buona base per GEO | — |
