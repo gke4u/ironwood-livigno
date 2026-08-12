@@ -121,9 +121,10 @@ async function sendNotification(env: Env, data: Submission, country: string, id:
     { host: SMTP_HOST, port: SMTP_PORT, user: SMTP_USER, password: env.SMTP_PASSWORD },
     {
       from: NOTIFY_TO,
+      fromName: data.name || 'Ironwood Livigno',
       to: NOTIFY_TO,
       replyTo: data.email,
-      subject: 'Richiesta disponibilità — Ironwood Livigno',
+      subject: `${data.name} — richiesta disponibilità Ironwood Livigno`,
       text: lines.join('\n'),
       html: buildNotificationHtml(data, id, country)
     }

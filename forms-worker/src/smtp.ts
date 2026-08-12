@@ -21,6 +21,7 @@ export type SmtpConfig = {
 
 export type SmtpMessage = {
   from: string;
+  fromName?: string; // display name on the From header — defaults to "Ironwood Livigno"
   to: string;
   replyTo?: string;
   subject: string;
@@ -123,7 +124,7 @@ export async function sendMail(config: SmtpConfig, message: SmtpMessage): Promis
     await readResponse(secureReader, secureState); // 354 start mail input
 
     const commonHeaders = [
-      `From: Ironwood Livigno <${message.from}>`,
+      `From: "${(message.fromName ?? 'Ironwood Livigno').replace(/"/g, "'")}" <${message.from}>`,
       `To: ${message.to}`,
       message.replyTo ? `Reply-To: ${message.replyTo}` : null,
       `Subject: ${message.subject}`,

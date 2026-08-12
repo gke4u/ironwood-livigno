@@ -4,8 +4,14 @@
 // (flexbox/grid), so inline styles on tables/cells is still the only
 // approach that renders consistently everywhere. Colors match the site's
 // own palette (tailwind.config.ts: brick #A8462F, ink #241C15, gold
-// #C9A059, cream #EFE6D8, mist #F7F3EC).
+// #C9A059, cream #EFE6D8, mist #F7F3EC); fonts fall back to the same
+// stacks the site's Fraunces/Poppins declare for when the real webfonts
+// aren't available (globals.css) — Georgia/serif for display, system-ui
+// sans-serif for body — since email clients don't load @font-face reliably.
 import type { Submission } from './index';
+
+const FONT_DISPLAY = "Georgia,'Times New Roman',serif";
+const FONT_BODY = "-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
 
 function escapeHtml(value: string): string {
   return value
@@ -15,16 +21,52 @@ function escapeHtml(value: string): string {
     .replace(/"/g, '&quot;');
 }
 
+function nightsBetween(checkinIso: string, checkoutIso: string): number | null {
+  const a = new Date(`${checkinIso}T00:00:00Z`).getTime();
+  const b = new Date(`${checkoutIso}T00:00:00Z`).getTime();
+  if (Number.isNaN(a) || Number.isNaN(b)) return null;
+  return Math.round((b - a) / 86_400_000);
+}
+
 function row(label: string, value: string): string {
   return `
     <tr>
-      <td style="padding:10px 0;border-bottom:1px solid #EFE6D8;font-size:13px;color:#241C15;opacity:0.55;text-transform:uppercase;letter-spacing:0.06em;width:140px;vertical-align:top;">${escapeHtml(label)}</td>
-      <td style="padding:10px 0;border-bottom:1px solid #EFE6D8;font-size:15px;color:#241C15;vertical-align:top;">${value}</td>
+      <td style="padding:11px 0;border-bottom:1px solid #EFE6D8;font-family:${FONT_BODY};font-size:12px;color:#241C15;opacity:0.5;text-transform:uppercase;letter-spacing:0.07em;width:130px;vertical-align:top;">${escapeHtml(label)}</td>
+      <td style="padding:11px 0;border-bottom:1px solid #EFE6D8;font-family:${FONT_BODY};font-size:15px;color:#241C15;vertical-align:top;">${value}</td>
     </tr>`;
+}
+
+// Pre-fills the reply with the guest's own request quoted underneath, so
+// Francesco can start typing straight away without switching back to this
+// email to check dates/message — cursor lands on the two blank lines above
+// the quote.
+function buildReplyMailto(data: Submission, nights: number | null): string {
+  const firstName = data.name.trim().split(/\s+/)[0] || data.name;
+  const extras = [data.extra_breakfast ? 'Colazione' : null, data.extra_ebike ? 'Noleggio e-bike' : null].filter(Boolean).join(' + ');
+  const quoteLines = [
+    `Ciao ${firstName},`,
+    '',
+    '',
+    '',
+    '-- La tua richiesta --',
+    `Check-in: ${data.checkin}`,
+    `Check-out: ${data.checkout}${nights ? ` (${nights} ${nights === 1 ? 'notte' : 'notti'})` : ''}`,
+    `Ospiti: ${data.guests}`,
+    extras ? `Extra: ${extras}` : null,
+    data.message ? `Messaggio: ${data.message}` : null
+  ]
+    .filter((l) => l !== null)
+    .join('\n');
+
+  const subject = encodeURIComponent('Re: la tua richiesta a Ironwood Livigno');
+  const body = encodeURIComponent(quoteLines);
+  return `mailto:${encodeURIComponent(data.email)}?subject=${subject}&body=${body}`;
 }
 
 export function buildNotificationHtml(data: Submission, id: number, country: string): string {
   const extras = [data.extra_breakfast ? 'Colazione' : null, data.extra_ebike ? 'Noleggio e-bike' : null].filter(Boolean).join(' + ');
+  const nights = nightsBetween(data.checkin_iso, data.checkout_iso);
+  const firstName = escapeHtml(data.name.trim().split(/\s+/)[0] || data.name);
 
   const rows = [
     row('Nome', escapeHtml(data.name)),
@@ -39,34 +81,52 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
     .filter(Boolean)
     .join('');
 
+  const replyHref = buildReplyMailto(data, nights);
+
   return `<!doctype html>
 <html lang="it">
-  <body style="margin:0;padding:0;background-color:#F7F3EC;font-family:Georgia,'Times New Roman',serif;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F3EC;padding:32px 16px;">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body style="margin:0;padding:0;background-color:#F7F3EC;font-family:${FONT_BODY};">
+    <!-- Preheader: shown as the preview snippet in inbox lists, hidden in the body -->
+    <div style="display:none;max-height:0;overflow:hidden;opacity:0;">
+      ${escapeHtml(data.name)} · ${escapeHtml(data.checkin)} → ${escapeHtml(data.checkout)}${nights ? ` · ${nights} notti` : ''} · ${data.guests} ospiti
+    </div>
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F3EC;padding:40px 16px;">
       <tr>
         <td align="center">
-          <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(36,28,21,0.08);">
+          <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(36,28,21,0.10);">
 
             <!-- Header -->
             <tr>
-              <td style="background-color:#241C15;padding:28px 32px;">
-                <p style="margin:0;color:#EFE6D8;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;">Ironwood Livigno</p>
-                <p style="margin:6px 0 0;color:#ffffff;font-size:20px;font-weight:bold;">Nuova richiesta di disponibilità</p>
+              <td style="background-color:#241C15;padding:36px 36px 30px;">
+                <p style="margin:0;color:#C9A059;font-family:${FONT_BODY};font-size:11px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;">Ironwood Livigno</p>
+                <p style="margin:10px 0 0;color:#ffffff;font-family:${FONT_DISPLAY};font-size:24px;line-height:1.3;">Nuova richiesta da<br><span style="color:#EFE6D8;">${escapeHtml(data.name)}</span></p>
               </td>
             </tr>
 
-            <!-- Check-in / check-out highlight -->
+            <!-- Check-in / nights / check-out -->
             <tr>
-              <td style="padding:24px 32px 0;">
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F3EC;border-radius:12px;">
+              <td style="padding:28px 36px 0;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F3EC;border-radius:14px;">
                   <tr>
-                    <td style="padding:18px 20px;width:50%;text-align:center;border-right:1px solid #EFE6D8;">
-                      <p style="margin:0;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#241C15;opacity:0.55;">Check-in</p>
-                      <p style="margin:4px 0 0;font-size:20px;font-weight:bold;color:#A8462F;">${escapeHtml(data.checkin)}</p>
+                    <td style="padding:20px 12px;width:38%;text-align:center;">
+                      <p style="margin:0;font-family:${FONT_BODY};font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:#241C15;opacity:0.5;">Check-in</p>
+                      <p style="margin:5px 0 0;font-family:${FONT_DISPLAY};font-size:19px;color:#241C15;">${escapeHtml(data.checkin)}</p>
                     </td>
-                    <td style="padding:18px 20px;width:50%;text-align:center;">
-                      <p style="margin:0;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#241C15;opacity:0.55;">Check-out</p>
-                      <p style="margin:4px 0 0;font-size:20px;font-weight:bold;color:#A8462F;">${escapeHtml(data.checkout)}</p>
+                    <td style="width:24%;text-align:center;vertical-align:middle;">
+                      <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto;">
+                        <tr><td style="background-color:#A8462F;border-radius:999px;padding:6px 14px;">
+                          <span style="font-family:${FONT_BODY};font-size:11px;font-weight:700;color:#ffffff;white-space:nowrap;">${nights !== null ? `${nights} ${nights === 1 ? 'notte' : 'notti'}` : '→'}</span>
+                        </td></tr>
+                      </table>
+                    </td>
+                    <td style="padding:20px 12px;width:38%;text-align:center;">
+                      <p style="margin:0;font-family:${FONT_BODY};font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:#241C15;opacity:0.5;">Check-out</p>
+                      <p style="margin:5px 0 0;font-family:${FONT_DISPLAY};font-size:19px;color:#241C15;">${escapeHtml(data.checkout)}</p>
                     </td>
                   </tr>
                 </table>
@@ -75,7 +135,8 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
 
             <!-- Guest details -->
             <tr>
-              <td style="padding:24px 32px 8px;">
+              <td style="padding:28px 36px 4px;">
+                <p style="margin:0 0 4px;font-family:${FONT_BODY};font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#241C15;opacity:0.45;">Dettagli</p>
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                   ${rows}
                 </table>
@@ -87,11 +148,11 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
                 ? `
             <!-- Message -->
             <tr>
-              <td style="padding:8px 32px 24px;">
-                <p style="margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:#241C15;opacity:0.55;">Messaggio</p>
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F3EC;border-radius:12px;">
+              <td style="padding:20px 36px 8px;">
+                <p style="margin:0 0 8px;font-family:${FONT_BODY};font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#241C15;opacity:0.45;">Messaggio di ${firstName}</p>
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F3EC;border-radius:14px;border-left:3px solid #C9A059;">
                   <tr>
-                    <td style="padding:16px 18px;font-size:15px;color:#241C15;line-height:1.5;">${escapeHtml(data.message).replace(/\n/g, '<br>')}</td>
+                    <td style="padding:18px 20px;font-family:${FONT_BODY};font-size:15px;color:#241C15;line-height:1.6;">${escapeHtml(data.message).replace(/\n/g, '<br>')}</td>
                   </tr>
                 </table>
               </td>
@@ -101,19 +162,26 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
 
             <!-- CTA -->
             <tr>
-              <td style="padding:8px 32px 32px;">
-                <a href="mailto:${escapeHtml(data.email)}?subject=${encodeURIComponent('Re: la tua richiesta a Ironwood Livigno')}"
-                   style="display:inline-block;background-color:#A8462F;color:#ffffff;text-decoration:none;font-size:15px;font-weight:bold;padding:13px 28px;border-radius:999px;">
-                  Rispondi a ${escapeHtml(data.name.split(' ')[0] || data.name)} →
-                </a>
+              <td style="padding:16px 36px 36px;">
+                <table role="presentation" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="border-radius:999px;background-color:#A8462F;">
+                      <a href="${replyHref}"
+                         style="display:inline-block;color:#ffffff;text-decoration:none;font-family:${FONT_BODY};font-size:15px;font-weight:600;padding:14px 30px;">
+                        Rispondi a ${firstName} →
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+                <p style="margin:12px 0 0;font-family:${FONT_BODY};font-size:12px;color:#241C15;opacity:0.45;">La risposta parte già con la richiesta di ${firstName} in citazione.</p>
               </td>
             </tr>
 
             <!-- Footer -->
             <tr>
-              <td style="padding:18px 32px;background-color:#F7F3EC;border-top:1px solid #EFE6D8;">
-                <p style="margin:0;font-size:12px;color:#241C15;opacity:0.55;">
-                  Richiesta #${id} · salvata nel database · questa email arriva direttamente da forms.ironwoodlivigno.com
+              <td style="padding:20px 36px;background-color:#F7F3EC;border-top:1px solid #EFE6D8;">
+                <p style="margin:0;font-family:${FONT_BODY};font-size:12px;color:#241C15;opacity:0.5;">
+                  Richiesta #${id} · ${escapeHtml(new Date().toLocaleDateString('it-IT', { day: '2-digit', month: 'long', year: 'numeric' }))} · forms.ironwoodlivigno.com
                 </p>
               </td>
             </tr>
