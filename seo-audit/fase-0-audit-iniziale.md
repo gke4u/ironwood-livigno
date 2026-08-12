@@ -138,6 +138,22 @@ Export "Pagina duplicata, Google ha scelto una pagina canonica diversa da quella
 
 **Nessuna azione di codice consigliata su `/pl/kontakt`** salvo che tu veda un impatto reale su traffico/posizionamento per quella pagina — in tal caso vale la pena aprire "Ispeziona URL" su di essa in Search Console per vedere il canonical scelto da Google e valutare se differenziare maggiormente il contenuto.
 
+### 6quater. L'unica pagina in errore 5xx (drilldown Search Console, Fase 1)
+
+Export "Errore del server (5xx)" (`ironwoodlivigno.com-Coverage-Drilldown-2026-08-12 (3).zip`), 1 URL: `http://www.ironwoodlivigno.com/`, ultima scansione **2026-07-30** (13 giorni prima dell'audit).
+
+Nota già dall'URL stesso: **HTTP** (non HTTPS) su **www** — la combinazione meno comune, quella con più hop di normalizzazione da attraversare. Verificato live (3 tentativi ripetuti): oggi risolve sempre pulito, `200` finale dopo una catena di 2 redirect entrambi a livello di infrastruttura Cloudflare (non gestiti da `public/_redirects`, che accetta solo path relativi):
+
+```
+http://www.ironwoodlivigno.com/  → 301 → https://www.ironwoodlivigno.com/  → 301 → https://ironwoodlivigno.com/  (200)
+```
+
+Nessun 5xx riprodotto. Diagnosi: probabile blip transitorio del 30 luglio (deploy, cold start del Worker, o simile) già superato — stesso pattern "dato Search Console stale" già visto per il Gruppo C e per 5 dei 6 casi di canonical. Nessuna azione di codice necessaria.
+
+Unica osservazione non urgente: la catena è a 2 hop (HTTP→HTTPS, poi www→apex) invece di 1, perché sono due redirect di zona Cloudflare distinti. Accorciarla a un solo hop richiederebbe una configurazione lato dashboard Cloudflare (una singola Redirect Rule che normalizza schema e host insieme) — fuori dalla portata del codice in questo repo, e comunque non un problema segnalato altrove nell'audit.
+
+**403 non identificato**: l'export per "Bloccata per accesso non autorizzato (403)" non è ancora stato fornito — stesso procedimento delle altre drilldown (Search Console → Indicizzazione → Pagine → click sulla riga "403" → esporta) quando vuoi che lo analizzi.
+
 ## 7. Core Web Vitals (PageSpeed Insights)
 
 Ho provato a interrogare l'API pubblica di PageSpeed Insights su `/it`, `/inverno`, `/camere-appartamento-livigno` (mobile) ma sono stato rate-limitato (HTTP 429) dopo pochi tentativi — l'API pubblica senza chiave ha una quota condivisa molto bassa. Due strade, a tua scelta:
@@ -156,7 +172,8 @@ Ho provato a interrogare l'API pubblica di PageSpeed Insights su `/it`, `/invern
 | Media | Pagine satellite solo in italiano nonostante mercati target multilingua | Fase 2 / Fase 5 |
 | Media | Core Web Vitals non ancora misurati (serve secondo export Search Console o retry PSI) | Fase 9 |
 | Bassa | `CF_ANALYTICS_TOKEN` in `src/app/[locale]/layout.tsx` è ancora il placeholder — nessun analytics attivo | Fase 11 |
-| Bassa | 1 pagina in errore 5xx, 1 pagina bloccata 403 — da identificare | Fase 1 |
+| Bassa | ~~1 pagina in errore 5xx~~ — verificato live, dato stale del 30/07, oggi risolve pulito (200) | ✅ Fase 1 |
+| Bassa | 1 pagina bloccata 403 — elenco URL non ancora fornito | Fase 1 |
 | — | hreflang: **nessun problema**, tutto reciproco | — |
 | — | Redirect: **nessuna catena**, mapping legacy già curato con dati reali Search Console | — |
 | — | robots.txt / llms.txt: **già ben configurati**, buona base per GEO | — |
