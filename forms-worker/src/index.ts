@@ -23,8 +23,10 @@
 // authenticated implicitly by the deployment itself.
 
 import { sendMail } from './smtp';
-import { buildNotificationHtml, renderTranslatePage } from './email-template';
+import { buildNotificationHtml, nightsBetween, renderDraftPage } from './email-template';
 import { translateMessageToItalian } from './translate';
+import { draftReply } from './draft';
+import { replyLabelsFor } from './reply-labels';
 
 export interface Env {
   DB: D1Database;
@@ -149,13 +151,18 @@ async function sendNotification(env: Env, data: Submission, country: string, id:
     data.message ? `Messaggio: ${data.message}` : null
   ].filter(Boolean);
 
-  // Translation is on-demand now (GET /translate/:token, clicked from the
-  // email), not attempted automatically at send time. It was, across three
-  // separate fixes — a Workers AI capacity issue, then a deprecated model —
-  // still an extra failure mode sitting between "form submitted" and "email
-  // delivered". Decoupling it means a translation problem can never delay
-  // or break the notification itself, and it's testable in isolation by
-  // just opening the link.
+  // Translation now runs automatically at send time and is embedded
+  // directly in the notification (shown right under the guest's original
+  // note — see buildNotificationHtml), rather than behind the earlier
+  // on-demand /translate/:token click-through. That page only existed
+  // because translation used to fail for infra reasons (Workers AI
+  // capacity, then a deprecated model); now that the model call is
+  // reliable, gating it behind a click added a step with no remaining
+  // purpose. translateMessageToItalian never throws — a translation
+  // failure here just means the email is sent without the extra box, never
+  // a reason to delay or break the notification itself.
+  const translation = data.message ? await translateMessageToItalian(env.AI, data.message, data.locale) : null;
+
   await sendMail(
     { host: SMTP_HOST, port: SMTP_PORT, user: SMTP_USER, password: env.SMTP_PASSWORD },
     {
@@ -165,7 +172,7 @@ async function sendNotification(env: Env, data: Submission, country: string, id:
       replyTo: data.email,
       subject: `${data.name} — richiesta disponibilità Ironwood Livigno`,
       text: lines.join('\n'),
-      html: buildNotificationHtml(data, id, country, token)
+      html: buildNotificationHtml(data, id, country, token, translation)
     }
   );
 }
@@ -174,30 +181,55 @@ function htmlPage(body: string, status = 200): Response {
   return new Response(body, { status, headers: { 'Content-Type': 'text/html; charset=UTF-8' } });
 }
 
-// Simple branded page — same fonts/colors as the notification email — shown
-// when Francesco clicks "Traduci in italiano". Looks up the submission by
-// its random token (not the sequential id, so this can't be enumerated by
-// guessing numbers) and translates on the spot, so a translation failure
-// only ever affects this one click, never the email delivery itself.
-async function handleTranslatePage(env: Env, token: string): Promise<Response> {
-  const row = await env.DB.prepare('SELECT name, message, locale FROM submissions WHERE token = ?').bind(token).first<{
-    name: string;
-    message: string | null;
-    locale: string | null;
-  }>();
+// Branded page — same fonts/colors as the notification email — shown when
+// Francesco clicks "Genera bozza di risposta con l'AI". Looks up the
+// submission by its random token (not the sequential id, so this can't be
+// enumerated by guessing numbers) and drafts a reply on the spot, so a
+// draft failure only ever affects this one click, never the email
+// delivery itself.
+async function handleDraftPage(env: Env, token: string): Promise<Response> {
+  const row = await env.DB.prepare(
+    `SELECT name, email, message, locale, checkin_display, checkin_iso, checkout_display, checkout_iso, guests, extra_breakfast, extra_ebike
+     FROM submissions WHERE token = ?`
+  )
+    .bind(token)
+    .first<{
+      name: string;
+      email: string;
+      message: string | null;
+      locale: string | null;
+      checkin_display: string;
+      checkin_iso: string;
+      checkout_display: string;
+      checkout_iso: string;
+      guests: number;
+      extra_breakfast: number;
+      extra_ebike: number;
+    }>();
 
-  if (!row) return htmlPage(renderTranslatePage({ error: 'Richiesta non trovata.' }), 404);
-  if (!row.message) return htmlPage(renderTranslatePage({ error: 'Questa richiesta non ha un messaggio da tradurre.' }), 200);
+  if (!row) return htmlPage(renderDraftPage({ error: 'Richiesta non trovata.' }), 404);
 
-  const translation = await translateMessageToItalian(env.AI, row.message, row.locale ?? undefined);
-  if (!translation) {
-    return htmlPage(
-      renderTranslatePage({ error: 'Traduzione non riuscita al momento. Riprova tra poco: il messaggio originale resta comunque leggibile qui sotto.', original: row.message }),
-      200
-    );
+  const submission: Submission = {
+    name: row.name,
+    email: row.email,
+    checkin: row.checkin_display,
+    checkin_iso: row.checkin_iso,
+    checkout: row.checkout_display,
+    checkout_iso: row.checkout_iso,
+    guests: row.guests,
+    extra_breakfast: Boolean(row.extra_breakfast),
+    extra_ebike: Boolean(row.extra_ebike),
+    message: row.message ?? undefined,
+    locale: row.locale ?? undefined
+  };
+  const nights = nightsBetween(row.checkin_iso, row.checkout_iso);
+
+  const draft = await draftReply(env.AI, submission, nights);
+  if (!draft) {
+    return htmlPage(renderDraftPage({ error: 'Generazione della bozza non riuscita al momento. Riprova tra poco.' }), 200);
   }
 
-  return htmlPage(renderTranslatePage({ name: row.name, original: row.message, translation }));
+  return htmlPage(renderDraftPage({ name: row.name, email: row.email, subject: replyLabelsFor(row.locale ?? undefined).subject, draft }));
 }
 
 export default {
@@ -205,12 +237,12 @@ export default {
     const origin = request.headers.get('Origin');
     const url = new URL(request.url);
 
-    // /translate/:token — opened directly in a browser from a link in the
+    // /draft/:token — opened directly in a browser from a link in the
     // notification email (not an AJAX call from the site), so it's a plain
     // GET returning an HTML page, no CORS/Origin check needed here.
-    const translateMatch = /^\/translate\/([a-f0-9-]{36})$/.exec(url.pathname);
-    if (translateMatch && request.method === 'GET') {
-      return handleTranslatePage(env, translateMatch[1]);
+    const draftMatch = /^\/draft\/([a-f0-9-]{36})$/.exec(url.pathname);
+    if (draftMatch && request.method === 'GET') {
+      return handleDraftPage(env, draftMatch[1]);
     }
 
     if (request.method === 'OPTIONS') {

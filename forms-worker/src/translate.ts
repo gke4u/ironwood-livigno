@@ -1,6 +1,10 @@
-// Translates the guest's free-text message to Italian using Cloudflare
+// Translates a piece of guest-facing text to Italian using Cloudflare
 // Workers AI (env.AI binding) — same Cloudflare account as everything else
-// in this Worker, no third-party translation API/key.
+// in this Worker, no third-party translation API/key. Used both for the
+// guest's own note (shown automatically under the original in the
+// notification email — see buildNotificationHtml) and for the AI-drafted
+// reply (see draft.ts), so the owner always has an Italian rendering of
+// any guest-language text before it's read or sent.
 //
 // Uses a general chat model (GLM-4.7-flash) with a translation prompt
 // rather than the dedicated m2m100 translation model: m2m100 is a small,
@@ -24,8 +28,10 @@
 // booking-request note; not attempting to be a general-purpose translator.
 
 // Site locale -> English language name, used only in the translation
-// prompt (models follow English instructions most reliably).
-const LOCALE_TO_LANGUAGE_NAME: Partial<Record<string, string>> = {
+// prompt (models follow English instructions most reliably). Exported for
+// reuse by draft.ts, which needs the same mapping to ask for a reply
+// drafted in the guest's own language.
+export const LOCALE_TO_LANGUAGE_NAME: Partial<Record<string, string>> = {
   en: 'English',
   'en-us': 'English',
   de: 'German',
