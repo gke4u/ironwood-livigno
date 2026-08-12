@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 import { contactSlugs, locales, localeLabels, type Locale } from '@/i18n/routing';
+import { SATELLITE_PAGES } from '@/data/satellite-pages';
 import Logo from './Logo';
 
 const CIN = 'IT014037C274OJ27T8';
@@ -21,20 +22,7 @@ export default function Footer({ locale }: { locale: Locale }) {
   // for the 'it' locale: linking Italian-only pages from e.g. the German or
   // Japanese footer would just lead visitors to content in a language they
   // didn't choose.
-  const itLandingPages =
-    locale === 'it'
-      ? [
-          { href: '/inverno', label: 'Inverno' },
-          { href: '/estate', label: 'Estate' },
-          { href: '/famiglie', label: 'Famiglie' },
-          { href: '/benessere', label: 'Benessere' },
-          { href: '/come-arrivare', label: 'Come arrivare' },
-          { href: '/chi-siamo', label: 'Chi siamo' },
-          { href: '/sauna-bagno-turco-privato-livigno', label: 'Sauna privata' },
-          { href: '/camere-appartamento-livigno', label: 'Le camere' },
-          { href: '/livigno-estate', label: "Livigno d'estate" }
-        ]
-      : [];
+  const itLandingPages = locale === 'it' ? SATELLITE_PAGES : [];
 
   const sectionLinks = [
     { href: `/${locale}#esperienza`, label: tNav('experience') },

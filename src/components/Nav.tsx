@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { contactSlugs, type Locale } from '@/i18n/routing';
+import { SATELLITE_PAGES } from '@/data/satellite-pages';
 import LangSwitcher from './LangSwitcher';
 import MobileMenu from './MobileMenu';
 import Logo from './Logo';
@@ -101,6 +102,29 @@ export default function Nav({ locale }: { locale: Locale }) {
           {navLink('esperienza', `${home}#esperienza`, t('experience'))}
           {navLink('camere', `${home}#camere`, t('rooms'))}
           {navLink('posizione', `${home}#posizione`, t('location'))}
+          {locale === 'it' && (
+            <div className="relative group">
+              <button type="button" className="flex items-center gap-1 hover:text-gold transition-colors" aria-haspopup="true">
+                Scopri
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden>
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </button>
+              <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 hidden group-hover:block group-focus-within:block">
+                <div className="w-56 rounded-xl bg-mist text-ink shadow-soft overflow-hidden py-2">
+                  {SATELLITE_PAGES.map((p) => (
+                    <a
+                      key={p.href}
+                      href={p.href}
+                      className="block px-4 py-2 text-xs normal-case tracking-normal hover:bg-cream/60 transition-colors"
+                    >
+                      {p.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
           <a href="/blog" className="hover:text-gold transition-colors">
             Blog
           </a>
@@ -117,7 +141,7 @@ export default function Nav({ locale }: { locale: Locale }) {
         </nav>
         <div className="flex items-center gap-3">
           <LangSwitcher current={locale} />
-          <MobileMenu home={home} contactHref={contactHref} />
+          <MobileMenu home={home} contactHref={contactHref} locale={locale} />
         </div>
       </div>
     </header>

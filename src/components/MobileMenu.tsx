@@ -2,13 +2,23 @@
 
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
+import { SATELLITE_PAGES } from '@/data/satellite-pages';
+import type { Locale } from '@/i18n/routing';
 
 // The desktop nav links (Esperienza, Camere, Posizione, Blog, Contatti,
 // Richiedi info) are hidden below the `lg` breakpoint with no fallback,
 // which leaves mobile/tablet visitors — the majority of traffic on a
 // vacation-rental site — unable to reach any section or the request-info
 // CTA from the header at all. This adds the missing hamburger menu.
-export default function MobileMenu({ home, contactHref }: { home: string; contactHref: string }) {
+export default function MobileMenu({
+  home,
+  contactHref,
+  locale
+}: {
+  home: string;
+  contactHref: string;
+  locale: Locale;
+}) {
   const t = useTranslations('nav');
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -99,6 +109,21 @@ export default function MobileMenu({ home, contactHref }: { home: string; contac
               {link.label}
             </a>
           ))}
+          {locale === 'it' && (
+            <>
+              <p className="px-6 pt-3 pb-1 text-[11px] uppercase tracking-widest text-ink/40">Scopri</p>
+              {SATELLITE_PAGES.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={close}
+                  className="block px-6 py-3 min-h-[44px] text-sm uppercase tracking-widest border-b border-ink/10 hover:bg-cream/60 flex items-center"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </>
+          )}
           <a
             href={`${home}#prenota`}
             onClick={close}
