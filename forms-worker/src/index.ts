@@ -22,7 +22,7 @@
 // in this repo). D1/ratelimit need no secrets at all — bindings,
 // authenticated implicitly by the deployment itself.
 
-import { sendMail } from './smtp';
+import { sendMail, checkSmtpConnection } from './smtp';
 import { buildNotificationHtml, nightsBetween, renderDraftPage } from './email-template';
 import { translateMessageToItalian } from './translate';
 import { draftReply } from './draft';
@@ -364,13 +364,38 @@ export default {
     }
   },
 
-  // Monthly retention sweep (see wrangler.jsonc triggers.crons). Keeps the
-  // dataset from growing forever — 24 months comfortably covers a
-  // vacation-rental's typical rebooking/reference window without holding
-  // guest contact data indefinitely.
-  async scheduled(_controller: ScheduledController, env: Env): Promise<void> {
-    await env.DB.prepare(`DELETE FROM submissions WHERE created_at < datetime('now', ?)`)
-      .bind(`-${RETENTION_MONTHS} months`)
-      .run();
+  // Two independent schedules share this handler (see wrangler.jsonc
+  // triggers.crons) — controller.cron tells them apart.
+  async scheduled(controller: ScheduledController, env: Env): Promise<void> {
+    if (controller.cron === '0 3 1 * *') {
+      // Monthly retention sweep. Keeps the dataset from growing forever —
+      // 24 months comfortably covers a vacation-rental's typical
+      // rebooking/reference window without holding guest contact data
+      // indefinitely.
+      await env.DB.prepare(`DELETE FROM submissions WHERE created_at < datetime('now', ?)`)
+        .bind(`-${RETENTION_MONTHS} months`)
+        .run();
+      return;
+    }
+
+    // Daily SMTP connectivity check. Every other alert in this Worker only
+    // fires as a side effect of a real submission — during a quiet spell
+    // with no bookings, a broken mailbox.org connection would otherwise go
+    // unnoticed until the next real guest is affected. This proactively
+    // exercises the exact same connect/TLS/auth path sendMail() uses, just
+    // without sending anything, and alerts (over that same path — the one
+    // failure mode this can't catch is mailbox.org being fully
+    // unreachable, a known, accepted limit with no independent channel)
+    // the moment it stops working.
+    try {
+      await checkSmtpConnection({ host: SMTP_HOST, port: SMTP_PORT, user: SMTP_USER, password: env.SMTP_PASSWORD });
+    } catch (err) {
+      console.error('SMTP health check failed', err);
+      await sendAlert(
+        env,
+        'Controllo di connessione SMTP fallito',
+        `Il controllo giornaliero di connessione a ${SMTP_HOST} non è riuscito.\n\nErrore: ${err instanceof Error ? err.message : String(err)}`
+      );
+    }
   }
 } satisfies ExportedHandler<Env>;

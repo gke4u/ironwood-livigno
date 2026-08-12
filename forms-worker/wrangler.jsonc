@@ -56,8 +56,13 @@
     }
   ],
 
-  // Monthly retention sweep — see scheduled() in src/index.ts.
+  // Two independent schedules, both handled in scheduled() in src/index.ts:
+  // - "0 3 1 * *": monthly retention sweep (1st of the month, 03:00 UTC)
+  // - "0 6 * * *": daily SMTP connectivity check (06:00 UTC) — catches a
+  //   broken mailbox.org connection during a quiet period with no real
+  //   form submissions, instead of only discovering it when a real guest
+  //   request fails to notify.
   "triggers": {
-    "crons": ["0 3 1 * *"]
+    "crons": ["0 3 1 * *", "0 6 * * *"]
   }
 }

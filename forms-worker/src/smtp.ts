@@ -98,42 +98,78 @@ async function readResponse(reader: ReadableStreamDefaultReader<Uint8Array>, sta
   return { code, lines };
 }
 
-export async function sendMail(config: SmtpConfig, message: SmtpMessage): Promise<void> {
+type SmtpSocket = ReturnType<typeof connect>;
+
+// Connects, upgrades to TLS, and authenticates — the identical handshake
+// needed both before sending a real message and for the standalone
+// connectivity check below. Returns the live socket/reader/writer,
+// authenticated and ready for whatever comes next (MAIL FROM/RCPT TO/DATA,
+// or just an immediate QUIT for a health check).
+async function openAuthenticatedSession(
+  config: SmtpConfig
+): Promise<{ socket: SmtpSocket; reader: ReadableStreamDefaultReader<Uint8Array>; writer: WritableStreamDefaultWriter<Uint8Array>; state: { buf: string } }> {
   const socket = connect({ hostname: config.host, port: config.port }, { secureTransport: 'starttls', allowHalfOpen: false });
+
+  await socket.opened;
   const state = { buf: '' };
+  let reader = socket.readable.getReader();
+  let writer = socket.writable.getWriter();
+
+  await readResponse(reader, state); // 220 greeting
+
+  await sendAll(writer, `EHLO forms.ironwoodlivigno.com\r\n`);
+  await readResponse(reader, state); // 250 capabilities (pre-TLS)
+
+  await sendAll(writer, `STARTTLS\r\n`);
+  await readResponse(reader, state); // 220 ready to start TLS
+
+  // Upgrading closes the plaintext socket's streams — release the locks
+  // before switching to the new TLS socket's own reader/writer.
+  reader.releaseLock();
+  writer.releaseLock();
+  const secureSocket = socket.startTls();
+  const secureState = { buf: '' };
+  const secureReader = secureSocket.readable.getReader();
+  const secureWriter = secureSocket.writable.getWriter();
+
+  await sendAll(secureWriter, `EHLO forms.ironwoodlivigno.com\r\n`);
+  await readResponse(secureReader, secureState); // 250 capabilities (post-TLS)
+
+  await sendAll(secureWriter, `AUTH LOGIN\r\n`);
+  await readResponse(secureReader, secureState); // 334 base64("Username:")
+  await sendAll(secureWriter, `${b64(config.user)}\r\n`);
+  await readResponse(secureReader, secureState); // 334 base64("Password:")
+  await sendAll(secureWriter, `${b64(config.password)}\r\n`);
+  await readResponse(secureReader, secureState); // 235 authenticated
+
+  return { socket, reader: secureReader, writer: secureWriter, state: secureState };
+}
+
+// Connects, authenticates, and immediately quits without sending anything —
+// used by the daily health-check cron (see index.ts scheduled()) to catch a
+// broken mailbox.org connection during a quiet period with no real form
+// submissions, instead of only discovering it when a real guest request
+// fails to notify. Throws on any failure (connection, TLS, or auth); the
+// caller decides what to do about it.
+export async function checkSmtpConnection(config: SmtpConfig): Promise<void> {
+  const { socket, reader, writer, state } = await openAuthenticatedSession(config);
+  try {
+    await sendAll(writer, `QUIT\r\n`);
+    try {
+      await readResponse(reader, state);
+    } catch {
+      // Some servers close the connection immediately after QUIT's 221
+      // rather than waiting for us to read it — not a failure.
+    }
+  } finally {
+    await socket.close().catch(() => {});
+  }
+}
+
+export async function sendMail(config: SmtpConfig, message: SmtpMessage): Promise<void> {
+  const { socket, reader: secureReader, writer: secureWriter, state: secureState } = await openAuthenticatedSession(config);
 
   try {
-    await socket.opened;
-    let reader = socket.readable.getReader();
-    let writer = socket.writable.getWriter();
-
-    await readResponse(reader, state); // 220 greeting
-
-    await sendAll(writer, `EHLO forms.ironwoodlivigno.com\r\n`);
-    await readResponse(reader, state); // 250 capabilities (pre-TLS)
-
-    await sendAll(writer, `STARTTLS\r\n`);
-    await readResponse(reader, state); // 220 ready to start TLS
-
-    // Upgrading closes the plaintext socket's streams — release the locks
-    // before switching to the new TLS socket's own reader/writer.
-    reader.releaseLock();
-    writer.releaseLock();
-    const secureSocket = socket.startTls();
-    const secureState = { buf: '' };
-    const secureReader = secureSocket.readable.getReader();
-    const secureWriter = secureSocket.writable.getWriter();
-
-    await sendAll(secureWriter, `EHLO forms.ironwoodlivigno.com\r\n`);
-    await readResponse(secureReader, secureState); // 250 capabilities (post-TLS)
-
-    await sendAll(secureWriter, `AUTH LOGIN\r\n`);
-    await readResponse(secureReader, secureState); // 334 base64("Username:")
-    await sendAll(secureWriter, `${b64(config.user)}\r\n`);
-    await readResponse(secureReader, secureState); // 334 base64("Password:")
-    await sendAll(secureWriter, `${b64(config.password)}\r\n`);
-    await readResponse(secureReader, secureState); // 235 authenticated
-
     // Envelope sender is the visible/branded address (message.from), not
     // necessarily the SMTP AUTH login (config.user) — mailbox.org accounts
     // with multiple aliases authenticate as the primary address but can
