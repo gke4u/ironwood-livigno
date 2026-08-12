@@ -35,6 +35,18 @@ function b64(s: string): string {
   return btoa(unescape(encodeURIComponent(s)));
 }
 
+// RFC 5322 headers must be 7-bit ASCII — any non-ASCII character (an
+// accented letter, an em dash, an emoji) has to be wrapped as an RFC 2047
+// "encoded word" instead of written raw. Raw UTF-8 bytes in a header is
+// invalid and a strong, well-known spam signal — every message this Worker
+// sends has one guaranteed non-ASCII character in its subject ("disponibilità",
+// the — em dash, or the ⚠ alert prefix), so this was silently getting every
+// single email penalized.
+function encodeHeaderWord(value: string): string {
+  if (/^[\x00-\x7F]*$/.test(value)) return value;
+  return `=?UTF-8?B?${b64(value)}?=`;
+}
+
 // Dot-stuffing (RFC 5321 4.5.2): any line starting with '.' gets an extra
 // leading '.' so the SMTP server doesn't mistake it for the end-of-DATA
 // marker, and all line endings must be CRLF.
@@ -126,11 +138,26 @@ export async function sendMail(config: SmtpConfig, message: SmtpMessage): Promis
     await sendAll(secureWriter, `DATA\r\n`);
     await readResponse(secureReader, secureState); // 354 start mail input
 
+    // Date and Message-ID are required/expected by RFC 5322 and checked by
+    // essentially every spam filter (missing either is a well-known,
+    // significant spam signal — SpamAssassin's MISSING_DATE/MISSING_MID
+    // rules, mailbox.org's own filter likely similar). Easy to miss when
+    // hand-building headers since most SMTP libraries add these silently.
+    const fromName = message.fromName ?? 'Ironwood Livigno';
+    const isAsciiFromName = /^[\x00-\x7F]*$/.test(fromName);
+    // A pure-ASCII display name keeps the familiar quoted "Name" <addr>
+    // form; a non-ASCII one (a guest's accented name, an emoji prefix on
+    // the alert sender) has to be an encoded word instead, unquoted — a
+    // quoted encoded-word is non-standard and some clients don't decode it.
+    const fromHeader = isAsciiFromName ? `"${fromName.replace(/"/g, "'")}" <${message.from}>` : `${encodeHeaderWord(fromName)} <${message.from}>`;
+
     const commonHeaders = [
-      `From: "${(message.fromName ?? 'Ironwood Livigno').replace(/"/g, "'")}" <${message.from}>`,
+      `From: ${fromHeader}`,
       `To: ${recipients.join(', ')}`,
       message.replyTo ? `Reply-To: ${message.replyTo}` : null,
-      `Subject: ${message.subject}`,
+      `Subject: ${encodeHeaderWord(message.subject)}`,
+      `Date: ${new Date().toUTCString()}`,
+      `Message-ID: <${crypto.randomUUID()}@forms.ironwoodlivigno.com>`,
       'MIME-Version: 1.0'
     ].filter(Boolean);
 

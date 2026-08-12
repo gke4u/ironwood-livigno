@@ -113,11 +113,16 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
     .filter(Boolean)
     .join('');
 
+  // display:inline-block spans in a plain div — not table cells side by
+  // side — so on a narrow phone screen the second pill wraps onto its own
+  // line instead of running off the edge (table cells never wrap; a <tr>
+  // wider than the screen just gets visually cut off with no way to scroll
+  // to the rest on most mobile mail apps).
   const extraPills = [data.extra_breakfast ? 'Colazione' : null, data.extra_ebike ? 'Noleggio e-bike' : null]
     .filter((e): e is string => e !== null)
     .map(
       (e) =>
-        `<td style="padding:0 8px 0 0;"><table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="background-color:#C9A059;border-radius:999px;padding:8px 16px;"><span style="font-family:${FONT_BODY};font-size:13px;font-weight:700;color:#241C15;white-space:nowrap;">✓ ${escapeHtml(e)}</span></td></tr></table></td>`
+        `<span style="display:inline-block;background-color:#C9A059;border-radius:999px;padding:8px 16px;margin:0 8px 8px 0;font-family:${FONT_BODY};font-size:13px;font-weight:700;color:#241C15;white-space:nowrap;">✓ ${escapeHtml(e)}</span>`
     )
     .join('');
 
@@ -183,7 +188,7 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
             <tr>
               <td style="padding:28px 36px 0;">
                 <p style="margin:0 0 10px;font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#A8462F;">⚑ Extra richiesti</p>
-                <table role="presentation" cellpadding="0" cellspacing="0"><tr>${extraPills}</tr></table>
+                <div>${extraPills}</div>
               </td>
             </tr>`
                 : ''
@@ -246,27 +251,24 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
               </td>
             </tr>
 
-            <!-- CTA -->
+            <!-- CTA: inline-block anchors in a plain div, not table cells
+                 side by side — on a narrow phone the second button wraps
+                 onto its own line below the first instead of running off
+                 the edge of the screen (the earlier <table><tr><td> layout
+                 had no way to wrap, so it just got visually cut off). -->
             <tr>
               <td style="padding:16px 36px 36px;">
-                <table role="presentation" cellpadding="0" cellspacing="0">
-                  <tr>
-                    <td style="border-radius:999px;background-color:#A8462F;">
-                      <a href="${replyHref}"
-                         style="display:inline-block;color:#ffffff;text-decoration:none;font-family:${FONT_BODY};font-size:15px;font-weight:600;padding:14px 30px;">
-                        Rispondi a ${firstName} →
-                      </a>
-                    </td>
-                    <td style="width:12px;"></td>
-                    <td style="border-radius:999px;border:1px solid #EFE6D8;">
-                      <a href="${PHOTOS_URL}"
-                         style="display:inline-block;color:#241C15;text-decoration:none;font-family:${FONT_BODY};font-size:15px;font-weight:600;padding:14px 24px;">
-                        Foto dell'appartamento
-                      </a>
-                    </td>
-                  </tr>
-                </table>
-                <p style="margin:12px 0 0;font-family:${FONT_BODY};font-size:12px;color:#241C15;opacity:0.45;">La risposta parte già con la richiesta di ${firstName} in citazione.</p>
+                <div>
+                  <a href="${replyHref}"
+                     style="display:inline-block;color:#ffffff;text-decoration:none;font-family:${FONT_BODY};font-size:15px;font-weight:600;padding:14px 30px;background-color:#A8462F;border-radius:999px;margin:0 10px 10px 0;">
+                    Rispondi a ${firstName} →
+                  </a>
+                  <a href="${PHOTOS_URL}"
+                     style="display:inline-block;color:#241C15;text-decoration:none;font-family:${FONT_BODY};font-size:15px;font-weight:600;padding:14px 24px;border:1px solid #EFE6D8;border-radius:999px;margin:0 0 10px 0;">
+                    Foto dell'appartamento
+                  </a>
+                </div>
+                <p style="margin:2px 0 0;font-family:${FONT_BODY};font-size:12px;color:#241C15;opacity:0.45;">La risposta parte già con la richiesta di ${firstName} in citazione.</p>
                 <p style="margin:10px 0 0;"><a href="https://forms.ironwoodlivigno.com/draft/${token}" style="font-family:${FONT_BODY};font-size:13px;font-weight:600;color:#A8462F;text-decoration:none;">✍️ Genera bozza di risposta con l'AI →</a></p>
               </td>
             </tr>
