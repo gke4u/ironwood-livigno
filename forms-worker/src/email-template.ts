@@ -121,7 +121,7 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
     country ? row('Paese (da IP)', escapeHtml(country)) : ''
   ]
     .filter(Boolean)
-    .join('');
+    .join('\n');
 
   // display:inline-block spans in a plain div — not table cells side by
   // side — so on a narrow phone screen the second pill wraps onto its own
@@ -134,7 +134,7 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
       (e) =>
         `<span style="display:inline-block;background-color:#C9A059;border-radius:999px;padding:8px 16px;margin:0 8px 8px 0;font-family:${FONT_BODY};font-size:13px;font-weight:700;color:#241C15;white-space:nowrap;">✓ ${escapeHtml(e)}</span>`
     )
-    .join('');
+    .join('\n');
 
   const replyHref = buildReplyMailto(data, nights);
   const quickReplies = buildQuickReplies(data, nights);
@@ -312,7 +312,21 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
                       const accent = QUICK_REPLY_ACCENT[qr.id];
                       return `<a href="${escapeHtml(qr.mailtoHref)}" style="display:inline-block;color:${accent.text};text-decoration:none;font-family:${FONT_BODY};font-size:14px;font-weight:600;padding:10px 18px;background-color:#F7F3EC;border:1px solid ${accent.border};border-radius:999px;margin:0 8px 8px 0;">${qr.label}</a>`;
                     })
-                    .join('')}
+                    // Each mailto href here is a single very long line (a
+                    // percent-encoded reply, easily 700+ characters) — with
+                    // no separator, three of them concatenated on one line
+                    // comfortably exceeded ~2000 characters. Some mail
+                    // relays force-wrap lines that long, and if the break
+                    // lands inside an href="..." attribute it corrupts the
+                    // tag, spilling the raw encoded text out as visible
+                    // garbled text (confirmed: the second and third button
+                    // — past the point where the combined line crossed
+                    // that threshold — were exactly what showed up
+                    // garbled, while the first stayed intact). Joining with
+                    // a real newline between anchors is safe (HTML
+                    // collapses whitespace between elements) and keeps
+                    // every individual line under any such limit.
+                    .join('\n')}
                 </div>
                 ${quickReplies
                   .map(
@@ -326,7 +340,7 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
                   </tr>
                 </table>`
                   )
-                  .join('')}
+                  .join('\n')}
               </td>
             </tr>
 

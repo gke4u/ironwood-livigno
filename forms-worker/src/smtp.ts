@@ -59,6 +59,46 @@ function encodeHeaderWord(value: string): string {
   return `=?UTF-8?B?${b64(value)}?=`;
 }
 
+// Safety net against a real bug found in production: three long mailto:
+// links (percent-encoded reply text, each 700+ characters) concatenated
+// with no separator produced one ~2000+ character line. Some mail relay
+// along the way force-wraps lines past a length limit, and the wrap
+// landed inside an href="..." attribute — corrupting that <a> tag, so the
+// raw percent-encoded text spilled out as visible garbled text in the
+// recipient's inbox instead of staying hidden inside the link. The
+// template itself no longer produces that specific case (see
+// email-template.ts), but this is the actual choke point every line
+// passes through before transmission, so it's the right place for a
+// general safeguard against the same failure mode recurring — e.g. a
+// guest's free-text message (up to 2000 characters) pushes the "Rispondi"
+// mailto link itself past a safe length on its own.
+//
+// Only breaks at an actual space character, never mid-token — a
+// percent-encoded URL has no literal spaces in it (encodeURIComponent
+// turns them into %20), so this can never land inside one and corrupt a
+// %XX escape sequence or a URL. If a line has no space within the limit
+// (i.e. is one unbroken token, like a bare long URL) it's left as is:
+// leaving a line long is the pre-existing risk this doesn't newly
+// introduce, whereas a blind mid-token break would.
+function foldLongLines(body: string, maxLen = 900): string {
+  return body
+    .split('\n')
+    .map((line) => {
+      if (line.length <= maxLen) return line;
+      const parts: string[] = [];
+      let rest = line;
+      while (rest.length > maxLen) {
+        const breakAt = rest.lastIndexOf(' ', maxLen);
+        if (breakAt <= 0) break; // no safe break point — leave the rest as one line
+        parts.push(rest.slice(0, breakAt));
+        rest = rest.slice(breakAt + 1);
+      }
+      parts.push(rest);
+      return parts.join('\n');
+    })
+    .join('\n');
+}
+
 // Dot-stuffing (RFC 5321 4.5.2): any line starting with '.' gets an extra
 // leading '.' so the SMTP server doesn't mistake it for the end-of-DATA
 // marker, and all line endings must be CRLF.
@@ -215,7 +255,12 @@ export async function sendMail(config: SmtpConfig, message: SmtpMessage): Promis
     // go wrong for an internal notification email that doesn't need a
     // plain-text fallback.
     const contentType = message.html ? 'text/html; charset="UTF-8"' : 'text/plain; charset="UTF-8"';
-    const body = [...commonHeaders, `Content-Type: ${contentType}`, 'Content-Transfer-Encoding: 8bit', '', message.html ?? message.text].join(
+    // foldLongLines only applies to the content, not the headers above —
+    // header values are already bounded/sanitized and folding one would
+    // need proper RFC 5322 continuation-line syntax, a different mechanism
+    // from plain line breaks.
+    const content = foldLongLines(message.html ?? message.text);
+    const body = [...commonHeaders, `Content-Type: ${contentType}`, 'Content-Transfer-Encoding: 8bit', '', content].join(
       '\r\n'
     );
     await sendAll(secureWriter, `${stuffDots(body)}\r\n.\r\n`);
