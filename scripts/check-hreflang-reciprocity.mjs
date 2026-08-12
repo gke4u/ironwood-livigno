@@ -7,15 +7,20 @@
 // (the exact class of bug that caused the /contact → /contatti slug
 // mismatch this project hit earlier).
 //
-// Run manually: node scripts/check-hreflang-reciprocity.mjs
+// Run after a build (the sitemap is generated at build time, not hand-maintained):
+//   npm run build && node scripts/check-hreflang-reciprocity.mjs
 // Exits non-zero on any failure, so it can be wired into CI later if a
 // build pipeline gets added.
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const sitemapPath = path.join(__dirname, '..', 'public', 'sitemap.xml');
+const sitemapPath = path.join(__dirname, '..', 'out', 'sitemap.xml');
+if (!existsSync(sitemapPath)) {
+  console.error(`✗ ${sitemapPath} not found. The sitemap is generated at build time (src/app/sitemap.ts) — run "npm run build" first.`);
+  process.exit(1);
+}
 const xml = readFileSync(sitemapPath, 'utf8');
 
 // Split into <url>...</url> blocks.

@@ -33,13 +33,11 @@ Buona base per la Fase 7 (GEO) — la scelta di autorizzare esplicitamente tutti
 
 Presente e ben strutturato (`https://ironwoodlivigno.com/llms.txt`): riepilogo fattuale di prodotto (90 m², 3 camere, 6 ospiti, sauna+bagno turco privati, 100 m dagli impianti), indirizzo, contatti, rating (5.0/5, 28 recensioni), stagionalità, e link a 6 articoli guida. Buona base già presente per la Fase 7 — da rafforzare con blocchi FAQ diretti più estesi come richiesto dal piano.
 
-## 5. Script di manutenzione: bug trovato
+## 5. Script di manutenzione: bug trovato e risolto (Fase 1)
 
-`scripts/check-hreflang-reciprocity.mjs` punta ancora a `public/sitemap.xml`, **file che non esiste più** (rimosso quando la sitemap è diventata dinamica). Lo script va in crash (`ENOENT`) se eseguito oggi:
-```
-Error: ENOENT: no such file or directory, open '...\public\sitemap.xml'
-```
-Ho verificato manualmente la reciprocità hreflang contro `out/sitemap.xml` (generato da una build fresca): **tutto corretto**, ma lo script di controllo automatico è rotto e va aggiornato per puntare a `out/sitemap.xml` post-build (o essere eseguito dopo `npm run build`). Fix semplice, da includere in Fase 1.
+`scripts/check-hreflang-reciprocity.mjs` puntava ancora a `public/sitemap.xml`, file che non esiste più (rimosso quando la sitemap è diventata dinamica). Andava in crash (`ENOENT`) se eseguito.
+
+**Fix applicato**: script aggiornato per puntare a `out/sitemap.xml` (generato da `npm run build`), con un errore chiaro invece di un `ENOENT` criptico se la build manca. Rieseguito dopo il fix: `80 <url> entries`, **0 problemi** — hreflang tutto reciproco, confermando quanto già verificato manualmente in Fase 0.
 
 ## 6. Indicizzazione Google — dati reali da Search Console
 
