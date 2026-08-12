@@ -255,11 +255,16 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
                  side by side — on a narrow phone the second button wraps
                  onto its own line below the first instead of running off
                  the edge of the screen (the earlier <table><tr><td> layout
-                 had no way to wrap, so it just got visually cut off). -->
+                 had no way to wrap, so it just got visually cut off).
+                 replyHref is escaped here (unlike PHOTOS_URL, a fixed
+                 constant) because it embeds the guest-supplied email
+                 address raw — without escaping, an email value containing
+                 a literal quote could break out of the href attribute and
+                 inject markup into this email. -->
             <tr>
               <td style="padding:16px 36px 36px;">
                 <div>
-                  <a href="${replyHref}"
+                  <a href="${escapeHtml(replyHref)}"
                      style="display:inline-block;color:#ffffff;text-decoration:none;font-family:${FONT_BODY};font-size:15px;font-weight:600;padding:14px 30px;background-color:#A8462F;border-radius:999px;margin:0 10px 10px 0;">
                     Rispondi a ${firstName} →
                   </a>

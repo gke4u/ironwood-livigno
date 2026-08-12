@@ -25,8 +25,9 @@
   ],
 
   // Translates the guest's free-text message to Italian for the
-  // notification (Francesco reads Italian) using Cloudflare's own
-  // m2m100 model — same account, no third-party translation API/key.
+  // notification, and drafts AI-assisted reply text — Cloudflare Workers AI
+  // (@cf/zai-org/glm-4.7-flash, see src/translate.ts and src/draft.ts),
+  // same account, no third-party AI API/key.
   "ai": {
     "binding": "AI"
   },

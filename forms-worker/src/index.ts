@@ -54,6 +54,16 @@ const SMTP_USER = 'info@guanafoto.com';
 const ALERT_TO = 'gkemag@gmail.com';
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+// Any C0 control character, including CR/LF — name/phone/source end up
+// either in the notification email's headers (name becomes the visible
+// From display name and part of the Subject) or its plain-text body.
+// Rejecting control characters outright at the boundary is the primary
+// defense against email header injection (an embedded \r\n could
+// otherwise terminate a header early and smuggle in an extra one); the
+// SMTP layer also sanitizes defensively, but this is where a malformed
+// submission should actually be refused rather than silently cleaned up.
+const CONTROL_CHAR_RE = /[\x00-\x1F\x7F]/;
+const MAX_NAME_LEN = 200;
 const MAX_MESSAGE_LEN = 2000;
 const RETENTION_MONTHS = 24;
 
@@ -93,7 +103,11 @@ function json(body: unknown, status: number, origin: string | null): Response {
 
 function validate(data: Partial<Submission>): string | null {
   if (!data.name?.trim()) return 'name required';
+  if (data.name.length > MAX_NAME_LEN) return 'name too long';
+  if (CONTROL_CHAR_RE.test(data.name)) return 'invalid name';
   if (!data.email?.trim() || !EMAIL_RE.test(data.email.trim())) return 'invalid email';
+  if (data.phone && CONTROL_CHAR_RE.test(data.phone)) return 'invalid phone';
+  if (data.source && CONTROL_CHAR_RE.test(data.source)) return 'invalid source';
   if (!data.checkin_iso || !ISO_DATE_RE.test(data.checkin_iso)) return 'invalid checkin date';
   if (!data.checkout_iso || !ISO_DATE_RE.test(data.checkout_iso)) return 'invalid checkout date';
   if (data.checkout_iso <= data.checkin_iso) return 'checkout must be after checkin';

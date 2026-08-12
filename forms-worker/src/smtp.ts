@@ -35,6 +35,18 @@ function b64(s: string): string {
   return btoa(unescape(encodeURIComponent(s)));
 }
 
+// Strips CR/LF from a value before it's used inside a header line. Guest-
+// supplied text (the name, which becomes both the visible From display
+// name and part of the Subject) isn't restricted upstream against control
+// characters — without this, an embedded "\r\n" could terminate that
+// header early and inject an arbitrary extra one (classic email header
+// injection, e.g. a smuggled Bcc: line). This is the single choke point
+// every outgoing header value passes through, so it's the real defense
+// regardless of what upstream validation does or misses.
+function sanitizeHeaderValue(value: string): string {
+  return value.replace(/[\r\n]+/g, ' ').trim();
+}
+
 // RFC 5322 headers must be 7-bit ASCII — any non-ASCII character (an
 // accented letter, an em dash, an emoji) has to be wrapped as an RFC 2047
 // "encoded word" instead of written raw. Raw UTF-8 bytes in a header is
@@ -143,7 +155,7 @@ export async function sendMail(config: SmtpConfig, message: SmtpMessage): Promis
     // significant spam signal — SpamAssassin's MISSING_DATE/MISSING_MID
     // rules, mailbox.org's own filter likely similar). Easy to miss when
     // hand-building headers since most SMTP libraries add these silently.
-    const fromName = message.fromName ?? 'Ironwood Livigno';
+    const fromName = sanitizeHeaderValue(message.fromName ?? 'Ironwood Livigno');
     const isAsciiFromName = /^[\x00-\x7F]*$/.test(fromName);
     // A pure-ASCII display name keeps the familiar quoted "Name" <addr>
     // form; a non-ASCII one (a guest's accented name, an emoji prefix on
@@ -154,8 +166,8 @@ export async function sendMail(config: SmtpConfig, message: SmtpMessage): Promis
     const commonHeaders = [
       `From: ${fromHeader}`,
       `To: ${recipients.join(', ')}`,
-      message.replyTo ? `Reply-To: ${message.replyTo}` : null,
-      `Subject: ${encodeHeaderWord(message.subject)}`,
+      message.replyTo ? `Reply-To: ${sanitizeHeaderValue(message.replyTo)}` : null,
+      `Subject: ${encodeHeaderWord(sanitizeHeaderValue(message.subject))}`,
       `Date: ${new Date().toUTCString()}`,
       `Message-ID: <${crypto.randomUUID()}@forms.ironwoodlivigno.com>`,
       'MIME-Version: 1.0'
