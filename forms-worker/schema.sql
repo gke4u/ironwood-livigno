@@ -16,7 +16,10 @@ CREATE TABLE submissions (
   locale TEXT,
   status TEXT NOT NULL DEFAULT 'new',
   is_spam INTEGER NOT NULL DEFAULT 0,
-  cf_country TEXT
+  cf_country TEXT,
+  token TEXT -- random id used in the on-demand /translate/:token link (not the sequential `id`, so the link can't be guessed by incrementing a number)
 );
+
+CREATE UNIQUE INDEX idx_submissions_token ON submissions(token);
 
 CREATE INDEX idx_submissions_created_at ON submissions(created_at);

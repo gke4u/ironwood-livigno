@@ -65,7 +65,12 @@ function buildReplyMailto(data: Submission, nights: number | null): string {
     data.message ? 'NOTA DEL CLIENTE:' : null,
     data.message ? `"${data.message}"` : null,
     '',
-    `Foto dell'appartamento: ${PHOTOS_URL}`
+    // No label text here on purpose — the guest may not read Italian, and
+    // a bare URL with a camera emoji needs no translation to be
+    // understood. The destination (the site's own photo gallery section)
+    // already scrolls through the real photos, so nothing further to
+    // build for that.
+    `📷 ${PHOTOS_URL}`
   ]
     .filter((l) => l !== null)
     .join('\n');
@@ -75,7 +80,7 @@ function buildReplyMailto(data: Submission, nights: number | null): string {
   return `mailto:${encodeURIComponent(data.email)}?subject=${subject}&body=${body}`;
 }
 
-export function buildNotificationHtml(data: Submission, id: number, country: string, translation: Translation): string {
+export function buildNotificationHtml(data: Submission, id: number, country: string, token: string): string {
   const nights = nightsBetween(data.checkin_iso, data.checkout_iso);
   const firstName = escapeHtml(data.name.trim().split(/\s+/)[0] || data.name);
 
@@ -172,40 +177,34 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
                 ? `
             <!-- Note: the highest-priority freeform content in the email —
                  heavier border, warm tinted background, bold label, so it
-                 can't be skimmed past the way a table row would be. When
-                 translated, the language it was written in gets its own
-                 loud badge — easy to miss as plain text buried in a
-                 sentence, easy to spot as a colored tag. -->
+                 can't be skimmed past the way a table row would be. The
+                 language it was written in gets its own loud badge when
+                 not Italian, next to a "Traduci in italiano" button that
+                 opens the on-demand translation page (GET /translate/:token)
+                 — translation is a click away, not attempted automatically
+                 at send time (that repeatedly failed for infra reasons
+                 unrelated to this email itself; decoupling it means a
+                 translation problem can never delay the notification). -->
             <tr>
               <td style="padding:24px 36px 0;">
-                <table role="presentation" cellpadding="0" cellspacing="0" style="margin-bottom:10px;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:10px;">
                   <tr>
-                    <td style="font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#A8462F;padding-right:8px;">✎ Nota di ${firstName}</td>
+                    <td style="font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#A8462F;">✎ Nota di ${firstName}</td>
                     ${
-                      translation
-                        ? `<td><table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="background-color:#241C15;border-radius:999px;padding:3px 12px;"><span style="font-family:${FONT_BODY};font-size:11px;font-weight:700;color:#EFE6D8;white-space:nowrap;">Scritta in ${escapeHtml(translation.sourceLanguageLabel)}</span></td></tr></table></td>`
+                      data.locale && data.locale !== 'it'
+                        ? `<td align="right">
+                            <table role="presentation" cellpadding="0" cellspacing="0" style="margin-left:auto;"><tr>
+                              <td style="padding-right:6px;"><table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="background-color:#241C15;border-radius:999px;padding:3px 12px;"><span style="font-family:${FONT_BODY};font-size:11px;font-weight:700;color:#EFE6D8;white-space:nowrap;">Scritta in ${escapeHtml(localeDisplayName(data.locale))}</span></td></tr></table></td>
+                              <td><a href="https://forms.ironwoodlivigno.com/translate/${token}" style="display:inline-block;background-color:#A8462F;border-radius:999px;padding:3px 12px;text-decoration:none;"><span style="font-family:${FONT_BODY};font-size:11px;font-weight:700;color:#ffffff;white-space:nowrap;">🌐 Traduci in italiano</span></a></td>
+                            </tr></table>
+                          </td>`
                         : ''
                     }
                   </tr>
                 </table>
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#FBF1E7;border-radius:14px;border:1px solid #EAD9BE;border-left:5px solid #A8462F;">
                   <tr>
-                    <td style="padding:18px 20px;font-family:${FONT_BODY};font-size:16px;font-weight:500;color:#241C15;line-height:1.6;">
-                      ${escapeHtml(translation ? translation.translatedText : data.message).replace(/\n/g, '<br>')}
-                      ${
-                        translation
-                          ? `
-                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:14px;padding-top:14px;border-top:1px dashed #EAD9BE;">
-                        <tr>
-                          <td style="font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#241C15;opacity:0.45;padding-bottom:6px;">Testo originale (${escapeHtml(translation.sourceLanguageLabel)})</td>
-                        </tr>
-                        <tr>
-                          <td style="font-family:${FONT_BODY};font-size:14px;color:#241C15;opacity:0.65;font-style:italic;line-height:1.5;">${escapeHtml(data.message).replace(/\n/g, '<br>')}</td>
-                        </tr>
-                      </table>`
-                          : ''
-                      }
-                    </td>
+                    <td style="padding:18px 20px;font-family:${FONT_BODY};font-size:16px;font-weight:500;color:#241C15;line-height:1.6;">${escapeHtml(data.message).replace(/\n/g, '<br>')}</td>
                   </tr>
                 </table>
               </td>
@@ -256,6 +255,58 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
               </td>
             </tr>
 
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`;
+}
+
+// Small standalone page for GET /translate/:token — same fonts/colors as
+// the notification email so it doesn't feel like a different product.
+export function renderTranslatePage(
+  params: { error: string; original?: string } | { name: string; original: string; translation: NonNullable<Translation> }
+): string {
+  const body =
+    'error' in params
+      ? `
+      <p style="margin:0 0 16px;font-family:${FONT_BODY};font-size:16px;color:#241C15;">${escapeHtml(params.error)}</p>
+      ${
+        params.original
+          ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F3EC;border-radius:14px;margin-top:8px;"><tr><td style="padding:16px 20px;font-family:${FONT_BODY};font-size:15px;color:#241C15;line-height:1.6;">${escapeHtml(params.original).replace(/\n/g, '<br>')}</td></tr></table>`
+          : ''
+      }`
+      : `
+      <p style="margin:0 0 6px;font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#A8462F;">Traduzione automatica · nota di ${escapeHtml(params.name)}</p>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#FBF1E7;border-radius:14px;border:1px solid #EAD9BE;border-left:5px solid #A8462F;margin-bottom:20px;">
+        <tr><td style="padding:18px 20px;font-family:${FONT_BODY};font-size:16px;font-weight:500;color:#241C15;line-height:1.6;">${escapeHtml(params.translation.translatedText).replace(/\n/g, '<br>')}</td></tr>
+      </table>
+      <p style="margin:0 0 6px;font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#241C15;opacity:0.45;">Testo originale (${escapeHtml(params.translation.sourceLanguageLabel)})</p>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F3EC;border-radius:14px;"><tr><td style="padding:16px 20px;font-family:${FONT_BODY};font-size:15px;color:#241C15;opacity:0.75;font-style:italic;line-height:1.6;">${escapeHtml(params.original).replace(/\n/g, '<br>')}</td></tr></table>`;
+
+  return `<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traduzione — Ironwood Livigno</title>
+  </head>
+  <body style="margin:0;padding:0;background-color:#F7F3EC;font-family:${FONT_BODY};">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:40px 16px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;background-color:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(36,28,21,0.10);">
+            <tr>
+              <td style="background-color:#241C15;padding:24px 32px;">
+                <p style="margin:0;color:#C9A059;font-family:${FONT_BODY};font-size:11px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;">Ironwood Livigno</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:28px 32px 32px;">
+                ${body}
+              </td>
+            </tr>
           </table>
         </td>
       </tr>

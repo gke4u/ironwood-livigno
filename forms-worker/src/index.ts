@@ -23,7 +23,7 @@
 // authenticated implicitly by the deployment itself.
 
 import { sendMail } from './smtp';
-import { buildNotificationHtml } from './email-template';
+import { buildNotificationHtml, renderTranslatePage } from './email-template';
 import { translateMessageToItalian } from './translate';
 
 export interface Env {
@@ -100,7 +100,7 @@ function isSpam(data: Partial<Submission>): boolean {
   return Boolean(data.company && data.company.trim().length > 0);
 }
 
-async function sendNotification(env: Env, data: Submission, country: string, id: number) {
+async function sendNotification(env: Env, data: Submission, country: string, id: number, token: string) {
   const extras = [data.extra_breakfast ? 'Colazione' : null, data.extra_ebike ? 'Noleggio e-bike' : null]
     .filter(Boolean)
     .join(' + ');
@@ -119,8 +119,13 @@ async function sendNotification(env: Env, data: Submission, country: string, id:
     data.message ? `Messaggio: ${data.message}` : null
   ].filter(Boolean);
 
-  const translation = data.message ? await translateMessageToItalian(env.AI, data.message, data.locale) : null;
-
+  // Translation is on-demand now (GET /translate/:token, clicked from the
+  // email), not attempted automatically at send time. It was, across three
+  // separate fixes — a Workers AI capacity issue, then a deprecated model —
+  // still an extra failure mode sitting between "form submitted" and "email
+  // delivered". Decoupling it means a translation problem can never delay
+  // or break the notification itself, and it's testable in isolation by
+  // just opening the link.
   await sendMail(
     { host: SMTP_HOST, port: SMTP_PORT, user: SMTP_USER, password: env.SMTP_PASSWORD },
     {
@@ -130,15 +135,53 @@ async function sendNotification(env: Env, data: Submission, country: string, id:
       replyTo: data.email,
       subject: `${data.name} — richiesta disponibilità Ironwood Livigno`,
       text: lines.join('\n'),
-      html: buildNotificationHtml(data, id, country, translation)
+      html: buildNotificationHtml(data, id, country, token)
     }
   );
+}
+
+function htmlPage(body: string, status = 200): Response {
+  return new Response(body, { status, headers: { 'Content-Type': 'text/html; charset=UTF-8' } });
+}
+
+// Simple branded page — same fonts/colors as the notification email — shown
+// when Francesco clicks "Traduci in italiano". Looks up the submission by
+// its random token (not the sequential id, so this can't be enumerated by
+// guessing numbers) and translates on the spot, so a translation failure
+// only ever affects this one click, never the email delivery itself.
+async function handleTranslatePage(env: Env, token: string): Promise<Response> {
+  const row = await env.DB.prepare('SELECT name, message, locale FROM submissions WHERE token = ?').bind(token).first<{
+    name: string;
+    message: string | null;
+    locale: string | null;
+  }>();
+
+  if (!row) return htmlPage(renderTranslatePage({ error: 'Richiesta non trovata.' }), 404);
+  if (!row.message) return htmlPage(renderTranslatePage({ error: 'Questa richiesta non ha un messaggio da tradurre.' }), 200);
+
+  const translation = await translateMessageToItalian(env.AI, row.message, row.locale ?? undefined);
+  if (!translation) {
+    return htmlPage(
+      renderTranslatePage({ error: 'Traduzione non riuscita al momento. Riprova tra poco: il messaggio originale resta comunque leggibile qui sotto.', original: row.message }),
+      200
+    );
+  }
+
+  return htmlPage(renderTranslatePage({ name: row.name, original: row.message, translation }));
 }
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const origin = request.headers.get('Origin');
     const url = new URL(request.url);
+
+    // /translate/:token — opened directly in a browser from a link in the
+    // notification email (not an AJAX call from the site), so it's a plain
+    // GET returning an HTML page, no CORS/Origin check needed here.
+    const translateMatch = /^\/translate\/([a-f0-9-]{36})$/.exec(url.pathname);
+    if (translateMatch && request.method === 'GET') {
+      return handleTranslatePage(env, translateMatch[1]);
+    }
 
     if (request.method === 'OPTIONS') {
       return new Response(null, { status: 204, headers: corsHeaders(origin) });
@@ -175,12 +218,14 @@ export default {
     const country = request.headers.get('CF-IPCountry') || '';
     const now = new Date().toISOString();
 
+    const token = crypto.randomUUID();
+
     try {
       const result = await env.DB.prepare(
         `INSERT INTO submissions
           (created_at, name, email, phone, checkin_display, checkin_iso, checkout_display, checkout_iso,
-           guests, extra_breakfast, extra_ebike, source, message, locale, status, is_spam, cf_country)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new', ?, ?)`
+           guests, extra_breakfast, extra_ebike, source, message, locale, status, is_spam, cf_country, token)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new', ?, ?, ?)`
       )
         .bind(
           now,
@@ -198,7 +243,8 @@ export default {
           data.message ?? null,
           data.locale ?? null,
           spam ? 1 : 0,
-          country
+          country,
+          token
         )
         .run();
 
@@ -214,7 +260,7 @@ export default {
       // honeypot already used, now enforced server-side too.
       if (!spam) {
         try {
-          await sendNotification(env, data as Submission, country, Number(result.meta.last_row_id));
+          await sendNotification(env, data as Submission, country, Number(result.meta.last_row_id), token);
         } catch (err) {
           console.error('notification email failed (submission was still saved)', err);
         }
