@@ -146,7 +146,7 @@ async function sendAlert(env: Env, subject: string, details: string) {
   }
 }
 
-async function sendNotification(env: Env, data: Submission, country: string, id: number, token: string) {
+async function sendNotification(env: Env, data: Submission, country: string, id: number) {
   const extras = [data.extra_breakfast ? 'Colazione' : null, data.extra_ebike ? 'Noleggio e-bike' : null]
     .filter(Boolean)
     .join(' + ');
@@ -186,7 +186,7 @@ async function sendNotification(env: Env, data: Submission, country: string, id:
       replyTo: data.email,
       subject: `${data.name} — richiesta disponibilità Ironwood Livigno`,
       text: lines.join('\n'),
-      html: buildNotificationHtml(data, id, country, token, translation)
+      html: buildNotificationHtml(data, id, country, translation)
     }
   );
 }
@@ -336,7 +336,7 @@ export default {
       // honeypot already used, now enforced server-side too.
       if (!spam) {
         try {
-          await sendNotification(env, data as Submission, country, Number(result.meta.last_row_id), token);
+          await sendNotification(env, data as Submission, country, Number(result.meta.last_row_id));
         } catch (err) {
           console.error('notification email failed (submission was still saved)', err);
           // This is the case most worth an alert: a real guest request

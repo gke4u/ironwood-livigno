@@ -97,7 +97,7 @@ function buildReplyMailto(data: Submission, nights: number | null): string {
   return `mailto:${data.email}?subject=${subject}&body=${body}`;
 }
 
-export function buildNotificationHtml(data: Submission, id: number, country: string, token: string, translation: Translation): string {
+export function buildNotificationHtml(data: Submission, id: number, country: string, translation: Translation): string {
   const nights = nightsBetween(data.checkin_iso, data.checkout_iso);
   const firstName = escapeHtml(data.name.trim().split(/\s+/)[0] || data.name);
 
@@ -274,7 +274,7 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
                   </a>
                 </div>
                 <p style="margin:2px 0 0;font-family:${FONT_BODY};font-size:12px;color:#241C15;opacity:0.45;">La risposta parte già con la richiesta di ${firstName} in citazione.</p>
-                <p style="margin:10px 0 0;"><a href="https://forms.ironwoodlivigno.com/draft/${token}" style="font-family:${FONT_BODY};font-size:13px;font-weight:600;color:#A8462F;text-decoration:none;">✍️ Genera bozza di risposta con l'AI →</a></p>
+                <p style="margin:10px 0 0;"><a href="https://www.kimi.com/" target="_blank" rel="noopener noreferrer" style="font-family:${FONT_BODY};font-size:13px;font-weight:600;color:#A8462F;text-decoration:none;">✍️ Genera bozza di risposta con l'AI →</a></p>
               </td>
             </tr>
 
