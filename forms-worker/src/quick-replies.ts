@@ -10,10 +10,14 @@
 // it's the original the other 11 versions were translated from, not a
 // translation itself.
 //
-// Every template leaves an explicit, clearly-marked placeholder for price
-// and any situational notes — those can't be filled in automatically, so
-// the owner fills them in directly in the mail client's compose window
-// after clicking, before sending.
+// The price/notes placeholder only appears in "available" — it's the only
+// one where a price is actually relevant; "unavailable" and "pending"
+// don't ask the owner to fill in anything before sending. "unavailable"
+// closes with a warm line hoping to host the guest another time, instead
+// of ending flatly on the bad news.
+//
+// Every template ends with the same signature block (Francesco's name,
+// Ironwood Livigno, and a WhatsApp contact link) — see SIGNATURE below.
 import type { Submission } from './index';
 import { replyLabelsFor } from './reply-labels';
 
@@ -26,6 +30,14 @@ type QuickReplyContent = {
   pending: string;
 };
 
+// A bare wa.me link (opens a WhatsApp chat directly on any device) rather
+// than a phone number formatted for a phone call — the owner specifically
+// asked for a WhatsApp contact option, not a "call us" one. "WhatsApp" and
+// "Francesco" are left untranslated in every locale: the brand name and
+// the owner's first name don't need translating, and an identical block
+// everywhere is one less thing to get wrong across 12 languages.
+const SIGNATURE = 'Francesco\nIronwood Livigno\nWhatsApp: https://wa.me/390342929285';
+
 const IT: QuickReplyContent = {
   placeholder: '[Inserisci qui prezzo e note]',
   available: `Grazie per averci scritto! Siamo lieti di confermarti che l'appartamento è disponibile per le date richieste ({checkin} – {checkout}{nights}, {guests} ospiti).
@@ -35,23 +47,19 @@ const IT: QuickReplyContent = {
 Per procedere con la prenotazione facci sapere: ti guideremo nei prossimi passi.
 
 A presto,
-Ironwood Livigno`,
+{signature}`,
   unavailable: `Grazie per averci scritto. Purtroppo l'appartamento non è disponibile per le date richieste ({checkin} – {checkout}).
 
-{placeholder}
-
-Se può interessarti, possiamo proporti alcune date alternative: faccelo sapere.
+Se può interessarti, possiamo proporti alcune date alternative: faccelo sapere. Speriamo comunque di poterti ospitare in un'altra occasione.
 
 Un saluto,
-Ironwood Livigno`,
+{signature}`,
   pending: `Grazie per averci scritto! Abbiamo ricevuto la tua richiesta per {checkin} – {checkout} ({guests} ospiti).
-
-{placeholder}
 
 Ti confermiamo a breve disponibilità e prezzo.
 
 A presto,
-Ironwood Livigno`
+{signature}`
 };
 
 const EN: QuickReplyContent = {
@@ -63,23 +71,19 @@ const EN: QuickReplyContent = {
 To move forward with the booking, just let us know and we'll guide you through the next steps.
 
 Best,
-Ironwood Livigno`,
+{signature}`,
   unavailable: `Thank you for reaching out. Unfortunately the apartment isn't available for your requested dates ({checkin} – {checkout}).
 
-{placeholder}
-
-If it's helpful, we can suggest some alternative dates — just let us know.
+If it's helpful, we can suggest some alternative dates — just let us know. We do hope we can host you on another occasion.
 
 Best regards,
-Ironwood Livigno`,
+{signature}`,
   pending: `Thank you for reaching out! We've received your request for {checkin} – {checkout} ({guests} guests).
-
-{placeholder}
 
 We'll confirm availability and pricing shortly.
 
 Best,
-Ironwood Livigno`
+{signature}`
 };
 
 const DE: QuickReplyContent = {
@@ -91,23 +95,19 @@ const DE: QuickReplyContent = {
 Um mit der Buchung fortzufahren, lassen Sie es uns einfach wissen — wir begleiten Sie durch die nächsten Schritte.
 
 Viele Grüße,
-Ironwood Livigno`,
+{signature}`,
   unavailable: `Vielen Dank für Ihre Nachricht. Leider ist die Wohnung für die gewünschten Daten ({checkin} – {checkout}) nicht verfügbar.
 
-{placeholder}
-
-Falls gewünscht, schlagen wir Ihnen gerne alternative Termine vor — lassen Sie es uns wissen.
+Falls gewünscht, schlagen wir Ihnen gerne alternative Termine vor — lassen Sie es uns wissen. Wir hoffen, Sie bei anderer Gelegenheit bei uns begrüßen zu dürfen.
 
 Mit freundlichen Grüßen,
-Ironwood Livigno`,
+{signature}`,
   pending: `Vielen Dank für Ihre Nachricht! Wir haben Ihre Anfrage für {checkin} – {checkout} ({guests} Gäste) erhalten.
-
-{placeholder}
 
 Wir bestätigen Ihnen in Kürze Verfügbarkeit und Preis.
 
 Viele Grüße,
-Ironwood Livigno`
+{signature}`
 };
 
 const FR: QuickReplyContent = {
@@ -119,23 +119,19 @@ const FR: QuickReplyContent = {
 Pour poursuivre la réservation, faites-le nous savoir et nous vous guiderons pour la suite.
 
 À bientôt,
-Ironwood Livigno`,
+{signature}`,
   unavailable: `Merci pour votre message. Malheureusement, l'appartement n'est pas disponible pour les dates demandées ({checkin} – {checkout}).
 
-{placeholder}
-
-Si cela peut vous intéresser, nous pouvons vous proposer d'autres dates — faites-le nous savoir.
+Si cela peut vous intéresser, nous pouvons vous proposer d'autres dates — faites-le nous savoir. Nous espérons avoir le plaisir de vous accueillir à une autre occasion.
 
 Cordialement,
-Ironwood Livigno`,
+{signature}`,
   pending: `Merci pour votre message ! Nous avons bien reçu votre demande pour {checkin} – {checkout} ({guests} voyageurs).
-
-{placeholder}
 
 Nous vous confirmerons rapidement la disponibilité et le prix.
 
 À bientôt,
-Ironwood Livigno`
+{signature}`
 };
 
 const DA: QuickReplyContent = {
@@ -147,23 +143,19 @@ const DA: QuickReplyContent = {
 For at gå videre med bookingen, så sig endelig til, så guider vi dig gennem de næste trin.
 
 De bedste hilsner,
-Ironwood Livigno`,
+{signature}`,
   unavailable: `Tak for din besked. Desværre er lejligheden ikke ledig på de ønskede datoer ({checkin} – {checkout}).
 
-{placeholder}
-
-Hvis det er relevant, kan vi foreslå nogle alternative datoer — sig endelig til.
+Hvis det er relevant, kan vi foreslå nogle alternative datoer — sig endelig til. Vi håber at kunne byde dig velkommen ved en anden lejlighed.
 
 Venlig hilsen,
-Ironwood Livigno`,
+{signature}`,
   pending: `Tak for din besked! Vi har modtaget din forespørgsel for {checkin} – {checkout} ({guests} gæster).
-
-{placeholder}
 
 Vi bekræfter snarest ledighed og pris.
 
 De bedste hilsner,
-Ironwood Livigno`
+{signature}`
 };
 
 const PL: QuickReplyContent = {
@@ -175,23 +167,19 @@ const PL: QuickReplyContent = {
 Aby przejść do rezerwacji, daj nam znać — przeprowadzimy Cię przez kolejne kroki.
 
 Pozdrawiamy,
-Ironwood Livigno`,
+{signature}`,
   unavailable: `Dziękujemy za wiadomość. Niestety apartament nie jest dostępny w wybranym terminie ({checkin} – {checkout}).
 
-{placeholder}
-
-Jeśli chcesz, możemy zaproponować alternatywne terminy — daj nam znać.
+Jeśli chcesz, możemy zaproponować alternatywne terminy — daj nam znać. Mamy nadzieję gościć Cię przy innej okazji.
 
 Pozdrawiamy,
-Ironwood Livigno`,
+{signature}`,
   pending: `Dziękujemy za wiadomość! Otrzymaliśmy Twoje zapytanie na termin {checkin} – {checkout} ({guests} gości).
-
-{placeholder}
 
 Wkrótce potwierdzimy dostępność i cenę.
 
 Pozdrawiamy,
-Ironwood Livigno`
+{signature}`
 };
 
 const CS: QuickReplyContent = {
@@ -203,23 +191,19 @@ const CS: QuickReplyContent = {
 Pro pokračování v rezervaci nám dejte vědět — provedeme vás dalšími kroky.
 
 S pozdravem,
-Ironwood Livigno`,
+{signature}`,
   unavailable: `Děkujeme za zprávu. Bohužel apartmán není k dispozici ve vámi požadovaném termínu ({checkin} – {checkout}).
 
-{placeholder}
-
-Pokud by se to hodilo, můžeme navrhnout alternativní termíny — dejte nám vědět.
+Pokud by se to hodilo, můžeme navrhnout alternativní termíny — dejte nám vědět. Doufáme, že vás budeme moci přivítat při jiné příležitosti.
 
 S pozdravem,
-Ironwood Livigno`,
+{signature}`,
   pending: `Děkujeme za zprávu! Obdrželi jsme vaši poptávku na termín {checkin} – {checkout} ({guests} hostů).
-
-{placeholder}
 
 Brzy vám potvrdíme dostupnost a cenu.
 
 S pozdravem,
-Ironwood Livigno`
+{signature}`
 };
 
 const NO: QuickReplyContent = {
@@ -231,23 +215,19 @@ const NO: QuickReplyContent = {
 For å gå videre med bookingen, bare si ifra, så veileder vi deg gjennom de neste stegene.
 
 Vennlig hilsen,
-Ironwood Livigno`,
+{signature}`,
   unavailable: `Takk for meldingen din. Dessverre er leiligheten ikke ledig for de ønskede datoene ({checkin} – {checkout}).
 
-{placeholder}
-
-Om det er aktuelt, kan vi foreslå alternative datoer — bare si ifra.
+Om det er aktuelt, kan vi foreslå alternative datoer — bare si ifra. Vi håper å kunne ønske deg velkommen ved en annen anledning.
 
 Vennlig hilsen,
-Ironwood Livigno`,
+{signature}`,
   pending: `Takk for meldingen din! Vi har mottatt forespørselen din for {checkin} – {checkout} ({guests} gjester).
-
-{placeholder}
 
 Vi bekrefter tilgjengelighet og pris snarlig.
 
 Vennlig hilsen,
-Ironwood Livigno`
+{signature}`
 };
 
 const NL: QuickReplyContent = {
@@ -259,23 +239,19 @@ const NL: QuickReplyContent = {
 Om verder te gaan met de boeking, laat het ons weten — we begeleiden u door de volgende stappen.
 
 Met vriendelijke groet,
-Ironwood Livigno`,
+{signature}`,
   unavailable: `Bedankt voor uw bericht. Helaas is het appartement niet beschikbaar voor de gewenste data ({checkin} – {checkout}).
 
-{placeholder}
-
-Als dat interessant is, kunnen we alternatieve data voorstellen — laat het ons weten.
+Als dat interessant is, kunnen we alternatieve data voorstellen — laat het ons weten. We hopen u bij een andere gelegenheid te mogen verwelkomen.
 
 Met vriendelijke groet,
-Ironwood Livigno`,
+{signature}`,
   pending: `Bedankt voor uw bericht! We hebben uw aanvraag ontvangen voor {checkin} – {checkout} ({guests} gasten).
-
-{placeholder}
 
 We bevestigen binnenkort de beschikbaarheid en de prijs.
 
 Met vriendelijke groet,
-Ironwood Livigno`
+{signature}`
 };
 
 const ZH: QuickReplyContent = {
@@ -287,23 +263,19 @@ const ZH: QuickReplyContent = {
 如需继续预订,请告诉我们,我们将为您指引后续步骤。
 
 此致,
-Ironwood Livigno`,
+{signature}`,
   unavailable: `感谢您的来信。很抱歉,公寓在您所需的日期({checkin} – {checkout})内暂无空房。
 
-{placeholder}
-
-如果您有兴趣,我们可以为您推荐其他可选日期,请告诉我们。
+如果您有兴趣,我们可以为您推荐其他可选日期,请告诉我们。希望有机会在其他时间接待您。
 
 此致,
-Ironwood Livigno`,
+{signature}`,
   pending: `感谢您的来信!我们已收到您关于 {checkin} – {checkout}({guests}位客人)的咨询。
-
-{placeholder}
 
 我们会尽快确认空房情况和价格。
 
 此致,
-Ironwood Livigno`
+{signature}`
 };
 
 const JA: QuickReplyContent = {
@@ -315,23 +287,19 @@ const JA: QuickReplyContent = {
 ご予約を進められる場合はお知らせください。次のステップをご案内いたします。
 
 よろしくお願いいたします。
-Ironwood Livigno`,
+{signature}`,
   unavailable: `ご連絡ありがとうございます。誠に申し訳ございませんが、ご希望の日程({checkin} – {checkout})はご利用いただけません。
 
-{placeholder}
-
-もしよろしければ、代替日程をご提案することも可能です。お知らせください。
+もしよろしければ、代替日程をご提案することも可能です。お知らせください。またの機会にぜひお迎えできればと思います。
 
 よろしくお願いいたします。
-Ironwood Livigno`,
+{signature}`,
   pending: `ご連絡ありがとうございます!{checkin} – {checkout}({guests}名様)のお問い合わせを受け付けました。
-
-{placeholder}
 
 近日中に空室状況と料金をご確認の上、ご連絡いたします。
 
 よろしくお願いいたします。
-Ironwood Livigno`
+{signature}`
 };
 
 const QUICK_REPLIES: Record<string, QuickReplyContent> = {
@@ -374,7 +342,8 @@ function fillTemplate(template: string, placeholder: string, data: Submission, n
     .replace(/\{checkout\}/g, data.checkout)
     .replace(/\{nights\}/g, nightsPhrase)
     .replace(/\{guests\}/g, String(data.guests))
-    .replace(/\{placeholder\}/g, placeholder);
+    .replace(/\{placeholder\}/g, placeholder)
+    .replace(/\{signature\}/g, SIGNATURE);
 }
 
 export function buildQuickReplies(data: Submission, nights: number | null): QuickReplyOption[] {
