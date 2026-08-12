@@ -233,3 +233,21 @@
 /pl/rezerwacja /pl#prenota 301
 
 /cs/ochrana-soukromi /cs/privacy 301
+
+# ------------------------------------------------------------------
+# Found via Search Console -> Indicizzazione -> Pagine -> "Pagina
+# duplicata, Google ha scelto una pagina canonica diversa da quella
+# specificata dall'utente" drilldown export on 2026-08-12. All 5 were
+# crawled by Google at the www subdomain (mid-June 2026, well before
+# the www->apex zone-level redirect existed); confirmed live on
+# 2026-08-12 that www now correctly 301s to apex in one hop, but the
+# apex target itself had no rule and fell through to a plain 404.
+# Mapped using the same convention as the identical apex-only rules
+# above (/prenota, /prova, /dove-siamo) now extended to their en/de
+# locale-prefixed twins, so Google converges on a real redirect target
+# instead of a dead end on next crawl.
+/en/prenota /en#prenota 301
+/en/prova /en 301
+/de/prenota /de#prenota 301
+/de/dove-siamo /de#posizione 301
+/de/prova /de 301

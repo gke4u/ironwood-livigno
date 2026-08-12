@@ -115,7 +115,28 @@ Ricevuto ed incrociato con `public/_redirects` attuale. Tre gruppi distinti:
 
 Target verificati contro `src/i18n/routing.ts` (contactSlugs reali per lingua) e gli id sezione reali nel codice (`#camere`, `#esperienza`, `#posizione`, `#prenota`, `#tariffe` — quest'ultimo per la tabella tariffe, non ovvio dal nome pagina "prices").
 
-**Gruppo C — tutti con prefisso `www.`, possibile falla nel redirect di zona Cloudflare** (non risolvibile da `_redirects`, che vede solo richieste già arrivate su apex): `www.ironwoodlivigno.com/home`, `/en/dove-siamo`, `/cs/dove-siamo`, `/en/photogallery`, `/it/home`, `/cs/prova`, e — il caso più indicativo — **`www.ironwoodlivigno.com/cs/`**, che è la home reale della lingua ceca (dovrebbe funzionare sempre). Se anche un path valido come `/cs/` va in 404 con `www.`, il redirect www→apex a livello di zona Cloudflare potrebbe non coprire tutti i path o avere un problema con lo slash finale. Da verificare in Cloudflare dashboard → il tuo dominio → Rules → Redirect Rules (non posso controllarlo io, serve accesso alla dashboard).
+**Gruppo C — tutti con prefisso `www.`, sospetta falla nel redirect di zona Cloudflare** (non risolvibile da `_redirects`, che vede solo richieste già arrivate su apex): `www.ironwoodlivigno.com/home`, `/en/dove-siamo`, `/cs/dove-siamo`, `/en/photogallery`, `/it/home`, `/cs/prova`, `/cs/`. **Aggiornamento Fase 1 (2026-08-12)**: verificato live con `curl` tutti e 7 i path — **oggi redirigono tutti correttamente** (301 www→apex in un solo hop, poi 200 sulla destinazione finale). Il redirect di zona Cloudflare funziona come previsto; il finding era basato su dati Search Console già stale al momento dell'audit. Nessuna azione necessaria: si risolve da solo alla prossima scansione di Google (stesso meccanismo del Gruppo A sopra).
+
+### 6ter. I 6 casi di canonical non rispettato (drilldown Search Console, Fase 1)
+
+Export "Pagina duplicata, Google ha scelto una pagina canonica diversa da quella specificata dall'utente" (`ironwoodlivigno.com-Coverage-Drilldown-2026-08-12 (2).zip`), 6 URL:
+
+| URL | Ultima scansione | Diagnosi |
+|---|---|---|
+| `www.ironwoodlivigno.com/en/prenota` | 2026-06-21 | www→apex ok (301, 1 hop), apex era un 404 nudo senza regola |
+| `www.ironwoodlivigno.com/en/prova` | 2026-06-20 | idem |
+| `www.ironwoodlivigno.com/de/prenota` | 2026-06-20 | idem |
+| `www.ironwoodlivigno.com/de/dove-siamo` | 2026-06-18 | idem |
+| `www.ironwoodlivigno.com/de/prova` | 2026-06-16 | idem |
+| `ironwoodlivigno.com/pl/kontakt` | 2026-08-08 | pagina reale, **non un problema di redirect** — vedi sotto |
+
+**5 su 6 sono lo stesso pattern del Gruppo C** (punto 6bis): scansionati a metà giugno, con prefisso `www.`, ben prima che esistesse il redirect di zona www→apex. Verificato live: oggi `www.` fa già 301 pulito verso apex in un solo hop, ma l'apex di destinazione non aveva nessuna regola in `_redirects` e cadeva su un 404 nudo — quindi Google, alla prossima scansione, vedrebbe un redirect che porta a un vicolo cieco. Aggiunte le 5 regole mancanti (`/en/prenota`, `/en/prova`, `/de/prenota`, `/de/dove-siamo`, `/de/prova`), stessa convenzione delle regole apex-only già esistenti (`/prenota`, `/prova`, `/dove-siamo`). Nessuna necessità di intervenire lato Cloudflare: il redirect di zona funziona già correttamente (vedi aggiornamento Gruppo C sopra).
+
+**`/pl/kontakt` è un caso diverso**: pagina viva, scansionata di recente (8 agosto), risponde 200, e dichiara correttamente `<link rel="canonical" href="https://ironwoodlivigno.com/pl/kontakt"/>` — non c'è nulla di rotto nel markup. Google sta comunque scegliendo un altro URL come rappresentante. Cause più probabili:
+- Le 12 pagine di contatto (`/{locale}/{contactSlug}`) condividono lo stesso template (`src/app/[locale]/[contactSlug]/page.tsx`) e differiscono soprattutto per stringhe tradotte — contenuto strutturalmente molto simile tra le lingue è la causa più comune di questo tipo di consolidamento lato Google, ed è generalmente considerato normale/a bassa severità quando l'hreflang è corretto (verificato in Fase 0: tutte le 80 entry sono reciproche).
+- Il dato grezzo dell'export non include la colonna "canonical scelto da Google" (visibile solo aprendo il dettaglio del singolo URL in Search Console → Ispeziona URL), quindi non posso confermare quale pagina Google stia effettivamente preferendo senza quel dato aggiuntivo.
+
+**Nessuna azione di codice consigliata su `/pl/kontakt`** salvo che tu veda un impatto reale su traffico/posizionamento per quella pagina — in tal caso vale la pena aprire "Ispeziona URL" su di essa in Search Console per vedere il canonical scelto da Google e valutare se differenziare maggiormente il contenuto.
 
 ## 7. Core Web Vitals (PageSpeed Insights)
 
@@ -128,9 +149,9 @@ Ho provato a interrogare l'API pubblica di PageSpeed Insights su `/it`, `/invern
 | Priorità | Finding | Fase di intervento |
 |---|---|---|
 | Alta | ~~41 pagine 404 in Search Console con convalida "Non riuscita"~~ — 25 nuove regole redirect aggiunte (gruppo B) | ✅ Fase 1 |
-| Alta | ~~Pagine satellite (9, priorità 0.8) non linkate da Nav della homepage~~ — dropdown "Scopri" aggiunto in Nav/MobileMenu (solo IT) | ✅ Fase 1 |
+| Alta | ~~Pagine satellite (9, priorità 0.8) non linkate da Nav della homepage~~ — dropdown "Scopri" aggiunto in Nav/MobileMenu, tutte e 12 le lingue | ✅ Fase 1 |
 | Alta | ~~Script `check-hreflang-reciprocity.mjs` rotto~~ — fixato, punta a `out/sitemap.xml` | ✅ Fase 1 |
-| Media | 6 pagine dove Google sceglie un canonical diverso da quello dichiarato | Fase 1 |
+| Media | ~~6 pagine dove Google sceglie un canonical diverso~~ — 5/6 erano il Gruppo C (www, redirect ora funzionante ma mancava la regola apex, aggiunta); 1/6 (`/pl/kontakt`) è contenuto duplicato tra i 12 template di contatto, probabilmente benigno | ✅ Fase 1 |
 | Media | 18 pagine scansionate ma non indicizzate (possibile segnale di contenuto sottile) | Fase 1 / Fase 3 |
 | Media | Pagine satellite solo in italiano nonostante mercati target multilingua | Fase 2 / Fase 5 |
 | Media | Core Web Vitals non ancora misurati (serve secondo export Search Console o retry PSI) | Fase 9 |
