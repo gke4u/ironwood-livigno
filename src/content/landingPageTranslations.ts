@@ -126,6 +126,47 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       breadcrumbName: 'Winter in Livigno, Italy',
       navLabel: 'Winter',
       relatedLinkLabel: 'Read the full guide to the Carosello 3000 ski area'
+    },
+    de: {
+      title: 'Winterurlaub in Livigno: Skifahren, private Sauna und Komfort direkt an der Piste',
+      metaTitle: 'Winterurlaub in Livigno | Ferienwohnung mit Sauna, 100 m von den Liften',
+      metaDescription: 'Private Infrarotsauna und Dampfbad, 100 m vom Carosello 3000: entdecken Sie den Winter in Livigno bei Ironwood.',
+      eyebrow: 'Winter in Livigno',
+      intro:
+        'Livigno hat eine der längsten Skisaisons der italienischen Alpen: Die Pisten sind von Ende November bis Anfang Mai geöffnet, das Skigebiet reicht auf über 3.000 Meter, und nach der letzten Abfahrt wartet der seltene Komfort einer privaten Sauna.',
+      sections: [
+        {
+          heading: 'Das Skigebiet: Carosello 3000 und Mottolino',
+          body: [
+            'Livigno erstreckt sich über zwei Hauptseiten. Carosello 3000, das größere der beiden Gebiete, bietet Pisten für jedes Niveau und Ausblicke auf über 3.000 Meter Höhe. Mottolino ist die erste Adresse für Freeride und anspruchsvolleres Gelände und wird im Sommer zum Bikepark des Ortes. Zusammen decken die beiden Gebiete alles ab, von Familien mit Anfängern bis zu erfahrenen Skifahrern.',
+            'Livigno ist auch für den Langlauf bekannt: Einige Loipen führen mitten durch das Ortszentrum und das Tal — eine ruhigere Aktivität als Abfahrtsski, gut geeignet für Familien mit Kindern oder alle, die einfach mal etwas anderes machen möchten.'
+          ]
+        },
+        {
+          heading: 'Eine längere Saison als anderswo',
+          body: [
+            'Die Wintersaison in Livigno dauert in der Regel von Ende November bis Anfang Mai — länger als in vielen anderen italienischen Alpenorten. Das heißt, Sie können ganz zu Saisonbeginn oder -ende Ski fahren, wenn die Lifte anderswo bereits geschlossen sind — oft mit weniger Andrang auf den Pisten und günstigeren Preisen außerhalb der Hauptsaison (Weihnachten, Neujahr, Februar).'
+          ]
+        },
+        {
+          heading: 'Der Vorteil, 100 Meter von der Piste entfernt zu wohnen',
+          body: [
+            'Ironwood Livigno liegt nur 100 Meter zu Fuß von den Skiliften entfernt und 50 Meter von Skischule und Ausrüstungsverleih: Sie können den ganzen Vormittag Ski fahren, ohne das Auto zu bewegen, bei Bedarf zum Mittagessen zurückkehren und am Nachmittag ohne Zeitverlust wieder auf die Piste.',
+            "Doch erst nach der letzten Abfahrt zeigt sich der wahre Unterschied. In der Wohnung sind Infrarotsauna und Dampfbad privat — nie mit anderen Gästen geteilt, anders als im Hotel-Spa. Genau dann werden die Muskeln wirklich warm, noch bevor Sie ans Abendessen denken, am elektrischen Kamin im Wohnzimmer.",
+            'Die Wohnung verfügt außerdem über einen eigenen Abstellraum für Ski, Skischuhe und Ausrüstung, sodass Sie nicht jeden Abend alles hineintragen müssen, plus einen kostenlosen Parkplatz für die Anreise mit dem Auto.'
+          ]
+        }
+      ],
+      highlights: [
+        '100 m von den Skiliften, 50 m von Skischule und Verleih',
+        'Private Infrarotsauna und Dampfbad, nie geteilt',
+        'Eigener Ski- und Schuhabstellraum',
+        '3 Schlafzimmer und 2 Bäder für Familien und Gruppen bis 6 Personen'
+      ],
+      ctaText: 'Verfügbarkeit für Ihren Winterurlaub in Livigno prüfen',
+      breadcrumbName: 'Winter in Livigno',
+      navLabel: 'Winter',
+      relatedLinkLabel: 'Lesen Sie den vollständigen Guide zum Skigebiet Carosello 3000'
     }
   },
   estate: {
@@ -212,6 +253,48 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       breadcrumbName: 'Summer in Livigno, Italy',
       navLabel: 'Summer',
       relatedLinkLabel: 'Read the full guide to summer in Livigno'
+    },
+    de: {
+      title: 'Sommer in Livigno: Mountainbike, Wandern und Entspannung in der Ferienwohnung mit Sauna',
+      metaTitle: 'Sommerurlaub in Livigno | Mountainbike, Wandern und private Sauna',
+      metaDescription:
+        'Bikepark, Wege für jedes Niveau und der Lago di Livigno: entdecken Sie den Sommer in Livigno und warum eine Ferienwohnung mit privater Sauna die ideale Basis ist.',
+      eyebrow: 'Sommer in Livigno',
+      intro:
+        'Livigno ist nicht nur ein Winterziel: Von Juni bis September verwandelt sich das Alpenbecken in eine der Mountainbike-Hauptstädte Europas, mit Trails für Familien, Wanderer und erfahrene Biker.',
+      sections: [
+        {
+          heading: 'Mountainbike: vom Mottolino Bike Park bis zur Bike Academy',
+          body: [
+            'Der Mottolino Bike Park ist die erste Adresse für alle, die Adrenalin suchen, mit Downhill-Strecken, einem Jump-Bereich und North-Shore-Abschnitten. Auch Carosello 3000 öffnet seine Lifte im Sommer und verbindet Panoramawege in der Höhe. Für Anfänger oder Familien mit Kindern bietet die Bike Academy eine speziell konzipierte Strecke.',
+            'Insgesamt zählt das Gebiet über 50 km ausgeschilderte Trails, geeignet sowohl für technische Abfahrten als auch für eine entspannte Fahrt durch die Lärchenwälder.'
+          ]
+        },
+        {
+          heading: 'Wandern, der Lago di Livigno und die Almen',
+          body: [
+            'Man muss kein Biker sein, um Livigno im Sommer zu genießen. Das Becken wird von Wanderwegen jeden Schwierigkeitsgrads durchzogen, vorbei an blühenden Almen — die Arnika ist die Symbolblume der Region — mit Blick auf die Rätischen Alpen. Ein für alle geeigneter Spaziergang ist die Runde um den Lago di Livigno, mit vielen Möglichkeiten für ein Picknick an warmen Tagen.',
+            'Die Sommertemperaturen bleiben auch im August angenehm kühl — ein weiterer Grund, warum Livigno bei allen beliebt ist, die der Stadthitze entkommen möchten.'
+          ]
+        },
+        {
+          heading: 'Warum Sie im Sommer bei Ironwood übernachten sollten',
+          body: [
+            'Die Lage nur wenige Schritte von den Liften, praktisch im Winter, ist auch im Sommer nützlich, um die wichtigsten Trailheads zu Fuß oder mit dem Rad zu erreichen. Auf Wunsch stellen wir 2 E-Bikes direkt vor Ort zur Verfügung, damit Sie mehr Strecke zurücklegen können, ohne sich bei den Anstiegen zu sehr anzustrengen — praktisch für Familien oder alle, die keine geübten Radfahrer sind.',
+            'Nach einem Tag auf den Trails oder dem Rad sind die beiden Balkone der Wohnung mit Bergblick der richtige Ort zum Entspannen, und die private Infrarotsauna bleibt auch außerhalb der Skisaison ein kleiner Luxus für alle, die sich nach einer anstrengenden Wanderung lockern möchten.'
+          ]
+        }
+      ],
+      highlights: [
+        'E-Bike-Verleih direkt vor Ort verfügbar',
+        'Zwei Balkone mit Bergblick',
+        'Private Infrarotsauna, auch nach dem Wandern nützlich',
+        'Wenige Schritte von Trailheads und Bikepark entfernt'
+      ],
+      ctaText: 'Verfügbarkeit für Ihren Sommer in Livigno prüfen',
+      breadcrumbName: 'Sommer in Livigno',
+      navLabel: 'Sommer',
+      relatedLinkLabel: 'Lesen Sie den vollständigen Guide zum Sommer in Livigno'
     }
   },
   famiglie: {
@@ -298,6 +381,48 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       breadcrumbName: 'Families in Livigno, Italy',
       navLabel: 'Families',
       relatedLinkLabel: 'Read the full guide to Livigno with kids'
+    },
+    de: {
+      title: 'Livigno mit Kindern: die Ferienwohnung für Familien',
+      metaTitle: 'Familienwohnung in Livigno | Bis zu 6 Personen, Kinderbett und Hochstuhl',
+      metaDescription:
+        '3 Schlafzimmer, 2 Bäder, Kinderbett und Hochstuhl auf Anfrage: entdecken Sie, warum Ironwood Livigno für Familien und Gruppen bis 6 Personen konzipiert ist.',
+      eyebrow: 'Familien in Livigno',
+      intro:
+        'Einen Familienurlaub in Livigno zu planen bedeutet, nach Platz, Sicherheit und Komfort zu suchen — nicht nur nach einem zusätzlichen Bett. Ironwood Livigno wurde genau dafür konzipiert: Familien und Gruppen bis zu 6 Personen, in einer Wohnung, in der jeder seinen eigenen Raum hat.',
+      sections: [
+        {
+          heading: 'Platz für alle: 3 Schlafzimmer, 2 Bäder, 90 m²',
+          body: [
+            'Die Wohnung erstreckt sich über 90 m² mit 3 Schlafzimmern und 2 vollständigen Bädern — eine flexible Aufteilung, die den Eltern etwas Privatsphäre lässt, während die Kleinen im Nebenzimmer schlafen. Das Doppelzimmer mit Topper ist für die Eltern der Gruppe gedacht, während das Zweibettzimmer für Kinder oder ältere Kids geeignet ist.',
+            'Auf Anfrage stellen wir Kinderbett und Hochstuhl zur Verfügung, sodass Sie nicht mit sperriger Ausrüstung anreisen müssen. Die Küche ist voll ausgestattet — Geschirrspüler, Backofen, Kaffeemaschine — für Mahlzeiten nach Maß für die Kleinen, ohne jeden Abend auswärts essen zu müssen.'
+          ]
+        },
+        {
+          heading: 'Aktivitäten auch für Kinder, zu jeder Jahreszeit',
+          body: [
+            'Im Winter sind die Langlaufloipen mitten durch Livigno eine ruhigere Aktivität als die Abfahrtspisten, geeignet auch für Kinder, die zum ersten Mal Schnee erleben. Wer Alpinski ausprobieren möchte: Die Skischule liegt nur 50 Meter von der Wohnung entfernt — praktisch für Unterricht und schnellen Wechsel, ohne das Auto zu benutzen.',
+            'Im Sommer bietet die Bike Academy von Livigno eine rund 5 km lange, speziell für Anfänger und Kinder konzipierte Strecke, während ein Spaziergang um den Lago di Livigno für die ganze Familie machbar ist, mit vielen Möglichkeiten für ein Picknick.'
+          ]
+        },
+        {
+          heading: 'Eine sichere, ruhige Umgebung',
+          body: [
+            'Die Wohnung liegt 100 Meter von den Skiliften entfernt und ist 15 Gehminuten vom Zentrum Livignos entfernt — eine praktische, aber ruhige Lage, um Pisten, Skischule und Geschäfte zu Fuß zu erreichen, ohne das Gedränge eines von Touristen überfüllten Zentrums. Der eigene Ski- und Fahrradabstellraum erspart es Ihnen, die Ausrüstung der ganzen Familie jeden Abend hineinzutragen.',
+            'Und wenn die Kinder endlich schlafen, bleiben die private Infrarotsauna und das Dampfbad ein Rückzugsort nur für die Eltern — ein Detail, das laut den Bewertungen, die wir erhalten, viele Familien als eine der schönsten Überraschungen des Aufenthalts hervorheben.'
+          ]
+        }
+      ],
+      highlights: [
+        '3 Schlafzimmer und 2 Bäder, bis zu 6 Schlafplätze',
+        'Kinderbett und Hochstuhl auf Anfrage verfügbar',
+        'Skischule 50 m entfernt, kinderfreundlicher Langlauf im Ort',
+        'Voll ausgestattete Küche für Mahlzeiten nach Maß'
+      ],
+      ctaText: 'Verfügbarkeit für Ihre Familie prüfen',
+      breadcrumbName: 'Familien in Livigno',
+      navLabel: 'Familien',
+      relatedLinkLabel: 'Lesen Sie den vollständigen Guide zu Livigno mit Kindern'
     }
   },
   benessere: {
@@ -382,6 +507,47 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       breadcrumbName: 'Wellness',
       navLabel: 'Wellness',
       relatedLinkLabel: 'See all the details of the private sauna and steam bath'
+    },
+    de: {
+      title: 'Wellness in Livigno: private Infrarotsauna und Dampfbad',
+      metaTitle: 'Private Sauna in Livigno | Dampfbad und Wellness in der Ferienwohnung',
+      metaDescription:
+        'Private Infrarotsauna und Dampfbad, nie mit anderen Gästen geteilt: entdecken Sie die Wellness-Seite eines Aufenthalts in Livigno bei Ironwood.',
+      eyebrow: 'Wellness',
+      intro:
+        'Nach einem Tag auf der Piste oder auf den Wanderwegen zählt die Erholung genauso viel wie die Aktivität selbst. Bei Ironwood Livigno sind Infrarotsauna und Dampfbad kein gemeinsam genutzter Service in einem Gemeinschaftsbereich: Sie sind privat, innerhalb der Wohnung, nur für die aktuellen Gäste verfügbar.',
+      sections: [
+        {
+          heading: 'Warum eine private Sauna den Unterschied macht',
+          body: [
+            'In vielen Bergunterkünften sind Sauna und Dampfbad Gemeinschaftsbereiche, mit Buchungszeiten, mitzubringenden Bademänteln und der realen Möglichkeit, sie mit Fremden teilen zu müssen. Bei Ironwood in Livigno sind Infrarotsauna und Dampfbad dagegen ausschließlich den Gästen der Wohnung vorbehalten: kein Warten, keine Buchung, kein Teilen — zu jeder Tages- oder Abendstunde.',
+            'Die Infrarotsauna eignet sich besonders für die Muskelerholung: Die Wärme dringt tief in das Gewebe ein — eine echte Hilfe nach einem Tag Skifahren, Wandern oder Mountainbiken, wenn Beine und Rücken schon vor dem Abendessen nach Lockerung verlangen.'
+          ]
+        },
+        {
+          heading: 'Ein einfaches Ritual, jeden Tag wiederholbar',
+          body: [
+            'Der Vorteil, Sauna und Dampfbad zu Hause statt in einem Gemeinschafts-Spa zu haben, ist die Freiheit, daraus eine tägliche Gewohnheit des Urlaubs zu machen: von der Piste oder vom Wanderweg zurückkommen, sich in Ruhe aufwärmen, vielleicht mit einem Glas Wein aus der Küche, und erst danach ans Abendessen denken. Kein Zeitplan, keine App zum Buchen eines Termins.',
+            'Das Wohnzimmer mit seinem elektrischen Kamin rundet das Bild ab: Die Abende in der Wohnung werden ebenso Teil des Erlebnisses wie der Tag auf der Piste oder den Wanderwegen — kein bloßer Schlafplatz.'
+          ]
+        },
+        {
+          heading: 'Ein Detail, das Gästen wirklich auffällt',
+          body: [
+            'Das ist keine reine Marketing-Aussage: Es ist eines der Details, die in den echten Bewertungen, die wir auf Google und Airbnb erhalten, am häufigsten erwähnt werden — oft als einer der Hauptgründe genannt, sich für Ironwood statt für ein klassisches Hotel zu entscheiden. Und für alle, die das Erlebnis mit einem gepflegten Frühstück vor dem Start in den Tag abrunden möchten, bieten wir auf Anfrage auch einen kostenpflichtigen Frühstücksservice in einer Partnerunterkunft nur wenige Meter von der Wohnung entfernt.'
+          ]
+        }
+      ],
+      highlights: [
+        'Private Infrarotsauna und Dampfbad, nie geteilt',
+        'Keine Buchung nötig, jederzeit verfügbar',
+        'Elektrischer Kamin im Wohnzimmer für die Abende',
+        'Frühstück auf Anfrage nur wenige Meter entfernt'
+      ],
+      ctaText: 'Buchen Sie Ihren Wellness-Moment in Livigno',
+      breadcrumbName: 'Wellness',
+      navLabel: 'Wellness',
+      relatedLinkLabel: 'Alle Details zu privater Sauna und Dampfbad ansehen'
     }
   },
   'come-arrivare': {
@@ -468,6 +634,48 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       breadcrumbName: 'Getting here',
       navLabel: 'Getting here',
       relatedLinkLabel: 'Read the full guide: train, car or plane from Milan'
+    },
+    de: {
+      title: 'So erreichen Sie Ironwood Livigno: Adresse, Parkplatz und die letzten Kilometer',
+      metaTitle: 'Anreise zu Ironwood Livigno | Adresse, Parkplatz und letzter Streckenabschnitt',
+      metaDescription:
+        'Adresse, kostenloser Parkplatz und Entfernung zu den Liften: der praktische Guide zur Anreise nach Ironwood Livigno, Via Saroch 771, ganz ohne Überraschungen.',
+      eyebrow: 'Anreise',
+      intro:
+        'Wenn Sie sich bereits für einen Aufenthalt bei Ironwood Livigno entschieden haben, finden Sie auf dieser Seite die praktischen Informationen zum letzten Streckenabschnitt: wo genau die Wohnung liegt, wie Sie sie vom Passo di Foscagno oder von Tirano aus erreichen, und was Sie zu Parkplatz und Ankunft wissen sollten. Den vollständigen Guide zu Zug, Auto oder Flugzeug ab Mailand finden Sie in unserem verlinkten Artikel am Ende dieser Seite.',
+      sections: [
+        {
+          heading: 'Adresse und genaue Lage',
+          body: [
+            'Ironwood Livigno liegt in der Via Saroch 771, 23041 Livigno (SO), etwa 100 Meter zu Fuß von den Skiliften und 50 Meter von Skischule und Ausrüstungsverleih entfernt. Es ist eine praktische, aber ruhige Lage, etwa 15 Gehminuten vom Ortszentrum entfernt — ideal, um nach der Ankunft Pisten, Geschäfte und Restaurants zu Fuß zu erreichen.',
+            'Die genauen GPS-Koordinaten sind 46.525061, 10.126967: nützlich für die Eingabe ins Navigationsgerät, besonders auf den letzten Bergkilometern, wo der Mobilfunkempfang weniger zuverlässig sein kann.'
+          ]
+        },
+        {
+          heading: 'Der letzte Streckenabschnitt, von Tirano oder der Schweizer Grenze aus',
+          body: [
+            'Wer mit dem Zug anreist, steigt am Bahnhof Tirano aus und fährt mit einem Linienbus (Umstieg in Bormio) weiter nach Livigno. Wer mit dem Auto von Mailand aus anreist, nimmt die SS38 Richtung Bormio und dann den Passo di Foscagno; aus der Schweiz kommend nimmt man stattdessen die Forcola di Livigno. Prüfen Sie im Winter vor der Abfahrt die Passbedingungen: Bei starkem Schneefall können Ketten oder Winterreifen nötig sein, und in seltenen Fällen kann der Pass vorübergehend gesperrt werden.',
+            'Im Ort angekommen, folgen Sie den Schildern zur Via Saroch, im Bereich der Skilifte: Die Wohnung ist mit ihrer für die Region typischen Holzfassade leicht zu erkennen.'
+          ]
+        },
+        {
+          heading: 'Parken und Ankunft in der Wohnung',
+          body: [
+            'Zur Wohnung gehört ein kostenloser Parkplatz, sodass Sie im Ort nicht nach einem kostenpflichtigen Parkplatz suchen müssen. Check-in- und Check-out-Zeiten werden bei der Buchung per WhatsApp bestätigt, mit einer gewissen Flexibilität je nach Verfügbarkeit — praktisch, wenn Sie nach einer langen Reise oder mit nicht immer pünktlichen Zug-/Busverbindungen ankommen.',
+            'Bei Fragen zum letzten Streckenabschnitt erreichen Sie uns am schnellsten über WhatsApp: Wir antworten mit präzisen Wegbeschreibungen und, falls nötig, mit Fotos des Eingangs, damit Sie das Gebäude sofort erkennen.'
+          ]
+        }
+      ],
+      highlights: [
+        'Via Saroch 771, Livigno (SO) — 100 m von den Skiliften',
+        'Kostenloser Parkplatz inklusive',
+        'GPS-Koordinaten: 46.525061, 10.126967',
+        'Flexibler Check-in, per WhatsApp bestätigt'
+      ],
+      ctaText: 'Schreiben Sie uns auf WhatsApp für Wegbeschreibungen',
+      breadcrumbName: 'Anreise',
+      navLabel: 'Anreise',
+      relatedLinkLabel: 'Lesen Sie den vollständigen Guide: Zug, Auto oder Flugzeug ab Mailand'
     }
   },
   'chi-siamo': {
@@ -624,6 +832,81 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       breadcrumbName: 'About us',
       navLabel: 'About us',
       relatedLinkLabel: 'Go to the contact page to write or call us'
+    },
+    de: {
+      title: 'Über uns: die Livigno-Familie hinter Ironwood Livigno',
+      metaTitle: 'Über Uns | Ironwood Livigno — Eine Gastgeberfamilie in Livigno',
+      metaDescription:
+        'Ironwood Livigno wird direkt von Francesco und seiner Familie geführt, waschechten Livignesern: lesen Sie unsere Geschichte und Bewertungen, buchen Sie ohne Provision.',
+      eyebrow: 'Über uns',
+      intro:
+        'Wer steckt hinter Ironwood Livigno? Keine Immobilienagentur und keine Ferienwohnungskette, sondern eine echte Familie, die das ganze Jahr über in Livigno lebt. Ich bin Francesco, hier geboren und aufgewachsen, und gemeinsam mit meiner Frau Tania und unseren beiden Töchtern, Nicole und Giulia, haben wir unser Familienhaus in eine Wohnung verwandelt, die für alle gedacht ist, die im Winter zum Skifahren oder im Sommer zum Wandern nach Livigno kommen. Wenn Sie bei uns buchen, schreiben Sie nicht an ein Callcenter: Sie schreiben direkt an die Menschen, die dieses Haus mit den eigenen Händen renoviert haben, Zimmer für Zimmer.',
+      sections: [
+        {
+          heading: 'Eine Livigno-Familie, keine Agentur',
+          body: [
+            'Wir sind zu viert: ich, meine Frau Tania und unsere beiden Töchter, Nicole (18) und Giulia (13). Wir führen Ironwood Livigno nicht aus der Ferne oder über eine Hausverwaltung: Wir leben das ganze Jahr über hier, nicht nur in der Saison — deshalb kennen wir den Rhythmus der Pisten, die stärksten Reisezeiten und die praktischen Details, die Ihnen ein allgemeiner Reiseführer nicht geben kann.',
+            'In Livigno geboren und aufgewachsen zu sein bedeutet auch, dass wir Ihnen echte Tipps geben können: wann Sie den Skipass online buchen sollten, um Warteschlangen zu vermeiden, welche Bergseite je nach Tageswetter die bessere Wahl ist, oder wo Sie abends essen können, ohne sich nur auf Online-Bewertungen zu verlassen.'
+          ]
+        },
+        {
+          heading: 'Ein Familienhaus, 2022 sorgfältig renoviert',
+          body: [
+            'Ironwood Livigno war nicht als gewöhnliche Investition gedacht. Es ist unser Zuhause, das wir vollständig renoviert haben — mit Eisen und Holz als Hauptmaterialien, die die Berge besser erzählen als eine Standard-Ferienwohnungseinrichtung. Die Arbeiten wurden 2022 abgeschlossen: private Infrarotsauna, Dampfbad, elektrischer Kamin, voll ausgestattete Küche und 3 Schlafzimmer auf insgesamt 90 m², konzipiert für Familien und Gruppen bis zu 6 Personen, mit 2 vollständigen Bädern.',
+            'Das Ergebnis ist eine Ferienwohnung nur 100 Meter von den Skiliften und 50 Meter von Skischule und Ausrüstungsverleih entfernt, in der Via Saroch — die im Inneren jedoch die Wärme eines echten Familienhauses bewahrt, keine standardisierte Wohnung.'
+          ]
+        },
+        {
+          heading: 'Warum sich die direkte Buchung bei Ironwood Livigno lohnt',
+          body: [
+            'Wir führen Ironwood Livigno persönlich, ohne Vermittler: Das bedeutet, wenn Sie uns auf WhatsApp nach der Verfügbarkeit fragen, antworten wir selbst, kein Callcenter. Wir können flexible Check-in-Zeiten bestätigen, Ihnen genaue Hinweise zum letzten Streckenabschnitt geben und einen besonderen Wunsch spontan lösen — ein zusätzliches Kinderbett, eine Terminänderung — ohne über eine Drittplattform zu gehen.',
+            'Direkt zu buchen bedeutet außerdem, die Vermittlungsprovision zu vermeiden, die normalerweise den Endpreis bei Airbnb oder Booking belastet: Der Preis, den wir per WhatsApp oder E-Mail vereinbaren, ist der, den Sie zahlen — ohne Überraschungen beim Checkout.'
+          ]
+        },
+        {
+          heading: 'Was Gäste sagen, die bei uns waren',
+          body: ['Die untenstehenden Bewertungen sind echt, veröffentlicht auf Google und Airbnb — dieselben, die Sie auch im Bewertungsbereich der Startseite finden.']
+        }
+      ],
+      highlights: [
+        'Direkte Verwaltung, ohne Agenturen oder Vermittler',
+        'Waschechte Livigneser: echte Tipps zu Pisten und Saison',
+        'Familienhaus, 2022 renoviert, Eisen und Holz',
+        'Direkte Antworten auf WhatsApp, kein Callcenter'
+      ],
+      faq: [
+        {
+          q: 'Wird Ironwood Livigno von einer Agentur geführt?',
+          a: 'Nein. Ironwood Livigno wird direkt von Francesco und seiner Familie geführt, Eigentümer, die das ganze Jahr über in Livigno leben — keine Immobilienagentur und keine Ferienwohnungskette.'
+        },
+        {
+          q: 'Lohnt sich die direkte Buchung statt über Airbnb oder Booking?',
+          a: 'Ja: Eine direkte Buchung per WhatsApp, Telefon oder E-Mail vermeidet die Vermittlungsprovision der Plattformen und gibt Ihnen einen direkten Kontakt zu den Menschen, die die Wohnung tatsächlich führen, für jedes Anliegen vor, während und nach dem Aufenthalt.'
+        },
+        {
+          q: 'Wer hat das Haus renoviert?',
+          a: 'Es ist das Familienhaus von Francesco und Tania, vollständig renoviert und 2022 fertiggestellt, mit einem Konzept, das hauptsächlich auf Eisen und Holz basiert.'
+        },
+        {
+          q: 'Wie lange leben Sie schon in Livigno?',
+          a: 'Francesco ist in Livigno geboren und aufgewachsen und lebt das ganze Jahr über hier, nicht nur während der Tourismussaison — dasselbe gilt für die ganze Familie.'
+        },
+        {
+          q: 'Wie kann ich Sie direkt kontaktieren?',
+          a: 'Am schnellsten erreichen Sie uns über WhatsApp unter +39 0342 929285, per E-Mail an info@ironwoodlivigno.com oder über das Verfügbarkeitsformular auf der Website.'
+        }
+      ],
+      internalLinkLabels: [
+        'Entdecken Sie unsere 3 Schlafzimmer, konzipiert für Familien und Gruppen',
+        'Lesen Sie den Guide zur Anreise nach Ironwood Livigno',
+        'Entdecken Sie den Winter in Livigno bei Ironwood',
+        'Sehen Sie alle unsere verifizierten Bewertungen',
+        'Lesen Sie unsere Guides zu Livigno'
+      ],
+      ctaText: 'Schreiben Sie uns direkt auf WhatsApp',
+      breadcrumbName: 'Über uns',
+      navLabel: 'Über uns',
+      relatedLinkLabel: 'Zur Kontaktseite, um uns zu schreiben oder anzurufen'
     }
   },
   'sauna-bagno-turco-privato-livigno': {
@@ -762,6 +1045,74 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       breadcrumbName: 'Private sauna',
       navLabel: 'Private sauna',
       relatedLinkLabel: 'Discover the fireplace, breakfast and other wellness details too'
+    },
+    de: {
+      title: 'Ferienwohnung mit privater Sauna in Livigno: exklusive Infrarotsauna und Dampfbad',
+      metaTitle: 'Private Sauna Livigno | Ferienwohnung mit privatem Dampfbad',
+      metaDescription:
+        'In Livigno, eine Ferienwohnung mit privater Infrarotsauna und Dampfbad, nie geteilt: keine Buchung nötig, jeden Tag zu jeder Zeit verfügbar.',
+      eyebrow: 'Private Sauna',
+      intro:
+        'Suchen Sie eine Ferienwohnung mit privater Sauna in Livigno? Bei Ironwood Livigno sind Infrarotsauna und Dampfbad kein kostenpflichtiger Service in einem Gemeinschafts-Spa, sondern Teil der Wohnung selbst: exklusiv für die aktuellen Gäste, ohne feste Zeiten und ohne Teilen mit anderen Gästen. Diese Seite fasst alle praktischen Details zusammen, für alle, die genau wissen möchten, was inklusive ist.',
+      sections: [
+        {
+          heading: 'Private Infrarotsauna, nie geteilt',
+          body: [
+            'Die Infrarotsauna ist auf Muskelerholung ausgelegt: Die Wärme dringt tief in das Gewebe ein — eine echte Hilfe nach einem Tag Skifahren, Wandern oder Mountainbiken. Sie befindet sich innerhalb der Wohnung, nicht in einem Gemeinschaftsbereich des Gebäudes — das bedeutet, kein anderer Gast wird sie je vor oder nach Ihnen nutzen.'
+          ]
+        },
+        {
+          heading: 'Privates Dampfbad inklusive',
+          body: [
+            'Neben der Sauna verfügt die Wohnung auch über ein privates Dampfbad: heißer Dampf zur exklusiven Nutzung, abwechselnd mit der Infrarotsauna je nach Vorliebe, ohne zwischen beiden wählen oder den Zugang zu einem Gemeinschaftsbereich buchen zu müssen.'
+          ]
+        },
+        {
+          heading: 'Keine Buchung nötig, jederzeit verfügbar',
+          body: [
+            'Anders als im Hotel-Spa, wo oft ein Zeitfenster gebucht werden muss, sind hier Sauna und Dampfbad zu jeder Tageszeit verfügbar: direkt nach der Rückkehr von der Piste, nach einer Sommerwanderung oder einfach abends vor dem Essen.'
+          ]
+        },
+        {
+          heading: 'Warum es besser ist als ein Gemeinschafts-Spa',
+          body: [
+            'Wir haben einen eigenen Guide zum Vergleich zwischen privater und gemeinsamer Sauna geschrieben, mit den praktischen Vorteilen in Sachen Hygiene, Zeitplanung und Komfort — nützlich, wenn Sie noch überlegen, ob eine Ferienwohnung mit privater Sauna die richtige Wahl für Ihren Aufenthalt in Livigno ist.'
+          ]
+        }
+      ],
+      highlights: [
+        'Private Infrarotsauna, nie mit anderen Gästen geteilt',
+        'Privates Dampfbad in der Wohnung inklusive',
+        'Jederzeit verfügbar, keine Buchung nötig',
+        'Teil einer 90 m² Wohnung, 3 Schlafzimmer, bis zu 6 Gäste'
+      ],
+      faq: [
+        {
+          q: 'Ist die Sauna wirklich privat oder wird sie mit anderen Wohnungen geteilt?',
+          a: 'Sie ist vollständig privat: Sie befindet sich innerhalb der Wohnung und steht ausschließlich den dort untergebrachten Gästen zur Verfügung, nie geteilt mit anderen Gästen oder Einheiten.'
+        },
+        {
+          q: 'Muss ich einen Termin für Sauna oder Dampfbad buchen?',
+          a: 'Nein. Da es sich nicht um einen Gemeinschaftsbereich handelt, gibt es keinen Termin zu buchen: Sie sind während des gesamten Aufenthalts jederzeit verfügbar.'
+        },
+        {
+          q: 'Sind Sauna und Dampfbad im Preis des Aufenthalts inbegriffen?',
+          a: 'Ja, sie gehören zur Wohnung und verursachen keine zusätzlichen Kosten zum gebuchten Aufenthalt.'
+        },
+        {
+          q: 'Sind sie auch im Sommer nützlich, nicht nur nach dem Skifahren?',
+          a: 'Ja: Viele Gäste nutzen sie auch im Sommer zur Muskelerholung nach einem Tag Wandern oder Mountainbiken, nicht nur im Winter nach dem Skifahren.'
+        }
+      ],
+      internalLinkLabels: [
+        'Entdecken Sie den gesamten Wellness-Bereich von Ironwood Livigno',
+        'Lesen Sie den Vergleich: private vs. gemeinsame Sauna',
+        'Entdecken Sie, warum wir uns für eine private Sauna entschieden haben'
+      ],
+      ctaText: 'Verfügbarkeit prüfen und Ihre private Sauna buchen',
+      breadcrumbName: 'Private Sauna',
+      navLabel: 'Private Sauna',
+      relatedLinkLabel: 'Entdecken Sie auch Kamin, Frühstück und weitere Wellness-Details'
     }
   },
   'camere-appartamento-livigno': {
@@ -894,6 +1245,71 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       breadcrumbName: 'The bedrooms',
       navLabel: 'The bedrooms',
       relatedLinkLabel: 'Discover all the details designed for families and groups'
+    },
+    de: {
+      title: 'Die 3 Schlafzimmer der Wohnung in Livigno: Aufteilung, Betten und Details',
+      metaTitle: '3-Zimmer-Wohnung in Livigno | Raumaufteilung',
+      metaDescription:
+        '3 Schlafzimmer, 2 Bäder, 90 m²: entdecken Sie die detaillierte Aufteilung der Wohnung in Livigno, Zimmer für Zimmer, konzipiert für Familien und Gruppen bis 6 Personen.',
+      eyebrow: 'Die Schlafzimmer',
+      intro:
+        'Suchen Sie eine 3-Zimmer-Wohnung in Livigno und möchten vor der Buchung genau wissen, wie die Räume aufgeteilt sind? Ironwood Livigno erstreckt sich über 90 m² mit 3 Schlafzimmern und 2 vollständigen Bädern, für bis zu 6 Gäste, nur 100 Meter zu Fuß von den Skiliften entfernt. Hier finden Sie die Details Zimmer für Zimmer, damit Sie genau wissen, was Sie erwartet.',
+      sections: [
+        {
+          heading: 'Zimmer 1 — Doppelzimmer (verbundene Betten)',
+          body: [
+            'Zwei Einzelbetten, durch einen Topper verbunden, für den durchgehenden Komfort eines echten Doppelbetts — ideal für Paare oder für die Eltern der Gruppe, die dennoch die Flexibilität zweier Einzelbetten schätzen.'
+          ]
+        },
+        {
+          heading: 'Zimmer 2 — Zweibettzimmer',
+          body: [
+            'Zwei Einzelbetten, auf Anfrage zu einem Doppelbett kombinierbar — praktisch für Kinder, ältere Kids oder gemeinsam reisende Freunde, die kein festes Doppelbett teilen möchten.'
+          ]
+        },
+        {
+          heading: 'Zimmer 3 — Hauptschlafzimmer mit Doppelbett',
+          body: [
+            'Doppelbett mit Topper für maximalen Komfort: Dies ist das Hauptschlafzimmer der Wohnung, konzipiert für alle, die mehr Privatsphäre als in den anderen beiden Zimmern suchen.'
+          ]
+        },
+        {
+          heading: '2 vollständige Bäder, gemeinsam genutzt',
+          body: [
+            'Der gesamten Wohnung stehen 2 vollständige Bäder zur Verfügung — eine Aufteilung, die speziell entwickelt wurde, um morgendliche Warteschlangen zu vermeiden, wenn die Wohnung eine vollständige Familie oder Gruppe beherbergt — ein Detail, das einen echten Unterschied zu einer typischen Zwei-Zimmer-Wohnung mit nur einem Bad macht.'
+          ]
+        }
+      ],
+      highlights: [
+        '3 Schlafzimmer, 90 m² insgesamt',
+        '2 vollständige, gemeinsam genutzte Bäder',
+        'Bis zu 6 Schlafplätze für Familien und Gruppen',
+        'Flexible Aufteilung: Einzel- oder Doppelbetten',
+        '100 m von den Skiliften entfernt'
+      ],
+      faq: [
+        {
+          q: 'Wie viele Personen können bequem in der Wohnung schlafen?',
+          a: 'Bis zu 6 Personen, verteilt auf die 3 Schlafzimmer: eines mit im Doppelbett-Stil verbundenen Einzelbetten, eines mit trennbaren Einzelbetten und das Hauptschlafzimmer mit Doppelbett.'
+        },
+        {
+          q: 'Können die Einzelbetten zu einem Doppelbett verbunden werden?',
+          a: 'Ja, in Zimmer 2 können die beiden Einzelbetten auf Anfrage verbunden werden. In Zimmer 1 sind sie bereits mit einem Topper verbunden, für den durchgehenden Komfort eines Doppelbetts.'
+        },
+        {
+          q: 'Gibt es mehr als ein Badezimmer?',
+          a: 'Ja, die Wohnung hat 2 vollständige Bäder, gemeinsam genutzt von den 3 Schlafzimmern — praktisch für Familien und Gruppen, die alle Räume gleichzeitig nutzen.'
+        }
+      ],
+      internalLinkLabels: [
+        'Entdecken Sie, warum die Wohnung für Familien und Gruppen konzipiert ist',
+        'Entdecken Sie, wer die Wohnung renoviert hat und warum',
+        'Adresse, Parkplatz und Anreise ansehen'
+      ],
+      ctaText: 'Verfügbarkeit für Ihre Schlafzimmer prüfen',
+      breadcrumbName: 'Die Schlafzimmer',
+      navLabel: 'Die Schlafzimmer',
+      relatedLinkLabel: 'Entdecken Sie alle Details für Familien und Gruppen'
     }
   },
   'livigno-estate': {
@@ -1036,6 +1452,76 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       breadcrumbName: 'Livigno in summer',
       navLabel: 'Summer highlights',
       relatedLinkLabel: 'Also read the guide to mountain biking, hiking and the lake'
+    },
+    de: {
+      title: 'Was man im Sommer in Livigno unternehmen kann: 10 unverzichtbare Erlebnisse',
+      metaTitle: 'Livigno im Sommer | 10 Dinge zu tun: Biken, Wandern und der See',
+      metaDescription:
+        'Mountainbike, Wandern, der Lago di Livigno und private Sauna nach dem Sport: 10 unverzichtbare Erlebnisse, um Ihren Sommer in Livigno perfekt zu planen.',
+      eyebrow: 'Livigno im Sommer',
+      intro:
+        'Was kann man im Sommer in Livigno konkret unternehmen? Von Juni bis September verwandelt sich das Alpenbecken in eine der Mountainbike-Hauptstädte Europas, mit Trails für jedes Niveau, einem See zum Erkunden per Kanu oder zu Fuß und einem autofreien Duty-free-Zentrum, das einen Spaziergang wert ist. Hier sind 10 unverzichtbare Erlebnisse, um Ihren Sommer in Livigno kurz zusammengefasst zu planen.',
+      sections: [
+        {
+          heading: '1–2. Mountainbike: Mottolino Bike Park und Bike Academy',
+          body: [
+            'Der Mottolino Bike Park ist die erste Adresse für Adrenalin, mit 14 Strecken zwischen Downhill, Jump-Bereich und North-Shore-Abschnitten. Für Familien oder Einsteiger bietet die Bike Academy eine rund 5 km lange, speziell für Anfänger konzipierte Strecke.'
+          ]
+        },
+        {
+          heading: '3–4. Wandern: der Lago di Livigno und die blühenden Almen',
+          body: [
+            'Die Runde um den Lago di Livigno ist der einfachste und für alle zugängliche Spaziergang, mit vielen Möglichkeiten für ein Picknick. Für eine anspruchsvollere Wanderung bieten die Wege durch die blühenden Almen — die Arnika ist die Symbolblume der Region — Ausblicke auf die Rätischen Alpen.'
+          ]
+        },
+        {
+          heading: '5–6. Carosello 3000 im Sommer und eine Kanutour',
+          body: [
+            'Auch die Lifte des Wintersportgebiets öffnen im Sommer (etwa vom 20. Juni bis 13. September) und verbinden Panoramawege in der Höhe. An wärmeren Tagen eignet sich der See auch für eine Kanutour.'
+          ]
+        },
+        {
+          heading: '7–8. Duty-free-Shopping und Spezialitäten aus dem Veltlin',
+          body: [
+            'Das autofreie Zentrum von Livigno, eine Duty-free-Zollzone, bleibt ein fast obligatorischer Stopp zum Einkaufen. Probieren Sie auch die Spezialitäten aus dem Veltlin — Pizzoccheri, Sciatt und Bresaola IGP — in den Restaurants des Orts oder in Ruhe in der Wohnung zubereitet.'
+          ]
+        },
+        {
+          heading: '9–10. Private Sauna nach dem Sport und kühle Temperaturen auch im August',
+          body: [
+            'Nach einem Tag Wandern oder Mountainbiken helfen die private Infrarotsauna und das Dampfbad, die Muskeln vor dem Abendessen zu lockern. Und die Sommertemperaturen in Livigno bleiben auch mitten im Sommer angenehm kühl — ein weiterer Grund für alle, die der Stadthitze entkommen möchten.'
+          ]
+        }
+      ],
+      highlights: [
+        'Über 50 km Trails für Mountainbike und Wandern',
+        'Lago di Livigno: Spaziergang, Picknick oder Kanu',
+        'Autofreies Duty-free-Zentrum, 15 Gehminuten entfernt',
+        'Private Sauna auch nach dem Sommersport verfügbar'
+      ],
+      faq: [
+        {
+          q: 'Lohnt sich Livigno auch, wenn man nicht mountainbiket?',
+          a: 'Ja: Der Spaziergang um den See, die blühenden Almen, Duty-free-Shopping und die Spezialitäten aus dem Veltlin sind für alle zugängliche Erlebnisse — man muss kein erfahrener Biker oder Wanderer sein.'
+        },
+        {
+          q: 'Wann sind die Sommerlifte von Carosello 3000 geöffnet?',
+          a: 'Etwa vom 20. Juni bis 13. September, um Panoramawege in der Höhe zu verbinden — die genauen Daten können von Jahr zu Jahr variieren.'
+        },
+        {
+          q: 'Ist es im Sommer heiß in Livigno?',
+          a: 'Die Temperaturen bleiben in der Regel auch im August angenehm kühl — einer der Gründe, warum Livigno bei allen beliebt ist, die der Stadthitze entkommen möchten.'
+        }
+      ],
+      internalLinkLabels: [
+        'Lesen Sie den vollständigen Guide zum Sommer in Livigno bei Ironwood',
+        'Lesen Sie den vollständigen Artikel mit allen Details',
+        'Entdecken Sie auch für Kinder geeignete Aktivitäten'
+      ],
+      ctaText: 'Verfügbarkeit für Ihren Sommer in Livigno prüfen',
+      breadcrumbName: 'Livigno im Sommer',
+      navLabel: 'Sommer-Highlights',
+      relatedLinkLabel: 'Lesen Sie auch den Guide zu Mountainbike, Wandern und dem See'
     }
   }
 };
