@@ -40,6 +40,10 @@ function row(label: string, value: string): string {
 // Francesco can start typing straight away without switching back to this
 // email to check dates/message — cursor lands on the two blank lines above
 // the quote.
+// mailto: bodies are plain text everywhere — no client renders HTML/CSS in
+// a compose window pre-filled via the `body` param, so this leans on
+// simple ASCII structure (a divider rule, ALL-CAPS section labels) to keep
+// EXTRA and NOTA scannable without any formatting to lean on.
 function buildReplyMailto(data: Submission, nights: number | null): string {
   const firstName = data.name.trim().split(/\s+/)[0] || data.name;
   const extras = [data.extra_breakfast ? 'Colazione' : null, data.extra_ebike ? 'Noleggio e-bike' : null].filter(Boolean).join(' + ');
@@ -48,12 +52,16 @@ function buildReplyMailto(data: Submission, nights: number | null): string {
     '',
     '',
     '',
-    '-- La tua richiesta --',
-    `Check-in: ${data.checkin}`,
+    '────────────────────',
+    'LA TUA RICHIESTA',
+    '────────────────────',
+    `Check-in:  ${data.checkin}`,
     `Check-out: ${data.checkout}${nights ? ` (${nights} ${nights === 1 ? 'notte' : 'notti'})` : ''}`,
-    `Ospiti: ${data.guests}`,
-    extras ? `Extra: ${extras}` : null,
-    data.message ? `Messaggio: ${data.message}` : null
+    `Ospiti:    ${data.guests}`,
+    extras ? `EXTRA:     ${extras}` : null,
+    data.message ? '' : null,
+    data.message ? 'NOTA DEL CLIENTE:' : null,
+    data.message ? `"${data.message}"` : null
   ]
     .filter((l) => l !== null)
     .join('\n');
@@ -64,7 +72,6 @@ function buildReplyMailto(data: Submission, nights: number | null): string {
 }
 
 export function buildNotificationHtml(data: Submission, id: number, country: string): string {
-  const extras = [data.extra_breakfast ? 'Colazione' : null, data.extra_ebike ? 'Noleggio e-bike' : null].filter(Boolean).join(' + ');
   const nights = nightsBetween(data.checkin_iso, data.checkout_iso);
   const firstName = escapeHtml(data.name.trim().split(/\s+/)[0] || data.name);
 
@@ -73,12 +80,19 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
     row('Email', `<a href="mailto:${escapeHtml(data.email)}" style="color:#A8462F;text-decoration:none;">${escapeHtml(data.email)}</a>`),
     data.phone ? row('Telefono', `<a href="tel:${escapeHtml(data.phone)}" style="color:#A8462F;text-decoration:none;">${escapeHtml(data.phone)}</a>`) : '',
     row('Ospiti', String(data.guests)),
-    extras ? row('Extra richiesti', escapeHtml(extras)) : '',
     data.source ? row('Come ci ha trovato', escapeHtml(data.source)) : '',
     data.locale ? row('Lingua sito', escapeHtml(data.locale)) : '',
     country ? row('Paese (da IP)', escapeHtml(country)) : ''
   ]
     .filter(Boolean)
+    .join('');
+
+  const extraPills = [data.extra_breakfast ? 'Colazione' : null, data.extra_ebike ? 'Noleggio e-bike' : null]
+    .filter((e): e is string => e !== null)
+    .map(
+      (e) =>
+        `<td style="padding:0 8px 0 0;"><table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="background-color:#C9A059;border-radius:999px;padding:8px 16px;"><span style="font-family:${FONT_BODY};font-size:13px;font-weight:700;color:#241C15;white-space:nowrap;">✓ ${escapeHtml(e)}</span></td></tr></table></td>`
+    )
     .join('');
 
   const replyHref = buildReplyMailto(data, nights);
@@ -133,6 +147,41 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
               </td>
             </tr>
 
+            ${
+              extraPills
+                ? `
+            <!-- Extras: high-visibility pills, own section above the plain
+                 details table — these are add-on requests that affect prep
+                 (breakfast order, e-bikes to have ready), easy to miss as a
+                 plain text row. -->
+            <tr>
+              <td style="padding:28px 36px 0;">
+                <p style="margin:0 0 10px;font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#A8462F;">⚑ Extra richiesti</p>
+                <table role="presentation" cellpadding="0" cellspacing="0"><tr>${extraPills}</tr></table>
+              </td>
+            </tr>`
+                : ''
+            }
+
+            ${
+              data.message
+                ? `
+            <!-- Note: the highest-priority freeform content in the email —
+                 heavier border, warm tinted background, bold label, so it
+                 can't be skimmed past the way a table row would be. -->
+            <tr>
+              <td style="padding:24px 36px 0;">
+                <p style="margin:0 0 10px;font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#A8462F;">✎ Nota di ${firstName}</p>
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#FBF1E7;border-radius:14px;border:1px solid #EAD9BE;border-left:5px solid #A8462F;">
+                  <tr>
+                    <td style="padding:18px 20px;font-family:${FONT_BODY};font-size:16px;font-weight:500;color:#241C15;line-height:1.6;">${escapeHtml(data.message).replace(/\n/g, '<br>')}</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>`
+                : ''
+            }
+
             <!-- Guest details -->
             <tr>
               <td style="padding:28px 36px 4px;">
@@ -142,23 +191,6 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
                 </table>
               </td>
             </tr>
-
-            ${
-              data.message
-                ? `
-            <!-- Message -->
-            <tr>
-              <td style="padding:20px 36px 8px;">
-                <p style="margin:0 0 8px;font-family:${FONT_BODY};font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#241C15;opacity:0.45;">Messaggio di ${firstName}</p>
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F3EC;border-radius:14px;border-left:3px solid #C9A059;">
-                  <tr>
-                    <td style="padding:18px 20px;font-family:${FONT_BODY};font-size:15px;color:#241C15;line-height:1.6;">${escapeHtml(data.message).replace(/\n/g, '<br>')}</td>
-                  </tr>
-                </table>
-              </td>
-            </tr>`
-                : ''
-            }
 
             <!-- CTA -->
             <tr>
