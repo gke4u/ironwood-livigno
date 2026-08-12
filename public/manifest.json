@@ -1,0 +1,22 @@
+{
+  "name": "Ironwood Livigno",
+  "short_name": "Ironwood Livigno",
+  "description": "Appartamento vacanze a Livigno con sauna a infrarossi e bagno turco privati, a 100 metri dagli impianti di risalita.",
+  "start_url": "/it",
+  "display": "standalone",
+  "background_color": "#F7F3EC",
+  "theme_color": "#241C15",
+  "lang": "it",
+  "icons": [
+    {
+      "src": "/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

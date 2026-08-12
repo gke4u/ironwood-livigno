@@ -1,0 +1,189 @@
+# This project deploys as a Cloudflare Worker with static assets (not
+# classic Cloudflare Pages), and that product's _redirects format only
+# accepts relative paths — a cross-host rule like "www -> apex domain"
+# is rejected at deploy time with "Only relative URLs are allowed".
+#
+# If you ever add www.ironwoodlivigno.com as a second custom domain and
+# want it to redirect to the bare domain, set that up instead as a
+# Redirect Rule at the Cloudflare zone level: dash.cloudflare.com ->
+# your domain -> Rules -> Redirect Rules -> Create rule. That works
+# regardless of Workers vs Pages and doesn't need anything in this file.
+
+# ------------------------------------------------------------------
+# Legacy URLs from the previous (multi-page) version of the site.
+# Those pages were indexed by search engines and linked from old
+# navigation menus; without these rules they 404 and any accumulated
+# link equity is lost. 301 = permanent, tells Google to transfer the
+# old URL's standing to the new destination.
+# Note: static files always win over redirects on Cloudflare, so these
+# only fire for URLs that no longer exist.
+/index.html /it 301
+/appartamento.html /it#camere 301
+/dove-siamo.html /it#posizione 301
+/servizi.html /it#esperienza 301
+/stagioni.html /it 301
+/recensioni.html /it 301
+/faq.html /it 301
+/contatti.html /it#prenota 301
+/prenota.html /it#prenota 301
+/privacy.html /it/privacy 301
+/blog/index.html /blog 301
+/blog/cosa-fare-a-livigno.html /blog 301
+/blog/duty-free-livigno.html /blog/shopping-duty-free-livigno-cosa-comprare 301
+
+# REMOVED (audit P0.3): these used to catch-all every unknown path under a
+# locale prefix and 301 it to that locale's homepage —
+# /it/pagina-inesistente-xyz, /it/contact (before the page existed), any
+# typo — all silently redirected to /it with a 200. Google reads that
+# pattern as a soft-404 across the whole domain, and it also meant any
+# *real* new page under a locale prefix (like the Contatti page) was one
+# redirect rule away from being swallowed the moment it launched. Genuinely
+# unknown paths now fall through to the branded 404 (out/404.html, built
+# from src/app/not-found.tsx), served with a real HTTP 404 status.
+#   /en/* /en 301
+#   /de/* /de 301
+#   /fr/* /fr 301
+#   /nl/* /nl 301
+#   /no/* /no 301
+#   /da/* /da 301
+#   /pl/* /pl 301
+#   /cs/* /cs 301
+#   /it/* /it 301
+
+# ------------------------------------------------------------------
+# Legacy locale-prefixed URLs (old multi-page site: one .html file per
+# language, e.g. /de/kontakt.html, /fr/saisons.html). Found via Search
+# Console → Rendimento → Pagine on 2026-08-11: 77 of these were still
+# indexed and receiving real impressions/clicks from Google, but every
+# one returned 404 in production — only the non-prefixed legacy URLs
+# above were covered. Confirmed live with a manual fetch() on a sample
+# before writing this block.
+#
+# Each rule is an explicit one-to-one mapping to the closest current
+# equivalent (dedicated page where one now exists, otherwise the
+# matching homepage anchor — same convention as the non-prefixed rules
+# above: /faq.html and /recensioni.html go to the plain homepage, not
+# an anchor, because there's no dedicated #faq/#recensioni target).
+# Deliberately NOT a catch-all per-locale pattern (see REMOVED note
+# above — that caused soft-404s across the whole domain last time).
+# Only the exact URLs confirmed in Search Console are listed; nothing
+# here is guessed.
+
+# EN
+/en/index.html /en 301
+/en/blog/index.html /blog 301
+/en/blog/duty-free-livigno.html /blog/shopping-duty-free-livigno-cosa-comprare/en 301
+/en/blog/things-to-do-in-livigno.html /blog 301
+/en/faq.html /en 301
+/en/contact.html /en/contact 301
+/en/privacy.html /en/privacy 301
+/en/apartment.html /en#camere 301
+/en/seasons.html /en 301
+/en/services.html /en#esperienza 301
+/en/reviews.html /en 301
+/en/location.html /en#posizione 301
+/en/book.html /en#prenota 301
+
+# DE
+/de/index.html /de 301
+/de/blog/index.html /blog 301
+/de/blog/duty-free-livigno.html /blog/shopping-duty-free-livigno-cosa-comprare/de 301
+/de/blog/was-tun-in-livigno.html /blog 301
+/de/faq.html /de 301
+/de/kontakt.html /de/kontakt 301
+/de/datenschutz.html /de/privacy 301
+/de/wohnung.html /de#camere 301
+/de/jahreszeiten.html /de 301
+/de/leistungen.html /de#esperienza 301
+/de/bewertungen.html /de 301
+
+# FR
+/fr/index.html /fr 301
+/fr/blog/index.html /blog 301
+/fr/blog/duty-free-livigno.html /blog/shopping-duty-free-livigno-cosa-comprare 301
+/fr/blog/que-faire-a-livigno.html /blog 301
+/fr/faq.html /fr 301
+/fr/confidentialite.html /fr/privacy 301
+/fr/emplacement.html /fr#posizione 301
+/fr/services.html /fr#esperienza 301
+/fr/avis.html /fr 301
+/fr/saisons.html /fr 301
+
+# NL
+/nl/index.html /nl 301
+/nl/blog/index.html /blog 301
+/nl/blog/duty-free-livigno.html /blog/shopping-duty-free-livigno-cosa-comprare 301
+/nl/blog/wat-te-doen-in-livigno.html /blog 301
+/nl/faq.html /nl 301
+/nl/contact.html /nl/contact 301
+/nl/privacybeleid.html /nl/privacy 301
+/nl/locatie.html /nl#posizione 301
+/nl/seizoenen.html /nl 301
+/nl/boeken.html /nl#prenota 301
+
+# DA
+/da/blog/index.html /blog 301
+/da/blog/duty-free-livigno.html /blog/shopping-duty-free-livigno-cosa-comprare 301
+/da/blog/ting-at-lave-i-livigno.html /blog 301
+/da/faq.html /da 301
+/da/lejligheden.html /da#camere 301
+/da/privatliv.html /da/privacy 301
+/da/saesoner.html /da 301
+/da/beliggenhed.html /da#posizione 301
+
+# NO
+/no/index.html /no 301
+/no/blog/index.html /blog 301
+/no/blog/duty-free-livigno.html /blog/shopping-duty-free-livigno-cosa-comprare 301
+/no/blog/ting-a-gjore-i-livigno.html /blog 301
+/no/faq.html /no 301
+/no/leiligheten.html /no#camere 301
+/no/sesonger.html /no 301
+/no/anmeldelser.html /no 301
+
+# PL
+/pl/index.html /pl 301
+/pl/blog/index.html /blog 301
+/pl/blog/duty-free-livigno.html /blog/shopping-duty-free-livigno-cosa-comprare 301
+/pl/blog/co-robic-w-livigno.html /blog 301
+/pl/faq.html /pl 301
+/pl/kontakt.html /pl/kontakt 301
+/pl/polityka-prywatnosci.html /pl/privacy 301
+/pl/apartament.html /pl#camere 301
+/pl/lokalizacja.html /pl#posizione 301
+/pl/opinie.html /pl 301
+
+# CS
+/cs/blog/index.html /blog 301
+/cs/blog/duty-free-livigno.html /blog/shopping-duty-free-livigno-cosa-comprare 301
+/cs/blog/co-delat-v-livignu.html /blog 301
+/cs/lokalita.html /cs#posizione 301
+/cs/recenze.html /cs 301
+/cs/sezony.html /cs 301
+/cs/sluzby.html /cs#esperienza 301
+
+# ------------------------------------------------------------------
+# Even older legacy URLs, from before the site used .html extensions
+# (an earlier CMS generation, predating the "one .html file per
+# language" version above). Same discovery method: found live and
+# earning clicks/impressions in Search Console → Rendimento → Pagine
+# on 2026-08-11, confirmed 404 with a manual fetch() before writing
+# these rules. www.ironwoodlivigno.com itself already 301s to the bare
+# domain at the Cloudflare zone level (see note at the top of this
+# file), so these paths are written without the www — the zone-level
+# redirect normalizes to apex first, then this file takes over.
+/en/home /en 301
+/de/home /de 301
+/contatti /it#prenota 301
+/prenota /it#prenota 301
+/dove-siamo /it#posizione 301
+/photogallery /it 301
+/en/photogallery /en 301
+/de/photogallery /de 301
+/cs/photogallery /cs 301
+/cs/contatti /cs/kontakt 301
+/de/contatti /de/kontakt 301
+/en/contatti /en/contact 301
+/cs/sauna /cs 301
+/en/ironwoodlivigno /en 301
+/prova /it 301

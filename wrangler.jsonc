@@ -1,0 +1,22 @@
+// Deploys the static site (the `out/` folder produced by `npm run build`)
+// straight to the existing "ironwood-livigno" Worker via the command line,
+// as a reliable alternative to the Cloudflare dashboard's drag-and-drop
+// upload — which can hang/stall when uploading 100+ small files at once
+// (a known issue with the dashboard uploader, see Cloudflare community
+// reports). The `name` below matches the existing production Worker
+// exactly, so deploying with this file updates that same site/domain —
+// it does not create a new project.
+//
+// One-time setup, then to publish an update after `npm run build`:
+//   npx wrangler login      (opens a browser once, to connect your account)
+//   npx wrangler deploy
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "ironwood-livigno",
+	"compatibility_date": "2026-08-03",
+	"assets": {
+		"directory": "./out",
+		"html_handling": "auto-trailing-slash",
+		"not_found_handling": "404-page"
+	}
+}

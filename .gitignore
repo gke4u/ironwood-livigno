@@ -1,0 +1,10 @@
+node_modules
+.next
+out
+.DS_Store
+*.log
+.open-next
+.wrangler
+cloudflare-env.d.ts
+.env*.local
+graphify-out

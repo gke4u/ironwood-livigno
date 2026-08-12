@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design-token font variables, consumed by tailwind.config.ts
+   (font-display / font-body). The family names on the right are the ones
+   registered by the Fontsource @font-face imports in src/app/layout.tsx
+   (self-hosted .woff2, no Google Fonts request). */
+:root {
+  --font-fraunces: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --font-poppins: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Updated by LangSuggestBanner.tsx (0px when hidden/dismissed, 44px while
+   shown) and read by Nav.tsx's `top` offset, so the sticky header sits
+   right below the banner instead of underneath it. Anchor targets use the
+   same variable in scroll-margin-top so an in-page link doesn't land a
+   heading under either the header or the banner. */
+:root {
+  --banner-h: 0px;
+}
+
+#esperienza,
+#camere,
+#posizione,
+#prenota,
+#meteo {
+  scroll-margin-top: calc(var(--banner-h) + 88px);
+}
+
+/* Hero background: gradient scrim + photo. The base rule uses the JPG so
+   every browser gets a working image; browsers that understand image-set()
+   (all modern ones) swap in the ~30% lighter WebP for the same photo. This
+   is the page's LCP element — see the matching <link rel="preload"> in
+   Hero.tsx. */
+/* Gradient stops darkened slightly from the original (0.25/0.55/0.92) —
+   audit flagged borderline contrast for the mist-on-photo text over bright
+   areas of the shot (snow, sky). The new stops keep the photo readable
+   while pushing white text safely past WCAG AA (4.5:1) for the title/CTA
+   area at the bottom, where the gradient is strongest. */
+.hero-bg {
+  background-image: linear-gradient(180deg, rgba(36, 28, 21, 0.32) 0%, rgba(36, 28, 21, 0.62) 60%, rgba(36, 28, 21, 0.94) 100%),
+    url('/images/hero-ironwood.jpg');
+}
+@supports (background-image: image-set(url('/images/hero-ironwood.webp') type('image/webp'))) {
+  .hero-bg {
+    background-image: linear-gradient(180deg, rgba(36, 28, 21, 0.32) 0%, rgba(36, 28, 21, 0.62) 60%, rgba(36, 28, 21, 0.94) 100%),
+      image-set(url('/images/hero-ironwood.webp') type('image/webp'), url('/images/hero-ironwood.jpg') type('image/jpeg'));
+  }
+}
+
+body {
+  @apply bg-mist text-ink font-body antialiased;
+}
+
+/* Skip link: invisible until it receives keyboard focus, then appears as a
+   clearly visible pill in the top-left corner. Standard accessibility
+   pattern (WCAG 2.4.1 Bypass Blocks). */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  z-index: 100;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  @apply bg-brick text-mist rounded-full px-5 py-2.5 text-sm font-medium shadow-soft outline-none ring-2 ring-gold;
+}
+
+/* Visible by default: if JavaScript never runs (disabled, blocked, still
+   loading, or a crawler that doesn't execute it), content must not get
+   stuck invisible. The reveal-pending class is added by Reveal.tsx itself,
+   only once React has actually mounted, so the opacity:0 state only ever
+   applies when the fade-in animation is guaranteed to run afterwards. */
+.reveal {
+  opacity: 1;
+}
+.reveal.reveal-pending {
+  opacity: 0;
+}
+.reveal.is-visible {
+  animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal.reveal-pending {
+    opacity: 1;
+  }
+  .reveal.is-visible {
+    animation: none;
+  }
+}
