@@ -78,6 +78,45 @@ Anche i **6 casi di canonical non rispettato da Google** meritano l'elenco URL: 
 
 **Core Web Vitals**: questo export è solo "Copertura/Indicizzazione", non contiene i dati di Segnali web essenziali. Serve un secondo export da Search Console → Esperienza → Segnali web essenziali (mobile + desktop), oppure il via libera a ritentare PageSpeed Insights.
 
+### 6bis. Elenco completo dei 41 URL 404 (drilldown Search Console)
+
+Ricevuto ed incrociato con `public/_redirects` attuale. Tre gruppi distinti:
+
+**Gruppo A — già coperti da una regola esistente in `_redirects`** (Google mostra ancora 404 solo perché non ha ancora ripassato dall'ultima scansione, 2026-08-07/08): `/da/beliggenhed.html`, `/no/blog/index.html`, `/nl/locatie.html`, `/nl/privacybeleid.html`, `/da/saesoner.html`, `/en/apartment.html`, `/no/sesonger.html`, `/fr/avis.html`, `/en/seasons.html`, `/en/location.html`. → Nessuna azione, si risolvono da sole quando Google riscansiona (si può accelerare con "Convalida la correzione" in Search Console).
+
+**Gruppo B — variante NON coperta, serve una nuova regola** (spesso è il gemello "senza .html" di una regola che esiste solo con ".html", o un URL mai mappato):
+
+| URL rotto | Nuova regola proposta |
+|---|---|
+| `/cs/ochrana-soukromi` | → `/cs/privacy` |
+| `/fr/reserver.html` | → `/fr#prenota` |
+| `/home` | → `/it` |
+| `/en/dove-siamo` | → `/en#posizione` |
+| `/fr/avis` | → `/fr` |
+| `/no/sesonger` | → `/no` |
+| `/pl/sezony` e `/pl/sezony.html` | → `/pl` |
+| `/de/jahreszeiten` | → `/de` |
+| `/en/book` | → `/en#prenota` |
+| `/nl/diensten` | → `/nl#esperienza` |
+| `/it/contact` | → `/it/contatti` |
+| `/pl/lokalizacja` | → `/pl#posizione` |
+| `/appartamento` | → `/it#camere` |
+| `/pl/polityka-prywatnosci` | → `/pl/privacy` |
+| `/fr/saisons` | → `/fr` |
+| `/nl/seizoenen` | → `/nl` |
+| `/pl/apartament` | → `/pl#camere` |
+| `/fr/blog/` (slash finale) | → `/blog` |
+| `/nl/appartement` | → `/nl#camere` |
+| `/en/apartment` | → `/en#camere` |
+| `/da/faq` | → `/da` |
+| `/en/prices.html` | → `/en#tariffe` |
+| `/pl/rezerwacja` | → `/pl#prenota` |
+| `/Ironwood_livigno` | → `/it` |
+
+Target verificati contro `src/i18n/routing.ts` (contactSlugs reali per lingua) e gli id sezione reali nel codice (`#camere`, `#esperienza`, `#posizione`, `#prenota`, `#tariffe` — quest'ultimo per la tabella tariffe, non ovvio dal nome pagina "prices").
+
+**Gruppo C — tutti con prefisso `www.`, possibile falla nel redirect di zona Cloudflare** (non risolvibile da `_redirects`, che vede solo richieste già arrivate su apex): `www.ironwoodlivigno.com/home`, `/en/dove-siamo`, `/cs/dove-siamo`, `/en/photogallery`, `/it/home`, `/cs/prova`, e — il caso più indicativo — **`www.ironwoodlivigno.com/cs/`**, che è la home reale della lingua ceca (dovrebbe funzionare sempre). Se anche un path valido come `/cs/` va in 404 con `www.`, il redirect www→apex a livello di zona Cloudflare potrebbe non coprire tutti i path o avere un problema con lo slash finale. Da verificare in Cloudflare dashboard → il tuo dominio → Rules → Redirect Rules (non posso controllarlo io, serve accesso alla dashboard).
+
 ## 7. Core Web Vitals (PageSpeed Insights)
 
 Ho provato a interrogare l'API pubblica di PageSpeed Insights su `/it`, `/inverno`, `/camere-appartamento-livigno` (mobile) ma sono stato rate-limitato (HTTP 429) dopo pochi tentativi — l'API pubblica senza chiave ha una quota condivisa molto bassa. Due strade, a tua scelta:
