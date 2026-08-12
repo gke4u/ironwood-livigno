@@ -1,0 +1,58 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "ironwood-forms",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-12",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Custom domain for the form backend. Kept deliberately separate from the
+  // main site's Worker (ironwood-livigno) — a form-submission API and a
+  // static marketing site have nothing to do with each other operationally,
+  // and this way a bad deploy of one can never take down the other.
+  "routes": [
+    {
+      "pattern": "forms.ironwoodlivigno.com",
+      "custom_domain": true
+    }
+  ],
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ironwood-forms",
+      "database_id": "f7a04b87-646b-435d-895d-609e8372d668"
+    }
+  ],
+
+  // Sends the internal notification to info@ironwoodlivigno.com only — see
+  // README.md for why a guest-facing autoresponder isn't possible with this
+  // binding (Cloudflare Email Service can only send to verified addresses on
+  // the account, not to arbitrary third-party recipients).
+  "send_email": [
+    {
+      "name": "EMAIL",
+      "destination_address": "info@ironwoodlivigno.com"
+    }
+  ],
+
+  // 5 requests / 60s per IP (CF-Connecting-IP). Cloudflare's `simple` rate
+  // limiter only supports a 10s or 60s window, so this is the tightest
+  // single-binding window available — combined with the honeypot and
+  // server-side validation below, sufficient defense-in-depth for a
+  // low-traffic booking-request form without needing a CAPTCHA.
+  "ratelimits": [
+    {
+      "name": "FORM_RATE_LIMITER",
+      "namespace_id": "1001",
+      "simple": {
+        "limit": 5,
+        "period": 60
+      }
+    }
+  ],
+
+  // Monthly retention sweep — see scheduled() in src/index.ts.
+  "triggers": {
+    "crons": ["0 3 1 * *"]
+  }
+}

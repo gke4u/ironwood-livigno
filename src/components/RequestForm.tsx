@@ -4,16 +4,26 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import DatePicker, { fromISO } from './DatePicker';
 
-// Static site, no backend of our own: the form can't POST to anything we
-// host. Instead it submits directly to Web3Forms (https://web3forms.com) —
-// a free service that takes the POST from the browser and emails it to the
-// address tied to the access key below, no account/backend needed on our
-// side. Get a free key by entering your email at https://web3forms.com and
-// paste it in place of the placeholder — the form falls back to opening a
-// pre-filled email (mailto) until you do, so it always works.
-const WEB3FORMS_ACCESS_KEY = '2b74f827-dd36-44b3-b791-b3e4a83db65f';
+// Submits to our own form backend — a Cloudflare Worker (forms-worker/,
+// D1 + Email Service, no third-party SaaS) at forms.ironwoodlivigno.com,
+// replacing the previous Web3Forms integration. No access key here: unlike
+// Web3Forms, authentication is implicit in the Worker's own deployment
+// (its D1/email/rate-limit bindings only exist inside that Worker, never
+// in this client-side bundle).
+const FORMS_ENDPOINT = 'https://forms.ironwoodlivigno.com/submit';
 const CONTACT_PHONE = '390342929285';
 const CONTACT_EMAIL = 'info@ironwoodlivigno.com';
+
+// Backend stores/reads dates as ISO (yyyy-mm-dd, same as the DatePicker's
+// own value), but the notification email and the mailto fallback below are
+// always read by Francesco, in Italian — so both show gg/mm/aaaa
+// regardless of which of the 12 site locales the guest was browsing in.
+function toItalianDate(iso: string): string {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  if (!match) return iso;
+  const [, y, m, d] = match;
+  return `${d}/${m}/${y}`;
+}
 
 // Very light spam-resistance for a form with no backend of its own:
 // 1) a honeypot field bots fill in but humans never see, 2) a minimum time
@@ -22,6 +32,8 @@ const CONTACT_EMAIL = 'info@ironwoodlivigno.com';
 const MIN_SUBMIT_MS = 2500;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const SOURCE_OPTIONS = ['google', 'instagram', 'facebook', 'booking', 'airbnb', 'referral', 'other'] as const;
 
 // Shared field styling — kept as constants (rather than repeated inline on
 // every input) so the whole form reads as one deliberately designed piece
@@ -44,6 +56,7 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
   const [checkin, setCheckin] = useState('');
   const [checkout, setCheckout] = useState('');
   const [guests, setGuests] = useState('2');
+  const [source, setSource] = useState('');
   const [message, setMessage] = useState('');
   const [extraBreakfast, setExtraBreakfast] = useState(false);
   const [extraEbike, setExtraEbike] = useState(false);
@@ -84,8 +97,8 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
       `${t('label_name')}: ${name || '-'}`,
       `${t('label_email')}: ${email || '-'}`,
       `${t('label_phone')}: ${phone || '-'}`,
-      `${t('label_checkin')}: ${checkin || '-'}`,
-      `${t('label_checkout')}: ${checkout || '-'}`,
+      `${t('label_checkin')}: ${checkin ? toItalianDate(checkin) : '-'}`,
+      `${t('label_checkout')}: ${checkout ? toItalianDate(checkout) : '-'}`,
       `${t('label_guests')}: ${guests}`
     ];
     if (extraBreakfast || extraEbike) {
@@ -94,6 +107,9 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
         extraEbike ? t('extra_ebike_label') : null
       ].filter(Boolean);
       lines.push(`${t('extras_title')}: ${extras.join(' + ')}`);
+    }
+    if (source) {
+      lines.push(`${t('label_source')}: ${t(`source_option_${source}`)}`);
     }
     if (message.trim()) {
       lines.push(`${t('label_message')}: ${message.trim()}`);
@@ -135,9 +151,9 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
 
     setStatus('sending');
 
-    // Attempt the real submission. On any failure (network error, Web3Forms
-    // rejecting the request, access key not yet configured) we show an
-    // inline error and point at the email/phone buttons below — we never
+    // Attempt the real submission. On any failure (network error, the Worker
+    // rejecting the request, backend not yet reachable) we show an inline
+    // error and point at the email/phone buttons below — we never
     // auto-redirect to a mailto: link. Auto-navigating to mailto: is jarring
     // on any device without a default mail client configured: the browser/OS
     // pops up an "how do you want to open this?" chooser instead of quietly
@@ -145,26 +161,28 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
     // fallback. Letting the person click the email button themselves avoids
     // that surprise entirely.
     try {
-      const res = await fetch('https://api.web3forms.com/submit', {
+      const res = await fetch(FORMS_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          access_key: WEB3FORMS_ACCESS_KEY,
-          subject: t('email_subject'),
-          from_name: name || 'Ironwood Livigno — richiesta dal sito',
-          email: email || undefined,
-          // Web3Forms uses the "email" field above as the Reply-To on the
-          // notification it sends us, by default. "replyto" is the explicit
-          // override for the same thing — sending both makes it certain
-          // that clicking "Reply" in the inbox goes straight to the guest,
-          // not back to Web3Forms or nowhere.
-          replyto: email || undefined,
+          name,
+          email,
           phone: phone || undefined,
-          message: buildLines().join('\n')
+          checkin: checkin ? toItalianDate(checkin) : '',
+          checkin_iso: checkin,
+          checkout: checkout ? toItalianDate(checkout) : '',
+          checkout_iso: checkout,
+          guests: Number(guests),
+          extra_breakfast: extraBreakfast,
+          extra_ebike: extraEbike,
+          source: source || undefined,
+          message: message.trim() || undefined,
+          locale,
+          company // honeypot, always empty here (the bot branch above already returned)
         })
       });
       const json = await res.json();
-      if (json.success) {
+      if (json.ok) {
         setStatus('success');
         setName('');
         setEmail('');
@@ -172,6 +190,7 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
         setCheckin('');
         setCheckout('');
         setGuests('2');
+        setSource('');
         setMessage('');
         setExtraBreakfast(false);
         setExtraEbike(false);
@@ -317,6 +336,25 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
           {[1, 2, 3, 4, 5, 6].map((n) => (
             <option key={n} value={n}>
               {n}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="sm:col-span-2">
+        <label htmlFor="req-source" className={LABEL_CLASS}>
+          {t('label_source')}
+        </label>
+        <select
+          id="req-source"
+          value={source}
+          onChange={(e) => setSource(e.target.value)}
+          className={`sm:w-64 ${INPUT_CLASS}`}
+        >
+          <option value="">{t('source_option_placeholder')}</option>
+          {SOURCE_OPTIONS.map((opt) => (
+            <option key={opt} value={opt}>
+              {t(`source_option_${opt}`)}
             </option>
           ))}
         </select>

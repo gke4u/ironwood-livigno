@@ -1,0 +1,14 @@
+{
+  "name": "ironwood-forms",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:schema": "wrangler d1 execute ironwood-forms --remote --file=./schema.sql"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260811.1",
+    "typescript": "^5.7.0",
+    "wrangler": "^4.119.0"
+  }
+}
