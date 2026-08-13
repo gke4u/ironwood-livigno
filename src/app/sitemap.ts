@@ -9,6 +9,7 @@ export const dynamic = 'force-static';
 import { blogPosts } from '@/content/blog';
 import { blogTranslations, translatedBlogLocales } from '@/content/blogTranslations';
 import { landingPageTranslations, translatedLandingLocales } from '@/content/landingPageTranslations';
+import { satelliteSlugs } from '@/data/satellite-pages';
 
 // Generated automatically at build time from the site's own content
 // (blogPosts, blogTranslations, routing locales) instead of the old
@@ -48,20 +49,29 @@ const homeImages = [
 ].map((src) => `${siteUrl}${src}`);
 
 // Satellite/landing pages: single-locale (Italian) pages with their own
-// dedicated URL, not part of the /[locale] tree. Config lives here rather
-// than being derived from a data file because there's no shared content
-// module for them (each is its own page.tsx under src/app/).
-const satellitePages: { path: string; image: string; priority: number; changeFrequency: 'monthly' | 'yearly' }[] = [
-  { path: 'inverno', image: '/images/livigno-skilift-vallata-nebbia.jpg', priority: 0.8, changeFrequency: 'monthly' },
-  { path: 'estate', image: '/images/mountain-bike-estate.jpg', priority: 0.8, changeFrequency: 'monthly' },
-  { path: 'famiglie', image: '/images/appartamento-soggiorno.jpg', priority: 0.8, changeFrequency: 'monthly' },
-  { path: 'benessere', image: '/images/sauna-vista-montagna.jpg', priority: 0.8, changeFrequency: 'monthly' },
-  { path: 'come-arrivare', image: '/images/esterno-giorno.jpg', priority: 0.8, changeFrequency: 'monthly' },
-  { path: 'chi-siamo', image: '/images/esterno-giorno.jpg', priority: 0.6, changeFrequency: 'yearly' },
-  { path: 'sauna-bagno-turco-privato-livigno', image: '/images/sauna.jpg', priority: 0.8, changeFrequency: 'monthly' },
-  { path: 'camere-appartamento-livigno', image: '/images/camera3.jpg', priority: 0.8, changeFrequency: 'monthly' },
-  { path: 'livigno-estate', image: '/images/mucca-alpeggio-livigno.jpg', priority: 0.8, changeFrequency: 'monthly' }
-];
+// dedicated URL, not part of the /[locale] tree. The list of *which* pages
+// exist now comes from satelliteSlugs (src/data/satellite-pages.ts) — the
+// same list Footer/Nav/MobileMenu use — so it can't drift out of sync with
+// them. Only the sitemap-specific metadata (image, priority, crawl
+// frequency) lives here, keyed by slug.
+const satellitePageMeta: Record<string, { image: string; priority: number; changeFrequency: 'monthly' | 'yearly' }> = {
+  inverno: { image: '/images/livigno-skilift-vallata-nebbia.jpg', priority: 0.8, changeFrequency: 'monthly' },
+  estate: { image: '/images/mountain-bike-estate.jpg', priority: 0.8, changeFrequency: 'monthly' },
+  famiglie: { image: '/images/appartamento-soggiorno.jpg', priority: 0.8, changeFrequency: 'monthly' },
+  benessere: { image: '/images/sauna-vista-montagna.jpg', priority: 0.8, changeFrequency: 'monthly' },
+  'come-arrivare': { image: '/images/esterno-giorno.jpg', priority: 0.8, changeFrequency: 'monthly' },
+  'chi-siamo': { image: '/images/esterno-giorno.jpg', priority: 0.6, changeFrequency: 'yearly' },
+  'sauna-bagno-turco-privato-livigno': { image: '/images/sauna.jpg', priority: 0.8, changeFrequency: 'monthly' },
+  'camere-appartamento-livigno': { image: '/images/camera3.jpg', priority: 0.8, changeFrequency: 'monthly' },
+  'livigno-estate': { image: '/images/mucca-alpeggio-livigno.jpg', priority: 0.8, changeFrequency: 'monthly' }
+};
+
+// A slug present in satelliteSlugs but missing here would otherwise silently
+// produce a sitemap entry with an undefined image URL — fail the build
+// instead, at the one place that would actually surface the mistake.
+satelliteSlugs.forEach((slug) => {
+  if (!satellitePageMeta[slug]) throw new Error(`sitemap.ts: no metadata for satellite page "${slug}" — add an entry to satellitePageMeta`);
+});
 
 // Priority weights per locale, matching the old sitemap's home-page
 // entries (it highest, en/de/en-us next, the rest equal).
@@ -153,7 +163,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   });
 
   // 5. Satellite / landing pages (Italian original + any translated /slug/<locale> pages)
-  satellitePages.forEach(({ path, image, priority, changeFrequency }) => {
+  satelliteSlugs.forEach((path) => {
+    const { image, priority, changeFrequency } = satellitePageMeta[path];
     const itUrl = `${siteUrl}/${path}`;
     const translations = landingPageTranslations[path] ?? {};
     const languages: Record<string, string> = { it: itUrl };

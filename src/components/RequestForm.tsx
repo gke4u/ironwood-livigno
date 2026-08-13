@@ -16,13 +16,16 @@ const CONTACT_EMAIL = 'info@ironwoodlivigno.com';
 
 // Backend stores/reads dates as ISO (yyyy-mm-dd, same as the DatePicker's
 // own value), but the notification email and the mailto fallback below are
-// always read by Francesco, in Italian — so both show gg/mm/aaaa
-// regardless of which of the 12 site locales the guest was browsing in.
+// always read by Francesco, in Italian — so both spell out "15 agosto
+// 2026" regardless of which of the 12 site locales the guest was browsing
+// in. Deliberately not gg/mm/aaaa (the previous format): an all-numeric
+// date is exactly the kind of thing that gets misread — 05/08 as 5 August
+// vs 8 May is the classic ambiguity — and the whole point of this string
+// is that Francesco reads it correctly at a glance, every time.
 function toItalianDate(iso: string): string {
-  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
-  if (!match) return iso;
-  const [, y, m, d] = match;
-  return `${d}/${m}/${y}`;
+  const date = fromISO(iso);
+  if (!date) return iso;
+  return new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
 }
 
 // Very light spam-resistance for a form with no backend of its own:

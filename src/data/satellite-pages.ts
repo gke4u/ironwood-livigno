@@ -18,6 +18,14 @@ const IT_PAGES = [
   { href: '/livigno-estate', label: "Livigno d'estate" }
 ];
 
+// The slugs alone, for consumers that need the list of pages but not the
+// Italian labels — currently sitemap.ts, which used to hand-maintain its
+// own separate copy of these same 9 slugs (see git history). Two
+// independently edited lists of "the satellite pages" is exactly the kind
+// of thing that quietly drifts apart the next time a page is added,
+// renamed, or removed and only one of the two gets updated.
+export const satelliteSlugs = IT_PAGES.map(({ href }) => href.slice(1));
+
 export function getSatellitePages(locale: Locale): { href: string; label: string }[] {
   if (locale === 'it') return IT_PAGES;
 

@@ -79,7 +79,7 @@ export type Submission = {
   name: string;
   email: string;
   phone?: string;
-  checkin: string; // dd/mm/yyyy, display only
+  checkin: string; // "15 agosto 2026" (Italian, spelled-out month), display only
   checkin_iso: string; // yyyy-mm-dd, source of truth for validation
   checkout: string;
   checkout_iso: string;

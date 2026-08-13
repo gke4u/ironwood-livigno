@@ -274,6 +274,6 @@
 # already resolve correctly through existing rules above and needed no
 # new entry.
 /sauna /sauna-bagno-turco-privato-livigno 301
-/en/sauna /sauna-bagno-turco-privato-livigno 301
+/en/sauna /sauna-bagno-turco-privato-livigno/en 301
 /it/photogallery /it 301
 /it/dove-siamo /it#posizione 301

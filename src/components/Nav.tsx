@@ -104,7 +104,7 @@ export default function Nav({ locale }: { locale: Locale }) {
           {navLink('posizione', `${home}#posizione`, t('location'))}
           <div className="relative group">
             <button type="button" className="flex items-center gap-1 hover:text-gold transition-colors" aria-haspopup="true">
-              Scopri
+              {t('discover')}
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden>
                 <path d="M6 9l6 6 6-6" />
               </svg>
