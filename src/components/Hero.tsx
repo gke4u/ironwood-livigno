@@ -13,10 +13,25 @@ export default function Hero() {
           photo the same sense of motion as a video background, without the
           weight of an actual video file — and it's paused for anyone with
           prefers-reduced-motion set (see globals.css). */}
-      {/* Preloads the WebP: every browser that supports <link rel=preload>
-          also supports WebP, and browsers that support neither simply fall
-          back to loading the JPG referenced by the CSS below. */}
-      <link rel="preload" as="image" href="/images/hero-ironwood.webp" fetchPriority="high" />
+      {/* Preloads the WebP at the same width tier the CSS below is about to
+          select for this viewport (mobile/tablet/desktop), via the
+          preload's own `media` attribute — three candidates, only the
+          matching one actually fetches. Every browser that supports <link
+          rel=preload> with `media` also supports WebP, and browsers that
+          support neither simply fall back to loading the JPG referenced by
+          the CSS below. Without the media split, a single preload here
+          would have to guess one size for every device — either wasting
+          bandwidth on mobile (preloading the desktop file) or serving a
+          soft image on a large screen (preloading the mobile file). */}
+      <link rel="preload" as="image" href="/images/hero-ironwood-768.webp" media="(max-width: 768px)" fetchPriority="high" />
+      <link
+        rel="preload"
+        as="image"
+        href="/images/hero-ironwood-1440.webp"
+        media="(min-width: 769px) and (max-width: 1440px)"
+        fetchPriority="high"
+      />
+      <link rel="preload" as="image" href="/images/hero-ironwood-1920.webp" media="(min-width: 1441px)" fetchPriority="high" />
       {/* Background (gradient + photo, WebP with JPG fallback via
           image-set) lives in globals.css (.hero-bg) because inline styles
           can't express a fallback chain of two background-image

@@ -32,11 +32,21 @@ html {
   scroll-margin-top: calc(var(--banner-h) + 88px);
 }
 
-/* Hero background: gradient scrim + photo. The base rule uses the JPG so
-   every browser gets a working image; browsers that understand image-set()
-   (all modern ones) swap in the ~30% lighter WebP for the same photo. This
-   is the page's LCP element — see the matching <link rel="preload"> in
-   Hero.tsx. */
+/* Hero background: gradient scrim + photo. The base rule uses the full-size
+   JPG so every browser gets a working image; browsers that understand
+   image-set() (all modern ones) swap in AVIF, falling back to WebP, at a
+   size matched to the viewport via the media queries below. This is the
+   page's LCP element — see the matching <link rel="preload"> tags in
+   Hero.tsx, which fetch the same width tier the browser is about to pick
+   here so the request starts immediately instead of waiting on CSS.
+   Previously this rule (and the preload) always pointed at the single
+   full-resolution image (252 KB WebP / 360 KB JPG) regardless of viewport —
+   a phone on a mobile connection downloaded the same file as a 1920px
+   desktop monitor for the single most important image on the page. The
+   pre-generated -768/-1440/-1920 variants (scripts/generate-responsive-
+   images.mjs, already used by Pic.tsx elsewhere on the site) cut that to
+   ~32 KB AVIF on mobile — the same technique this file's own photo gallery
+   already relied on, just not yet applied to the hero background itself. */
 /* Gradient stops darkened slightly from the original (0.25/0.55/0.92) —
    audit flagged borderline contrast for the mist-on-photo text over bright
    areas of the shot (snow, sky). The new stops keep the photo readable
@@ -49,7 +59,31 @@ html {
 @supports (background-image: image-set(url('/images/hero-ironwood.webp') type('image/webp'))) {
   .hero-bg {
     background-image: linear-gradient(180deg, rgba(36, 28, 21, 0.32) 0%, rgba(36, 28, 21, 0.62) 60%, rgba(36, 28, 21, 0.94) 100%),
-      image-set(url('/images/hero-ironwood.webp') type('image/webp'), url('/images/hero-ironwood.jpg') type('image/jpeg'));
+      image-set(
+        url('/images/hero-ironwood-768.avif') type('image/avif'),
+        url('/images/hero-ironwood-768.webp') type('image/webp'),
+        url('/images/hero-ironwood.jpg') type('image/jpeg')
+      );
+  }
+  @media (min-width: 769px) {
+    .hero-bg {
+      background-image: linear-gradient(180deg, rgba(36, 28, 21, 0.32) 0%, rgba(36, 28, 21, 0.62) 60%, rgba(36, 28, 21, 0.94) 100%),
+        image-set(
+          url('/images/hero-ironwood-1440.avif') type('image/avif'),
+          url('/images/hero-ironwood-1440.webp') type('image/webp'),
+          url('/images/hero-ironwood.jpg') type('image/jpeg')
+        );
+    }
+  }
+  @media (min-width: 1441px) {
+    .hero-bg {
+      background-image: linear-gradient(180deg, rgba(36, 28, 21, 0.32) 0%, rgba(36, 28, 21, 0.62) 60%, rgba(36, 28, 21, 0.94) 100%),
+        image-set(
+          url('/images/hero-ironwood-1920.avif') type('image/avif'),
+          url('/images/hero-ironwood-1920.webp') type('image/webp'),
+          url('/images/hero-ironwood.jpg') type('image/jpeg')
+        );
+    }
   }
 }
 
