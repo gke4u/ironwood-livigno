@@ -23,6 +23,7 @@ export type SmtpMessage = {
   from: string;
   fromName?: string; // display name on the From header — defaults to "Ironwood Livigno"
   to: string | string[]; // multiple recipients (e.g. the internal notification + a failure alert to a personal address) get one RCPT TO each
+  bcc?: string; // gets its own RCPT TO but is never listed in the To: header — used so Francesco keeps a copy of a guest reply sent directly by the system (see /reply/:token/send in index.ts) without the guest seeing a second recipient
   replyTo?: string;
   subject: string;
   text: string;
@@ -272,7 +273,11 @@ export async function sendMail(config: SmtpConfig, message: SmtpMessage): Promis
     await readResponse(secureReader, secureState);
 
     const recipients = Array.isArray(message.to) ? message.to : [message.to];
-    for (const recipient of recipients) {
+    // Bcc gets its own RCPT TO (so it actually receives the message) but is
+    // deliberately excluded from `recipients` below when building the To:
+    // header — that's what makes it blind.
+    const envelopeRecipients = message.bcc ? [...recipients, message.bcc] : recipients;
+    for (const recipient of envelopeRecipients) {
       await sendAll(secureWriter, `RCPT TO:<${recipient}>\r\n`);
       await readResponse(secureReader, secureState);
     }

@@ -23,11 +23,12 @@
 // authenticated implicitly by the deployment itself.
 
 import { sendMail, checkSmtpConnection } from './smtp';
-import { buildNotificationHtml, nightsBetween, renderDraftPage } from './email-template';
+import { buildNotificationHtml, buildBlankReplyText, buildOutboundEmailHtml, nightsBetween, renderReplyEditorPage, renderReplySentPage } from './email-template';
 import { translateMessageToItalian } from './translate';
 import { draftReply } from './draft';
 import { replyLabelsFor } from './reply-labels';
 import { buildGuestReceipt } from './guest-receipt';
+import { quickReplyText } from './quick-replies';
 
 export interface Env {
   DB: D1Database;
@@ -177,7 +178,7 @@ async function sendAlert(env: Env, subject: string, details: string) {
   }
 }
 
-async function sendNotification(env: Env, data: Submission, country: string, id: number) {
+async function sendNotification(env: Env, data: Submission, country: string, id: number, token: string) {
   const extras = [data.extra_breakfast ? 'Colazione' : null, data.extra_ebike ? 'Noleggio e-bike' : null]
     .filter(Boolean)
     .join(' + ');
@@ -219,7 +220,7 @@ async function sendNotification(env: Env, data: Submission, country: string, id:
       replyTo: data.email,
       subject: `${data.name} — richiesta disponibilità Ironwood Livigno`,
       text: lines.join('\n'),
-      html: buildNotificationHtml(data, id, country, translation)
+      html: buildNotificationHtml(data, id, country, translation, token)
     }
   );
 }
@@ -228,13 +229,11 @@ function htmlPage(body: string, status = 200): Response {
   return new Response(body, { status, headers: { 'Content-Type': 'text/html; charset=UTF-8' } });
 }
 
-// Branded page — same fonts/colors as the notification email — shown when
-// Francesco clicks "Genera bozza di risposta con l'AI". Looks up the
+// Shared row lookup for every /reply/:token/* route below — looks up the
 // submission by its random token (not the sequential id, so this can't be
-// enumerated by guessing numbers) and drafts a reply on the spot, so a
-// draft failure only ever affects this one click, never the email
-// delivery itself.
-async function handleDraftPage(env: Env, token: string): Promise<Response> {
+// enumerated by guessing numbers) and maps it back into a Submission, the
+// same shape draftReply/quickReplyText/buildBlankReplyText all expect.
+async function loadSubmissionByToken(env: Env, token: string): Promise<{ submission: Submission; nights: number | null } | null> {
   const row = await env.DB.prepare(
     `SELECT name, email, message, locale, checkin_display, checkin_iso, checkout_display, checkout_iso, guests, adults, children, children_ages, extra_breakfast, extra_ebike
      FROM submissions WHERE token = ?`
@@ -257,7 +256,7 @@ async function handleDraftPage(env: Env, token: string): Promise<Response> {
       extra_ebike: number;
     }>();
 
-  if (!row) return htmlPage(renderDraftPage({ error: 'Richiesta non trovata.' }), 404);
+  if (!row) return null;
 
   const submission: Submission = {
     name: row.name,
@@ -268,8 +267,8 @@ async function handleDraftPage(env: Env, token: string): Promise<Response> {
     checkout_iso: row.checkout_iso,
     guests: row.guests,
     // Older rows (saved before this column existed) have adults = NULL —
-    // fall back to the plain guest total so the draft page still works for
-    // them instead of showing "0 adulti".
+    // fall back to the plain guest total so this still works for them
+    // instead of showing "0 adulti".
     adults: row.adults ?? row.guests,
     children: row.children ?? 0,
     children_ages: row.children_ages ? JSON.parse(row.children_ages) : undefined,
@@ -278,14 +277,102 @@ async function handleDraftPage(env: Env, token: string): Promise<Response> {
     message: row.message ?? undefined,
     locale: row.locale ?? undefined
   };
-  const nights = nightsBetween(row.checkin_iso, row.checkout_iso);
+  return { submission, nights: nightsBetween(row.checkin_iso, row.checkout_iso) };
+}
 
-  const draft = await draftReply(env.AI, submission, nights);
-  if (!draft) {
-    return htmlPage(renderDraftPage({ error: 'Generazione della bozza non riuscita al momento. Riprova tra poco.' }), 200);
+type ReplyKind = 'available' | 'unavailable' | 'pending' | 'blank' | 'ai';
+
+// Italian only — shown to Francesco on the editor page, never to the guest.
+const REPLY_KIND_LABELS: Record<ReplyKind, string> = {
+  available: '✓ Disponibile',
+  unavailable: 'Non disponibile',
+  pending: 'Confermiamo a breve',
+  blank: 'Risposta libera',
+  ai: 'Bozza AI'
+};
+
+// GET /reply/:token/:kind — the editor page opened from one of the
+// notification email's buttons (the 3 quick replies, "Rispondi", or
+// "Genera bozza di risposta con l'AI"). Prefills the textarea for whichever
+// kind was clicked; nothing is sent yet, that only happens on the POST
+// below once Francesco has reviewed/edited it and hit "Invia".
+async function handleReplyEditor(env: Env, token: string, kind: ReplyKind): Promise<Response> {
+  const loaded = await loadSubmissionByToken(env, token);
+  if (!loaded) return htmlPage(renderReplyEditorPage({ error: 'Richiesta non trovata.' }), 404);
+  const { submission, nights } = loaded;
+  const firstName = submission.name.trim().split(/\s+/)[0] || submission.name;
+
+  if (kind === 'ai') {
+    const draft = await draftReply(env.AI, submission, nights);
+    if (!draft) {
+      return htmlPage(renderReplyEditorPage({ error: 'Generazione della bozza non riuscita al momento. Riprova tra poco.' }), 200);
+    }
+    return htmlPage(
+      renderReplyEditorPage({
+        token,
+        kindLabel: `${REPLY_KIND_LABELS.ai} · ${draft.replyLanguageLabel}`,
+        name: firstName,
+        body: draft.replyText,
+        italianText: draft.italianText
+      })
+    );
   }
 
-  return htmlPage(renderDraftPage({ name: row.name, email: row.email, subject: replyLabelsFor(row.locale ?? undefined).subject, draft }));
+  const body = kind === 'blank' ? buildBlankReplyText(submission, nights) : quickReplyText(submission, nights, kind);
+  return htmlPage(renderReplyEditorPage({ token, kindLabel: REPLY_KIND_LABELS[kind], name: firstName, body }));
+}
+
+// POST /reply/:token/send — sends whatever text Francesco ended up with
+// (edited or not) directly from our own system, styled with the same
+// branded HTML as the automatic receipt (buildOutboundEmailHtml) — this is
+// what actually leaves the building; the GET editor above never sends
+// anything on its own. Bcc'd to the business inbox so Francesco keeps a
+// copy, since — unlike the old mailto: flow — this no longer goes out
+// through his own mail client's Sent folder.
+async function handleReplySend(request: Request, env: Env, token: string): Promise<Response> {
+  const loaded = await loadSubmissionByToken(env, token);
+  if (!loaded) return htmlPage(renderReplyEditorPage({ error: 'Richiesta non trovata.' }), 404);
+  const { submission } = loaded;
+
+  const form = await request.formData();
+  const text = form.get('text');
+  const kindLabel = form.get('kindLabel');
+  const name = form.get('name');
+  const echoBack = {
+    token,
+    kindLabel: typeof kindLabel === 'string' && kindLabel ? kindLabel : 'Risposta',
+    name: typeof name === 'string' && name ? name : submission.name
+  };
+
+  if (typeof text !== 'string' || !text.trim()) {
+    return htmlPage(renderReplyEditorPage({ ...echoBack, body: typeof text === 'string' ? text : '', sendError: 'Il messaggio non può essere vuoto.' }), 400);
+  }
+  if (text.length > 8000) {
+    return htmlPage(renderReplyEditorPage({ ...echoBack, body: text, sendError: 'Messaggio troppo lungo.' }), 400);
+  }
+
+  try {
+    await sendMail(
+      { host: SMTP_HOST, port: SMTP_PORT, user: SMTP_USER, password: env.SMTP_PASSWORD },
+      {
+        from: NOTIFY_TO,
+        fromName: 'Ironwood Livigno',
+        to: submission.email,
+        bcc: NOTIFY_TO,
+        subject: replyLabelsFor(submission.locale).subject,
+        text,
+        html: buildOutboundEmailHtml(text, submission.locale)
+      }
+    );
+  } catch (err) {
+    console.error('reply send failed', err);
+    return htmlPage(
+      renderReplyEditorPage({ ...echoBack, body: text, sendError: "Invio non riuscito. Riprova, oppure copia il testo e invialo dal tuo client di posta." }),
+      502
+    );
+  }
+
+  return htmlPage(renderReplySentPage(submission.email));
 }
 
 export default {
@@ -293,12 +380,24 @@ export default {
     const origin = request.headers.get('Origin');
     const url = new URL(request.url);
 
-    // /draft/:token — opened directly in a browser from a link in the
-    // notification email (not an AJAX call from the site), so it's a plain
-    // GET returning an HTML page, no CORS/Origin check needed here.
+    // /reply/:token/:kind and /reply/:token/send — opened/submitted directly
+    // in a browser from a button in the notification email (not an AJAX
+    // call from the site), so no CORS/Origin check needed here.
+    const replyEditMatch = /^\/reply\/([a-f0-9-]{36})\/(available|unavailable|pending|blank|ai)$/.exec(url.pathname);
+    if (replyEditMatch && request.method === 'GET') {
+      return handleReplyEditor(env, replyEditMatch[1], replyEditMatch[2] as ReplyKind);
+    }
+    const replySendMatch = /^\/reply\/([a-f0-9-]{36})\/send$/.exec(url.pathname);
+    if (replySendMatch && request.method === 'POST') {
+      return handleReplySend(request, env, replySendMatch[1]);
+    }
+
+    // /draft/:token — the old AI-draft link, kept as a redirect so
+    // already-sent notification emails still sitting in Francesco's inbox
+    // keep working after the AI draft flow merged into /reply/:token/ai.
     const draftMatch = /^\/draft\/([a-f0-9-]{36})$/.exec(url.pathname);
     if (draftMatch && request.method === 'GET') {
-      return handleDraftPage(env, draftMatch[1]);
+      return Response.redirect(`${url.origin}/reply/${draftMatch[1]}/ai`, 302);
     }
 
     if (request.method === 'OPTIONS') {
@@ -400,7 +499,7 @@ export default {
       // honeypot already used, now enforced server-side too.
       if (!spam) {
         ctx.waitUntil(
-          sendNotification(env, data as Submission, country, Number(result.meta.last_row_id)).catch((err) => {
+          sendNotification(env, data as Submission, country, Number(result.meta.last_row_id), token).catch((err) => {
             console.error('notification email failed (submission was still saved)', err);
             // This is the case most worth an alert: a real guest request
             // exists in D1 but nobody was told — without this, it would sit

@@ -11,7 +11,6 @@
 import type { Submission } from './index';
 import { localeDisplayName, type Translation } from './translate';
 import { replyLabelsFor } from './reply-labels';
-import type { Draft } from './draft';
 import { buildQuickReplies, type QuickReplyId } from './quick-replies';
 
 // Exported so guest-receipt.ts's HTML version can match this template's
@@ -19,6 +18,11 @@ import { buildQuickReplies, type QuickReplyId } from './quick-replies';
 export const FONT_DISPLAY = "Georgia,'Times New Roman',serif";
 export const FONT_BODY = "-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
 export const PHOTOS_URL = 'https://ironwoodlivigno.com/it#galleria';
+
+// Base URL for the reply-editor pages (/reply/:token/:kind, see index.ts) —
+// links from the internal notification email have to be absolute since
+// that email is read in Francesco's own mail client, not on this domain.
+const FORMS_BASE_URL = 'https://forms.ironwoodlivigno.com';
 
 // Per-option accent for the quick-reply buttons — brick for the good-news
 // case, gold for "pending", a plain muted border/text for "unavailable" —
@@ -52,29 +56,32 @@ function row(label: string, value: string): string {
     </tr>`;
 }
 
-// Pre-fills the reply with the guest's own request quoted underneath, so
-// Francesco can start typing straight away without switching back to this
-// email to check dates/message — cursor lands on the three blank lines
-// above the quote, meant for HIS OWN greeting (not a pre-written "Ciao
-// {name}," — he may want to write it in the guest's language, or phrase it
-// differently, and a hardcoded Italian greeting isn't his to have decided
-// for him). The quote itself opens with the Ironwood Livigno name and the
-// stay dates instead, as a neutral reference header.
+// Pre-fills the reply-editor page with the guest's own request quoted
+// underneath, so Francesco can start typing straight away without switching
+// back to this email to check dates/message — cursor lands on the three
+// blank lines above the quote, meant for HIS OWN greeting (not a
+// pre-written "Ciao {name}," — he may want to write it in the guest's
+// language, or phrase it differently, and a hardcoded Italian greeting
+// isn't his to have decided for him). The quote itself opens with the
+// Ironwood Livigno name and the stay dates instead, as a neutral reference
+// header.
 //
-// Subject and field labels are localized to the guest's own site language
-// (data.locale) via reply-labels.ts — a German guest shouldn't get a reply
-// whose subject and labels are in Italian. Only the guest's own free-text
-// message is left exactly as they wrote it.
+// Field labels are localized to the guest's own site language (data.locale)
+// via reply-labels.ts — a German guest shouldn't get a reply whose labels
+// are in Italian. Only the guest's own free-text message is left exactly as
+// they wrote it.
 //
-// mailto: bodies are plain text everywhere — no client renders HTML/CSS in
-// a compose window pre-filled via the `body` param, so this leans on
-// simple ASCII structure (a divider rule, ALL-CAPS section labels) to keep
-// EXTRA and NOTE scannable without any formatting to lean on.
-function buildReplyMailto(data: Submission, nights: number | null): string {
+// Used to be URL-encoded straight into a mailto: link (plain text only, no
+// formatting at all available). Now it's the initial value of an editable
+// textarea on /reply/:token/blank (index.ts) — kept as plain text with the
+// same ASCII structure (divider rule, ALL-CAPS section labels) since
+// Francesco still edits it as text before sending; the actual outgoing
+// email gets real HTML formatting from buildOutboundEmailHtml below.
+export function buildBlankReplyText(data: Submission, nights: number | null): string {
   const t = replyLabelsFor(data.locale);
   const extras = [data.extra_breakfast ? t.breakfast : null, data.extra_ebike ? t.ebike : null].filter(Boolean).join(' + ');
   const nightsWord = nights === 1 ? t.night : t.nights;
-  const quoteLines = [
+  return [
     '',
     '',
     '',
@@ -88,28 +95,13 @@ function buildReplyMailto(data: Submission, nights: number | null): string {
     extras ? `${t.extra.toUpperCase()}: ${extras}` : null,
     data.message ? '' : null,
     data.message ? `${t.note.toUpperCase()}:` : null,
-    data.message ? `"${data.message}"` : null,
-    '',
-    // No label text here on purpose — a bare URL with a camera emoji needs
-    // no translation to be understood. The destination (the site's own
-    // photo gallery section) already scrolls through the real photos, so
-    // nothing further to build for that.
-    `📷 ${PHOTOS_URL}`
+    data.message ? `"${data.message}"` : null
   ]
     .filter((l) => l !== null)
     .join('\n');
-
-  const subject = encodeURIComponent(t.subject);
-  const body = encodeURIComponent(quoteLines);
-  // Only the query params (subject/body) get percent-encoded — the
-  // recipient address before the "?" must stay as plain addr-spec per
-  // RFC 6068. Running encodeURIComponent on it too turns "@" into "%40",
-  // which some mail clients paste verbatim into the To field instead of
-  // decoding it back.
-  return `mailto:${data.email}?subject=${subject}&body=${body}`;
 }
 
-export function buildNotificationHtml(data: Submission, id: number, country: string, translation: Translation): string {
+export function buildNotificationHtml(data: Submission, id: number, country: string, translation: Translation, token: string): string {
   const nights = nightsBetween(data.checkin_iso, data.checkout_iso);
   const firstName = escapeHtml(data.name.trim().split(/\s+/)[0] || data.name);
 
@@ -143,8 +135,9 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
     )
     .join('\n');
 
-  const replyHref = buildReplyMailto(data, nights);
-  const quickReplies = buildQuickReplies(data, nights);
+  const replyHref = `${FORMS_BASE_URL}/reply/${token}/blank`;
+  const aiDraftHref = `${FORMS_BASE_URL}/reply/${token}/ai`;
+  const quickReplies = buildQuickReplies(data, nights, token);
 
   return `<!doctype html>
 <html lang="it">
@@ -274,11 +267,10 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
                  onto its own line below the first instead of running off
                  the edge of the screen (the earlier <table><tr><td> layout
                  had no way to wrap, so it just got visually cut off).
-                 replyHref is escaped here (unlike PHOTOS_URL, a fixed
-                 constant) because it embeds the guest-supplied email
-                 address raw — without escaping, an email value containing
-                 a literal quote could break out of the href attribute and
-                 inject markup into this email. -->
+                 replyHref/aiDraftHref point at this Worker's own domain
+                 (built from token, our own generated UUID, not
+                 guest-controlled input), so escaping here is defense in
+                 depth rather than neutralizing anything untrusted. -->
             <tr>
               <td style="padding:16px 36px 36px;">
                 <div>
@@ -291,27 +283,26 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
                     Foto dell'appartamento
                   </a>
                 </div>
-                <p style="margin:2px 0 0;font-family:${FONT_BODY};font-size:12px;color:#241C15;opacity:0.45;">La risposta parte già con la richiesta di ${firstName} in citazione.</p>
-                <p style="margin:10px 0 0;"><a href="https://www.kimi.com/" target="_blank" rel="noopener noreferrer" style="font-family:${FONT_BODY};font-size:13px;font-weight:600;color:#A8462F;text-decoration:none;">✍️ Genera bozza di risposta con l'AI →</a></p>
+                <p style="margin:2px 0 0;font-family:${FONT_BODY};font-size:12px;color:#241C15;opacity:0.45;">Si apre una pagina con la richiesta di ${firstName} già in citazione, pronta da modificare e inviare.</p>
+                <p style="margin:10px 0 0;"><a href="${escapeHtml(aiDraftHref)}" style="font-family:${FONT_BODY};font-size:13px;font-weight:600;color:#A8462F;text-decoration:none;">✍️ Genera bozza di risposta con l'AI →</a></p>
               </td>
             </tr>
 
-            <!-- Quick replies: three pre-written, one-click templates for
-                 the most common scenarios — no AI call, so no wait. Each
-                 opens the mail client with the reply already written in
-                 the GUEST's own language (data.locale) and a clearly
-                 marked placeholder for price/notes to fill in before
-                 sending. Since the guest-language text isn't something
-                 the owner can necessarily read, the Italian master text
-                 (not a translation — it's what the other 11 versions were
-                 translated FROM) is always shown right below each button,
-                 so it's always clear what a click is about to send. Each
-                 button is a direct mailto: link — not an intermediate
-                 page — so clicking it opens the mail client immediately,
-                 ready to send with one more click there. (A version that
-                 routed through a page offering email/WhatsApp/copy was
-                 tried and reverted per the owner's feedback — he wanted
-                 the one-click-to-mail-client behavior back.) -->
+            <!-- Quick replies: three pre-written templates for the most
+                 common scenarios — no AI call, so no wait. Each button
+                 opens a page on this Worker's own domain with the reply
+                 already written in the GUEST's own language (data.locale)
+                 and a clearly marked placeholder for price/notes, editable
+                 before a real "Invia" sends it directly from our system
+                 (see /reply/:token/:kind and /reply/:token/send in
+                 index.ts) — not a mailto: link anymore, so the outgoing
+                 email gets the same branded HTML look as the automatic
+                 receipt instead of being limited to plain text. Since the
+                 guest-language text isn't something the owner can
+                 necessarily read, the Italian master text (not a
+                 translation — it's what the other 11 versions were
+                 translated FROM) is still shown right below each button,
+                 so it's always clear what a click is about to prefill. -->
             <tr>
               <td style="padding:0 36px 36px;">
                 <p style="margin:0 0 10px;font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#241C15;opacity:0.45;">⚡ Risposte rapide</p>
@@ -323,12 +314,14 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
                       // font) — brick for the good-news case, gold for
                       // "pending", a plain muted border for "unavailable".
                       const accent = QUICK_REPLY_ACCENT[qr.id];
-                      return `<a href="${escapeHtml(qr.mailtoHref)}" style="display:inline-block;color:${accent.text};text-decoration:none;font-family:${FONT_BODY};font-size:14px;font-weight:600;padding:10px 18px;background-color:#F7F3EC;border:1px solid ${accent.border};border-radius:999px;margin:0 8px 8px 0;">${qr.label}</a>`;
+                      return `<a href="${escapeHtml(qr.href)}" style="display:inline-block;color:${accent.text};text-decoration:none;font-family:${FONT_BODY};font-size:14px;font-weight:600;padding:10px 18px;background-color:#F7F3EC;border:1px solid ${accent.border};border-radius:999px;margin:0 8px 8px 0;">${qr.label}</a>`;
                     })
                     // A real newline between anchors, not concatenated onto
-                    // one line — see the CTA comment above (buildReplyMailto)
-                    // for why: a line that long got force-wrapped somewhere
-                    // along the delivery path, corrupting an href mid-string.
+                    // one line — a real bug found in production once: a line
+                    // long enough got force-wrapped by a mail relay along the
+                    // delivery path, corrupting an href mid-string (see
+                    // foldLongLines in smtp.ts, the general safeguard added
+                    // after that).
                     .join('\n')}
                 </div>
                 ${quickReplies
@@ -365,57 +358,138 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
 }
 
 // Escapes a string for safe embedding inside a JSON literal that itself
-// sits inside an inline <script> block — JSON.stringify already escapes
-// quotes/backslashes, this just additionally neutralizes a literal
-// "</script" sequence so it can't prematurely close the tag.
-function jsonForScript(value: string): string {
-  return JSON.stringify(value).replace(/<\//g, '<\\/');
+// The site's real mountain hero photo — loaded by the guest's mail client
+// from the live domain, not embedded, so it costs nothing in the SMTP
+// payload. Plain .jpg rather than the site's .webp/.avif variants: Outlook
+// desktop's rendering engine doesn't support either.
+const HERO_IMAGE_URL = 'https://ironwoodlivigno.com/images/hero-ironwood.jpg';
+
+// Turns bare "https://..." URLs already present in the (already-escaped)
+// text into real clickable links — the quick-reply/blank-reply text bodies
+// end with a bare photo-gallery URL by convention (see
+// buildBlankReplyText/quick-replies.ts), which read fine as plain text in a
+// mailto: compose window but would just sit there unclickable in an actual
+// HTML email if left as-is.
+function linkify(escapedText: string): string {
+  return escapedText.replace(/(https?:\/\/[^\s<]+)/g, (url) => `<a href="${url}" style="color:#A8462F;text-decoration:underline;">${url}</a>`);
 }
 
-// Standalone page for GET /draft/:token — same fonts/colors as the
-// notification email. Shows the AI-generated reply draft (in the guest's
-// own language) in an editable textarea, an Italian rendering underneath
-// so the owner can verify what it says before sending, and two actions:
-// copy the (possibly edited) text to the clipboard, or open it directly in
-// the owner's mail client via a client-built mailto: link — built in JS
-// from the textarea's live value, not a static href, so edits are
-// reflected in whichever action is used.
-export function renderDraftPage(
-  params: { error: string } | { name: string; email: string; subject: string; draft: Draft }
+// Branded shell for the actual reply Francesco sends to a guest — the same
+// "wow" look (hero photo, brand header) originally built for the automatic
+// receipt, moved here because this is the one email that's a considered
+// response (availability confirmed/declined, or a free-form answer)
+// composed on /reply/:token/:kind and sent directly by our system via SMTP
+// (see /reply/:token/send in index.ts), not through Francesco's own mail
+// client — a mailto: link can only ever be plain text. bodyText is
+// whatever Francesco wrote/edited, taken as-is: split into paragraphs on
+// blank lines, single newlines within a paragraph become <br>, and any bare
+// URL becomes a real link.
+export function buildOutboundEmailHtml(bodyText: string, locale?: string): string {
+  const paragraphs = bodyText
+    .split(/\n\s*\n/)
+    .map(
+      (block) =>
+        `<p style="margin:0 0 16px;font-family:${FONT_BODY};font-size:15px;color:#241C15;line-height:1.7;">${linkify(escapeHtml(block)).replace(/\n/g, '<br>')}</p>`
+    )
+    .join('\n');
+
+  return `<!doctype html>
+<html lang="${escapeHtml(locale || 'it')}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body style="margin:0;padding:0;background-color:#F7F3EC;font-family:${FONT_BODY};">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F3EC;padding:40px 16px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:24px;overflow:hidden;box-shadow:0 8px 32px rgba(36,28,21,0.14);">
+
+            <!-- Hero photo -->
+            <tr>
+              <td style="padding:0;line-height:0;font-size:0;">
+                <img src="${HERO_IMAGE_URL}" width="600" alt="Ironwood Livigno" style="display:block;width:100%;max-width:600px;height:auto;">
+              </td>
+            </tr>
+
+            <!-- Header -->
+            <tr>
+              <td style="background-color:#241C15;padding:26px 40px;">
+                <p style="margin:0;color:#C9A059;font-family:${FONT_BODY};font-size:11px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;">Ironwood Livigno</p>
+              </td>
+            </tr>
+
+            <!-- Body: Francesco's reply, verbatim -->
+            <tr>
+              <td style="padding:32px 40px 28px;">
+                ${paragraphs}
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td style="padding:18px 40px;background-color:#F7F3EC;border-top:1px solid #EFE6D8;">
+                <p style="margin:0;font-family:${FONT_BODY};font-size:12px;color:#241C15;opacity:0.5;">Ironwood Livigno · ironwoodlivigno.com</p>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`;
+}
+
+// Standalone page for GET /reply/:token/:kind (index.ts) — same fonts/
+// colors as the notification email. One shared editor for all five kinds
+// (available/unavailable/pending/blank/ai): shows the prefilled text (a
+// quick-reply template, the blank quoted request, or the AI draft) in an
+// editable textarea, with an Italian rendering underneath for the "ai" kind
+// only (so Francesco can verify what it actually says before sending, same
+// as before). A real HTML <form> POSTs the (possibly edited) textarea value
+// straight to /reply/:token/send, which sends it — no client-side mailto:
+// building needed anymore, just a form submit.
+export function renderReplyEditorPage(
+  params: { error: string } | { token: string; kindLabel: string; name: string; body: string; italianText?: string | null; sendError?: string }
 ): string {
-  const body =
+  const inner =
     'error' in params
       ? `<p style="margin:0;font-family:${FONT_BODY};font-size:16px;color:#241C15;">${escapeHtml(params.error)}</p>`
       : `
-      <p style="margin:0 0 6px;font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#A8462F;">Bozza di risposta per ${escapeHtml(params.name)} · ${escapeHtml(params.draft.replyLanguageLabel)}</p>
-      <textarea id="draftBody" style="width:100%;box-sizing:border-box;min-height:220px;padding:16px;border-radius:14px;border:1px solid #EAD9BE;background-color:#FBF1E7;font-family:${FONT_BODY};font-size:15px;color:#241C15;line-height:1.6;resize:vertical;">${escapeHtml(params.draft.replyText)}</textarea>
-      <div style="margin:14px 0 0;">
-        <button type="button" id="copyBtn" style="cursor:pointer;background-color:#A8462F;color:#ffffff;border:none;border-radius:999px;padding:12px 22px;font-family:${FONT_BODY};font-size:14px;font-weight:600;margin-right:10px;">📋 Copia testo</button>
-        <button type="button" id="mailBtn" style="cursor:pointer;background-color:#ffffff;color:#241C15;border:1px solid #EFE6D8;border-radius:999px;padding:12px 22px;font-family:${FONT_BODY};font-size:14px;font-weight:600;">✉️ Apri in client di posta</button>
-      </div>
       ${
-        params.draft.italianText
+        params.sendError
+          ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#FBF1E7;border-radius:12px;border:1px solid #EAD9BE;border-left:4px solid #A8462F;margin-bottom:16px;"><tr><td style="padding:12px 16px;font-family:${FONT_BODY};font-size:13px;color:#241C15;">${escapeHtml(params.sendError)}</td></tr></table>`
+          : ''
+      }
+      <p style="margin:0 0 6px;font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#A8462F;">${escapeHtml(params.kindLabel)} · ${escapeHtml(params.name)}</p>
+      <form method="POST" action="/reply/${params.token}/send">
+        <input type="hidden" name="kindLabel" value="${escapeHtml(params.kindLabel)}">
+        <input type="hidden" name="name" value="${escapeHtml(params.name)}">
+        <textarea name="text" id="replyBody" style="width:100%;box-sizing:border-box;min-height:220px;padding:16px;border-radius:14px;border:1px solid #EAD9BE;background-color:#FBF1E7;font-family:${FONT_BODY};font-size:15px;color:#241C15;line-height:1.6;resize:vertical;">${escapeHtml(params.body)}</textarea>
+        <div style="margin:14px 0 0;">
+          <button type="button" id="copyBtn" style="cursor:pointer;background-color:#ffffff;color:#241C15;border:1px solid #EFE6D8;border-radius:999px;padding:12px 22px;font-family:${FONT_BODY};font-size:14px;font-weight:600;margin-right:10px;">📋 Copia testo</button>
+          <button type="submit" style="cursor:pointer;background-color:#A8462F;color:#ffffff;border:none;border-radius:999px;padding:12px 22px;font-family:${FONT_BODY};font-size:14px;font-weight:600;">✉️ Invia al cliente →</button>
+        </div>
+      </form>
+      <p style="margin:14px 0 0;font-family:${FONT_BODY};font-size:12px;color:#241C15;opacity:0.45;">Parte subito dal nostro sistema, con lo stesso stile grafico della ricevuta automatica. Riceverai una copia in copia nascosta su info@ironwoodlivigno.com.</p>
+      ${
+        params.italianText
           ? `
       <p style="margin:22px 0 6px;font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#241C15;opacity:0.45;">Traduzione in italiano (per verifica)</p>
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F3EC;border-radius:14px;"><tr><td style="padding:16px 20px;font-family:${FONT_BODY};font-size:15px;color:#241C15;opacity:0.85;line-height:1.6;">${escapeHtml(params.draft.italianText).replace(/\n/g, '<br>')}</td></tr></table>`
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F3EC;border-radius:14px;"><tr><td style="padding:16px 20px;font-family:${FONT_BODY};font-size:15px;color:#241C15;opacity:0.85;line-height:1.6;">${escapeHtml(params.italianText).replace(/\n/g, '<br>')}</td></tr></table>`
           : ''
       }
       <script>
         (function () {
-          var ta = document.getElementById('draftBody');
+          var ta = document.getElementById('replyBody');
           var copyBtn = document.getElementById('copyBtn');
-          var mailBtn = document.getElementById('mailBtn');
-          var to = ${jsonForScript(params.email)};
-          var subject = ${jsonForScript(params.subject)};
           copyBtn.addEventListener('click', function () {
             navigator.clipboard.writeText(ta.value).then(function () {
               var original = copyBtn.textContent;
               copyBtn.textContent = 'Copiato ✓';
               setTimeout(function () { copyBtn.textContent = original; }, 1800);
             });
-          });
-          mailBtn.addEventListener('click', function () {
-            window.location.href = 'mailto:' + to + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(ta.value);
           });
         })();
       </script>`;
@@ -425,7 +499,7 @@ export function renderDraftPage(
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bozza di risposta — Ironwood Livigno</title>
+    <title>Rispondi al cliente — Ironwood Livigno</title>
   </head>
   <body style="margin:0;padding:0;background-color:#F7F3EC;font-family:${FONT_BODY};">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:40px 16px;">
@@ -439,7 +513,39 @@ export function renderDraftPage(
             </tr>
             <tr>
               <td style="padding:28px 32px 32px;">
-                ${body}
+                ${inner}
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`;
+}
+
+// Confirmation page after POST /reply/:token/send succeeds.
+export function renderReplySentPage(email: string): string {
+  return `<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inviata — Ironwood Livigno</title>
+  </head>
+  <body style="margin:0;padding:0;background-color:#F7F3EC;font-family:${FONT_BODY};">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:40px 16px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;background-color:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(36,28,21,0.10);">
+            <tr>
+              <td style="background-color:#241C15;padding:24px 32px;">
+                <p style="margin:0;color:#C9A059;font-family:${FONT_BODY};font-size:11px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;">Ironwood Livigno</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:36px 32px;text-align:center;">
+                <p style="margin:0;font-family:${FONT_BODY};font-size:17px;color:#241C15;">✓ Risposta inviata a<br><strong>${escapeHtml(email)}</strong></p>
               </td>
             </tr>
           </table>

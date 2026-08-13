@@ -1,14 +1,25 @@
-// Three pre-written, one-click reply templates ("available" /
-// "unavailable" / "we'll confirm shortly") covering the most common
-// booking-request scenarios — no AI call at click time, so no wait and no
-// risk of an odd AI phrasing, unlike the on-demand draft feature. Written
-// once in Italian and translated to all 12 site locales (same pattern as
-// reply-labels.ts), so the guest always receives the reply in the
-// language of the site they wrote from, while the owner (who reads
-// Italian) always sees the Italian master text as a preview alongside
-// each button — that Italian text needs no translation step either, since
-// it's the original the other 11 versions were translated from, not a
-// translation itself.
+// Three pre-written reply templates ("available" / "unavailable" / "we'll
+// confirm shortly") covering the most common booking-request scenarios —
+// no AI call at click time, so no wait and no risk of an odd AI phrasing,
+// unlike the on-demand draft feature. Written once in Italian and
+// translated to all 12 site locales (same pattern as reply-labels.ts), so
+// the guest always receives the reply in the language of the site they
+// wrote from, while the owner (who reads Italian) always sees the Italian
+// master text as a preview alongside each button — that Italian text needs
+// no translation step either, since it's the original the other 11
+// versions were translated from, not a translation itself.
+//
+// Each button leads to a reply-editor page on this Worker's own domain
+// (/reply/:token/:id, see index.ts), not a mailto: link — the text below is
+// only the *starting point* Francesco can still edit (e.g. filling in the
+// price placeholder) before a real "Invia" sends it directly from our
+// system, styled with the same branded HTML as the automatic receipt. An
+// earlier version of this flow did use one-click mailto: links straight to
+// the owner's own mail client; that was reverted once already per the
+// owner's own feedback (he wanted the one-click behavior back), then
+// deliberately reversed again later at his explicit request once he wanted
+// the outgoing reply itself to look as designed as the receipt — something
+// a mailto: compose window, being plain text only, can never do.
 //
 // The Italian templates address the guest formally ("Lei"), per the
 // owner's request — the other locales already used their own formal
@@ -412,9 +423,14 @@ const BUTTON_LABELS: Record<QuickReplyId, string> = {
 export type QuickReplyOption = {
   id: QuickReplyId;
   label: string; // always Italian — this is what the owner clicks, not what the guest reads
-  mailtoHref: string;
+  href: string; // reply-editor page on this Worker's own domain, not a mailto: link — see /reply/:token/:kind in index.ts
   italianPreview: string; // the IT master text, shown so the owner always knows what a click sends regardless of the guest's language
 };
+
+// Duplicated from email-template.ts's FORMS_BASE_URL rather than imported,
+// same reasoning as PHOTOS_URL above (that file imports buildQuickReplies
+// from this one, so the reverse import would be circular).
+const FORMS_BASE_URL = 'https://forms.ironwoodlivigno.com';
 
 function fillTemplate(template: string, placeholder: string, data: Submission, nightsPhrase: string): string {
   // First name only (e.g. "Kasia" not "Kasia Nowak") — same convention
@@ -444,23 +460,28 @@ function fillTemplate(template: string, placeholder: string, data: Submission, n
   return template.replace(/\{(name|checkin|checkout|nights|guests|placeholder|photos|signature)\}/g, (_match, key: string) => values[key]);
 }
 
-export function buildQuickReplies(data: Submission, nights: number | null): QuickReplyOption[] {
+// The filled, guest-language text for a single quick-reply option — used
+// both by buildQuickReplies below (for the Italian preview shown next to
+// each button) and directly by the /reply/:token/:kind editor page
+// (index.ts) to prefill the textarea for whichever button Francesco
+// clicked.
+export function quickReplyText(data: Submission, nights: number | null, id: QuickReplyId): string {
   const labels = replyLabelsFor(data.locale);
   const content = (data.locale && QUICK_REPLIES[data.locale]) || IT;
   const nightsWord = nights === 1 ? labels.night : labels.nights;
   const nightsPhrase = nights !== null ? ` (${nights} ${nightsWord})` : '';
-  const subject = encodeURIComponent(labels.subject);
+  return fillTemplate(content[id], content.placeholder, data, nightsPhrase);
+}
 
-  return (Object.keys(BUTTON_LABELS) as QuickReplyId[]).map((id) => {
-    const guestBody = fillTemplate(content[id], content.placeholder, data, nightsPhrase);
-    const body = encodeURIComponent(guestBody);
-    return {
-      id,
-      label: BUTTON_LABELS[id],
-      // Same RFC 6068 rule as buildReplyMailto: the recipient address
-      // before "?" stays unencoded, only subject/body are percent-encoded.
-      mailtoHref: `mailto:${data.email}?subject=${subject}&body=${body}`,
-      italianPreview: fillTemplate(IT[id], IT.placeholder, data, nightsPhrase)
-    };
-  });
+export function buildQuickReplies(data: Submission, nights: number | null, token: string): QuickReplyOption[] {
+  const labels = replyLabelsFor(data.locale);
+  const nightsWord = nights === 1 ? labels.night : labels.nights;
+  const nightsPhrase = nights !== null ? ` (${nights} ${nightsWord})` : '';
+
+  return (Object.keys(BUTTON_LABELS) as QuickReplyId[]).map((id) => ({
+    id,
+    label: BUTTON_LABELS[id],
+    href: `${FORMS_BASE_URL}/reply/${token}/${id}`,
+    italianPreview: fillTemplate(IT[id], IT.placeholder, data, nightsPhrase)
+  }));
 }

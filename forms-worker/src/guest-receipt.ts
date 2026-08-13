@@ -78,20 +78,14 @@ function buildGuestReceiptText(data: Submission, nightsPhrase: string): string {
 // laid out. sendMail sends html-only when present (smtp.ts), so the plain
 // text above stays as the fallback for message.text even though it won't
 // itself be transmitted alongside the HTML.
-// The site's real mountain hero photo (public/images/hero-ironwood.jpg,
-// 1920×1280) — loaded by the guest's mail client from the live domain, not
-// embedded, so it costs nothing in the SMTP payload. Plain .jpg rather than
-// the site's .webp/.avif variants: Outlook desktop's rendering engine
-// doesn't support either, and a hero banner that fails to load in the
-// guest's inbox would be worse than not having one.
-const HERO_IMAGE_URL = 'https://ironwoodlivigno.com/images/hero-ironwood.jpg';
-
-// Same brick color as the button, not WhatsApp's own green — matches
-// StickyWhatsApp.tsx's on-site button (src/components/StickyWhatsApp.tsx),
-// so the brand stays consistent between the site and this email rather than
-// introducing a color that only appears here.
-const WHATSAPP_URL = 'https://wa.me/390342929285';
-
+//
+// Deliberately kept plain — no hero photo, no confirmation badge, no
+// WhatsApp button. This is an automatic, unconditional "we got it" receipt
+// sent before Francesco has even looked at the request; the full branded
+// treatment (hero photo, CTAs) is reserved for the actual reply Francesco
+// sends once he's confirmed availability (see buildOutboundEmailHtml in
+// email-template.ts), so the two don't look identical and the receipt
+// doesn't overpromise before there's anything to promise.
 function buildGuestReceiptHtml(data: Submission, nights: number | null): string {
   const labels = replyLabelsFor(data.locale);
   const firstName = escapeHtml(data.name.trim().split(/\s+/)[0] || data.name);
@@ -126,46 +120,32 @@ function buildGuestReceiptHtml(data: Submission, nights: number | null): string 
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F3EC;padding:40px 16px;">
       <tr>
         <td align="center">
-          <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#ffffff;border-radius:24px;overflow:hidden;box-shadow:0 8px 32px rgba(36,28,21,0.14);">
+          <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;background-color:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(36,28,21,0.10);">
 
-            <!-- Hero photo -->
+            <!-- Header -->
             <tr>
-              <td style="padding:0;line-height:0;font-size:0;">
-                <img src="${HERO_IMAGE_URL}" width="600" alt="Ironwood Livigno" style="display:block;width:100%;max-width:600px;height:auto;">
-              </td>
-            </tr>
-
-            <!-- Header / confirmation badge -->
-            <tr>
-              <td style="background-color:#241C15;padding:34px 40px 32px;text-align:center;">
-                <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto 18px;">
-                  <tr>
-                    <td style="width:52px;height:52px;background-color:#A8462F;border-radius:999px;text-align:center;">
-                      <span style="display:block;font-family:${FONT_BODY};font-size:24px;line-height:52px;color:#ffffff;">✓</span>
-                    </td>
-                  </tr>
-                </table>
+              <td style="background-color:#241C15;padding:32px 36px 28px;">
                 <p style="margin:0;color:#C9A059;font-family:${FONT_BODY};font-size:11px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;">Ironwood Livigno</p>
-                <p style="margin:12px 0 0;color:#ffffff;font-family:${FONT_DISPLAY};font-size:25px;line-height:1.4;">${escapeHtml(labels.receiptGreeting.replace('{name}', firstName))}</p>
+                <p style="margin:10px 0 0;color:#ffffff;font-family:${FONT_DISPLAY};font-size:22px;line-height:1.4;">${escapeHtml(labels.receiptGreeting.replace('{name}', firstName))}</p>
               </td>
             </tr>
 
             <!-- Intro -->
             <tr>
-              <td style="padding:30px 40px 0;text-align:center;">
+              <td style="padding:26px 36px 0;">
                 <p style="margin:0;font-family:${FONT_BODY};font-size:15px;color:#241C15;line-height:1.6;">${escapeHtml(labels.receiptIntro)}</p>
               </td>
             </tr>
 
             <!-- Check-in / nights / check-out -->
             <tr>
-              <td style="padding:28px 40px 0;">
+              <td style="padding:26px 36px 0;">
                 <p style="margin:0 0 10px;font-family:${FONT_BODY};font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#241C15;opacity:0.45;">${escapeHtml(labels.requestHeading)}</p>
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#F7F3EC;border-radius:16px;">
                   <tr>
-                    <td style="padding:22px 12px;width:38%;text-align:center;">
+                    <td style="padding:20px 12px;width:38%;text-align:center;">
                       <p style="margin:0;font-family:${FONT_BODY};font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:#241C15;opacity:0.5;">${escapeHtml(labels.checkin)}</p>
-                      <p style="margin:6px 0 0;font-family:${FONT_DISPLAY};font-size:19px;color:#241C15;">${escapeHtml(formatGuestDate(data.checkin_iso, data.locale))}</p>
+                      <p style="margin:5px 0 0;font-family:${FONT_DISPLAY};font-size:18px;color:#241C15;">${escapeHtml(formatGuestDate(data.checkin_iso, data.locale))}</p>
                     </td>
                     <td style="width:24%;text-align:center;vertical-align:middle;">
                       <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto;">
@@ -174,9 +154,9 @@ function buildGuestReceiptHtml(data: Submission, nights: number | null): string 
                         </td></tr>
                       </table>
                     </td>
-                    <td style="padding:22px 12px;width:38%;text-align:center;">
+                    <td style="padding:20px 12px;width:38%;text-align:center;">
                       <p style="margin:0;font-family:${FONT_BODY};font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.09em;color:#241C15;opacity:0.5;">${escapeHtml(labels.checkout)}</p>
-                      <p style="margin:6px 0 0;font-family:${FONT_DISPLAY};font-size:19px;color:#241C15;">${escapeHtml(formatGuestDate(data.checkout_iso, data.locale))}</p>
+                      <p style="margin:5px 0 0;font-family:${FONT_DISPLAY};font-size:18px;color:#241C15;">${escapeHtml(formatGuestDate(data.checkout_iso, data.locale))}</p>
                     </td>
                   </tr>
                 </table>
@@ -185,7 +165,7 @@ function buildGuestReceiptHtml(data: Submission, nights: number | null): string 
 
             <!-- Guests -->
             <tr>
-              <td style="padding:20px 40px 0;">
+              <td style="padding:20px 36px 0;">
                 <p style="margin:0;font-family:${FONT_BODY};font-size:14px;color:#241C15;">
                   <span style="opacity:0.5;text-transform:uppercase;font-size:11px;letter-spacing:0.07em;">${escapeHtml(labels.guests)}</span>
                   &nbsp;&nbsp;${escapeHtml(guestsValue)}
@@ -197,7 +177,7 @@ function buildGuestReceiptHtml(data: Submission, nights: number | null): string 
               extraPills
                 ? `
             <tr>
-              <td style="padding:18px 40px 0;">
+              <td style="padding:16px 36px 0;">
                 <div>${extraPills}</div>
               </td>
             </tr>`
@@ -210,9 +190,9 @@ function buildGuestReceiptHtml(data: Submission, nights: number | null): string 
             <!-- Note: the guest's own free-text message, quoted back so
                  they can confirm it arrived exactly as written. -->
             <tr>
-              <td style="padding:26px 40px 0;">
+              <td style="padding:24px 36px 0;">
                 <p style="margin:0 0 8px;font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#A8462F;">${escapeHtml(labels.note)}</p>
-                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#FBF1E7;border-radius:16px;border:1px solid #EAD9BE;border-left:5px solid #A8462F;">
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#FBF1E7;border-radius:14px;border:1px solid #EAD9BE;border-left:5px solid #A8462F;">
                   <tr><td style="padding:16px 18px;font-family:${FONT_BODY};font-size:14px;color:#241C15;line-height:1.6;">${escapeHtml(data.message).replace(/\n/g, '<br>')}</td></tr>
                 </table>
               </td>
@@ -220,42 +200,25 @@ function buildGuestReceiptHtml(data: Submission, nights: number | null): string 
                 : ''
             }
 
-            <!-- CTAs: WhatsApp (filled, primary — talk to us now) and the
-                 photo gallery (outline, secondary). Centered inline-block
-                 anchors, not table cells side by side, so on a narrow phone
-                 the second button wraps onto its own line instead of
-                 running off the edge — same pattern as the internal
-                 notification's CTA row (email-template.ts). Label is just
-                 "Livigno" (a place name, not translated elsewhere either)
-                 rather than the bare URL other mailto templates use — those
-                 are plain-text compose windows with no button chrome to
-                 fit a URL into; here it sits inside an actual pill button,
-                 where a full URL would look like debug text. -->
+            <!-- Photos: bare URL with a camera emoji, same convention as
+                 the mailto templates (quick-replies.ts) — needs no
+                 per-locale translation. -->
             <tr>
-              <td style="padding:32px 40px 4px;text-align:center;">
-                <div>
-                  <a href="${WHATSAPP_URL}"
-                     style="display:inline-block;color:#ffffff;text-decoration:none;font-family:${FONT_BODY};font-size:15px;font-weight:600;padding:14px 28px;background-color:#A8462F;border-radius:999px;margin:0 5px 10px;">
-                    💬 WhatsApp
-                  </a>
-                  <a href="${PHOTOS_URL}"
-                     style="display:inline-block;color:#241C15;text-decoration:none;font-family:${FONT_BODY};font-size:14px;font-weight:600;padding:13px 22px;border:1px solid #EFE6D8;border-radius:999px;margin:0 5px 10px;">
-                    📷 Livigno
-                  </a>
-                </div>
+              <td style="padding:26px 36px 0;">
+                <a href="${PHOTOS_URL}" style="display:inline-block;color:#241C15;text-decoration:none;font-family:${FONT_BODY};font-size:13px;font-weight:600;padding:11px 22px;border:1px solid #EFE6D8;border-radius:999px;">📷 ${PHOTOS_URL}</a>
               </td>
             </tr>
 
             <!-- Closing -->
             <tr>
-              <td style="padding:20px 40px 34px;text-align:center;">
+              <td style="padding:22px 36px 30px;">
                 <p style="margin:0;font-family:${FONT_BODY};font-size:14px;color:#241C15;white-space:pre-line;line-height:1.6;">${escapeHtml(labels.receiptClosing)}</p>
               </td>
             </tr>
 
             <!-- Footer -->
             <tr>
-              <td style="padding:18px 40px;background-color:#F7F3EC;border-top:1px solid #EFE6D8;text-align:center;">
+              <td style="padding:18px 36px;background-color:#F7F3EC;border-top:1px solid #EFE6D8;">
                 <p style="margin:0;font-family:${FONT_BODY};font-size:12px;color:#241C15;opacity:0.5;">Ironwood Livigno · ironwoodlivigno.com</p>
               </td>
             </tr>
