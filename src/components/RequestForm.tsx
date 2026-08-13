@@ -73,7 +73,7 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
   // guest with a silently broken date range they'd only discover on submit.
   function handleCheckinChange(next: string) {
     setCheckin(next);
-    if (checkout && checkout < next) setCheckout('');
+    if (checkout && checkout <= next) setCheckout('');
   }
 
   const checkinMinDate = today;
@@ -129,7 +129,12 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
     else if (!EMAIL_RE.test(email.trim())) next.email = t('error_email_invalid');
     if (!checkin) next.checkin = t('error_required');
     if (!checkout) next.checkout = t('error_required');
-    else if (checkin && checkout && checkout < checkin) next.checkout = t('error_dates_invalid');
+    // <= (not <): a same-day check-out is a zero-night stay, and the
+    // backend's own validate() rejects checkout_iso <= checkin_iso — this
+    // must reject the same range client-side, or a guest who picks equal
+    // dates only finds out from a generic, non-field-specific error banner
+    // after submitting.
+    else if (checkin && checkout && checkout <= checkin) next.checkout = t('error_dates_invalid');
     if (!privacyConsent) next.privacy = t('error_privacy_required');
     return next;
   }
@@ -160,9 +165,19 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
     // composing an email, which reads as a broken form rather than a
     // fallback. Letting the person click the email button themselves avoids
     // that surprise entirely.
+    // The Worker now answers as soon as the request is durably saved,
+    // without waiting on the notification email (see forms-worker/src/
+    // index.ts) — but this abort timeout stays as a backstop against any
+    // other stall (a slow TLS handshake to the Worker itself, a flaky
+    // connection) so a bad network never leaves the button stuck on
+    // "sending" indefinitely with no feedback.
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 20_000);
+
     try {
       const res = await fetch(FORMS_ENDPOINT, {
         method: 'POST',
+        signal: controller.signal,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name,
@@ -199,7 +214,10 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
         return;
       }
     } catch {
-      // network/CSP error — fall through to the error state below
+      // network/CSP error, or the 20s abort above firing — fall through to
+      // the error state below
+    } finally {
+      clearTimeout(timeoutId);
     }
 
     setStatus('error');
@@ -316,6 +334,7 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
           value={checkout}
           onChange={setCheckout}
           minDate={checkoutMinDate}
+          excludeMinDate={Boolean(checkin)}
           invalid={Boolean(errors.checkout)}
           ariaDescribedBy={errors.checkout ? 'req-checkout-error' : undefined}
           label={t('label_checkout')}

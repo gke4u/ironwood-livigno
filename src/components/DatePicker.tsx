@@ -55,6 +55,7 @@ export default function DatePicker({
   value,
   onChange,
   minDate,
+  excludeMinDate = false,
   invalid,
   ariaDescribedBy,
   label
@@ -63,6 +64,15 @@ export default function DatePicker({
   value: string;
   onChange: (value: string) => void;
   minDate: Date;
+  // The check-in picker's minDate (today) must stay selectable — same-day
+  // booking is fine. The check-out picker's minDate is the chosen check-in
+  // date, which must NOT be selectable there: a same-day check-out is a
+  // zero-night stay, and the server already rejects checkout_iso <=
+  // checkin_iso (see forms-worker/src/index.ts validate()). Without this,
+  // the calendar let a guest pick identical dates, they'd only find out it
+  // was invalid after submitting, from a generic error banner that doesn't
+  // say which field is wrong.
+  excludeMinDate?: boolean;
   invalid?: boolean;
   ariaDescribedBy?: string;
   label: string;
@@ -179,7 +189,7 @@ export default function DatePicker({
           <div className="grid grid-cols-7 gap-y-1">
             {grid.map((day, i) => {
               if (!day) return <span key={i} />;
-              const disabled = isBefore(day, min);
+              const disabled = excludeMinDate ? !isBefore(min, day) : isBefore(day, min);
               const isSelected = selected ? isSameDay(day, selected) : false;
               const isToday = isSameDay(day, today);
               return (
