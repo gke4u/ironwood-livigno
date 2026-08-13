@@ -424,7 +424,14 @@ export default {
             const receipt = buildGuestReceipt(data as Submission);
             await sendMail(
               { host: SMTP_HOST, port: SMTP_PORT, user: SMTP_USER, password: env.SMTP_PASSWORD },
-              { from: NOTIFY_TO, fromName: 'Ironwood Livigno', to: data.email as string, subject: receipt.subject, text: receipt.text }
+              {
+                from: NOTIFY_TO,
+                fromName: 'Ironwood Livigno',
+                to: data.email as string,
+                subject: receipt.subject,
+                text: receipt.text,
+                html: receipt.html
+              }
             );
           })().catch((err) => {
             console.error('guest receipt email failed', err);

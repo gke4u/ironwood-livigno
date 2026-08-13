@@ -14,8 +14,10 @@ import { replyLabelsFor } from './reply-labels';
 import type { Draft } from './draft';
 import { buildQuickReplies, type QuickReplyId } from './quick-replies';
 
-const FONT_DISPLAY = "Georgia,'Times New Roman',serif";
-const FONT_BODY = "-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+// Exported so guest-receipt.ts's HTML version can match this template's
+// look exactly (same fonts, same brand colors) instead of drifting from it.
+export const FONT_DISPLAY = "Georgia,'Times New Roman',serif";
+export const FONT_BODY = "-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
 export const PHOTOS_URL = 'https://ironwoodlivigno.com/it#galleria';
 
 // Per-option accent for the quick-reply buttons — brick for the good-news
@@ -27,7 +29,7 @@ const QUICK_REPLY_ACCENT: Record<QuickReplyId, { border: string; text: string }>
   pending: { border: '#C9A059', text: '#8A6B2E' }
 };
 
-function escapeHtml(value: string): string {
+export function escapeHtml(value: string): string {
   return value
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
