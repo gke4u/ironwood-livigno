@@ -27,6 +27,7 @@ import { buildNotificationHtml, nightsBetween, renderDraftPage } from './email-t
 import { translateMessageToItalian } from './translate';
 import { draftReply } from './draft';
 import { replyLabelsFor } from './reply-labels';
+import { buildGuestReceipt } from './guest-receipt';
 
 export interface Env {
   DB: D1Database;
@@ -74,6 +75,8 @@ const CONTROL_CHAR_RE = /[\x00-\x1F\x7F]/;
 const MAX_NAME_LEN = 200;
 const MAX_MESSAGE_LEN = 2000;
 const RETENTION_MONTHS = 24;
+const MAX_GUESTS = 6; // the apartment's real occupancy limit — 3 bedrooms, sleeps up to 6 total (adults + children)
+const MAX_CHILD_AGE = 17;
 
 export type Submission = {
   name: string;
@@ -83,7 +86,10 @@ export type Submission = {
   checkin_iso: string; // yyyy-mm-dd, source of truth for validation
   checkout: string;
   checkout_iso: string;
-  guests: number;
+  guests: number; // adults + children combined — kept so existing templates (quick-replies.ts, email-template.ts, guest-receipt.ts) that only care about a headcount don't need to change
+  adults: number;
+  children: number;
+  children_ages?: number[]; // one entry per child, 0–17; only present when children > 0
   extra_breakfast?: boolean;
   extra_ebike?: boolean;
   source?: string;
@@ -128,8 +134,18 @@ function validate(data: Partial<Submission>): string | null {
   if (data.checkout_iso <= data.checkin_iso) return 'checkout must be after checkin';
   const today = new Date().toISOString().slice(0, 10);
   if (data.checkin_iso < today) return 'checkin cannot be in the past';
-  const guests = Number(data.guests);
-  if (!Number.isInteger(guests) || guests < 1 || guests > 6) return 'invalid guest count';
+  const adults = Number(data.adults);
+  const children = Number(data.children);
+  if (!Number.isInteger(adults) || adults < 1) return 'invalid adults count';
+  if (!Number.isInteger(children) || children < 0) return 'invalid children count';
+  if (adults + children > MAX_GUESTS) return 'too many guests';
+  if (children > 0) {
+    // Booking-style: one age (0–17) per child, not just a headcount — lets
+    // Francesco see at a glance whether a crib/high chair request (the
+    // extras below) actually matches an infant/toddler in the party.
+    if (!Array.isArray(data.children_ages) || data.children_ages.length !== children) return 'invalid children ages';
+    if (!data.children_ages.every((age) => Number.isInteger(age) && age >= 0 && age <= MAX_CHILD_AGE)) return 'invalid children ages';
+  }
   if (data.message && (typeof data.message !== 'string' || data.message.length > MAX_MESSAGE_LEN)) return 'message too long';
   return null;
 }
@@ -172,7 +188,9 @@ async function sendNotification(env: Env, data: Submission, country: string, id:
     `Telefono: ${data.phone || '-'}`,
     `Check-in: ${data.checkin}`,
     `Check-out: ${data.checkout}`,
-    `Ospiti: ${data.guests}`,
+    data.children > 0
+      ? `Ospiti: ${data.adults} adulti + ${data.children} bambini (età: ${(data.children_ages ?? []).join(', ')})`
+      : `Ospiti: ${data.guests}`,
     extras ? `Extra: ${extras}` : null,
     data.source ? `Come ci ha trovato: ${data.source}` : null,
     data.locale ? `Lingua sito: ${data.locale}` : null,
@@ -218,7 +236,7 @@ function htmlPage(body: string, status = 200): Response {
 // delivery itself.
 async function handleDraftPage(env: Env, token: string): Promise<Response> {
   const row = await env.DB.prepare(
-    `SELECT name, email, message, locale, checkin_display, checkin_iso, checkout_display, checkout_iso, guests, extra_breakfast, extra_ebike
+    `SELECT name, email, message, locale, checkin_display, checkin_iso, checkout_display, checkout_iso, guests, adults, children, children_ages, extra_breakfast, extra_ebike
      FROM submissions WHERE token = ?`
   )
     .bind(token)
@@ -232,6 +250,9 @@ async function handleDraftPage(env: Env, token: string): Promise<Response> {
       checkout_display: string;
       checkout_iso: string;
       guests: number;
+      adults: number | null;
+      children: number | null;
+      children_ages: string | null;
       extra_breakfast: number;
       extra_ebike: number;
     }>();
@@ -246,6 +267,12 @@ async function handleDraftPage(env: Env, token: string): Promise<Response> {
     checkout: row.checkout_display,
     checkout_iso: row.checkout_iso,
     guests: row.guests,
+    // Older rows (saved before this column existed) have adults = NULL —
+    // fall back to the plain guest total so the draft page still works for
+    // them instead of showing "0 adulti".
+    adults: row.adults ?? row.guests,
+    children: row.children ?? 0,
+    children_ages: row.children_ages ? JSON.parse(row.children_ages) : undefined,
     extra_breakfast: Boolean(row.extra_breakfast),
     extra_ebike: Boolean(row.extra_ebike),
     message: row.message ?? undefined,
@@ -311,12 +338,23 @@ export default {
 
     const token = crypto.randomUUID();
 
+    // Authoritative headcount, computed server-side rather than trusting
+    // whatever total the client happened to send in `guests` — adults and
+    // children are the fields validate() actually checked above, so they're
+    // the source of truth `guests` (kept around for the templates that only
+    // care about a plain headcount) gets derived from.
+    const adults = Number(data.adults) || 1;
+    const children = Number(data.children) || 0;
+    data.guests = adults + children;
+    data.adults = adults;
+    data.children = children;
+
     try {
       const result = await env.DB.prepare(
         `INSERT INTO submissions
           (created_at, name, email, phone, checkin_display, checkin_iso, checkout_display, checkout_iso,
-           guests, extra_breakfast, extra_ebike, source, message, locale, status, is_spam, cf_country, token)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new', ?, ?, ?)`
+           guests, adults, children, children_ages, extra_breakfast, extra_ebike, source, message, locale, status, is_spam, cf_country, token)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new', ?, ?, ?)`
       )
         .bind(
           now,
@@ -327,7 +365,10 @@ export default {
           data.checkin_iso ?? '',
           data.checkout ?? '',
           data.checkout_iso ?? '',
-          Number(data.guests) || 0,
+          data.guests,
+          data.adults,
+          data.children,
+          children > 0 && Array.isArray(data.children_ages) ? JSON.stringify(data.children_ages) : null,
           data.extra_breakfast ? 1 : 0,
           data.extra_ebike ? 1 : 0,
           data.source ?? null,
@@ -369,6 +410,24 @@ export default {
               'Notifica non inviata per una richiesta salvata',
               `La richiesta #${result.meta.last_row_id} (${data.name ?? '-'}, ${data.email ?? '-'}) e' stata salvata correttamente ma l'email di notifica non e' partita.\n\nErrore: ${err instanceof Error ? err.message : String(err)}\n\nControlla la riga nel database: SELECT * FROM submissions WHERE id = ${result.meta.last_row_id}`
             );
+          })
+        );
+
+        // Best-effort receipt to the guest themselves, in the language of
+        // the site they wrote from — see guest-receipt.ts for why this has
+        // no bounce/retry handling and no alert-on-failure by design (only
+        // a server log): unlike the notification above, a guest email
+        // that never arrives isn't a broken business process, since the
+        // guest still saw the on-screen success confirmation either way.
+        ctx.waitUntil(
+          (async () => {
+            const receipt = buildGuestReceipt(data as Submission);
+            await sendMail(
+              { host: SMTP_HOST, port: SMTP_PORT, user: SMTP_USER, password: env.SMTP_PASSWORD },
+              { from: NOTIFY_TO, fromName: 'Ironwood Livigno', to: data.email as string, subject: receipt.subject, text: receipt.text }
+            );
+          })().catch((err) => {
+            console.error('guest receipt email failed', err);
           })
         );
       }

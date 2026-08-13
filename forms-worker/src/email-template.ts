@@ -115,7 +115,12 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
     row('Nome', escapeHtml(data.name)),
     row('Email', `<a href="mailto:${escapeHtml(data.email)}" style="color:#A8462F;text-decoration:none;">${escapeHtml(data.email)}</a>`),
     data.phone ? row('Telefono', `<a href="tel:${escapeHtml(data.phone)}" style="color:#A8462F;text-decoration:none;">${escapeHtml(data.phone)}</a>`) : '',
-    row('Ospiti', String(data.guests)),
+    row(
+      'Ospiti',
+      data.children > 0
+        ? `${data.adults} adulti + ${data.children} bambini (età: ${escapeHtml((data.children_ages ?? []).join(', '))})`
+        : String(data.guests)
+    ),
     data.source ? row('Come ci ha trovato', escapeHtml(data.source)) : '',
     data.locale ? row('Lingua sito', escapeHtml(localeDisplayName(data.locale))) : '',
     country ? row('Paese (da IP)', escapeHtml(country)) : ''

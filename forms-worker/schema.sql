@@ -8,7 +8,10 @@ CREATE TABLE submissions (
   checkin_iso TEXT NOT NULL,
   checkout_display TEXT NOT NULL,
   checkout_iso TEXT NOT NULL,
-  guests INTEGER NOT NULL,
+  guests INTEGER NOT NULL, -- adults + children combined
+  adults INTEGER,
+  children INTEGER NOT NULL DEFAULT 0,
+  children_ages TEXT, -- JSON array of ages 0-17, e.g. "[5,9]"; NULL when children = 0
   extra_breakfast INTEGER NOT NULL DEFAULT 0,
   extra_ebike INTEGER NOT NULL DEFAULT 0,
   source TEXT,

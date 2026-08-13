@@ -58,7 +58,9 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
   const [phone, setPhone] = useState('');
   const [checkin, setCheckin] = useState('');
   const [checkout, setCheckout] = useState('');
-  const [guests, setGuests] = useState('2');
+  const [adults, setAdults] = useState('2');
+  const [children, setChildren] = useState('0');
+  const [childrenAges, setChildrenAges] = useState<string[]>([]);
   const [source, setSource] = useState('');
   const [message, setMessage] = useState('');
   const [extraBreakfast, setExtraBreakfast] = useState(false);
@@ -77,6 +79,41 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
   function handleCheckinChange(next: string) {
     setCheckin(next);
     if (checkout && checkout <= next) setCheckout('');
+  }
+
+  // Booking.com-style guest picker: adults + children counters, with a
+  // per-child age dropdown once children > 0 (0–17, matching the backend's
+  // MAX_CHILD_AGE) — lets Francesco see at a glance whether a crib/high
+  // chair request further down actually matches an infant in the party,
+  // instead of just a bare headcount. The two counters share one combined
+  // cap (MAX_GUESTS = 6 server-side): the apartment's real occupancy limit,
+  // 3 bedrooms sleeping up to 6 total. Each handler clamps the *other*
+  // counter down if the new value would push the total over that cap,
+  // rather than letting the UI reach an invalid combination that the
+  // server would then reject with a generic error.
+  const maxChildrenForAdults = (a: string) => Math.max(0, 6 - Number(a));
+
+  function handleAdultsChange(next: string) {
+    setAdults(next);
+    const maxC = maxChildrenForAdults(next);
+    if (Number(children) > maxC) {
+      setChildren(String(maxC));
+      setChildrenAges((prev) => prev.slice(0, maxC));
+    }
+  }
+
+  function handleChildrenChange(next: string) {
+    setChildren(next);
+    const count = Number(next);
+    setChildrenAges((prev) => {
+      const kept = prev.slice(0, count);
+      while (kept.length < count) kept.push('5');
+      return kept;
+    });
+  }
+
+  function handleChildAgeChange(index: number, age: string) {
+    setChildrenAges((prev) => prev.map((a, i) => (i === index ? age : a)));
   }
 
   const checkinMinDate = today;
@@ -102,8 +139,11 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
       `${t('label_phone')}: ${phone || '-'}`,
       `${t('label_checkin')}: ${checkin ? toItalianDate(checkin) : '-'}`,
       `${t('label_checkout')}: ${checkout ? toItalianDate(checkout) : '-'}`,
-      `${t('label_guests')}: ${guests}`
+      `${t('label_adults')}: ${adults}`
     ];
+    if (Number(children) > 0) {
+      lines.push(`${t('label_children')}: ${children} (${t('label_child_ages_prefix')} ${childrenAges.join(', ')})`);
+    }
     if (extraBreakfast || extraEbike) {
       const extras = [
         extraBreakfast ? t('extra_breakfast_label') : null,
@@ -190,7 +230,9 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
           checkin_iso: checkin,
           checkout: checkout ? toItalianDate(checkout) : '',
           checkout_iso: checkout,
-          guests: Number(guests),
+          adults: Number(adults),
+          children: Number(children),
+          children_ages: Number(children) > 0 ? childrenAges.map(Number) : undefined,
           extra_breakfast: extraBreakfast,
           extra_ebike: extraEbike,
           source: source || undefined,
@@ -207,7 +249,9 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
         setPhone('');
         setCheckin('');
         setCheckout('');
-        setGuests('2');
+        setAdults('2');
+        setChildren('0');
+        setChildrenAges([]);
         setSource('');
         setMessage('');
         setExtraBreakfast(false);
@@ -345,15 +389,15 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
         <ErrorText field="checkout" />
       </div>
 
-      <div className="sm:col-span-2">
-        <label htmlFor="req-guests" className={LABEL_CLASS}>
-          {t('label_guests')}
+      <div>
+        <label htmlFor="req-adults" className={LABEL_CLASS}>
+          {t('label_adults')}
         </label>
         <select
-          id="req-guests"
-          value={guests}
-          onChange={(e) => setGuests(e.target.value)}
-          className={`sm:w-48 ${INPUT_CLASS}`}
+          id="req-adults"
+          value={adults}
+          onChange={(e) => handleAdultsChange(e.target.value)}
+          className={INPUT_CLASS}
         >
           {[1, 2, 3, 4, 5, 6].map((n) => (
             <option key={n} value={n}>
@@ -362,6 +406,52 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
           ))}
         </select>
       </div>
+
+      <div>
+        <label htmlFor="req-children" className={LABEL_CLASS}>
+          {t('label_children')}
+        </label>
+        <select
+          id="req-children"
+          value={children}
+          onChange={(e) => handleChildrenChange(e.target.value)}
+          className={INPUT_CLASS}
+        >
+          {Array.from({ length: maxChildrenForAdults(adults) + 1 }, (_, n) => n).map((n) => (
+            <option key={n} value={n}>
+              {n}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* One age dropdown per child (0–17), Booking.com-style — only shown
+          once at least one child is selected above. Lets Francesco see
+          whether a crib/high chair request below actually matches an
+          infant in the party, instead of just a bare headcount. */}
+      {Number(children) > 0 && (
+        <div className="sm:col-span-2 grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {childrenAges.map((age, i) => (
+            <div key={i}>
+              <label htmlFor={`req-child-age-${i}`} className={LABEL_CLASS}>
+                {t('label_child_age', { n: i + 1 })}
+              </label>
+              <select
+                id={`req-child-age-${i}`}
+                value={age}
+                onChange={(e) => handleChildAgeChange(i, e.target.value)}
+                className={INPUT_CLASS}
+              >
+                {Array.from({ length: 18 }, (_, a) => a).map((a) => (
+                  <option key={a} value={a}>
+                    {a}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="sm:col-span-2">
         <label htmlFor="req-source" className={LABEL_CLASS}>
