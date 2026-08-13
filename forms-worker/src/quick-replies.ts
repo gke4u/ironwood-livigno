@@ -420,15 +420,28 @@ function fillTemplate(template: string, placeholder: string, data: Submission, n
   // First name only (e.g. "Kasia" not "Kasia Nowak") — same convention
   // used for the "Rispondi a {firstName}" button in email-template.ts.
   const firstName = data.name.trim().split(/\s+/)[0] || data.name;
-  return template
-    .replace(/\{name\}/g, firstName)
-    .replace(/\{checkin\}/g, data.checkin)
-    .replace(/\{checkout\}/g, data.checkout)
-    .replace(/\{nights\}/g, nightsPhrase)
-    .replace(/\{guests\}/g, String(data.guests))
-    .replace(/\{placeholder\}/g, placeholder)
-    .replace(/\{photos\}/g, PHOTOS_URL)
-    .replace(/\{signature\}/g, SIGNATURE);
+  const values: Record<string, string> = {
+    name: firstName,
+    checkin: data.checkin,
+    checkout: data.checkout,
+    nights: nightsPhrase,
+    guests: String(data.guests),
+    placeholder,
+    photos: PHOTOS_URL,
+    signature: SIGNATURE
+  };
+  // A single pass over the *template* — not a chain of eight sequential
+  // .replace() calls — is what actually matters here. Chained replaces
+  // re-scan the whole string after every step, so a value substituted
+  // early (e.g. the guest's own name, free text with no brace filtering
+  // upstream) can itself contain a literal "{signature}" or "{photos}"
+  // that a later .replace() in the chain would then match and expand —
+  // guest-controlled text ending up able to inject the real signature
+  // block, the photo link, or another field into a reply Francesco sends
+  // under his own name. Matching every {placeholder} against the template
+  // in one regex pass, with the substitution values pulled from a fixed
+  // table, means inserted values are never themselves re-scanned.
+  return template.replace(/\{(name|checkin|checkout|nights|guests|placeholder|photos|signature)\}/g, (_match, key: string) => values[key]);
 }
 
 export function buildQuickReplies(data: Submission, nights: number | null): QuickReplyOption[] {

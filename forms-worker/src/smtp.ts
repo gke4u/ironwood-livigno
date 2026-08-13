@@ -31,6 +31,35 @@ export type SmtpMessage = {
 
 class SmtpError extends Error {}
 
+// Nothing in this file previously bounded how long a socket connect or a
+// response read could take — cloudflare:sockets gives no built-in timeout,
+// so a stalled TCP handshake or a mailbox.org response that never arrives
+// left every await here pending indefinitely. With sendNotification() now
+// run via ctx.waitUntil() (see index.ts) that no longer blocks the guest's
+// HTTP response, but an unbounded hang still keeps the Worker invocation
+// alive doing nothing and — worse, for the daily cron health check in
+// index.ts's scheduled() — can silently prevent the "SMTP is broken" alert
+// from ever firing, since that alert only runs after checkSmtpConnection
+// itself settles.
+const SMTP_CONNECT_TIMEOUT_MS = 10_000;
+const SMTP_READ_TIMEOUT_MS = 15_000;
+
+function withTimeout<T>(promise: Promise<T>, ms: number, message: string): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => reject(new SmtpError(message)), ms);
+    promise.then(
+      (value) => {
+        clearTimeout(timer);
+        resolve(value);
+      },
+      (err) => {
+        clearTimeout(timer);
+        reject(err);
+      }
+    );
+  });
+}
+
 function b64(s: string): string {
   return btoa(unescape(encodeURIComponent(s)));
 }
@@ -114,17 +143,31 @@ async function sendAll(writer: WritableStreamDefaultWriter<Uint8Array>, text: st
   await writer.write(new TextEncoder().encode(text));
 }
 
+// One TCP chunk from the socket is not guaranteed to end on a UTF-8
+// character boundary — a multi-byte sequence (an accented character in a
+// mailbox.org response) can be split across two reads. A fresh
+// `new TextDecoder().decode(value)` per chunk (the previous approach) treats
+// each fragment as complete on its own, so a split sequence's dangling
+// bytes get silently replaced with U+FFFD instead of being carried over.
+// One decoder per connection, called with `{ stream: true }`, buffers any
+// incomplete trailing bytes and prepends them to the next chunk instead.
+type ReadState = { buf: string; decoder: TextDecoder };
+
+function newReadState(): ReadState {
+  return { buf: '', decoder: new TextDecoder() };
+}
+
 // Reads one SMTP response "block" — a single line, or the full run of a
 // multi-line response (e.g. EHLO's capability list: "250-STARTTLS" ...
 // "250 AUTH LOGIN"). Returns the numeric code and the full raw block, and
 // throws if the server reports an error (4xx/5xx).
-async function readResponse(reader: ReadableStreamDefaultReader<Uint8Array>, state: { buf: string }): Promise<{ code: number; lines: string[] }> {
+async function readResponse(reader: ReadableStreamDefaultReader<Uint8Array>, state: ReadState): Promise<{ code: number; lines: string[] }> {
   const lines: string[] = [];
   for (;;) {
     while (!state.buf.includes('\r\n')) {
-      const { value, done } = await reader.read();
+      const { value, done } = await withTimeout(reader.read(), SMTP_READ_TIMEOUT_MS, 'timed out waiting for SMTP response');
       if (done) throw new SmtpError('connection closed while reading response');
-      state.buf += new TextDecoder().decode(value);
+      state.buf += state.decoder.decode(value, { stream: true });
     }
     const idx = state.buf.indexOf('\r\n');
     const line = state.buf.slice(0, idx);
@@ -147,42 +190,53 @@ type SmtpSocket = ReturnType<typeof connect>;
 // or just an immediate QUIT for a health check).
 async function openAuthenticatedSession(
   config: SmtpConfig
-): Promise<{ socket: SmtpSocket; reader: ReadableStreamDefaultReader<Uint8Array>; writer: WritableStreamDefaultWriter<Uint8Array>; state: { buf: string } }> {
+): Promise<{ socket: SmtpSocket; reader: ReadableStreamDefaultReader<Uint8Array>; writer: WritableStreamDefaultWriter<Uint8Array>; state: ReadState }> {
   const socket = connect({ hostname: config.host, port: config.port }, { secureTransport: 'starttls', allowHalfOpen: false });
 
-  await socket.opened;
-  const state = { buf: '' };
-  let reader = socket.readable.getReader();
-  let writer = socket.writable.getWriter();
+  // Everything from here on can throw (connect timeout, a rejected/garbled
+  // response, a timed-out read) — previously none of it was guarded, so a
+  // failure at any step left this `socket` connected but abandoned: neither
+  // caller's own try/finally starts until *after* this function returns,
+  // so it never runs. Closing here on the way out keeps a bad handshake
+  // from leaking an open TCP connection.
+  try {
+    await withTimeout(socket.opened, SMTP_CONNECT_TIMEOUT_MS, 'timed out connecting to SMTP server');
+    const state = newReadState();
+    let reader = socket.readable.getReader();
+    let writer = socket.writable.getWriter();
 
-  await readResponse(reader, state); // 220 greeting
+    await readResponse(reader, state); // 220 greeting
 
-  await sendAll(writer, `EHLO forms.ironwoodlivigno.com\r\n`);
-  await readResponse(reader, state); // 250 capabilities (pre-TLS)
+    await sendAll(writer, `EHLO forms.ironwoodlivigno.com\r\n`);
+    await readResponse(reader, state); // 250 capabilities (pre-TLS)
 
-  await sendAll(writer, `STARTTLS\r\n`);
-  await readResponse(reader, state); // 220 ready to start TLS
+    await sendAll(writer, `STARTTLS\r\n`);
+    await readResponse(reader, state); // 220 ready to start TLS
 
-  // Upgrading closes the plaintext socket's streams — release the locks
-  // before switching to the new TLS socket's own reader/writer.
-  reader.releaseLock();
-  writer.releaseLock();
-  const secureSocket = socket.startTls();
-  const secureState = { buf: '' };
-  const secureReader = secureSocket.readable.getReader();
-  const secureWriter = secureSocket.writable.getWriter();
+    // Upgrading closes the plaintext socket's streams — release the locks
+    // before switching to the new TLS socket's own reader/writer.
+    reader.releaseLock();
+    writer.releaseLock();
+    const secureSocket = socket.startTls();
+    const secureState = newReadState();
+    const secureReader = secureSocket.readable.getReader();
+    const secureWriter = secureSocket.writable.getWriter();
 
-  await sendAll(secureWriter, `EHLO forms.ironwoodlivigno.com\r\n`);
-  await readResponse(secureReader, secureState); // 250 capabilities (post-TLS)
+    await sendAll(secureWriter, `EHLO forms.ironwoodlivigno.com\r\n`);
+    await readResponse(secureReader, secureState); // 250 capabilities (post-TLS)
 
-  await sendAll(secureWriter, `AUTH LOGIN\r\n`);
-  await readResponse(secureReader, secureState); // 334 base64("Username:")
-  await sendAll(secureWriter, `${b64(config.user)}\r\n`);
-  await readResponse(secureReader, secureState); // 334 base64("Password:")
-  await sendAll(secureWriter, `${b64(config.password)}\r\n`);
-  await readResponse(secureReader, secureState); // 235 authenticated
+    await sendAll(secureWriter, `AUTH LOGIN\r\n`);
+    await readResponse(secureReader, secureState); // 334 base64("Username:")
+    await sendAll(secureWriter, `${b64(config.user)}\r\n`);
+    await readResponse(secureReader, secureState); // 334 base64("Password:")
+    await sendAll(secureWriter, `${b64(config.password)}\r\n`);
+    await readResponse(secureReader, secureState); // 235 authenticated
 
-  return { socket, reader: secureReader, writer: secureWriter, state: secureState };
+    return { socket, reader: secureReader, writer: secureWriter, state: secureState };
+  } catch (err) {
+    await socket.close().catch(() => {});
+    throw err;
+  }
 }
 
 // Connects, authenticates, and immediately quits without sending anything —

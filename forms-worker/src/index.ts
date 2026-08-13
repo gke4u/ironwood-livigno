@@ -52,7 +52,15 @@ const SMTP_USER = 'info@guanafoto.com';
 // There's currently no second, independent channel to catch that specific
 // case without adding a paid service.
 const ALERT_TO = 'gkemag@gmail.com';
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// Deliberately narrower than a full RFC 5321 grammar: this address is later
+// embedded raw (unencoded) into `mailto:` hrefs (email-template.ts,
+// quick-replies.ts) — the "reply to the guest" buttons — and into the
+// notification email's Reply-To header. Real addresses never need the
+// characters this excludes, but a raw '#' would start a URI fragment and
+// corrupt the mailto link (RFC 3986), and '<>"\\`' have no legitimate
+// reason to appear unquoted either. This is the actual boundary that keeps
+// those downstream consumers safe, not a general-purpose email validator.
+const EMAIL_RE = /^[^\s@#<>"'\\`]+@[^\s@#<>"'\\`]+\.[^\s@#<>"'\\`]+$/;
 const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 // Any C0 control character, including CR/LF — name/phone/source end up
 // either in the notification email's headers (name becomes the visible
@@ -102,20 +110,27 @@ function json(body: unknown, status: number, origin: string | null): Response {
 }
 
 function validate(data: Partial<Submission>): string | null {
-  if (!data.name?.trim()) return 'name required';
+  // Every field is read straight out of request.json() into a type the
+  // compiler trusts (Partial<Submission>) but never actually checks at
+  // runtime — a numeric or object `name`/`email`/etc. (malformed client,
+  // hand-crafted request) would otherwise reach `.trim()`/regex calls that
+  // only exist on strings and throw a TypeError, which propagates out of
+  // this synchronous call with no surrounding try/catch and turns into an
+  // unhandled exception instead of the intended 400 response.
+  if (typeof data.name !== 'string' || !data.name.trim()) return 'name required';
   if (data.name.length > MAX_NAME_LEN) return 'name too long';
   if (CONTROL_CHAR_RE.test(data.name)) return 'invalid name';
-  if (!data.email?.trim() || !EMAIL_RE.test(data.email.trim())) return 'invalid email';
-  if (data.phone && CONTROL_CHAR_RE.test(data.phone)) return 'invalid phone';
-  if (data.source && CONTROL_CHAR_RE.test(data.source)) return 'invalid source';
-  if (!data.checkin_iso || !ISO_DATE_RE.test(data.checkin_iso)) return 'invalid checkin date';
-  if (!data.checkout_iso || !ISO_DATE_RE.test(data.checkout_iso)) return 'invalid checkout date';
+  if (typeof data.email !== 'string' || !data.email.trim() || !EMAIL_RE.test(data.email.trim())) return 'invalid email';
+  if (data.phone && (typeof data.phone !== 'string' || CONTROL_CHAR_RE.test(data.phone))) return 'invalid phone';
+  if (data.source && (typeof data.source !== 'string' || CONTROL_CHAR_RE.test(data.source))) return 'invalid source';
+  if (typeof data.checkin_iso !== 'string' || !ISO_DATE_RE.test(data.checkin_iso)) return 'invalid checkin date';
+  if (typeof data.checkout_iso !== 'string' || !ISO_DATE_RE.test(data.checkout_iso)) return 'invalid checkout date';
   if (data.checkout_iso <= data.checkin_iso) return 'checkout must be after checkin';
   const today = new Date().toISOString().slice(0, 10);
   if (data.checkin_iso < today) return 'checkin cannot be in the past';
   const guests = Number(data.guests);
   if (!Number.isInteger(guests) || guests < 1 || guests > 6) return 'invalid guest count';
-  if (data.message && data.message.length > MAX_MESSAGE_LEN) return 'message too long';
+  if (data.message && (typeof data.message !== 'string' || data.message.length > MAX_MESSAGE_LEN)) return 'message too long';
   return null;
 }
 
@@ -247,7 +262,7 @@ async function handleDraftPage(env: Env, token: string): Promise<Response> {
 }
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const origin = request.headers.get('Origin');
     const url = new URL(request.url);
 
@@ -325,29 +340,37 @@ export default {
         .run();
 
       // The submission is durably saved in D1 at this point — that's the
-      // part that must never silently fail. The notification email is a
-      // secondary effect: if it errors (e.g. Email Service misconfigured),
-      // the guest's request is still safely recorded, so this must not
-      // turn into a false "submission failed" for them. Log and move on.
+      // part that must never silently fail, and the only part the guest's
+      // response should wait on. The notification email is a secondary
+      // effect that talks to mailbox.org over a hand-rolled SMTP session
+      // (smtp.ts) with real network latency and no way to know in advance
+      // how long a given send will take. It used to be awaited right here,
+      // meaning the guest's "Invio in corso..." spinner was actually
+      // waiting on that whole SMTP round-trip — any slowness talking to
+      // mailbox.org read as the form "freezing". ctx.waitUntil keeps the
+      // Worker alive to finish the email after the response has already
+      // gone out, so the guest gets confirmed instantly once their request
+      // is safely in the database, and a slow/stuck send no longer blocks
+      // them at all.
       //
       // Bots that trip the honeypot get a normal-looking success response
       // (so the script has no signal its submission was rejected) but no
       // notification email — same principle the old client-side-only
       // honeypot already used, now enforced server-side too.
       if (!spam) {
-        try {
-          await sendNotification(env, data as Submission, country, Number(result.meta.last_row_id));
-        } catch (err) {
-          console.error('notification email failed (submission was still saved)', err);
-          // This is the case most worth an alert: a real guest request
-          // exists in D1 but nobody was told — without this, it would sit
-          // unnoticed until someone happened to check the database.
-          await sendAlert(
-            env,
-            'Notifica non inviata per una richiesta salvata',
-            `La richiesta #${result.meta.last_row_id} (${data.name ?? '-'}, ${data.email ?? '-'}) e' stata salvata correttamente ma l'email di notifica non e' partita.\n\nErrore: ${err instanceof Error ? err.message : String(err)}\n\nControlla la riga nel database: SELECT * FROM submissions WHERE id = ${result.meta.last_row_id}`
-          );
-        }
+        ctx.waitUntil(
+          sendNotification(env, data as Submission, country, Number(result.meta.last_row_id)).catch((err) => {
+            console.error('notification email failed (submission was still saved)', err);
+            // This is the case most worth an alert: a real guest request
+            // exists in D1 but nobody was told — without this, it would sit
+            // unnoticed until someone happened to check the database.
+            return sendAlert(
+              env,
+              'Notifica non inviata per una richiesta salvata',
+              `La richiesta #${result.meta.last_row_id} (${data.name ?? '-'}, ${data.email ?? '-'}) e' stata salvata correttamente ma l'email di notifica non e' partita.\n\nErrore: ${err instanceof Error ? err.message : String(err)}\n\nControlla la riga nel database: SELECT * FROM submissions WHERE id = ${result.meta.last_row_id}`
+            );
+          })
+        );
       }
 
       return json({ ok: true, id: result.meta.last_row_id }, 200, origin);
