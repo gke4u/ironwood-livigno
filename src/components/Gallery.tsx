@@ -5,39 +5,29 @@ import { useTranslations } from 'next-intl';
 import Reveal from './Reveal';
 import Pic from './Pic';
 
-// The hero photo, repeated here as a large featured image instead of the
-// small grid thumbnails below it — on request, to give the site's most
-// important shot real visual weight in the gallery instead of just being
-// one tile among ten. Kept as the first slide in the lightbox (index 0);
-// the grid below starts at index 1.
-const heroFeature = {
-  src: '/images/hero-ironwood.jpg',
-  alt: 'Ironwood Livigno di sera, sotto la neve, a 100 m dagli impianti di risalita',
-  w: 1920,
-  h: 1280
-};
-
-// Ordered to alternate portrait/landscape shots rather than group them —
-// CSS multi-column masonry balances columns based on running height in DOM
-// order, and clustering several same-orientation photos together (as the
-// original photo-shoot order did) was leaving one column visibly short at
-// the bottom of the grid. The one short, wide shot (esterno-giorno) sits
-// mid-list instead of last, since a short item as the final one is what
-// left the most visible gap.
+// One deliberately-composed bento grid instead of a separate hero banner
+// above a CSS-columns masonry — a magazine spread, not a stack of
+// thumbnails. Two "big, small, small, small, small" bands (each a clean
+// 2-row/4-column block: a feature photo plus four detail shots) followed
+// by one full-width closing shot. That specific [big, small×4] order is
+// what keeps CSS Grid's own (sparse, left-to-right/top-to-bottom) item
+// placement landing exactly where intended with nothing but col-span/
+// row-span classes — no explicit grid-column/row coordinates to keep in
+// sync by hand, and no risk of the gaps a masonry column that runs short
+// can leave (the problem this replaced).
 const images = [
-  { src: '/images/esterno-notte.jpg', alt: 'Esterno dell’appartamento Ironwood a Livigno di sera, sotto la neve', w: 1920, h: 1440 },
-  { src: '/images/bagno-extra.jpg', alt: 'Bagno con doccia in pietra nell’appartamento a Livigno', w: 1333, h: 2000 },
-  { src: '/images/cucina.jpg', alt: 'Cucina completamente attrezzata nell’appartamento vacanze a Livigno', w: 2000, h: 1333 },
-  { src: '/images/dettaglio-vini.jpg', alt: 'Cantinetta vini in cucina nella casa vacanze a Livigno', w: 1333, h: 2000 },
-  { src: '/images/soggiorno.jpg', alt: 'Soggiorno con divano e vista sulle Alpi, appartamento a Livigno', w: 1920, h: 1280 },
-  { src: '/images/bagno.jpg', alt: 'Uno dei due bagni completi dell’appartamento a Livigno', w: 1168, h: 1752 },
-  { src: '/images/cucina-dettaglio.jpg', alt: 'Dettaglio del piano cucina nell’appartamento con cucina attrezzata a Livigno', w: 2000, h: 1500 },
-  { src: '/images/esterno-giorno.jpg', alt: 'Esterno dell’appartamento a Livigno vicino agli impianti, di giorno', w: 1181, h: 787 },
-  { src: '/images/appartamento-soggiorno.jpg', alt: 'Zona giorno dell’appartamento a Livigno con vista sulle montagne', w: 2000, h: 1333 },
-  { src: '/images/bagno-extra2.jpg', alt: 'Dettaglio del secondo bagno nella casa vacanze a Livigno', w: 1333, h: 2000 }
+  { src: '/images/hero-ironwood.jpg', alt: 'Soggiorno e cucina a vista, appartamento Ironwood a Livigno', caption: 'Soggiorno e cucina a vista', w: 1920, h: 1280, big: true },
+  { src: '/images/esterno-notte.jpg', alt: 'Esterno dell’appartamento Ironwood a Livigno di sera, sotto la neve', caption: 'L’esterno, di sera', w: 1920, h: 1440 },
+  { src: '/images/cucina.jpg', alt: 'Cucina completamente attrezzata nell’appartamento vacanze a Livigno', caption: 'Cucina attrezzata', w: 2000, h: 1333 },
+  { src: '/images/bagno-extra.jpg', alt: 'Bagno con doccia in pietra nell’appartamento a Livigno', caption: 'Bagno in pietra', w: 1333, h: 2000 },
+  { src: '/images/dettaglio-vini.jpg', alt: 'Cantinetta vini in cucina nella casa vacanze a Livigno', caption: 'Cantinetta vini', w: 1333, h: 2000 },
+  { src: '/images/bagno-extra2.jpg', alt: 'Dettaglio del secondo bagno nella casa vacanze a Livigno', caption: 'Bagno con doccia', w: 1333, h: 2000, big: true },
+  { src: '/images/soggiorno.jpg', alt: 'Soggiorno con divano e vista sulle Alpi, appartamento a Livigno', caption: 'Soggiorno con vista', w: 1920, h: 1280 },
+  { src: '/images/bagno.jpg', alt: 'Uno dei due bagni completi dell’appartamento a Livigno', caption: 'Uno dei due bagni', w: 1168, h: 1752 },
+  { src: '/images/cucina-dettaglio.jpg', alt: 'Dettaglio del piano cucina nell’appartamento con cucina attrezzata a Livigno', caption: 'Dettaglio cucina', w: 2000, h: 1500 },
+  { src: '/images/appartamento-soggiorno.jpg', alt: 'Zona giorno dell’appartamento a Livigno con vista sulle montagne', caption: 'Zona giorno', w: 2000, h: 1333 },
+  { src: '/images/esterno-giorno.jpg', alt: 'Esterno dell’appartamento a Livigno vicino agli impianti, di giorno', caption: 'L’esterno, di giorno', w: 1181, h: 787, wide: true }
 ];
-
-const allImages = [heroFeature, ...images];
 
 export default function Gallery() {
   const t = useTranslations('gallery');
@@ -45,10 +35,10 @@ export default function Gallery() {
 
   const close = useCallback(() => setActiveIndex(null), []);
   const showPrev = useCallback(() => {
-    setActiveIndex((i) => (i === null ? null : (i - 1 + allImages.length) % allImages.length));
+    setActiveIndex((i) => (i === null ? null : (i - 1 + images.length) % images.length));
   }, []);
   const showNext = useCallback(() => {
-    setActiveIndex((i) => (i === null ? null : (i + 1) % allImages.length));
+    setActiveIndex((i) => (i === null ? null : (i + 1) % images.length));
   }, []);
 
   // Lock page scroll while the lightbox is open and wire up keyboard
@@ -72,7 +62,7 @@ export default function Gallery() {
     };
   }, [activeIndex, close, showPrev, showNext]);
 
-  const active = activeIndex !== null ? allImages[activeIndex] : null;
+  const active = activeIndex !== null ? images[activeIndex] : null;
 
   return (
     <section id="galleria" className="bg-mist pt-24 md:pt-32 pb-16 md:pb-20">
@@ -84,52 +74,38 @@ export default function Gallery() {
           <h2 className="font-display text-3xl md:text-5xl text-ink leading-tight">{t('title')}</h2>
         </Reveal>
 
-        {/* The hero shot, large and given the same dark bottom gradient it
-            wears on the hero itself — this is the site's single most
-            important photo, so it gets a full-width feature spot ahead of
-            the grid instead of being just another small tile. */}
-        <Reveal className="mb-4 md:mb-6">
-          <button
-            type="button"
-            onClick={() => setActiveIndex(0)}
-            aria-label={heroFeature.alt}
-            className="group relative block w-full rounded-3xl overflow-hidden shadow-soft cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brick focus-visible:ring-offset-2"
-          >
-            <div className="aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9]">
-              <Pic
-                src={heroFeature.src}
-                alt={heroFeature.alt}
-                width={heroFeature.w}
-                height={heroFeature.h}
-                sizes="100vw"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-              />
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-ink/55 via-ink/5 to-transparent" aria-hidden />
-          </button>
-        </Reveal>
-
-        {/* Masonry via CSS columns instead of a fixed-height grid: every
-            photo keeps its own natural aspect ratio (no object-cover
-            cropping), and the column-balancing naturally produces a varied,
-            non-repetitive mosaic instead of a rigid uniform grid. */}
-        <div className="columns-2 md:columns-4 gap-5">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:auto-rows-[13vw] md:gap-4 lg:auto-rows-[180px]">
           {images.map((img, i) => (
-            <Reveal key={img.src} delay={i * 80} className="mb-5 break-inside-avoid rounded-2xl overflow-hidden shadow-soft">
+            <Reveal
+              key={img.src}
+              delay={Math.min(i, 5) * 80}
+              className={`rounded-2xl md:rounded-3xl overflow-hidden shadow-soft ${
+                img.big ? 'md:col-span-2 md:row-span-2' : img.wide ? 'col-span-2 md:col-span-4' : ''
+              }`}
+            >
               <button
                 type="button"
-                onClick={() => setActiveIndex(i + 1)}
+                onClick={() => setActiveIndex(i)}
                 aria-label={img.alt}
-                className="block w-full cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brick focus-visible:ring-offset-2 rounded-2xl"
+                className={`group relative block w-full h-full ${img.wide ? 'aspect-[2/1]' : 'aspect-square'} md:aspect-auto cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brick focus-visible:ring-offset-2`}
               >
                 <Pic
                   src={img.src}
                   alt={img.alt}
                   width={img.w}
                   height={img.h}
-                  sizes="(min-width: 768px) 25vw, 50vw"
-                  className="w-full h-auto block hover:scale-105 transition-transform duration-700"
+                  sizes={img.big ? '(min-width: 768px) 50vw, 100vw' : img.wide ? '100vw' : '(min-width: 768px) 25vw, 50vw'}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
+                {/* Caption on hover — a gradient scrim plus the room name,
+                    both fading/rising in together. Static on touch devices
+                    with no hover would just never show it, which is fine:
+                    the lightbox (a tap away) still names every photo via
+                    its alt text read out below. */}
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/0 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" aria-hidden />
+                <p className="absolute bottom-0 left-0 right-0 p-4 md:p-5 font-display text-mist text-sm md:text-base opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
+                  {img.caption}
+                </p>
               </button>
             </Reveal>
           ))}
@@ -196,8 +172,9 @@ export default function Gallery() {
               loading="eager"
               className="max-w-[92vw] max-h-[80vh] w-auto h-auto object-contain rounded-lg"
             />
-            <p className="text-white/70 text-sm tabular-nums">
-              {activeIndex! + 1} / {allImages.length}
+            <p className="text-white/85 font-display text-base">{active.caption}</p>
+            <p className="text-white/60 text-sm tabular-nums">
+              {activeIndex! + 1} / {images.length}
             </p>
           </div>
         </div>
