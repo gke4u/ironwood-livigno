@@ -64,6 +64,14 @@ export default function Gallery() {
 
   const active = activeIndex !== null ? images[activeIndex] : null;
 
+  // The closing shot (the whole chalet, a much squarer frame than every
+  // other photo here) sits outside the bento grid on its own row, sized to
+  // its real aspect ratio instead of a fixed grid-row height — the only way
+  // to show the entire building with zero cropping and no letterbox bars.
+  const gridImages = images.slice(0, -1);
+  const closingImage = images[images.length - 1];
+  const closingIndex = images.length - 1;
+
   return (
     <section id="galleria" className="bg-mist pt-24 md:pt-32 pb-16 md:pb-20">
       <div className="max-w-content mx-auto px-6 md:px-10">
@@ -75,26 +83,26 @@ export default function Gallery() {
         </Reveal>
 
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:auto-rows-[13vw] md:gap-4 lg:auto-rows-[180px]">
-          {images.map((img, i) => (
+          {gridImages.map((img, i) => (
             <Reveal
               key={img.src}
               delay={Math.min(i, 5) * 80}
               className={`rounded-2xl md:rounded-3xl overflow-hidden shadow-soft ${
-                img.big ? 'md:col-span-2 md:row-span-2' : img.wide ? 'col-span-2 md:col-span-4' : ''
+                img.big ? 'md:col-span-2 md:row-span-2' : ''
               }`}
             >
               <button
                 type="button"
                 onClick={() => setActiveIndex(i)}
                 aria-label={img.alt}
-                className={`group relative block w-full h-full ${img.wide ? 'aspect-[2/1]' : 'aspect-square'} md:aspect-auto cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brick focus-visible:ring-offset-2`}
+                className="group relative block w-full h-full aspect-square md:aspect-auto cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brick focus-visible:ring-offset-2"
               >
                 <Pic
                   src={img.src}
                   alt={img.alt}
                   width={img.w}
                   height={img.h}
-                  sizes={img.big ? '(min-width: 768px) 50vw, 100vw' : img.wide ? '100vw' : '(min-width: 768px) 25vw, 50vw'}
+                  sizes={img.big ? '(min-width: 768px) 50vw, 100vw' : '(min-width: 768px) 25vw, 50vw'}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 {/* Caption on hover — a gradient scrim plus the room name,
@@ -110,6 +118,28 @@ export default function Gallery() {
             </Reveal>
           ))}
         </div>
+
+        <Reveal className="mt-3 md:mt-4">
+          <button
+            type="button"
+            onClick={() => setActiveIndex(closingIndex)}
+            aria-label={closingImage.alt}
+            className="group relative block w-full aspect-[1181/787] rounded-2xl md:rounded-3xl overflow-hidden shadow-soft cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brick focus-visible:ring-offset-2"
+          >
+            <Pic
+              src={closingImage.src}
+              alt={closingImage.alt}
+              width={closingImage.w}
+              height={closingImage.h}
+              sizes="100vw"
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/0 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" aria-hidden />
+            <p className="absolute bottom-0 left-0 right-0 p-4 md:p-5 font-display text-mist text-sm md:text-base opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
+              {closingImage.caption}
+            </p>
+          </button>
+        </Reveal>
       </div>
 
       {active && (
