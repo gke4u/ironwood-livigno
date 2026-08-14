@@ -208,6 +208,7 @@ describe('STATUS_FOR_KIND', () => {
     expect(STATUS_FOR_KIND.available).toBe('confirmed');
     expect(STATUS_FOR_KIND.unavailable).toBe('declined');
     expect(STATUS_FOR_KIND.pending).toBe('pending');
+    expect(STATUS_FOR_KIND.booking).toBe('confirmed');
     expect(STATUS_FOR_KIND.blank).toBe('replied');
     expect(STATUS_FOR_KIND.ai).toBe('replied');
   });

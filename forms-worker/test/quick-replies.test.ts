@@ -30,6 +30,19 @@ describe('quickReplyText', () => {
     }
   });
 
+  it('"booking" states the dates/guest count plainly too — parens there are only for unrelated asides', () => {
+    const text = quickReplyText(baseSubmission({ locale: 'it' }), 7, 'booking');
+    expect(text).toContain('per 22 agosto 2026 – 29 agosto 2026, 7 notti, 4 adulti 2 bambini 5 anni e 12 anni!');
+  });
+
+  it('leaves a fillable payment placeholder in "booking", in every locale — never a fabricated amount', () => {
+    for (const locale of ['it', 'en', 'de', 'fr', 'da', 'pl', 'cs', 'no', 'nl', 'zh', 'ja']) {
+      const text = quickReplyText(baseSubmission({ locale }), 7, 'booking');
+      expect(text, locale).not.toContain('{payment}');
+      expect(text, locale).not.toMatch(/\d[\d.,]*\s?(€|EUR)/);
+    }
+  });
+
   it('spells out the guest count with each child\'s age, in the guest\'s own locale', () => {
     const it_ = quickReplyText(baseSubmission({ locale: 'it' }), 7, 'available');
     expect(it_).toContain('4 adulti 2 bambini 5 anni e 12 anni');

@@ -44,6 +44,10 @@ export const STATUS_FOR_KIND: Record<ReplyKind, string> = {
   available: 'confirmed',
   unavailable: 'declined',
   pending: 'pending',
+  // Sending the booking-confirmation message is a continuation of an
+  // already-confirmed conversation, not a new stage — reuses 'confirmed'
+  // rather than adding a status the dashboard filters/CSS don't know about.
+  booking: 'confirmed',
   blank: 'replied',
   ai: 'replied'
 };
@@ -56,6 +60,7 @@ const REPLY_KIND_LABELS: Record<ReplyKind, string> = {
   available: '✓ Disponibile',
   unavailable: 'Non disponibile',
   pending: 'Confermiamo a breve',
+  booking: '✓ Conferma prenotazione',
   blank: 'Risposta libera',
   ai: 'Bozza AI'
 };
@@ -305,6 +310,7 @@ const STYLES = `
   .qr-btn.available { border-color: var(--accent); color: var(--accent); }
   .qr-btn.unavailable { border-color: var(--text-muted); color: var(--text-muted); }
   .qr-btn.pending { border-color: var(--gold); color: var(--gold-ink); }
+  .qr-btn.booking { border-color: var(--green); color: var(--green); }
   .qr-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
 
   textarea.reply-body { width: 100%; min-height: 210px; box-sizing: border-box; padding: 18px 20px; border-radius: 14px; border: 1px solid var(--border);
@@ -487,7 +493,7 @@ function renderDetail(detail: DetailView | null, activeStatus: StatusFilter, q: 
   const firstName = escapeHtml(row.name.trim().split(/\s+/)[0] || row.name);
   const returnTo = `/admin${buildQuery({ status: activeStatus, q, open: row.id, page })}`;
 
-  const qrRow = (['available', 'unavailable', 'pending', 'blank', 'ai'] as ReplyKind[])
+  const qrRow = (['available', 'unavailable', 'pending', 'booking', 'blank', 'ai'] as ReplyKind[])
     .map((k) => {
       const active = k === kind;
       const cls = k === 'blank' || k === 'ai' ? '' : ` ${k}`;

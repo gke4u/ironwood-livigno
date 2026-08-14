@@ -36,7 +36,8 @@ const FORMS_BASE_URL = 'https://forms.ironwoodlivigno.com';
 const QUICK_REPLY_ACCENT: Record<QuickReplyId, { border: string; text: string }> = {
   available: { border: '#A8462F', text: '#A8462F' },
   unavailable: { border: '#241C15', text: '#241C15' },
-  pending: { border: '#C9A059', text: '#8A6B2E' }
+  pending: { border: '#C9A059', text: '#8A6B2E' },
+  booking: { border: '#4F6B45', text: '#4F6B45' }
 };
 
 export function escapeHtml(value: string): string {

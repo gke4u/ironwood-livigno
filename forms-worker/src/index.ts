@@ -239,13 +239,14 @@ async function loadSubmissionByToken(env: Env, token: string): Promise<{ submiss
   return { submission, nights: nightsBetween(row.checkin_iso, row.checkout_iso) };
 }
 
-export type ReplyKind = 'available' | 'unavailable' | 'pending' | 'blank' | 'ai';
+export type ReplyKind = 'available' | 'unavailable' | 'pending' | 'booking' | 'blank' | 'ai';
 
 // Italian only — shown to Francesco on the editor page, never to the guest.
 const REPLY_KIND_LABELS: Record<ReplyKind, string> = {
   available: '✓ Disponibile',
   unavailable: 'Non disponibile',
   pending: 'Confermiamo a breve',
+  booking: '✓ Conferma prenotazione',
   blank: 'Risposta libera',
   ai: 'Bozza AI'
 };
