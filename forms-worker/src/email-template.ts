@@ -10,7 +10,7 @@
 // sans-serif for body — since email clients don't load @font-face reliably.
 import type { Submission } from './index';
 import { localeDisplayName, type Translation } from './translate';
-import { replyLabelsFor } from './reply-labels';
+import { replyLabelsFor, formatGuestsSentence } from './reply-labels';
 import { buildQuickReplies, type QuickReplyId } from './quick-replies';
 
 // Exported so guest-receipt.ts's HTML version can match this template's
@@ -96,8 +96,8 @@ export function buildBlankReplyText(data: Submission, nights: number | null): st
     t.requestHeading,
     '────────────────────',
     `${t.checkin}:  ${data.checkin}`,
-    `${t.checkout}: ${data.checkout}${nights !== null ? ` (${nights} ${nightsWord})` : ''}`,
-    `${t.guests}:   ${data.guests}`,
+    `${t.checkout}: ${data.checkout}${nights !== null ? `, ${nights} ${nightsWord}` : ''}`,
+    `${t.guests}:   ${formatGuestsSentence(t, data.adults, data.children, data.children_ages)}`,
     extras ? `${t.extra.toUpperCase()}: ${extras}` : null,
     data.message ? '' : null,
     data.message ? `${t.note.toUpperCase()}:` : null,
@@ -115,12 +115,11 @@ export function buildNotificationHtml(data: Submission, id: number, country: str
     row('Nome', escapeHtml(data.name)),
     row('Email', `<a href="mailto:${escapeHtml(data.email)}" style="color:#A8462F;text-decoration:none;">${escapeHtml(data.email)}</a>`),
     data.phone ? row('Telefono', `<a href="tel:${escapeHtml(data.phone)}" style="color:#A8462F;text-decoration:none;">${escapeHtml(data.phone)}</a>`) : '',
-    row(
-      'Ospiti',
-      data.children > 0
-        ? `${data.adults} adulti + ${data.children} bambini (età: ${escapeHtml((data.children_ages ?? []).join(', '))})`
-        : String(data.guests)
-    ),
+    // Written out the way the guest actually entered it — "4 adulti 2
+    // bambini 5 anni e 12 anni" — instead of a total plus a parenthetical
+    // "(età: 5, 12)" aside. Always Italian: this notification is Francesco's
+    // own copy, not localized to the guest's site language.
+    row('Ospiti', escapeHtml(formatGuestsSentence(replyLabelsFor('it'), data.adults, data.children, data.children_ages))),
     data.source ? row('Come ci ha trovato', escapeHtml(data.source)) : '',
     data.locale ? row('Lingua sito', escapeHtml(localeDisplayName(data.locale))) : '',
     country ? row('Paese (da IP)', escapeHtml(country)) : ''

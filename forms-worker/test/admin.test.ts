@@ -277,4 +277,28 @@ describe('renderDashboardPage escaping', () => {
     expect(withoutDetail).toContain('<div class="app">');
     expect(withoutDetail).not.toContain('class="app has-detail"');
   });
+
+  it('shows the guest count with each child\'s age spelled out, not a parenthetical', () => {
+    const row: SubmissionRow = {
+      id: 1, token: 't1', created_at: '2026-08-14T08:00:00.000Z', name: 'Lena Fischer', email: 'lena@example.de', phone: null,
+      checkin_display: '1 settembre 2026', checkout_display: '3 settembre 2026', checkin_iso: '2026-09-01', checkout_iso: '2026-09-03',
+      guests: 6, adults: 4, children: 2, children_ages: '[5,12]', extra_breakfast: 0, extra_ebike: 0, source: null, message: null,
+      locale: 'de', status: 'new', cf_country: null
+    };
+    const html = renderDashboardPage({
+      counts: { all: 1 },
+      rows: [row],
+      activeStatus: 'all',
+      q: '',
+      page: 1,
+      hasMore: false,
+      selectedId: 1,
+      detail: { row, nights: 2, kind: 'blank', body: 'x' },
+      sent: false
+    });
+    // Always Italian in the dashboard, regardless of the guest's own site
+    // locale (de here) — this is Francesco's own view of the request.
+    expect(html).toContain('4 adulti 2 bambini 5 anni e 12 anni');
+    expect(html).not.toContain('età:');
+  });
 });

@@ -11,6 +11,9 @@ export type ReplyLabels = {
   checkin: string;
   checkout: string;
   guests: string;
+  // Lowercase (not a heading anywhere else in the codebase) — except
+  // German, where common nouns are always capitalized: "2 Kinder" is
+  // correct mid-sentence there, a lowercased "2 kinder" wouldn't be.
   children: string;
   extra: string;
   breakfast: string;
@@ -18,6 +21,15 @@ export type ReplyLabels = {
   note: string;
   night: string;
   nights: string; // same as `night` for languages without a plural form (zh, ja)
+  // Used to spell the guest count out as a plain sentence — "4 adults, 2
+  // children, 5 years and 12 years" — instead of a bare total number or a
+  // parenthetical "(age: 5, 12)" aside (see formatGuestsSentence below).
+  adult: string;
+  adults: string;
+  child: string; // singular
+  year: string;
+  years: string; // same as `year` for languages without a plural form (zh, ja)
+  and: string;
   // The automatic "we've got your request" receipt sent to the guest right
   // after they submit (guest-receipt.ts) — a separate message from the
   // owner's own manual reply above, sent immediately and unconditionally,
@@ -34,13 +46,19 @@ const IT: ReplyLabels = {
   checkin: 'Check-in',
   checkout: 'Check-out',
   guests: 'Ospiti',
-  children: 'Bambini',
+  children: 'bambini',
   extra: 'Extra',
   breakfast: 'Colazione',
   ebike: 'Noleggio e-bike',
   note: 'Nota',
   night: 'notte',
   nights: 'notti',
+  adult: 'adulto',
+  adults: 'adulti',
+  child: 'bambino',
+  year: 'anno',
+  years: 'anni',
+  and: 'e',
   // Formale ("Lei"), stesso registro delle risposte rapide (quick-replies.ts),
   // su richiesta esplicita del proprietario.
   receiptSubject: 'La Sua richiesta è arrivata — Ironwood Livigno',
@@ -57,13 +75,19 @@ export const REPLY_LABELS: Record<string, ReplyLabels> = {
     checkin: 'Check-in',
     checkout: 'Check-out',
     guests: 'Guests',
-    children: 'Children',
+    children: 'children',
     extra: 'Extras',
     breakfast: 'Breakfast',
     ebike: 'E-bike rental',
     note: 'Note',
     night: 'night',
     nights: 'nights',
+    adult: 'adult',
+    adults: 'adults',
+    child: 'child',
+    year: 'year',
+    years: 'years',
+    and: 'and',
     receiptSubject: 'Your request has arrived — Ironwood Livigno',
     receiptGreeting: 'Hi {name},',
     receiptIntro: "thank you for reaching out! We've received your request and will get back to you as soon as possible.",
@@ -75,13 +99,19 @@ export const REPLY_LABELS: Record<string, ReplyLabels> = {
     checkin: 'Check-in',
     checkout: 'Check-out',
     guests: 'Guests',
-    children: 'Children',
+    children: 'children',
     extra: 'Extras',
     breakfast: 'Breakfast',
     ebike: 'E-bike rental',
     note: 'Note',
     night: 'night',
     nights: 'nights',
+    adult: 'adult',
+    adults: 'adults',
+    child: 'child',
+    year: 'year',
+    years: 'years',
+    and: 'and',
     receiptSubject: 'Your request has arrived — Ironwood Livigno',
     receiptGreeting: 'Hi {name},',
     receiptIntro: "thank you for reaching out! We've received your request and will get back to you as soon as possible.",
@@ -100,6 +130,12 @@ export const REPLY_LABELS: Record<string, ReplyLabels> = {
     note: 'Notiz',
     night: 'Nacht',
     nights: 'Nächte',
+    adult: 'Erwachsener',
+    adults: 'Erwachsene',
+    child: 'Kind',
+    year: 'Jahr',
+    years: 'Jahre',
+    and: 'und',
     receiptSubject: 'Ihre Anfrage ist angekommen — Ironwood Livigno',
     receiptGreeting: 'Hallo {name},',
     receiptIntro: 'vielen Dank für Ihre Nachricht! Wir haben Ihre Anfrage erhalten und melden uns so schnell wie möglich bei Ihnen.',
@@ -111,13 +147,19 @@ export const REPLY_LABELS: Record<string, ReplyLabels> = {
     checkin: 'Arrivée',
     checkout: 'Départ',
     guests: 'Voyageurs',
-    children: 'Enfants',
+    children: 'enfants',
     extra: 'Extras',
     breakfast: 'Petit-déjeuner',
     ebike: 'Location de vélo électrique',
     note: 'Note',
     night: 'nuit',
     nights: 'nuits',
+    adult: 'adulte',
+    adults: 'adultes',
+    child: 'enfant',
+    year: 'an',
+    years: 'ans',
+    and: 'et',
     receiptSubject: 'Votre demande est bien arrivée — Ironwood Livigno',
     receiptGreeting: 'Bonjour {name},',
     receiptIntro: 'merci pour votre message ! Nous avons bien reçu votre demande et nous vous répondrons dans les plus brefs délais.',
@@ -129,13 +171,19 @@ export const REPLY_LABELS: Record<string, ReplyLabels> = {
     checkin: 'Check-in',
     checkout: 'Check-out',
     guests: 'Gæster',
-    children: 'Børn',
+    children: 'børn',
     extra: 'Ekstra',
     breakfast: 'Morgenmad',
     ebike: 'El-cykeludlejning',
     note: 'Besked',
     night: 'nat',
     nights: 'nætter',
+    adult: 'voksen',
+    adults: 'voksne',
+    child: 'barn',
+    year: 'år',
+    years: 'år',
+    and: 'og',
     receiptSubject: 'Din forespørgsel er modtaget — Ironwood Livigno',
     receiptGreeting: 'Hej {name},',
     receiptIntro: 'tak for din besked! Vi har modtaget din forespørgsel og vender tilbage til dig hurtigst muligt.',
@@ -147,13 +195,19 @@ export const REPLY_LABELS: Record<string, ReplyLabels> = {
     checkin: 'Zameldowanie',
     checkout: 'Wymeldowanie',
     guests: 'Goście',
-    children: 'Dzieci',
+    children: 'dzieci',
     extra: 'Dodatki',
     breakfast: 'Śniadanie',
     ebike: 'Wypożyczenie roweru elektrycznego',
     note: 'Wiadomość',
     night: 'noc',
     nights: 'noce',
+    adult: 'dorosły',
+    adults: 'dorosłych',
+    child: 'dziecko',
+    year: 'rok',
+    years: 'lat',
+    and: 'i',
     receiptSubject: 'Twoje zapytanie dotarło — Ironwood Livigno',
     receiptGreeting: 'Dzień dobry {name},',
     receiptIntro: 'dziękujemy za wiadomość! Otrzymaliśmy Twoje zapytanie i odpowiemy najszybciej, jak to możliwe.',
@@ -165,13 +219,19 @@ export const REPLY_LABELS: Record<string, ReplyLabels> = {
     checkin: 'Check-in',
     checkout: 'Check-out',
     guests: 'Hosté',
-    children: 'Děti',
+    children: 'děti',
     extra: 'Extra',
     breakfast: 'Snídaně',
     ebike: 'Půjčení elektrokola',
     note: 'Zpráva',
     night: 'noc',
     nights: 'noci',
+    adult: 'dospělý',
+    adults: 'dospělých',
+    child: 'dítě',
+    year: 'rok',
+    years: 'let',
+    and: 'a',
     receiptSubject: 'Vaše poptávka dorazila — Ironwood Livigno',
     receiptGreeting: 'Dobrý den {name},',
     receiptIntro: 'děkujeme za zprávu! Obdrželi jsme vaši poptávku a odpovíme co nejdříve.',
@@ -183,13 +243,19 @@ export const REPLY_LABELS: Record<string, ReplyLabels> = {
     checkin: 'Innsjekk',
     checkout: 'Utsjekk',
     guests: 'Gjester',
-    children: 'Barn',
+    children: 'barn',
     extra: 'Ekstra',
     breakfast: 'Frokost',
     ebike: 'Utleie av elsykkel',
     note: 'Melding',
     night: 'natt',
     nights: 'netter',
+    adult: 'voksen',
+    adults: 'voksne',
+    child: 'barn',
+    year: 'år',
+    years: 'år',
+    and: 'og',
     receiptSubject: 'Forespørselen din har kommet frem — Ironwood Livigno',
     receiptGreeting: 'Hei {name},',
     receiptIntro: 'takk for meldingen din! Vi har mottatt forespørselen din og svarer deg så snart som mulig.',
@@ -201,13 +267,19 @@ export const REPLY_LABELS: Record<string, ReplyLabels> = {
     checkin: 'Check-in',
     checkout: 'Check-out',
     guests: 'Gasten',
-    children: 'Kinderen',
+    children: 'kinderen',
     extra: "Extra's",
     breakfast: 'Ontbijt',
     ebike: 'E-bike verhuur',
     note: 'Bericht',
     night: 'nacht',
     nights: 'nachten',
+    adult: 'volwassene',
+    adults: 'volwassenen',
+    child: 'kind',
+    year: 'jaar',
+    years: 'jaar',
+    and: 'en',
     receiptSubject: 'Uw aanvraag is binnengekomen — Ironwood Livigno',
     receiptGreeting: 'Beste {name},',
     receiptIntro: 'bedankt voor uw bericht! We hebben uw aanvraag ontvangen en reageren zo snel mogelijk.',
@@ -226,6 +298,12 @@ export const REPLY_LABELS: Record<string, ReplyLabels> = {
     note: '留言',
     night: '晚',
     nights: '晚',
+    adult: '成人',
+    adults: '成人',
+    child: '儿童',
+    year: '岁',
+    years: '岁',
+    and: '和',
     receiptSubject: '您的咨询已收到 — Ironwood Livigno',
     receiptGreeting: '{name}，您好：',
     receiptIntro: '感谢您的来信!我们已收到您的咨询,会尽快回复您。',
@@ -244,6 +322,12 @@ export const REPLY_LABELS: Record<string, ReplyLabels> = {
     note: 'メッセージ',
     night: '泊',
     nights: '泊',
+    adult: '大人',
+    adults: '大人',
+    child: '子供',
+    year: '歳',
+    years: '歳',
+    and: 'と',
     receiptSubject: 'お問い合わせを受け付けました — Ironwood Livigno',
     receiptGreeting: '{name}様、',
     receiptIntro: 'ご連絡ありがとうございます。お問い合わせを受け付けました。できるだけ早くご返信いたします。',
@@ -253,4 +337,30 @@ export const REPLY_LABELS: Record<string, ReplyLabels> = {
 
 export function replyLabelsFor(locale: string | undefined): ReplyLabels {
   return (locale && REPLY_LABELS[locale]) || IT;
+}
+
+function pick(n: number, singular: string, plural: string): string {
+  return n === 1 ? singular : plural;
+}
+
+// Spells the party out as one plain sentence — "4 adults, 2 children, 5
+// years and 12 years" — instead of a bare total number or a parenthetical
+// "(age: 5, 12)" aside. Used anywhere a guest count with children needs to
+// read as what the guest actually entered, not a label + bracketed data
+// dump (guest-receipt.ts, email-template.ts).
+export function formatGuestsSentence(labels: ReplyLabels, adults: number, children: number, childrenAges?: number[]): string {
+  const parts = [`${adults} ${pick(adults, labels.adult, labels.adults)}`];
+  if (children > 0) {
+    parts.push(`${children} ${pick(children, labels.child, labels.children)}`);
+  }
+  let sentence = parts.join(' ');
+
+  if (children > 0 && childrenAges && childrenAges.length > 0) {
+    const ageParts = childrenAges.map((age) => `${age} ${pick(age, labels.year, labels.years)}`);
+    const agesText =
+      ageParts.length === 1 ? ageParts[0] : `${ageParts.slice(0, -1).join(', ')} ${labels.and} ${ageParts[ageParts.length - 1]}`;
+    sentence += ` ${agesText}`;
+  }
+
+  return sentence;
 }

@@ -8,7 +8,7 @@
 // language of the site they were browsing (data.locale), via the same
 // sendMail() SMTP path everything else in this Worker uses.
 import type { Submission } from './index';
-import { replyLabelsFor } from './reply-labels';
+import { replyLabelsFor, formatGuestsSentence } from './reply-labels';
 import { nightsBetween, escapeHtml, FONT_MONO, PHOTOS_URL } from './email-template';
 
 // Matches the ogLocale mapping in src/content/landingPageTranslations.ts on
@@ -54,10 +54,7 @@ function buildGuestReceiptText(data: Submission, nightsPhrase: string): string {
   const labels = replyLabelsFor(data.locale);
   const firstName = data.name.trim().split(/\s+/)[0] || data.name;
 
-  const guestsLine =
-    data.children > 0
-      ? `${labels.guests}: ${data.adults} + ${data.children} ${labels.children.toLowerCase()}`
-      : `${labels.guests}: ${data.adults}`;
+  const guestsLine = `${labels.guests}: ${formatGuestsSentence(labels, data.adults, data.children, data.children_ages)}`;
 
   const lines = [
     PERFORATION,
@@ -109,8 +106,7 @@ function buildGuestReceiptHtml(data: Submission, nights: number | null): string 
   const firstName = escapeHtml(data.name.trim().split(/\s+/)[0] || data.name);
   const nightsWord = nights === 1 ? labels.night : labels.nights;
 
-  const guestsValue =
-    data.children > 0 ? `${data.adults} + ${data.children} ${labels.children.toLowerCase()}` : String(data.adults);
+  const guestsValue = formatGuestsSentence(labels, data.adults, data.children, data.children_ages);
 
   // Typewriter-style checkbox fields rather than pill badges — only the
   // extras actually requested are listed at all, same as before, just a
@@ -252,8 +248,8 @@ function buildGuestReceiptHtml(data: Submission, nights: number | null): string 
             <tr>
               <td style="padding:22px 36px 0;border-top:2px dashed #C9A059;margin-top:10px;">
                 <table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:18px;">
-                  <tr><td style="border:2px solid #A8462F;border-radius:4px;padding:6px 14px;">
-                    <span style="font-family:${FONT_MONO};font-size:12px;font-weight:700;letter-spacing:0.12em;color:#A8462F;">✓ OK</span>
+                  <tr><td style="border:2px solid #4F6B45;border-radius:4px;padding:6px 14px;">
+                    <span style="font-family:${FONT_MONO};font-size:12px;font-weight:700;letter-spacing:0.12em;color:#4F6B45;">✓ OK</span>
                   </td></tr>
                 </table>
               </td>

@@ -38,7 +38,7 @@
 // signature block (Francesco's name, Ironwood Livigno, and a WhatsApp
 // contact link) — see SIGNATURE below.
 import type { Submission } from './index';
-import { replyLabelsFor } from './reply-labels';
+import { replyLabelsFor, formatGuestsSentence, type ReplyLabels } from './reply-labels';
 
 export type QuickReplyId = 'available' | 'unavailable' | 'pending';
 
@@ -65,7 +65,7 @@ const SIGNATURE = 'Francesco\nIronwood Livigno\nWhatsApp: https://wa.me/39034292
 
 const IT: QuickReplyContent = {
   placeholder: '[Inserisci qui prezzo e note]',
-  available: `Gentile {name}, grazie per averci scritto! Siamo lieti di confermarLe che l'appartamento è disponibile per le date richieste ({checkin} – {checkout}{nights}, {guests} ospiti).
+  available: `Gentile {name}, grazie per averci scritto! Siamo lieti di confermarLe che l'appartamento è disponibile per le date richieste {checkin} – {checkout}{nights}, {guests}.
 
 {placeholder}
 
@@ -75,7 +75,7 @@ Per procedere con la prenotazione ci faccia sapere: La guideremo nei prossimi pa
 
 Cordiali saluti,
 {signature}`,
-  unavailable: `Gentile {name}, grazie per averci scritto. Purtroppo l'appartamento non è disponibile per le date richieste ({checkin} – {checkout}).
+  unavailable: `Gentile {name}, grazie per averci scritto. Purtroppo l'appartamento non è disponibile per le date richieste {checkin} – {checkout}.
 
 Se può esserLe utile, possiamo proporLe alcune date alternative: ci faccia sapere. Speriamo comunque di poterLa ospitare in un'altra occasione.
 
@@ -83,7 +83,7 @@ Se può esserLe utile, possiamo proporLe alcune date alternative: ci faccia sape
 
 Cordiali saluti,
 {signature}`,
-  pending: `Gentile {name}, grazie per averci scritto! Abbiamo ricevuto la Sua richiesta per {checkin} – {checkout} ({guests} ospiti).
+  pending: `Gentile {name}, grazie per averci scritto! Abbiamo ricevuto la Sua richiesta per {checkin} – {checkout}, {guests}.
 
 Le confermiamo a breve disponibilità e prezzo.
 
@@ -95,7 +95,7 @@ Cordiali saluti,
 
 const EN: QuickReplyContent = {
   placeholder: '[Insert price and notes here]',
-  available: `Hi {name}, thank you for reaching out! We're happy to confirm the apartment is available for your requested dates ({checkin} – {checkout}{nights}, {guests} guests).
+  available: `Hi {name}, thank you for reaching out! We're happy to confirm the apartment is available for your requested dates {checkin} – {checkout}{nights}, {guests}.
 
 {placeholder}
 
@@ -105,7 +105,7 @@ To move forward with the booking, just let us know and we'll guide you through t
 
 Best,
 {signature}`,
-  unavailable: `Hi {name}, thank you for reaching out. Unfortunately the apartment isn't available for your requested dates ({checkin} – {checkout}).
+  unavailable: `Hi {name}, thank you for reaching out. Unfortunately the apartment isn't available for your requested dates {checkin} – {checkout}.
 
 If it's helpful, we can suggest some alternative dates — just let us know. We do hope we can host you on another occasion.
 
@@ -113,7 +113,7 @@ If it's helpful, we can suggest some alternative dates — just let us know. We 
 
 Best regards,
 {signature}`,
-  pending: `Hi {name}, thank you for reaching out! We've received your request for {checkin} – {checkout} ({guests} guests).
+  pending: `Hi {name}, thank you for reaching out! We've received your request for {checkin} – {checkout}, {guests}.
 
 We'll confirm availability and pricing shortly.
 
@@ -125,7 +125,7 @@ Best,
 
 const DE: QuickReplyContent = {
   placeholder: '[Preis und Anmerkungen hier einfügen]',
-  available: `Hallo {name}, vielen Dank für Ihre Nachricht! Wir freuen uns, Ihnen mitzuteilen, dass die Wohnung für die gewünschten Daten ({checkin} – {checkout}{nights}, {guests} Gäste) verfügbar ist.
+  available: `Hallo {name}, vielen Dank für Ihre Nachricht! Wir freuen uns, Ihnen mitzuteilen, dass die Wohnung für die gewünschten Daten {checkin} – {checkout}{nights}, {guests}, verfügbar ist.
 
 {placeholder}
 
@@ -135,7 +135,7 @@ Um mit der Buchung fortzufahren, lassen Sie es uns einfach wissen — wir beglei
 
 Viele Grüße,
 {signature}`,
-  unavailable: `Hallo {name}, vielen Dank für Ihre Nachricht. Leider ist die Wohnung für die gewünschten Daten ({checkin} – {checkout}) nicht verfügbar.
+  unavailable: `Hallo {name}, vielen Dank für Ihre Nachricht. Leider ist die Wohnung für die gewünschten Daten {checkin} – {checkout} nicht verfügbar.
 
 Falls gewünscht, schlagen wir Ihnen gerne alternative Termine vor — lassen Sie es uns wissen. Wir hoffen, Sie bei anderer Gelegenheit bei uns begrüßen zu dürfen.
 
@@ -143,7 +143,7 @@ Falls gewünscht, schlagen wir Ihnen gerne alternative Termine vor — lassen Si
 
 Mit freundlichen Grüßen,
 {signature}`,
-  pending: `Hallo {name}, vielen Dank für Ihre Nachricht! Wir haben Ihre Anfrage für {checkin} – {checkout} ({guests} Gäste) erhalten.
+  pending: `Hallo {name}, vielen Dank für Ihre Nachricht! Wir haben Ihre Anfrage für {checkin} – {checkout}, {guests}, erhalten.
 
 Wir bestätigen Ihnen in Kürze Verfügbarkeit und Preis.
 
@@ -155,7 +155,7 @@ Viele Grüße,
 
 const FR: QuickReplyContent = {
   placeholder: '[Insérez ici le prix et les remarques]',
-  available: `Bonjour {name}, merci pour votre message ! Nous sommes heureux de vous confirmer que l'appartement est disponible pour les dates demandées ({checkin} – {checkout}{nights}, {guests} voyageurs).
+  available: `Bonjour {name}, merci pour votre message ! Nous sommes heureux de vous confirmer que l'appartement est disponible pour les dates demandées {checkin} – {checkout}{nights}, {guests}.
 
 {placeholder}
 
@@ -165,7 +165,7 @@ Pour poursuivre la réservation, faites-le nous savoir et nous vous guiderons po
 
 À bientôt,
 {signature}`,
-  unavailable: `Bonjour {name}, merci pour votre message. Malheureusement, l'appartement n'est pas disponible pour les dates demandées ({checkin} – {checkout}).
+  unavailable: `Bonjour {name}, merci pour votre message. Malheureusement, l'appartement n'est pas disponible pour les dates demandées {checkin} – {checkout}.
 
 Si cela peut vous intéresser, nous pouvons vous proposer d'autres dates — faites-le nous savoir. Nous espérons avoir le plaisir de vous accueillir à une autre occasion.
 
@@ -173,7 +173,7 @@ Si cela peut vous intéresser, nous pouvons vous proposer d'autres dates — fai
 
 Cordialement,
 {signature}`,
-  pending: `Bonjour {name}, merci pour votre message ! Nous avons bien reçu votre demande pour {checkin} – {checkout} ({guests} voyageurs).
+  pending: `Bonjour {name}, merci pour votre message ! Nous avons bien reçu votre demande pour {checkin} – {checkout}, {guests}.
 
 Nous vous confirmerons rapidement la disponibilité et le prix.
 
@@ -185,7 +185,7 @@ Nous vous confirmerons rapidement la disponibilité et le prix.
 
 const DA: QuickReplyContent = {
   placeholder: '[Indsæt pris og bemærkninger her]',
-  available: `Hej {name}, tak for din besked! Vi kan med glæde bekræfte, at lejligheden er ledig på de ønskede datoer ({checkin} – {checkout}{nights}, {guests} gæster).
+  available: `Hej {name}, tak for din besked! Vi kan med glæde bekræfte, at lejligheden er ledig på de ønskede datoer {checkin} – {checkout}{nights}, {guests}.
 
 {placeholder}
 
@@ -195,7 +195,7 @@ For at gå videre med bookingen, så sig endelig til, så guider vi dig gennem d
 
 De bedste hilsner,
 {signature}`,
-  unavailable: `Hej {name}, tak for din besked. Desværre er lejligheden ikke ledig på de ønskede datoer ({checkin} – {checkout}).
+  unavailable: `Hej {name}, tak for din besked. Desværre er lejligheden ikke ledig på de ønskede datoer {checkin} – {checkout}.
 
 Hvis det er relevant, kan vi foreslå nogle alternative datoer — sig endelig til. Vi håber at kunne byde dig velkommen ved en anden lejlighed.
 
@@ -203,7 +203,7 @@ Hvis det er relevant, kan vi foreslå nogle alternative datoer — sig endelig t
 
 Venlig hilsen,
 {signature}`,
-  pending: `Hej {name}, tak for din besked! Vi har modtaget din forespørgsel for {checkin} – {checkout} ({guests} gæster).
+  pending: `Hej {name}, tak for din besked! Vi har modtaget din forespørgsel for {checkin} – {checkout}, {guests}.
 
 Vi bekræfter snarest ledighed og pris.
 
@@ -215,7 +215,7 @@ De bedste hilsner,
 
 const PL: QuickReplyContent = {
   placeholder: '[Wstaw tutaj cenę i uwagi]',
-  available: `Dzień dobry {name}, dziękujemy za wiadomość! Miło nam potwierdzić, że apartament jest dostępny w wybranym terminie ({checkin} – {checkout}{nights}, {guests} gości).
+  available: `Dzień dobry {name}, dziękujemy za wiadomość! Miło nam potwierdzić, że apartament jest dostępny w wybranym terminie {checkin} – {checkout}{nights}, {guests}.
 
 {placeholder}
 
@@ -225,7 +225,7 @@ Aby przejść do rezerwacji, daj nam znać — przeprowadzimy Cię przez kolejne
 
 Pozdrawiamy,
 {signature}`,
-  unavailable: `Dzień dobry {name}, dziękujemy za wiadomość. Niestety apartament nie jest dostępny w wybranym terminie ({checkin} – {checkout}).
+  unavailable: `Dzień dobry {name}, dziękujemy za wiadomość. Niestety apartament nie jest dostępny w wybranym terminie {checkin} – {checkout}.
 
 Jeśli chcesz, możemy zaproponować alternatywne terminy — daj nam znać. Mamy nadzieję gościć Cię przy innej okazji.
 
@@ -233,7 +233,7 @@ Jeśli chcesz, możemy zaproponować alternatywne terminy — daj nam znać. Mam
 
 Pozdrawiamy,
 {signature}`,
-  pending: `Dzień dobry {name}, dziękujemy za wiadomość! Otrzymaliśmy Twoje zapytanie na termin {checkin} – {checkout} ({guests} gości).
+  pending: `Dzień dobry {name}, dziękujemy za wiadomość! Otrzymaliśmy Twoje zapytanie na termin {checkin} – {checkout}, {guests}.
 
 Wkrótce potwierdzimy dostępność i cenę.
 
@@ -245,7 +245,7 @@ Pozdrawiamy,
 
 const CS: QuickReplyContent = {
   placeholder: '[Sem vložte cenu a poznámky]',
-  available: `Dobrý den {name}, děkujeme za zprávu! S radostí potvrzujeme, že apartmán je k dispozici ve vámi požadovaném termínu ({checkin} – {checkout}{nights}, {guests} hostů).
+  available: `Dobrý den {name}, děkujeme za zprávu! S radostí potvrzujeme, že apartmán je k dispozici ve vámi požadovaném termínu {checkin} – {checkout}{nights}, {guests}.
 
 {placeholder}
 
@@ -255,7 +255,7 @@ Pro pokračování v rezervaci nám dejte vědět — provedeme vás dalšími k
 
 S pozdravem,
 {signature}`,
-  unavailable: `Dobrý den {name}, děkujeme za zprávu. Bohužel apartmán není k dispozici ve vámi požadovaném termínu ({checkin} – {checkout}).
+  unavailable: `Dobrý den {name}, děkujeme za zprávu. Bohužel apartmán není k dispozici ve vámi požadovaném termínu {checkin} – {checkout}.
 
 Pokud by se to hodilo, můžeme navrhnout alternativní termíny — dejte nám vědět. Doufáme, že vás budeme moci přivítat při jiné příležitosti.
 
@@ -263,7 +263,7 @@ Pokud by se to hodilo, můžeme navrhnout alternativní termíny — dejte nám 
 
 S pozdravem,
 {signature}`,
-  pending: `Dobrý den {name}, děkujeme za zprávu! Obdrželi jsme vaši poptávku na termín {checkin} – {checkout} ({guests} hostů).
+  pending: `Dobrý den {name}, děkujeme za zprávu! Obdrželi jsme vaši poptávku na termín {checkin} – {checkout}, {guests}.
 
 Brzy vám potvrdíme dostupnost a cenu.
 
@@ -275,7 +275,7 @@ S pozdravem,
 
 const NO: QuickReplyContent = {
   placeholder: '[Sett inn pris og notater her]',
-  available: `Hei {name}, takk for meldingen din! Vi bekrefter gjerne at leiligheten er ledig for de ønskede datoene ({checkin} – {checkout}{nights}, {guests} gjester).
+  available: `Hei {name}, takk for meldingen din! Vi bekrefter gjerne at leiligheten er ledig for de ønskede datoene {checkin} – {checkout}{nights}, {guests}.
 
 {placeholder}
 
@@ -285,7 +285,7 @@ For å gå videre med bookingen, bare si ifra, så veileder vi deg gjennom de ne
 
 Vennlig hilsen,
 {signature}`,
-  unavailable: `Hei {name}, takk for meldingen din. Dessverre er leiligheten ikke ledig for de ønskede datoene ({checkin} – {checkout}).
+  unavailable: `Hei {name}, takk for meldingen din. Dessverre er leiligheten ikke ledig for de ønskede datoene {checkin} – {checkout}.
 
 Om det er aktuelt, kan vi foreslå alternative datoer — bare si ifra. Vi håper å kunne ønske deg velkommen ved en annen anledning.
 
@@ -293,7 +293,7 @@ Om det er aktuelt, kan vi foreslå alternative datoer — bare si ifra. Vi håpe
 
 Vennlig hilsen,
 {signature}`,
-  pending: `Hei {name}, takk for meldingen din! Vi har mottatt forespørselen din for {checkin} – {checkout} ({guests} gjester).
+  pending: `Hei {name}, takk for meldingen din! Vi har mottatt forespørselen din for {checkin} – {checkout}, {guests}.
 
 Vi bekrefter tilgjengelighet og pris snarlig.
 
@@ -305,7 +305,7 @@ Vennlig hilsen,
 
 const NL: QuickReplyContent = {
   placeholder: '[Vul hier prijs en opmerkingen in]',
-  available: `Beste {name}, bedankt voor uw bericht! We bevestigen graag dat het appartement beschikbaar is voor de gewenste data ({checkin} – {checkout}{nights}, {guests} gasten).
+  available: `Beste {name}, bedankt voor uw bericht! We bevestigen graag dat het appartement beschikbaar is voor de gewenste data {checkin} – {checkout}{nights}, {guests}.
 
 {placeholder}
 
@@ -315,7 +315,7 @@ Om verder te gaan met de boeking, laat het ons weten — we begeleiden u door de
 
 Met vriendelijke groet,
 {signature}`,
-  unavailable: `Beste {name}, bedankt voor uw bericht. Helaas is het appartement niet beschikbaar voor de gewenste data ({checkin} – {checkout}).
+  unavailable: `Beste {name}, bedankt voor uw bericht. Helaas is het appartement niet beschikbaar voor de gewenste data {checkin} – {checkout}.
 
 Als dat interessant is, kunnen we alternatieve data voorstellen — laat het ons weten. We hopen u bij een andere gelegenheid te mogen verwelkomen.
 
@@ -323,7 +323,7 @@ Als dat interessant is, kunnen we alternatieve data voorstellen — laat het ons
 
 Met vriendelijke groet,
 {signature}`,
-  pending: `Beste {name}, bedankt voor uw bericht! We hebben uw aanvraag ontvangen voor {checkin} – {checkout} ({guests} gasten).
+  pending: `Beste {name}, bedankt voor uw bericht! We hebben uw aanvraag ontvangen voor {checkin} – {checkout}, {guests}.
 
 We bevestigen binnenkort de beschikbaarheid en de prijs.
 
@@ -335,7 +335,7 @@ Met vriendelijke groet,
 
 const ZH: QuickReplyContent = {
   placeholder: '[请在此处填写价格和备注]',
-  available: `{name},您好!感谢您的来信!我们很高兴地确认,公寓在您所需的日期({checkin} – {checkout}{nights},{guests}位客人)内是可预订的。
+  available: `{name},您好!感谢您的来信!我们很高兴地确认,公寓在您所需的日期 {checkin} – {checkout}{nights},{guests} 内是可预订的。
 
 {placeholder}
 
@@ -345,7 +345,7 @@ const ZH: QuickReplyContent = {
 
 此致,
 {signature}`,
-  unavailable: `{name},您好。感谢您的来信。很抱歉,公寓在您所需的日期({checkin} – {checkout})内暂无空房。
+  unavailable: `{name},您好。感谢您的来信。很抱歉,公寓在您所需的日期 {checkin} – {checkout} 内暂无空房。
 
 如果您有兴趣,我们可以为您推荐其他可选日期,请告诉我们。希望有机会在其他时间接待您。
 
@@ -353,7 +353,7 @@ const ZH: QuickReplyContent = {
 
 此致,
 {signature}`,
-  pending: `{name},您好!感谢您的来信!我们已收到您关于 {checkin} – {checkout}({guests}位客人)的咨询。
+  pending: `{name},您好!感谢您的来信!我们已收到您关于 {checkin} – {checkout},{guests} 的咨询。
 
 我们会尽快确认空房情况和价格。
 
@@ -365,7 +365,7 @@ const ZH: QuickReplyContent = {
 
 const JA: QuickReplyContent = {
   placeholder: '[ここに料金と備考を入力してください]',
-  available: `{name}様、ご連絡ありがとうございます!ご希望の日程({checkin} – {checkout}{nights}、{guests}名様)にて、アパートメントのご利用が可能であることを確認いたしました。
+  available: `{name}様、ご連絡ありがとうございます!ご希望の日程 {checkin} – {checkout}{nights}、{guests} にて、アパートメントのご利用が可能であることを確認いたしました。
 
 {placeholder}
 
@@ -375,7 +375,7 @@ const JA: QuickReplyContent = {
 
 よろしくお願いいたします。
 {signature}`,
-  unavailable: `{name}様、ご連絡ありがとうございます。誠に申し訳ございませんが、ご希望の日程({checkin} – {checkout})はご利用いただけません。
+  unavailable: `{name}様、ご連絡ありがとうございます。誠に申し訳ございませんが、ご希望の日程 {checkin} – {checkout} はご利用いただけません。
 
 もしよろしければ、代替日程をご提案することも可能です。お知らせください。またの機会にぜひお迎えできればと思います。
 
@@ -383,7 +383,7 @@ const JA: QuickReplyContent = {
 
 よろしくお願いいたします。
 {signature}`,
-  pending: `{name}様、ご連絡ありがとうございます!{checkin} – {checkout}({guests}名様)のお問い合わせを受け付けました。
+  pending: `{name}様、ご連絡ありがとうございます!{checkin} – {checkout}、{guests} のお問い合わせを受け付けました。
 
 近日中に空室状況と料金をご確認の上、ご連絡いたします。
 
@@ -432,7 +432,7 @@ export type QuickReplyOption = {
 // from this one, so the reverse import would be circular).
 const FORMS_BASE_URL = 'https://forms.ironwoodlivigno.com';
 
-function fillTemplate(template: string, placeholder: string, data: Submission, nightsPhrase: string): string {
+function fillTemplate(template: string, placeholder: string, data: Submission, nightsPhrase: string, labels: ReplyLabels): string {
   // First name only (e.g. "Kasia" not "Kasia Nowak") — same convention
   // used for the "Rispondi a {firstName}" button in email-template.ts.
   const firstName = data.name.trim().split(/\s+/)[0] || data.name;
@@ -441,7 +441,10 @@ function fillTemplate(template: string, placeholder: string, data: Submission, n
     checkin: data.checkin,
     checkout: data.checkout,
     nights: nightsPhrase,
-    guests: String(data.guests),
+    // The full "4 adulti 2 bambini 5 anni e 12 anni" sentence, written out
+    // the way the guest actually entered it — not a bare total, and not a
+    // parenthetical aside for the ages.
+    guests: formatGuestsSentence(labels, data.adults, data.children, data.children_ages),
     placeholder,
     photos: PHOTOS_URL,
     signature: SIGNATURE
@@ -469,19 +472,24 @@ export function quickReplyText(data: Submission, nights: number | null, id: Quic
   const labels = replyLabelsFor(data.locale);
   const content = (data.locale && QUICK_REPLIES[data.locale]) || IT;
   const nightsWord = nights === 1 ? labels.night : labels.nights;
-  const nightsPhrase = nights !== null ? ` (${nights} ${nightsWord})` : '';
-  return fillTemplate(content[id], content.placeholder, data, nightsPhrase);
+  const nightsPhrase = nights !== null ? `, ${nights} ${nightsWord}` : '';
+  return fillTemplate(content[id], content.placeholder, data, nightsPhrase, labels);
 }
 
 export function buildQuickReplies(data: Submission, nights: number | null, token: string): QuickReplyOption[] {
   const labels = replyLabelsFor(data.locale);
+  const italianLabels = replyLabelsFor('it');
   const nightsWord = nights === 1 ? labels.night : labels.nights;
-  const nightsPhrase = nights !== null ? ` (${nights} ${nightsWord})` : '';
+  const nightsPhrase = nights !== null ? `, ${nights} ${nightsWord}` : '';
 
   return (Object.keys(BUTTON_LABELS) as QuickReplyId[]).map((id) => ({
     id,
     label: BUTTON_LABELS[id],
     href: `${FORMS_BASE_URL}/reply/${token}/${id}`,
-    italianPreview: fillTemplate(IT[id], IT.placeholder, data, nightsPhrase)
+    // Italian preview always uses Italian labels for the guest count, even
+    // when the guest's own site locale isn't Italian — this is the text
+    // Francesco reads to know what a click is about to send, not what gets
+    // sent.
+    italianPreview: fillTemplate(IT[id], IT.placeholder, data, nightsPhrase, italianLabels)
   }));
 }

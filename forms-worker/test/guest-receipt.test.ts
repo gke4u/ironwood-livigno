@@ -70,4 +70,17 @@ describe('buildGuestReceipt', () => {
     expect(en.subject).not.toBe(de.subject);
     expect(en.html.toLowerCase()).toContain('anna');
   });
+
+  it('spells out each child\'s age as plain text, in both the text and HTML versions', () => {
+    const receipt = buildGuestReceipt(baseSubmission({ children: 2, children_ages: [5, 12], adults: 4, locale: 'it' }));
+    expect(receipt.text).toContain('4 adulti 2 bambini 5 anni e 12 anni');
+    expect(receipt.html).toContain('4 adulti 2 bambini 5 anni e 12 anni');
+    expect(receipt.html).not.toContain('età');
+  });
+
+  it('renders the "OK" stamp in green, not the brand\'s brick/red accent', () => {
+    const receipt = buildGuestReceipt(baseSubmission());
+    expect(receipt.html).toContain('color:#4F6B45;">✓ OK</span>');
+    expect(receipt.html).not.toContain('color:#A8462F;">✓ OK</span>');
+  });
 });

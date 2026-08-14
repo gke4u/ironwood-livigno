@@ -10,6 +10,7 @@
 // silently break independently of the pages already in production.
 import type { ReplyKind, Submission } from './index';
 import { FONT_DISPLAY, FONT_BODY, escapeHtml } from './email-template';
+import { replyLabelsFor, formatGuestsSentence } from './reply-labels';
 
 export type SubmissionRow = {
   id: number;
@@ -441,11 +442,8 @@ function renderSidebar(counts: Record<string, number>, activeStatus: StatusFilte
 
 function guestsLabel(row: SubmissionRow): string {
   const adults = row.adults ?? row.guests;
-  if (row.children > 0) {
-    const ages: number[] = row.children_ages ? JSON.parse(row.children_ages) : [];
-    return `${adults} adulti + ${row.children} bambini${ages.length ? ` (età: ${ages.join(', ')})` : ''}`;
-  }
-  return `${adults} adulti`;
+  const ages: number[] = row.children_ages ? JSON.parse(row.children_ages) : [];
+  return formatGuestsSentence(replyLabelsFor('it'), adults, row.children, ages);
 }
 
 function renderRow(row: SubmissionRow, selectedId: number | undefined, activeStatus: StatusFilter, q: string, page: number): string {

@@ -26,7 +26,7 @@ import { sendMail, checkSmtpConnection } from './smtp';
 import { buildNotificationHtml, buildBlankReplyText, buildOutboundEmailHtml, nightsBetween, renderReplyEditorPage, renderReplySentPage } from './email-template';
 import { translateMessageToItalian } from './translate';
 import { draftReply } from './draft';
-import { replyLabelsFor } from './reply-labels';
+import { replyLabelsFor, formatGuestsSentence } from './reply-labels';
 import { buildGuestReceipt } from './guest-receipt';
 import { quickReplyText } from './quick-replies';
 import { checkPassword, createSessionCookie, clearSessionCookie, hasValidSession } from './auth';
@@ -150,9 +150,7 @@ async function sendNotification(env: Env, data: Submission, country: string, id:
     `Telefono: ${data.phone || '-'}`,
     `Check-in: ${data.checkin}`,
     `Check-out: ${data.checkout}`,
-    data.children > 0
-      ? `Ospiti: ${data.adults} adulti + ${data.children} bambini (età: ${(data.children_ages ?? []).join(', ')})`
-      : `Ospiti: ${data.guests}`,
+    `Ospiti: ${formatGuestsSentence(replyLabelsFor('it'), data.adults, data.children, data.children_ages)}`,
     extras ? `Extra: ${extras}` : null,
     data.source ? `Come ci ha trovato: ${data.source}` : null,
     data.locale ? `Lingua sito: ${data.locale}` : null,
