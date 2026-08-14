@@ -67,15 +67,30 @@ export default function ExtraServices() {
               delay={i * 100}
               className="rounded-2xl border border-ink/10 bg-white/70 overflow-hidden flex flex-col"
             >
-              <div className="grid grid-cols-3 gap-[2px]">
-                {item.photos.map((photo) => (
-                  <div key={photo.src} className="aspect-square overflow-hidden">
+              {/* One featured shot plus two smaller details instead of three
+                  equal-sized squares — at this card width three-across left
+                  each photo too small to actually read, and flush against
+                  its neighbors with almost no gap felt like an afterthought
+                  next to the generous photography treatment everywhere else
+                  on the site. */}
+              <div className="grid grid-cols-2 gap-1 aspect-[4/3]">
+                <div className="row-span-2 overflow-hidden group">
+                  <Pic
+                    src={item.photos[0].src}
+                    alt={item.photos[0].alt}
+                    width={item.photos[0].w}
+                    height={item.photos[0].h}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                </div>
+                {item.photos.slice(1).map((photo) => (
+                  <div key={photo.src} className="overflow-hidden group">
                     <Pic
                       src={photo.src}
                       alt={photo.alt}
                       width={photo.w}
                       height={photo.h}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                   </div>
                 ))}

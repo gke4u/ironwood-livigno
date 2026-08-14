@@ -1,6 +1,29 @@
 import { useTranslations } from 'next-intl';
 import Reveal from './Reveal';
 
+// A small gold check instead of a plain dot — reads as "this is included"
+// rather than just a generic list marker, and matches the checkmark
+// language already used for trust points elsewhere on the page
+// (BookingSection's "why book with us" list).
+function CheckIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="text-gold shrink-0 mt-0.5"
+      aria-hidden
+    >
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+  );
+}
+
 function Group({ title, items, delay }: { title: string; items: string[]; delay: number }) {
   return (
     <Reveal delay={delay}>
@@ -8,8 +31,8 @@ function Group({ title, items, delay }: { title: string; items: string[]; delay:
         <h3 className="font-display text-lg text-gold mb-4">{title}</h3>
         <ul className="space-y-3">
           {items.map((item) => (
-            <li key={item} className="flex items-start gap-3 text-mist/85 text-sm">
-              <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-mist/40 shrink-0" />
+            <li key={item} className="flex items-start gap-2.5 text-mist/85 text-sm">
+              <CheckIcon />
               <span>{item}</span>
             </li>
           ))}

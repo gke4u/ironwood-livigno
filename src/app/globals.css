@@ -105,6 +105,22 @@ body {
   @apply bg-brick text-mist rounded-full px-5 py-2.5 text-sm font-medium shadow-soft outline-none ring-2 ring-gold;
 }
 
+/* Custom dropdown arrow for <select> elements (RequestForm.tsx) — without
+   this, appearance-none removes the native arrow entirely and the field
+   looks like it has no affordance to open at all; the browser's own default
+   arrow (the alternative) is a flat grey/black triangle that clashes with
+   the warm brick/gold palette used everywhere else on the form. Drawn in
+   the brand's ink tone at low opacity so it reads as part of the field, not
+   a bolted-on icon. */
+.select-arrow {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23241C15' stroke-opacity='0.45' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 7.5l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 14px;
+  padding-right: 2.75rem;
+}
+
 /* Visible by default: if JavaScript never runs (disabled, blocked, still
    loading, or a crawler that doesn't execute it), content must not get
    stuck invisible. The reveal-pending class is added by Reveal.tsx itself,

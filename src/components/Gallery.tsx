@@ -17,17 +17,24 @@ const heroFeature = {
   h: 1280
 };
 
+// Ordered to alternate portrait/landscape shots rather than group them —
+// CSS multi-column masonry balances columns based on running height in DOM
+// order, and clustering several same-orientation photos together (as the
+// original photo-shoot order did) was leaving one column visibly short at
+// the bottom of the grid. The one short, wide shot (esterno-giorno) sits
+// mid-list instead of last, since a short item as the final one is what
+// left the most visible gap.
 const images = [
   { src: '/images/esterno-notte.jpg', alt: 'Esterno dell’appartamento Ironwood a Livigno di sera, sotto la neve', w: 1920, h: 1440 },
-  { src: '/images/cucina.jpg', alt: 'Cucina completamente attrezzata nell’appartamento vacanze a Livigno', w: 2000, h: 1333 },
   { src: '/images/bagno-extra.jpg', alt: 'Bagno con doccia in pietra nell’appartamento a Livigno', w: 1333, h: 2000 },
+  { src: '/images/cucina.jpg', alt: 'Cucina completamente attrezzata nell’appartamento vacanze a Livigno', w: 2000, h: 1333 },
   { src: '/images/dettaglio-vini.jpg', alt: 'Cantinetta vini in cucina nella casa vacanze a Livigno', w: 1333, h: 2000 },
   { src: '/images/soggiorno.jpg', alt: 'Soggiorno con divano e vista sulle Alpi, appartamento a Livigno', w: 1920, h: 1280 },
-  { src: '/images/cucina-dettaglio.jpg', alt: 'Dettaglio del piano cucina nell’appartamento con cucina attrezzata a Livigno', w: 2000, h: 1500 },
-  { src: '/images/appartamento-soggiorno.jpg', alt: 'Zona giorno dell’appartamento a Livigno con vista sulle montagne', w: 2000, h: 1333 },
   { src: '/images/bagno.jpg', alt: 'Uno dei due bagni completi dell’appartamento a Livigno', w: 1168, h: 1752 },
-  { src: '/images/bagno-extra2.jpg', alt: 'Dettaglio del secondo bagno nella casa vacanze a Livigno', w: 1333, h: 2000 },
-  { src: '/images/esterno-giorno.jpg', alt: 'Esterno dell’appartamento a Livigno vicino agli impianti, di giorno', w: 1181, h: 787 }
+  { src: '/images/cucina-dettaglio.jpg', alt: 'Dettaglio del piano cucina nell’appartamento con cucina attrezzata a Livigno', w: 2000, h: 1500 },
+  { src: '/images/esterno-giorno.jpg', alt: 'Esterno dell’appartamento a Livigno vicino agli impianti, di giorno', w: 1181, h: 787 },
+  { src: '/images/appartamento-soggiorno.jpg', alt: 'Zona giorno dell’appartamento a Livigno con vista sulle montagne', w: 2000, h: 1333 },
+  { src: '/images/bagno-extra2.jpg', alt: 'Dettaglio del secondo bagno nella casa vacanze a Livigno', w: 1333, h: 2000 }
 ];
 
 const allImages = [heroFeature, ...images];
@@ -68,7 +75,7 @@ export default function Gallery() {
   const active = activeIndex !== null ? allImages[activeIndex] : null;
 
   return (
-    <section id="galleria" className="bg-mist py-24 md:py-32">
+    <section id="galleria" className="bg-mist pt-24 md:pt-32 pb-16 md:pb-20">
       <div className="max-w-content mx-auto px-6 md:px-10">
         <Reveal className="max-w-2xl mb-10">
           <p className="text-brick tracking-[0.2em] uppercase text-xs md:text-sm mb-4">
@@ -106,9 +113,9 @@ export default function Gallery() {
             photo keeps its own natural aspect ratio (no object-cover
             cropping), and the column-balancing naturally produces a varied,
             non-repetitive mosaic instead of a rigid uniform grid. */}
-        <div className="columns-2 md:columns-4 gap-4">
+        <div className="columns-2 md:columns-4 gap-5">
           {images.map((img, i) => (
-            <Reveal key={img.src} delay={i * 80} className="mb-4 break-inside-avoid rounded-2xl overflow-hidden">
+            <Reveal key={img.src} delay={i * 80} className="mb-5 break-inside-avoid rounded-2xl overflow-hidden shadow-soft">
               <button
                 type="button"
                 onClick={() => setActiveIndex(i + 1)}

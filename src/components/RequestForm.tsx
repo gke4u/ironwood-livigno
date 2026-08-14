@@ -397,7 +397,7 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
           id="req-adults"
           value={adults}
           onChange={(e) => handleAdultsChange(e.target.value)}
-          className={INPUT_CLASS}
+          className={`${INPUT_CLASS} select-arrow`}
         >
           {[1, 2, 3, 4, 5, 6].map((n) => (
             <option key={n} value={n}>
@@ -415,7 +415,7 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
           id="req-children"
           value={children}
           onChange={(e) => handleChildrenChange(e.target.value)}
-          className={INPUT_CLASS}
+          className={`${INPUT_CLASS} select-arrow`}
         >
           {Array.from({ length: maxChildrenForAdults(adults) + 1 }, (_, n) => n).map((n) => (
             <option key={n} value={n}>
@@ -440,7 +440,7 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
                 id={`req-child-age-${i}`}
                 value={age}
                 onChange={(e) => handleChildAgeChange(i, e.target.value)}
-                className={INPUT_CLASS}
+                className={`${INPUT_CLASS} select-arrow`}
               >
                 {Array.from({ length: 18 }, (_, a) => a).map((a) => (
                   <option key={a} value={a}>
@@ -461,7 +461,7 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
           id="req-source"
           value={source}
           onChange={(e) => setSource(e.target.value)}
-          className={`sm:w-64 ${INPUT_CLASS}`}
+          className={`sm:w-64 ${INPUT_CLASS} select-arrow`}
         >
           <option value="">{t('source_option_placeholder')}</option>
           {SOURCE_OPTIONS.map((opt) => (

@@ -30,7 +30,13 @@ export default function Rooms() {
   ];
 
   return (
-    <section id="camere" className="bg-mist py-24 md:py-32">
+    // Follows Gallery, which shares this same bg-mist — a full py-24/32 on
+    // both sides stacked into ~250px of blank cream with nothing to anchor
+    // the eye (Gallery ends on a photo, but the next visible thing here was
+    // plain text, so the seam read as a gap rather than a new section).
+    // Tightening the top and adding a hairline rule gives the transition an
+    // actual edge instead of relying on whitespace alone to signal it.
+    <section id="camere" className="bg-mist border-t border-ink/[0.06] pt-14 md:pt-20 pb-24 md:pb-32">
       <div className="max-w-content mx-auto px-6 md:px-10">
         <Reveal className="max-w-2xl mb-14">
           <p className="text-brick tracking-[0.2em] uppercase text-xs md:text-sm mb-4">
