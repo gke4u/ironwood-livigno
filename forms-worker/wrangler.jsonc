@@ -24,6 +24,19 @@
     }
   ],
 
+  // Weekly JSON export of the whole submissions table (see the "0 4 * * SUN"
+  // cron below) — D1's own replication protects against infrastructure
+  // failure, not against a bad migration or an accidental DELETE run
+  // against the wrong WHERE clause. A separate bucket, not a folder in the
+  // existing `guida-ironwood` R2 bucket, so this Worker's own IAM/token
+  // scope never needs access to anything outside its own data.
+  "r2_buckets": [
+    {
+      "binding": "BACKUPS",
+      "bucket_name": "ironwood-forms-backups"
+    }
+  ],
+
   // Translates the guest's free-text message to Italian for the
   // notification, and drafts AI-assisted reply text — Cloudflare Workers AI
   // (@cf/zai-org/glm-4.7-flash, see src/translate.ts and src/draft.ts),
@@ -53,16 +66,29 @@
         "limit": 5,
         "period": 60
       }
+    },
+    // Separate, tighter budget for /admin/login attempts (see auth.ts) —
+    // brute-forcing the dashboard password is a different threat than a
+    // guest submitting the booking form too often, so it gets its own
+    // namespace rather than sharing FORM_RATE_LIMITER's budget.
+    {
+      "name": "ADMIN_LOGIN_RATE_LIMITER",
+      "namespace_id": "1002",
+      "simple": {
+        "limit": 5,
+        "period": 60
+      }
     }
   ],
 
-  // Two independent schedules, both handled in scheduled() in src/index.ts:
+  // Three independent schedules, all handled in scheduled() in src/index.ts:
   // - "0 3 1 * *": monthly retention sweep (1st of the month, 03:00 UTC)
   // - "0 6 * * *": daily SMTP connectivity check (06:00 UTC) — catches a
   //   broken mailbox.org connection during a quiet period with no real
   //   form submissions, instead of only discovering it when a real guest
   //   request fails to notify.
+  // - "0 4 * * SUN": weekly D1 → R2 backup (Sunday, 04:00 UTC).
   "triggers": {
-    "crons": ["0 3 1 * *", "0 6 * * *"]
+    "crons": ["0 3 1 * *", "0 6 * * *", "0 4 * * SUN"]
   }
 }

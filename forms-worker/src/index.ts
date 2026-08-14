@@ -29,12 +29,35 @@ import { draftReply } from './draft';
 import { replyLabelsFor } from './reply-labels';
 import { buildGuestReceipt } from './guest-receipt';
 import { quickReplyText } from './quick-replies';
+import { checkPassword, createSessionCookie, clearSessionCookie, hasValidSession } from './auth';
+import { validate, isSpam } from './validation';
+import {
+  STATUS_FOR_KIND,
+  isStatusFilter,
+  fetchStatusCounts,
+  fetchSubmissions,
+  fetchSubmissionById,
+  fetchOverlappingConfirmed,
+  rowToSubmission,
+  renderDashboardPage,
+  renderLoginPage,
+  type StatusFilter,
+  type DetailView
+} from './admin';
 
 export interface Env {
   DB: D1Database;
+  BACKUPS: R2Bucket;
   FORM_RATE_LIMITER: RateLimit;
+  ADMIN_LOGIN_RATE_LIMITER: RateLimit;
   AI: Ai;
   SMTP_PASSWORD: string;
+  // Shared password for the /admin dashboard, and the key used to sign its
+  // session cookie (see auth.ts) — deliberately two separate secrets, so
+  // rotating the login password alone doesn't also invalidate anything
+  // relying on the signing key having stayed the same.
+  ADMIN_PASSWORD: string;
+  ADMIN_SESSION_SECRET: string;
 }
 
 const ALLOWED_ORIGIN = 'https://ironwoodlivigno.com';
@@ -54,30 +77,7 @@ const SMTP_USER = 'info@guanafoto.com';
 // There's currently no second, independent channel to catch that specific
 // case without adding a paid service.
 const ALERT_TO = 'gkemag@gmail.com';
-// Deliberately narrower than a full RFC 5321 grammar: this address is later
-// embedded raw (unencoded) into `mailto:` hrefs (email-template.ts,
-// quick-replies.ts) — the "reply to the guest" buttons — and into the
-// notification email's Reply-To header. Real addresses never need the
-// characters this excludes, but a raw '#' would start a URI fragment and
-// corrupt the mailto link (RFC 3986), and '<>"\\`' have no legitimate
-// reason to appear unquoted either. This is the actual boundary that keeps
-// those downstream consumers safe, not a general-purpose email validator.
-const EMAIL_RE = /^[^\s@#<>"'\\`]+@[^\s@#<>"'\\`]+\.[^\s@#<>"'\\`]+$/;
-const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
-// Any C0 control character, including CR/LF — name/phone/source end up
-// either in the notification email's headers (name becomes the visible
-// From display name and part of the Subject) or its plain-text body.
-// Rejecting control characters outright at the boundary is the primary
-// defense against email header injection (an embedded \r\n could
-// otherwise terminate a header early and smuggle in an extra one); the
-// SMTP layer also sanitizes defensively, but this is where a malformed
-// submission should actually be refused rather than silently cleaned up.
-const CONTROL_CHAR_RE = /[\x00-\x1F\x7F]/;
-const MAX_NAME_LEN = 200;
-const MAX_MESSAGE_LEN = 2000;
 const RETENTION_MONTHS = 24;
-const MAX_GUESTS = 6; // the apartment's real occupancy limit — 3 bedrooms, sleeps up to 6 total (adults + children)
-const MAX_CHILD_AGE = 17;
 
 export type Submission = {
   name: string;
@@ -114,45 +114,6 @@ function json(body: unknown, status: number, origin: string | null): Response {
     status,
     headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) }
   });
-}
-
-function validate(data: Partial<Submission>): string | null {
-  // Every field is read straight out of request.json() into a type the
-  // compiler trusts (Partial<Submission>) but never actually checks at
-  // runtime — a numeric or object `name`/`email`/etc. (malformed client,
-  // hand-crafted request) would otherwise reach `.trim()`/regex calls that
-  // only exist on strings and throw a TypeError, which propagates out of
-  // this synchronous call with no surrounding try/catch and turns into an
-  // unhandled exception instead of the intended 400 response.
-  if (typeof data.name !== 'string' || !data.name.trim()) return 'name required';
-  if (data.name.length > MAX_NAME_LEN) return 'name too long';
-  if (CONTROL_CHAR_RE.test(data.name)) return 'invalid name';
-  if (typeof data.email !== 'string' || !data.email.trim() || !EMAIL_RE.test(data.email.trim())) return 'invalid email';
-  if (data.phone && (typeof data.phone !== 'string' || CONTROL_CHAR_RE.test(data.phone))) return 'invalid phone';
-  if (data.source && (typeof data.source !== 'string' || CONTROL_CHAR_RE.test(data.source))) return 'invalid source';
-  if (typeof data.checkin_iso !== 'string' || !ISO_DATE_RE.test(data.checkin_iso)) return 'invalid checkin date';
-  if (typeof data.checkout_iso !== 'string' || !ISO_DATE_RE.test(data.checkout_iso)) return 'invalid checkout date';
-  if (data.checkout_iso <= data.checkin_iso) return 'checkout must be after checkin';
-  const today = new Date().toISOString().slice(0, 10);
-  if (data.checkin_iso < today) return 'checkin cannot be in the past';
-  const adults = Number(data.adults);
-  const children = Number(data.children);
-  if (!Number.isInteger(adults) || adults < 1) return 'invalid adults count';
-  if (!Number.isInteger(children) || children < 0) return 'invalid children count';
-  if (adults + children > MAX_GUESTS) return 'too many guests';
-  if (children > 0) {
-    // Booking-style: one age (0–17) per child, not just a headcount — lets
-    // Francesco see at a glance whether a crib/high chair request (the
-    // extras below) actually matches an infant/toddler in the party.
-    if (!Array.isArray(data.children_ages) || data.children_ages.length !== children) return 'invalid children ages';
-    if (!data.children_ages.every((age) => Number.isInteger(age) && age >= 0 && age <= MAX_CHILD_AGE)) return 'invalid children ages';
-  }
-  if (data.message && (typeof data.message !== 'string' || data.message.length > MAX_MESSAGE_LEN)) return 'message too long';
-  return null;
-}
-
-function isSpam(data: Partial<Submission>): boolean {
-  return Boolean(data.company && data.company.trim().length > 0);
 }
 
 // Fires on real failures — a submission that couldn't be saved, or one
@@ -280,7 +241,7 @@ async function loadSubmissionByToken(env: Env, token: string): Promise<{ submiss
   return { submission, nights: nightsBetween(row.checkin_iso, row.checkout_iso) };
 }
 
-type ReplyKind = 'available' | 'unavailable' | 'pending' | 'blank' | 'ai';
+export type ReplyKind = 'available' | 'unavailable' | 'pending' | 'blank' | 'ai';
 
 // Italian only — shown to Francesco on the editor page, never to the guest.
 const REPLY_KIND_LABELS: Record<ReplyKind, string> = {
@@ -310,6 +271,7 @@ async function handleReplyEditor(env: Env, token: string, kind: ReplyKind): Prom
     return htmlPage(
       renderReplyEditorPage({
         token,
+        kind,
         kindLabel: `${REPLY_KIND_LABELS.ai} · ${draft.replyLanguageLabel}`,
         name: firstName,
         body: draft.replyText,
@@ -319,7 +281,7 @@ async function handleReplyEditor(env: Env, token: string, kind: ReplyKind): Prom
   }
 
   const body = kind === 'blank' ? buildBlankReplyText(submission, nights) : quickReplyText(submission, nights, kind);
-  return htmlPage(renderReplyEditorPage({ token, kindLabel: REPLY_KIND_LABELS[kind], name: firstName, body }));
+  return htmlPage(renderReplyEditorPage({ token, kind, kindLabel: REPLY_KIND_LABELS[kind], name: firstName, body }));
 }
 
 // POST /reply/:token/send — sends whatever text Francesco ended up with
@@ -338,10 +300,20 @@ async function handleReplySend(request: Request, env: Env, token: string): Promi
   const text = form.get('text');
   const kindLabel = form.get('kindLabel');
   const name = form.get('name');
+  const kindRaw = form.get('kind');
+  const kind: ReplyKind = typeof kindRaw === 'string' && kindRaw in STATUS_FOR_KIND ? (kindRaw as ReplyKind) : 'blank';
+  // Only ever redirects back into our own /admin dashboard — never an
+  // arbitrary external URL — since this value round-trips through a hidden
+  // form field an attacker could otherwise substitute to build an open
+  // redirect off this domain.
+  const returnToRaw = form.get('returnTo');
+  const returnTo = typeof returnToRaw === 'string' && returnToRaw.startsWith('/admin') ? returnToRaw : undefined;
   const echoBack = {
     token,
+    kind,
     kindLabel: typeof kindLabel === 'string' && kindLabel ? kindLabel : 'Risposta',
-    name: typeof name === 'string' && name ? name : submission.name
+    name: typeof name === 'string' && name ? name : submission.name,
+    returnTo
   };
 
   if (typeof text !== 'string' || !text.trim()) {
@@ -372,7 +344,96 @@ async function handleReplySend(request: Request, env: Env, token: string): Promi
     );
   }
 
+  // Best-effort: the reply itself already went out above, so a failure here
+  // only means the dashboard's status filter is stale for this one request,
+  // never a reason to tell Francesco the send itself failed.
+  try {
+    await env.DB.prepare(`UPDATE submissions SET status = ? WHERE token = ?`).bind(STATUS_FOR_KIND[kind], token).run();
+  } catch (err) {
+    console.error('status update after reply send failed', err);
+  }
+
+  if (returnTo) {
+    const url = new URL(request.url);
+    const separator = returnTo.includes('?') ? '&' : '?';
+    return Response.redirect(`${url.origin}${returnTo}${separator}sent=1`, 302);
+  }
+
   return htmlPage(renderReplySentPage(submission.email));
+}
+
+// Builds the compose panel embedded in a dashboard detail view — same
+// prefill logic handleReplyEditor already uses for the standalone
+// /reply/:token/:kind page (quick-reply template, blank quoted request, or
+// an AI draft), just returning data for admin.ts to render inline instead
+// of a full page of its own.
+async function buildAdminDetail(env: Env, row: NonNullable<Awaited<ReturnType<typeof fetchSubmissionById>>>, kindParam: string | null): Promise<DetailView> {
+  const submission = rowToSubmission(row);
+  const nights = nightsBetween(row.checkin_iso, row.checkout_iso);
+  const kind: ReplyKind = kindParam && kindParam in REPLY_KIND_LABELS ? (kindParam as ReplyKind) : 'blank';
+  const conflicts = await fetchOverlappingConfirmed(env.DB, row);
+
+  if (kind === 'ai') {
+    const draft = await draftReply(env.AI, submission, nights);
+    if (!draft) {
+      return { row, nights, kind, body: '', aiError: 'Generazione della bozza non riuscita al momento. Riprova tra poco.', conflicts };
+    }
+    return { row, nights, kind, body: draft.replyText, italianText: draft.italianText, conflicts };
+  }
+
+  const body = kind === 'blank' ? buildBlankReplyText(submission, nights) : quickReplyText(submission, nights, kind);
+  return { row, nights, kind, body, conflicts };
+}
+
+async function handleAdminDashboard(env: Env, url: URL): Promise<Response> {
+  const statusParam = url.searchParams.get('status') || 'all';
+  const activeStatus: StatusFilter = isStatusFilter(statusParam) ? statusParam : 'all';
+  const q = url.searchParams.get('q') || '';
+  const openParam = url.searchParams.get('open');
+  const selectedId = openParam && /^\d+$/.test(openParam) ? Number(openParam) : undefined;
+  const sent = url.searchParams.get('sent') === '1';
+  const pageParam = url.searchParams.get('page');
+  const page = pageParam && /^\d+$/.test(pageParam) ? Number(pageParam) : 1;
+
+  const [counts, { rows, hasMore }] = await Promise.all([fetchStatusCounts(env.DB), fetchSubmissions(env.DB, activeStatus, q, page)]);
+
+  let detail: DetailView | null = null;
+  if (selectedId !== undefined) {
+    const row = await fetchSubmissionById(env.DB, selectedId);
+    if (row) detail = await buildAdminDetail(env, row, url.searchParams.get('kind'));
+  }
+
+  return htmlPage(renderDashboardPage({ counts, rows, activeStatus, q, page, hasMore, selectedId, detail, sent }));
+}
+
+async function handleAdminLogin(request: Request, env: Env): Promise<Response> {
+  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+  const { success } = await env.ADMIN_LOGIN_RATE_LIMITER.limit({ key: ip });
+  if (!success) {
+    return htmlPage(renderLoginPage('Troppi tentativi. Riprova tra un minuto.'), 429);
+  }
+
+  const form = await request.formData();
+  const password = form.get('password');
+  if (typeof password !== 'string' || !password || !(await checkPassword(password, env.ADMIN_PASSWORD))) {
+    return htmlPage(renderLoginPage('Password errata.'), 401);
+  }
+
+  return new Response(null, { status: 302, headers: { Location: '/admin', 'Set-Cookie': await createSessionCookie(env.ADMIN_SESSION_SECRET) } });
+}
+
+// POST /admin/delete/:id — permanent, no soft-delete/undo: the dashboard's
+// own confirm() dialog (admin.ts) is the only guard between a click and the
+// row being gone, same as the rest of this Worker favors simplicity over
+// building out recovery machinery nothing has asked for yet.
+async function handleAdminDelete(request: Request, env: Env, id: number): Promise<Response> {
+  await env.DB.prepare(`DELETE FROM submissions WHERE id = ?`).bind(id).run();
+
+  const form = await request.formData();
+  const returnToRaw = form.get('returnTo');
+  const returnTo = typeof returnToRaw === 'string' && returnToRaw.startsWith('/admin') ? returnToRaw : '/admin';
+  const url = new URL(request.url);
+  return Response.redirect(`${url.origin}${returnTo}`, 302);
 }
 
 export default {
@@ -398,6 +459,32 @@ export default {
     const draftMatch = /^\/draft\/([a-f0-9-]{36})$/.exec(url.pathname);
     if (draftMatch && request.method === 'GET') {
       return Response.redirect(`${url.origin}/reply/${draftMatch[1]}/ai`, 302);
+    }
+
+    // /admin — the dashboard (admin.ts) listing every request in one place,
+    // and its own password-gated session (auth.ts). Opened directly in a
+    // browser, same as /reply above, so no CORS/Origin check here either.
+    if (url.pathname === '/admin/login' && request.method === 'GET') {
+      return htmlPage(renderLoginPage());
+    }
+    if (url.pathname === '/admin/login' && request.method === 'POST') {
+      return handleAdminLogin(request, env);
+    }
+    if (url.pathname === '/admin/logout' && request.method === 'POST') {
+      return new Response(null, { status: 302, headers: { Location: '/admin/login', 'Set-Cookie': clearSessionCookie() } });
+    }
+    if (url.pathname === '/admin' && request.method === 'GET') {
+      if (!(await hasValidSession(request, env.ADMIN_SESSION_SECRET))) {
+        return Response.redirect(`${url.origin}/admin/login`, 302);
+      }
+      return handleAdminDashboard(env, url);
+    }
+    const adminDeleteMatch = /^\/admin\/delete\/(\d+)$/.exec(url.pathname);
+    if (adminDeleteMatch && request.method === 'POST') {
+      if (!(await hasValidSession(request, env.ADMIN_SESSION_SECRET))) {
+        return Response.redirect(`${url.origin}/admin/login`, 302);
+      }
+      return handleAdminDelete(request, env, Number(adminDeleteMatch[1]));
     }
 
     if (request.method === 'OPTIONS') {
@@ -527,6 +614,11 @@ export default {
                 from: NOTIFY_TO,
                 fromName: 'Ironwood Livigno',
                 to: data.email as string,
+                // Same convention as the manual reply flow (handleReplySend)
+                // — Francesco gets a copy of what actually went out under
+                // his name, without it showing as a second recipient to the
+                // guest.
+                bcc: NOTIFY_TO,
                 subject: receipt.subject,
                 text: receipt.text,
                 html: receipt.html
@@ -552,7 +644,7 @@ export default {
     }
   },
 
-  // Two independent schedules share this handler (see wrangler.jsonc
+  // Three independent schedules share this handler (see wrangler.jsonc
   // triggers.crons) — controller.cron tells them apart.
   async scheduled(controller: ScheduledController, env: Env): Promise<void> {
     if (controller.cron === '0 3 1 * *') {
@@ -563,6 +655,29 @@ export default {
       await env.DB.prepare(`DELETE FROM submissions WHERE created_at < datetime('now', ?)`)
         .bind(`-${RETENTION_MONTHS} months`)
         .run();
+      return;
+    }
+
+    if (controller.cron === '0 4 * * SUN') {
+      // Weekly D1 → R2 backup. D1's own replication protects against
+      // Cloudflare infrastructure failure, not against a bad migration or
+      // an accidental DELETE with the wrong WHERE clause — this is the
+      // independent copy that survives those. Every column, every row
+      // (including spam-flagged ones — a backup that quietly excludes data
+      // isn't a complete backup), so restoring from it needs no judgment
+      // calls about what was left out.
+      try {
+        const { results } = await env.DB.prepare(`SELECT * FROM submissions ORDER BY id ASC`).all();
+        const key = `submissions-${new Date().toISOString().slice(0, 10)}.json`;
+        await env.BACKUPS.put(key, JSON.stringify(results), { httpMetadata: { contentType: 'application/json' } });
+      } catch (err) {
+        console.error('weekly R2 backup failed', err);
+        await sendAlert(
+          env,
+          'Backup settimanale su R2 non riuscito',
+          `L'esportazione settimanale della tabella submissions verso R2 non è andata a buon fine.\n\nErrore: ${err instanceof Error ? err.message : String(err)}`
+        );
+      }
       return;
     }
 

@@ -17,6 +17,12 @@ import { buildQuickReplies, type QuickReplyId } from './quick-replies';
 // look exactly (same fonts, same brand colors) instead of drifting from it.
 export const FONT_DISPLAY = "Georgia,'Times New Roman',serif";
 export const FONT_BODY = "-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+// Used by guest-receipt.ts's fax-styled treatment — "Courier New" is the
+// one monospace face virtually every mail client (desktop and mobile)
+// already ships and renders identically, unlike the sans/serif stacks
+// above which merely degrade gracefully; a fax has to actually look
+// typewritten, not just fall back acceptably.
+export const FONT_MONO = "'Courier New',Courier,monospace";
 export const PHOTOS_URL = 'https://ironwoodlivigno.com/it#galleria';
 
 // Base URL for the reply-editor pages (/reply/:token/:kind, see index.ts) —
@@ -451,11 +457,17 @@ export function buildOutboundEmailHtml(bodyText: string, locale?: string): strin
 // straight to /reply/:token/send, which sends it — no client-side mailto:
 // building needed anymore, just a form submit.
 export function renderReplyEditorPage(
-  params: { error: string } | { token: string; kindLabel: string; name: string; body: string; italianText?: string | null; sendError?: string }
+  params:
+    | { error: string; returnTo?: string }
+    | { token: string; kind: string; kindLabel: string; name: string; body: string; italianText?: string | null; sendError?: string; returnTo?: string }
 ): string {
   const inner =
     'error' in params
-      ? `<p style="margin:0;font-family:${FONT_BODY};font-size:16px;color:#241C15;">${escapeHtml(params.error)}</p>`
+      ? `<p style="margin:0;font-family:${FONT_BODY};font-size:16px;color:#241C15;">${escapeHtml(params.error)}</p>${
+          params.returnTo
+            ? `<p style="margin:16px 0 0;"><a href="${escapeHtml(params.returnTo)}" style="font-family:${FONT_BODY};font-size:13px;font-weight:600;color:#A8462F;text-decoration:none;">← Torna alla dashboard</a></p>`
+            : ''
+        }`
       : `
       ${
         params.sendError
@@ -464,8 +476,10 @@ export function renderReplyEditorPage(
       }
       <p style="margin:0 0 6px;font-family:${FONT_BODY};font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#A8462F;">${escapeHtml(params.kindLabel)} · ${escapeHtml(params.name)}</p>
       <form method="POST" action="/reply/${params.token}/send">
+        <input type="hidden" name="kind" value="${escapeHtml(params.kind)}">
         <input type="hidden" name="kindLabel" value="${escapeHtml(params.kindLabel)}">
         <input type="hidden" name="name" value="${escapeHtml(params.name)}">
+        ${params.returnTo ? `<input type="hidden" name="returnTo" value="${escapeHtml(params.returnTo)}">` : ''}
         <textarea name="text" id="replyBody" style="width:100%;box-sizing:border-box;min-height:220px;padding:16px;border-radius:14px;border:1px solid #EAD9BE;background-color:#FBF1E7;font-family:${FONT_BODY};font-size:15px;color:#241C15;line-height:1.6;resize:vertical;">${escapeHtml(params.body)}</textarea>
         <div style="margin:14px 0 0;">
           <button type="button" id="copyBtn" style="cursor:pointer;background-color:#ffffff;color:#241C15;border:1px solid #EFE6D8;border-radius:999px;padding:12px 22px;font-family:${FONT_BODY};font-size:14px;font-weight:600;margin-right:10px;">📋 Copia testo</button>

@@ -7,4 +7,6 @@ out
 .wrangler
 cloudflare-env.d.ts
 .env*.local
+.dev.vars
+worker-configuration.d.ts
 graphify-out

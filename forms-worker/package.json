@@ -3,12 +3,19 @@
   "private": true,
   "scripts": {
     "dev": "wrangler dev",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p test/tsconfig.json",
+    "predeploy": "npm run typecheck && npm test",
     "deploy": "wrangler deploy",
     "db:schema": "wrangler d1 execute ironwood-forms --remote --file=./schema.sql"
   },
   "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.21.3",
     "@cloudflare/workers-types": "^5.20260811.1",
+    "@types/node": "^26.2.0",
     "typescript": "^5.7.0",
+    "vitest": "^4.1.10",
     "wrangler": "^4.119.0"
   }
 }
