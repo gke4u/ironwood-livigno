@@ -4,13 +4,17 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import DatePicker, { fromISO } from './DatePicker';
 
-// Submits to our own form backend — a Cloudflare Worker (forms-worker/,
-// D1 + Email Service, no third-party SaaS) at forms.ironwoodlivigno.com,
-// replacing the previous Web3Forms integration. No access key here: unlike
-// Web3Forms, authentication is implicit in the Worker's own deployment
-// (its D1/email/rate-limit bindings only exist inside that Worker, never
-// in this client-side bundle).
-const FORMS_ENDPOINT = 'https://forms.ironwoodlivigno.com/submit';
+// Submits to TORBERO's own public intake Worker (torbero-richieste, in the
+// separate `torberto` project — richieste-worker/src/index.js's /submit
+// handler) at richieste.ironwoodlivigno.com, so a booking request lands
+// directly in the property-management app's Richieste tab instead of a
+// separate system (the previous forms.ironwoodlivigno.com backend) that
+// TORBERO couldn't see. Same request/response contract as before (this
+// component is otherwise unchanged) — the new backend was built to accept
+// the exact same payload shape. No access key here: authentication is
+// implicit in the Worker's own deployment (its D1/email bindings only
+// exist inside that Worker, never in this client-side bundle).
+const FORMS_ENDPOINT = 'https://richieste.ironwoodlivigno.com/submit';
 const CONTACT_PHONE = '390342929285';
 const CONTACT_EMAIL = 'info@ironwoodlivigno.com';
 

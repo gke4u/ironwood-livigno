@@ -21,6 +21,11 @@
       "binding": "DB",
       "database_name": "ironwood-forms",
       "database_id": "f7a04b87-646b-435d-895d-609e8372d668"
+    },
+    {
+      "binding": "TORBERO_DB",
+      "database_name": "torbero-db",
+      "database_id": "571c69ff-5e40-4f0e-90f1-ea861970b9a6"
     }
   ],
 

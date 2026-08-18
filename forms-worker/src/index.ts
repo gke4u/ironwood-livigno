@@ -47,6 +47,10 @@ import {
 
 export interface Env {
   DB: D1Database;
+  // TORBERO's own D1 (separate account/project) — bridge-only: this Worker
+  // only ever INSERTs into `richieste` here, it never reads its own DB back
+  // out of it. See the ctx.waitUntil bridge write in the /submit handler.
+  TORBERO_DB: D1Database;
   BACKUPS: R2Bucket;
   FORM_RATE_LIMITER: RateLimit;
   ADMIN_LOGIN_RATE_LIMITER: RateLimit;
@@ -626,6 +630,43 @@ export default {
           })().catch((err) => {
             console.error('guest receipt email failed', err);
           })
+        );
+
+        // Mirror the submission into TORBERO's own `richieste` table so it
+        // shows up in the gestionale's Richieste tab (readable from any
+        // Access-authorized device) alongside requests that came in through
+        // TORBERO's own booking page — not a replacement for the row above,
+        // a copy. Same "durable write must never fail, but this secondary
+        // effect can" pattern as the notification email: id/apartment_id
+        // are ours to pick since submissions has no TORBERO id, and
+        // apartment_id is hardcoded to 'apt-1' because this property is the
+        // only apartment TORBERO currently manages.
+        ctx.waitUntil(
+          env.TORBERO_DB.prepare(
+            `INSERT INTO richieste (id, apartment_id, nome, email, telefono, check_in, check_out, ospiti, messaggio, stato, created_at, ip)
+             VALUES (?, 'apt-1', ?, ?, ?, ?, ?, ?, ?, 'nuova', ?, ?)`
+          )
+            .bind(
+              crypto.randomUUID(),
+              data.name ?? '',
+              data.email ?? '',
+              data.phone ?? null,
+              data.checkin_iso ?? '',
+              data.checkout_iso ?? '',
+              data.guests,
+              data.message ?? null,
+              Date.now(),
+              ip
+            )
+            .run()
+            .catch((err) => {
+              console.error('bridge insert into TORBERO richieste failed (submission was still saved here)', err);
+              return sendAlert(
+                env,
+                'Richiesta non copiata su TORBERO',
+                `La richiesta #${result.meta.last_row_id} (${data.name ?? '-'}, ${data.email ?? '-'}) e' stata salvata qui regolarmente e la notifica email e' partita normalmente, ma non e' stato possibile copiarla nel database di TORBERO.\n\nErrore: ${err instanceof Error ? err.message : String(err)}`
+              );
+            })
         );
       }
 
