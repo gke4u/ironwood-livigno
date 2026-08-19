@@ -220,3 +220,31 @@ Ho provato a interrogare l'API pubblica di PageSpeed Insights su `/it`, `/invern
 2. Dati Core Web Vitals reali da Search Console, oppure via libera a ritentare PageSpeed Insights più tardi (punto 7).
 
 Con questi due elementi la Fase 0 è completa. Vuoi che nel frattempo proceda con la **Fase 1 (SEO tecnica)** sui punti già verificabili da codice, o preferisci fornire prima questi dati?
+
+## Fase 2 — Email di convalida Google Search Console (2026-08-19)
+
+Ricevuta email automatica di Search Console: la convalida richiesta per "Pagina con reindirizzamento" (le 40 pagine del punto 6, stato "Iniziata" in Fase 0) non è ancora completa — "alcune pagine sono ancora interessate dal problema". Nota: questa categoria GSC non è di per sé un errore — segnala pagine che *correttamente* reindirizzano altrove, quindi non vengono indicizzate come URL a sé stanti. Non avendo accesso diretto all'export di Search Console in questa sessione, ho verificato dal vivo tutto ciò che è controllabile da codice.
+
+**Verifica eseguita (curl in produzione, 2026-08-19), tutte le 140 regole di `public/_redirects`:**
+- Lato apex (`ironwoodlivigno.com/...`): **tutte e 140 pulite**, 1 solo hop 301 → 200 sulla destinazione finale corretta. Nessuna rotta, nessun target 404.
+- `sitemap.xml` live: nessuna delle 140 URL legacy compare come `<loc>` — Google non riceve segnali contrastanti (niente URL che la sitemap chiede di indicizzare e che allo stesso tempo reindirizza).
+
+**Finding: catena a più hop per le stesse URL quando accedute su `www.`** (il pattern già isolato in Fase 1 ai punti 6ter/6quater/6quinquies come "Gruppo C" — URL scansionate da Google a metà giugno 2026, prima che esistesse il redirect di zona www→apex):
+
+```
+http://www.ironwoodlivigno.com/prenota
+  → 301 → https://www.ironwoodlivigno.com/prenota   (hop 1: http→https, zona Cloudflare)
+  → 301 → https://ironwoodlivigno.com/prenota         (hop 2: www→apex, zona Cloudflare)
+  → 301 → https://ironwoodlivigno.com/it#prenota      (hop 3: regola in _redirects)
+  → 200
+```
+
+3 hop nel caso peggiore (http+www), 2 hop per https+www diretto. Confermato che **questo repo non può accorciare la catena**: il sito è un Cloudflare Worker con soli static assets (`wrangler.jsonc`, nessun fetch handler custom), quindi i primi due hop (schema e host) sono regole di zona Cloudflare gestite fuori da questo codice — `public/_redirects` gestisce solo il terzo hop (percorso legacy → destinazione reale).
+
+**Perché è probabilmente questa la causa della convalida non ancora completa**: sono esattamente le stesse URL già isolate in Fase 1 (Gruppo C, 6ter, 6quinquies) — indicizzate da Google via `www.` prima che il redirect di zona esistesse. Una catena a 2-3 hop è più lenta da far "digerire" a Google rispetto a un redirect diretto a 1 hop, e le convalide Search Console procedono a round (in genere richiedono più di un ciclo di ~1-2 settimane per chiudersi del tutto), quindi un esito parziale ("alcune pagine ancora interessate") a una settimana dalla chiusura della Fase 1 è coerente con normale lentezza, non necessariamente un problema nuovo.
+
+**Azione di codice**: nessuna necessaria — tutto ciò che dipende da questo repo (`_redirects`, sitemap) è verificato pulito.
+
+**Azione consigliata fuori dal repo (bassa urgenza, per accorciare la catena da 3 a 2 hop)**: in dashboard Cloudflare → il dominio → Rules → Redirect Rules, unire la regola "http→https" e quella "www→apex" in un'unica regola che normalizza schema e host insieme in un solo hop. Non risolve la convalida da sola (il terzo hop verso `_redirects` resta comunque, per design — evitare di duplicare ~140 regole anche a livello di zona), ma riduce il numero di redirect che Google deve seguire per le vecchie URL `www.`, il che in genere aiuta le convalide più lente a chiudersi prima.
+
+**Se vuoi che proceda oltre**: portami l'export "Pagina con reindirizzamento" da Search Console → Indicizzazione → Pagine (stesso percorso già usato per gli altri drilldown in Fase 1) e incrocio l'elenco esatto delle URL ancora segnalate con quanto verificato sopra, per confermare 1:1 se sono tutte dello stesso pattern www o se emerge qualcos'altro.
