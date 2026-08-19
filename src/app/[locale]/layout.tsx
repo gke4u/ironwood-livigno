@@ -7,9 +7,10 @@ import LangSuggestBanner from '@/components/LangSuggestBanner';
 import BackToTop from '@/components/BackToTop';
 
 // Cloudflare Web Analytics: cookieless, GDPR-friendly page-view tracking.
-// Replace this with the token from your Cloudflare dashboard
-// (Analytics & Logs → Web Analytics → Add a site) to activate it.
-const CF_ANALYTICS_TOKEN = 'REPLACE_WITH_YOUR_CLOUDFLARE_ANALYTICS_TOKEN';
+// Site token from the "ironwoodlivigno.com" Web Analytics site already
+// provisioned on this Cloudflare account (dash.cloudflare.com → Analytics
+// & Logs → Web Analytics), activated 2026-08-19.
+const CF_ANALYTICS_TOKEN = 'c6592a49367b456aba77fed7572d5cb9';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
 
