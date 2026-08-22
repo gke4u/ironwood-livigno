@@ -6,16 +6,18 @@ import Reveal from './Reveal';
 import Pic from './Pic';
 import { useTilt, TILT_TRANSITION } from './useTilt';
 
-// One deliberately-composed bento grid instead of a separate hero banner
-// above a CSS-columns masonry — a magazine spread, not a stack of
-// thumbnails. Two "big, small, small, small, small" bands (each a clean
-// 2-row/4-column block: a feature photo plus four detail shots) followed
-// by one full-width closing shot. That specific [big, small×4] order is
-// what keeps CSS Grid's own (sparse, left-to-right/top-to-bottom) item
-// placement landing exactly where intended with nothing but col-span/
-// row-span classes — no explicit grid-column/row coordinates to keep in
-// sync by hand, and no risk of the gaps a masonry column that runs short
-// can leave (the problem this replaced).
+// A full-width feature banner (the apartment's signature shot), a
+// deliberately-composed bento grid instead of a CSS-columns masonry — a
+// magazine spread, not a stack of thumbnails — then one full-width closing
+// shot. The grid itself is a single "big, small, small, small, small" band
+// (a clean 2-row/4-column block: one feature-weight photo plus four detail
+// shots) followed by four more small shots filling the row below. That
+// specific [small×4, big, small×4] order is what keeps CSS Grid's own
+// (sparse, left-to-right/top-to-bottom) item placement landing exactly
+// where intended with nothing but col-span/row-span classes — no explicit
+// grid-column/row coordinates to keep in sync by hand, and no risk of the
+// gaps a masonry column that runs short can leave (the problem this
+// replaced).
 const images = [
   // The apartment's single most representative shot — living room and open
   // kitchen together. Sharing "big" status with the bathroom cell inside
@@ -72,12 +74,14 @@ export default function Gallery() {
   const active = activeIndex !== null ? images[activeIndex] : null;
   const { onMouseMove: handleCardMouseMove, onMouseLeave: handleCardMouseLeave } = useTilt();
 
-  // The closing shot (the whole chalet, a much squarer frame than every
-  // other photo here) sits outside the bento grid on its own row, sized to
-  // its real aspect ratio instead of a fixed grid-row height — the only way
-  // to show the entire building with zero cropping and no letterbox bars.
+  // The opening (most representative) and closing (whole chalet) shots
+  // both live outside the bento grid, each on its own full-width row —
+  // `gridImages` is everything in between.
   const featureImage = images[0];
   const gridImages = images.slice(1, -1);
+  // Sized to its real aspect ratio instead of a fixed grid-row height — the
+  // only way to show the entire building with zero cropping and no
+  // letterbox bars.
   const closingImage = images[images.length - 1];
   const closingIndex = images.length - 1;
 
