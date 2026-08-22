@@ -17,7 +17,11 @@ import { useTilt, TILT_TRANSITION } from './useTilt';
 // sync by hand, and no risk of the gaps a masonry column that runs short
 // can leave (the problem this replaced).
 const images = [
-  { src: '/images/hero-ironwood.jpg', alt: 'Soggiorno e cucina a vista, appartamento Ironwood a Livigno', caption: 'Soggiorno e cucina a vista', w: 1920, h: 1280, big: true },
+  // The apartment's single most representative shot — living room and open
+  // kitchen together — gets `feature` on top of `big`: full-width even on
+  // mobile (the other `big` cell only widens at md:, so on a phone it was
+  // rendering at the exact same size as every minor detail shot around it).
+  { src: '/images/hero-ironwood.jpg', alt: 'Soggiorno e cucina a vista, appartamento Ironwood a Livigno', caption: 'Soggiorno e cucina a vista', w: 1920, h: 1280, big: true, feature: true },
   { src: '/images/esterno-notte.jpg', alt: 'Esterno dell’appartamento Ironwood a Livigno di sera, sotto la neve', caption: 'L’esterno, di sera', w: 1920, h: 1440 },
   { src: '/images/cucina.jpg', alt: 'Cucina completamente attrezzata nell’appartamento vacanze a Livigno', caption: 'Cucina attrezzata', w: 2000, h: 1333 },
   { src: '/images/bagno-extra.jpg', alt: 'Bagno con doccia in pietra nell’appartamento a Livigno', caption: 'Bagno in pietra', w: 1333, h: 2000 },
@@ -86,7 +90,11 @@ export default function Gallery() {
 
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:auto-rows-[13vw] md:gap-4 lg:auto-rows-[180px]">
           {gridImages.map((img, i) => (
-            <Reveal key={img.src} delay={Math.min(i, 5) * 80} className={img.big ? 'md:col-span-2 md:row-span-2' : ''}>
+            <Reveal
+              key={img.src}
+              delay={Math.min(i, 5) * 80}
+              className={img.feature ? 'col-span-2 md:row-span-2' : img.big ? 'md:col-span-2 md:row-span-2' : ''}
+            >
               {/* Tilt + shine live on this inner div, which also owns the
                   rounded/clip/shadow chrome, so the whole tile tilts as one
                   rigid card instead of the photo rotating inside a clip
@@ -110,7 +118,7 @@ export default function Gallery() {
                   type="button"
                   onClick={() => setActiveIndex(i)}
                   aria-label={img.alt}
-                  className="group relative block w-full h-full aspect-square md:aspect-auto cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brick focus-visible:ring-offset-2"
+                  className={`group relative block w-full h-full ${img.feature ? 'aspect-[16/10]' : 'aspect-square'} md:aspect-auto cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brick focus-visible:ring-offset-2`}
                 >
                   <Pic
                     src={img.src}
