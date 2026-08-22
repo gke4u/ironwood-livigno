@@ -18,10 +18,12 @@ import { useTilt, TILT_TRANSITION } from './useTilt';
 // can leave (the problem this replaced).
 const images = [
   // The apartment's single most representative shot — living room and open
-  // kitchen together — gets `feature` on top of `big`: full-width even on
-  // mobile (the other `big` cell only widens at md:, so on a phone it was
-  // rendering at the exact same size as every minor detail shot around it).
-  { src: '/images/hero-ironwood.jpg', alt: 'Soggiorno e cucina a vista, appartamento Ironwood a Livigno', caption: 'Soggiorno e cucina a vista', w: 1920, h: 1280, big: true, feature: true },
+  // kitchen together. Sharing "big" status with the bathroom cell inside
+  // the grid still read as one photo among several, so it's pulled out
+  // entirely into its own full-width showcase banner above the grid (see
+  // `images[0]` usage below) instead of competing for attention as just
+  // the largest tile in a field of ten.
+  { src: '/images/hero-ironwood.jpg', alt: 'Soggiorno e cucina a vista, appartamento Ironwood a Livigno', caption: 'Soggiorno e cucina a vista', w: 1920, h: 1280 },
   { src: '/images/esterno-notte.jpg', alt: 'Esterno dell’appartamento Ironwood a Livigno di sera, sotto la neve', caption: 'L’esterno, di sera', w: 1920, h: 1440 },
   { src: '/images/cucina.jpg', alt: 'Cucina completamente attrezzata nell’appartamento vacanze a Livigno', caption: 'Cucina attrezzata', w: 2000, h: 1333 },
   { src: '/images/bagno-extra.jpg', alt: 'Bagno con doccia in pietra nell’appartamento a Livigno', caption: 'Bagno in pietra', w: 1333, h: 2000 },
@@ -74,7 +76,8 @@ export default function Gallery() {
   // other photo here) sits outside the bento grid on its own row, sized to
   // its real aspect ratio instead of a fixed grid-row height — the only way
   // to show the entire building with zero cropping and no letterbox bars.
-  const gridImages = images.slice(0, -1);
+  const featureImage = images[0];
+  const gridImages = images.slice(1, -1);
   const closingImage = images[images.length - 1];
   const closingIndex = images.length - 1;
 
@@ -88,13 +91,48 @@ export default function Gallery() {
           <h2 className="font-display text-3xl md:text-5xl text-ink leading-tight">{t('title')}</h2>
         </Reveal>
 
+        {/* The apartment's signature shot, standing alone above the grid at
+            full width instead of just being the biggest of several tiles —
+            same idle Ken Burns / shine / tilt as the grid's "big" cell, plus
+            a permanent (not hover-gated) title treatment so it reads as a
+            deliberate cover image, not a photo you have to hover to name. */}
+        <Reveal className="mb-3 md:mb-4">
+          <div
+            onMouseMove={handleCardMouseMove}
+            onMouseLeave={handleCardMouseLeave}
+            style={TILT_TRANSITION}
+            className="rounded-2xl md:rounded-3xl overflow-hidden shadow-soft hover:shadow-xl [transform-style:preserve-3d] will-change-transform"
+          >
+            <button
+              type="button"
+              onClick={() => setActiveIndex(0)}
+              aria-label={featureImage.alt}
+              className="group relative block w-full aspect-[16/9] cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brick focus-visible:ring-offset-2"
+            >
+              <Pic
+                src={featureImage.src}
+                alt={featureImage.alt}
+                width={featureImage.w}
+                height={featureImage.h}
+                sizes="100vw"
+                className="w-full h-full object-cover animate-kenburns motion-reduce:animate-none"
+              />
+              <div
+                className="pointer-events-none absolute inset-0 -translate-x-[120%] skew-x-[-20deg] bg-gradient-to-r from-transparent via-white/25 to-transparent opacity-0 group-hover:opacity-100 group-hover:translate-x-[120%] transition-[transform,opacity] duration-[1100ms] ease-out"
+                aria-hidden
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" aria-hidden />
+              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
+                <span className="block h-px w-10 bg-gold mb-3" aria-hidden />
+                <p className="font-display text-mist text-2xl md:text-4xl leading-tight">{featureImage.caption}</p>
+              </div>
+            </button>
+          </div>
+        </Reveal>
+
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:auto-rows-[13vw] md:gap-4 lg:auto-rows-[180px]">
           {gridImages.map((img, i) => (
-            <Reveal
-              key={img.src}
-              delay={Math.min(i, 5) * 80}
-              className={img.feature ? 'col-span-2 md:row-span-2' : img.big ? 'md:col-span-2 md:row-span-2' : ''}
-            >
+            <Reveal key={img.src} delay={Math.min(i, 5) * 80} className={img.big ? 'md:col-span-2 md:row-span-2' : ''}>
               {/* Tilt + shine live on this inner div, which also owns the
                   rounded/clip/shadow chrome, so the whole tile tilts as one
                   rigid card instead of the photo rotating inside a clip
@@ -102,12 +140,13 @@ export default function Gallery() {
                   the corners). Reveal's own element stays untouched by any
                   hover transform — its entrance animation drives transform
                   too, and stacking a second transform source on top of that
-                  risks the two fighting each other. Only the two "big"
-                  feature cells get the idle Ken Burns zoom: with eleven
-                  photos in view at once, all of them breathing
-                  simultaneously would read as restless rather than alive —
-                  reserving it for the two anchor shots keeps the rest of
-                  the grid calm until a visitor actually hovers one. */}
+                  risks the two fighting each other. Only the "big" cell
+                  gets the idle Ken Burns zoom: with ten photos in view at
+                  once, all of them breathing simultaneously would read as
+                  restless rather than alive — reserving it for that one
+                  anchor shot (plus the standalone feature banner and
+                  closing shot above/below) keeps the rest of the grid calm
+                  until a visitor actually hovers one. */}
               <div
                 onMouseMove={handleCardMouseMove}
                 onMouseLeave={handleCardMouseLeave}
@@ -116,9 +155,9 @@ export default function Gallery() {
               >
                 <button
                   type="button"
-                  onClick={() => setActiveIndex(i)}
+                  onClick={() => setActiveIndex(i + 1)}
                   aria-label={img.alt}
-                  className={`group relative block w-full h-full ${img.feature ? 'aspect-[16/10]' : 'aspect-square'} md:aspect-auto cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brick focus-visible:ring-offset-2`}
+                  className="group relative block w-full h-full aspect-square md:aspect-auto cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brick focus-visible:ring-offset-2"
                 >
                   <Pic
                     src={img.src}
