@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type MouseEvent } from 'react';
 import { useTranslations } from 'next-intl';
 import Reveal from './Reveal';
 import Pic from './Pic';
@@ -97,6 +97,32 @@ export default function ExtraServices() {
 
   const active = activeIndex !== null ? allPhotos[activeIndex] : null;
 
+  // A light "tilt toward the cursor" on each card — the kind of tactile
+  // motion that reads as premium on a product/service card. Driven by
+  // direct style writes (not React state) since it needs to update every
+  // pointermove without triggering a re-render. Gated to real mice: touch
+  // "hover" is a tap-and-stick that would leave a card tilted, and anyone
+  // with prefers-reduced-motion set shouldn't get motion tied to their
+  // cursor at all.
+  const canTiltRef = useRef(false);
+  useEffect(() => {
+    canTiltRef.current =
+      window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }, []);
+
+  const handleCardMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!canTiltRef.current) return;
+    const el = e.currentTarget;
+    const rect = el.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    el.style.transform = `perspective(1000px) rotateX(${(-py * 7).toFixed(2)}deg) rotateY(${(px * 7).toFixed(2)}deg) translateY(-6px)`;
+  };
+  const handleCardMouseLeave = (e: MouseEvent<HTMLDivElement>) => {
+    e.currentTarget.style.transform = '';
+  };
+
   return (
     <section id="servizi-extra" className="bg-mist py-20 md:py-24">
       <div className="max-w-content mx-auto px-6 md:px-10">
@@ -113,12 +139,22 @@ export default function ExtraServices() {
             const offset = itemOffsets[i];
             return (
               <Reveal key={item.key} delay={i * 100}>
-                {/* Hover lift lives on this inner div, not on Reveal's own
+                {/* Tilt + shadow live on this inner div, not on Reveal's own
                     wrapper — Reveal's entrance animation also drives
-                    transform, and stacking a :hover transition on top of
-                    that risks the animation's forwards-filled transform
-                    fighting the hover one. */}
-                <div className="rounded-3xl shadow-soft bg-white overflow-hidden flex flex-col h-full transition-all duration-500 hover:-translate-y-1.5 hover:shadow-xl">
+                    transform, and stacking hover/pointer transforms on top
+                    of that risks the animation's forwards-filled transform
+                    fighting them. Transform is written directly by the
+                    mousemove handler (see canTiltRef above), not by a
+                    Tailwind hover: class, so its own transition duration is
+                    set inline rather than via `transition-all` — a single
+                    faster easing for the tilt itself, independent of the
+                    slower shadow fade. */}
+                <div
+                  onMouseMove={handleCardMouseMove}
+                  onMouseLeave={handleCardMouseLeave}
+                  style={{ transition: 'transform 150ms ease-out, box-shadow 400ms ease' }}
+                  className="rounded-3xl shadow-soft bg-white overflow-hidden flex flex-col h-full hover:shadow-xl [transform-style:preserve-3d] will-change-transform"
+                >
                   {/* A big, full-bleed hero shot (with the item name revealed
                       on hover, magazine-style) instead of three equally-
                       cropped squares — food and the e-bikes need room to
@@ -135,24 +171,36 @@ export default function ExtraServices() {
                       aria-label={item.photos[0].alt}
                       className="group absolute inset-0 block w-full h-full cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brick focus-visible:ring-inset"
                     >
+                      {/* A slow, continuous Ken Burns zoom (same
+                          animate-kenburns used on the page hero) instead of
+                          a hover-only scale — the photo stays alive even
+                          before anyone's cursor reaches it, which is what
+                          actually catches the eye while scrolling past.
+                          Paired with a one-shot diagonal light sweep on
+                          hover for a glossy, "look closer" cue. */}
                       <Pic
                         src={item.photos[0].src}
                         alt={item.photos[0].alt}
                         width={item.photos[0].w}
                         height={item.photos[0].h}
                         sizes="(min-width: 768px) 50vw, 100vw"
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        className="w-full h-full object-cover animate-kenburns motion-reduce:animate-none"
+                      />
+                      <div
+                        className="pointer-events-none absolute inset-0 -translate-x-[120%] skew-x-[-20deg] bg-gradient-to-r from-transparent via-white/25 to-transparent opacity-0 group-hover:opacity-100 group-hover:translate-x-[120%] transition-[transform,opacity] duration-[1100ms] ease-out"
+                        aria-hidden
                       />
                       <div
                         className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                         aria-hidden
                       />
-                      <p className="absolute bottom-4 left-5 right-5 font-display text-mist text-xl md:text-2xl opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
-                        {item.title}
-                      </p>
+                      <div className="absolute bottom-4 left-5 right-5 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                        <span className="block h-px w-8 bg-gold mb-2" aria-hidden />
+                        <p className="font-display text-mist text-2xl md:text-3xl leading-tight">{item.title}</p>
+                      </div>
                     </button>
 
-                    <div className="absolute top-4 left-4 rounded-full bg-ink/85 backdrop-blur-sm border border-gold/40 px-4 py-1.5 pointer-events-none">
+                    <div className="absolute top-4 left-4 rounded-full bg-ink/85 backdrop-blur-sm border border-gold/40 px-4 py-1.5 pointer-events-none shadow-[0_0_24px_rgba(201,160,89,0.45)]">
                       <span className="font-display text-gold text-base md:text-lg">{item.price}</span>
                     </div>
 
@@ -182,7 +230,17 @@ export default function ExtraServices() {
                           sizes="(min-width: 768px) 25vw, 50vw"
                           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
-                        <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/20 transition-colors duration-500" aria-hidden />
+                        <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/30 transition-colors duration-500" aria-hidden />
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300" aria-hidden>
+                          <span className="flex items-center justify-center w-8 h-8 rounded-full bg-white/90 text-ink shadow-soft">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                              <circle cx="10.5" cy="10.5" r="6.5" />
+                              <line x1="15.5" y1="15.5" x2="21" y2="21" />
+                              <line x1="10.5" y1="7.5" x2="10.5" y2="13.5" />
+                              <line x1="7.5" y1="10.5" x2="13.5" y2="10.5" />
+                            </svg>
+                          </span>
+                        </div>
                       </button>
                     ))}
                   </div>
