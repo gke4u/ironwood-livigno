@@ -54,8 +54,31 @@ type Errors = Partial<
   Record<'name' | 'email' | 'checkin' | 'checkout' | 'privacy', string>
 >;
 
+// Same info mark as Amenities' breakfast/e-bike entries, and same tooltip
+// copy (extras.eyebrow) — this is the other place a guest sees those two
+// items, so the "on request, paid" cue should look and read identically.
+function InfoIcon() {
+  return (
+    <svg
+      width="13"
+      height="13"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 11v5.5M12 8v.01" />
+    </svg>
+  );
+}
+
 export default function RequestForm({ showAltMethods = true }: { showAltMethods?: boolean }) {
   const t = useTranslations('request');
+  const tExtras = useTranslations('extras');
   const locale = useLocale();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -489,7 +512,12 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
               onChange={(e) => setExtraBreakfast(e.target.checked)}
               className="h-4 w-4 rounded border-ink/25 text-brick focus:ring-brick/40 accent-brick"
             />
-            {t('extra_breakfast_label')}
+            <span className="inline-flex items-center gap-1.5">
+              {t('extra_breakfast_label')}
+              <span title={tExtras('eyebrow')} aria-label={tExtras('eyebrow')} className="text-brick/60">
+                <InfoIcon />
+              </span>
+            </span>
           </label>
           <label className="flex items-center gap-2.5 text-sm text-ink cursor-pointer">
             <input
@@ -498,7 +526,12 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
               onChange={(e) => setExtraEbike(e.target.checked)}
               className="h-4 w-4 rounded border-ink/25 text-brick focus:ring-brick/40 accent-brick"
             />
-            {t('extra_ebike_label')}
+            <span className="inline-flex items-center gap-1.5">
+              {t('extra_ebike_label')}
+              <span title={tExtras('eyebrow')} aria-label={tExtras('eyebrow')} className="text-brick/60">
+                <InfoIcon />
+              </span>
+            </span>
           </label>
         </div>
         <p className="text-ink/65 text-xs mt-3">{t('extras_hint')}</p>

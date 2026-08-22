@@ -50,7 +50,7 @@ export default function ExtraServices() {
   ];
 
   return (
-    <section className="bg-mist py-20 md:py-24">
+    <section id="servizi-extra" className="bg-mist py-20 md:py-24">
       <div className="max-w-content mx-auto px-6 md:px-10">
         <Reveal className="max-w-2xl mb-10">
           <p className="text-brick tracking-[0.2em] uppercase text-xs md:text-sm mb-4">
