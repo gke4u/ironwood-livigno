@@ -35,8 +35,8 @@ type AmenityItem = string | { label: string; extra: true };
 function InfoIcon() {
   return (
     <svg
-      width="13"
-      height="13"
+      width="17"
+      height="17"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"

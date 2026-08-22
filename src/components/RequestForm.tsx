@@ -60,8 +60,8 @@ type Errors = Partial<
 function InfoIcon() {
   return (
     <svg
-      width="13"
-      height="13"
+      width="17"
+      height="17"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -80,6 +80,12 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
   const t = useTranslations('request');
   const tExtras = useTranslations('extras');
   const locale = useLocale();
+  // Locale-prefixed absolute path (not a bare "#servizi-extra" hash): this
+  // form also renders standalone on the /contatti page, which has no
+  // ExtraServices section of its own to scroll within — same pattern as
+  // the "#prenota" links elsewhere in the codebase (Nav, MobileMenu, blog
+  // CTAs) that need to reach a home-page section from any page.
+  const extraServicesHref = `/${locale}#servizi-extra`;
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -514,9 +520,15 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
             />
             <span className="inline-flex items-center gap-1.5">
               {t('extra_breakfast_label')}
-              <span title={tExtras('eyebrow')} aria-label={tExtras('eyebrow')} className="text-brick/60">
+              <a
+                href={extraServicesHref}
+                title={tExtras('eyebrow')}
+                aria-label={tExtras('eyebrow')}
+                onClick={(e) => e.stopPropagation()}
+                className="text-brick/60 hover:text-brick transition-colors"
+              >
                 <InfoIcon />
-              </span>
+              </a>
             </span>
           </label>
           <label className="flex items-center gap-2.5 text-sm text-ink cursor-pointer">
@@ -528,9 +540,15 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
             />
             <span className="inline-flex items-center gap-1.5">
               {t('extra_ebike_label')}
-              <span title={tExtras('eyebrow')} aria-label={tExtras('eyebrow')} className="text-brick/60">
+              <a
+                href={extraServicesHref}
+                title={tExtras('eyebrow')}
+                aria-label={tExtras('eyebrow')}
+                onClick={(e) => e.stopPropagation()}
+                className="text-brick/60 hover:text-brick transition-colors"
+              >
                 <InfoIcon />
-              </span>
+              </a>
             </span>
           </label>
         </div>

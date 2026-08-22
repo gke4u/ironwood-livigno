@@ -28,7 +28,8 @@ html {
 #camere,
 #posizione,
 #prenota,
-#meteo {
+#meteo,
+#servizi-extra {
   scroll-margin-top: calc(var(--banner-h) + 88px);
 }
 
