@@ -1,9 +1,10 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState, type MouseEvent } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Reveal from './Reveal';
 import Pic from './Pic';
+import { useTilt, TILT_TRANSITION } from './useTilt';
 
 // Breakfast and e-bike rental are paid, on-request extras — not included in
 // the stay. Each card states the price up front (per person, per day) and
@@ -96,32 +97,7 @@ export default function ExtraServices() {
   }, [activeIndex, close, showPrev, showNext]);
 
   const active = activeIndex !== null ? allPhotos[activeIndex] : null;
-
-  // A light "tilt toward the cursor" on each card — the kind of tactile
-  // motion that reads as premium on a product/service card. Driven by
-  // direct style writes (not React state) since it needs to update every
-  // pointermove without triggering a re-render. Gated to real mice: touch
-  // "hover" is a tap-and-stick that would leave a card tilted, and anyone
-  // with prefers-reduced-motion set shouldn't get motion tied to their
-  // cursor at all.
-  const canTiltRef = useRef(false);
-  useEffect(() => {
-    canTiltRef.current =
-      window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
-      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  }, []);
-
-  const handleCardMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    if (!canTiltRef.current) return;
-    const el = e.currentTarget;
-    const rect = el.getBoundingClientRect();
-    const px = (e.clientX - rect.left) / rect.width - 0.5;
-    const py = (e.clientY - rect.top) / rect.height - 0.5;
-    el.style.transform = `perspective(1000px) rotateX(${(-py * 7).toFixed(2)}deg) rotateY(${(px * 7).toFixed(2)}deg) translateY(-6px)`;
-  };
-  const handleCardMouseLeave = (e: MouseEvent<HTMLDivElement>) => {
-    e.currentTarget.style.transform = '';
-  };
+  const { onMouseMove: handleCardMouseMove, onMouseLeave: handleCardMouseLeave } = useTilt();
 
   return (
     <section id="servizi-extra" className="bg-mist py-20 md:py-24">
@@ -152,7 +128,7 @@ export default function ExtraServices() {
                 <div
                   onMouseMove={handleCardMouseMove}
                   onMouseLeave={handleCardMouseLeave}
-                  style={{ transition: 'transform 150ms ease-out, box-shadow 400ms ease' }}
+                  style={TILT_TRANSITION}
                   className="rounded-3xl shadow-soft bg-white overflow-hidden flex flex-col h-full hover:shadow-xl [transform-style:preserve-3d] will-change-transform"
                 >
                   {/* A big, full-bleed hero shot (with the item name revealed

@@ -1,10 +1,14 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
 import Reveal from './Reveal';
 import Pic from './Pic';
+import { useTilt, TILT_TRANSITION } from './useTilt';
 
 export default function Experience() {
   const t = useTranslations('experience');
   const th = useTranslations('hero');
+  const { onMouseMove: handleCardMouseMove, onMouseLeave: handleCardMouseLeave } = useTilt();
 
   const points = [
     { title: t('point_1_title'), text: t('point_1_text') },
@@ -16,14 +20,26 @@ export default function Experience() {
     <section id="esperienza" className="bg-mist py-24 md:py-32">
       <div className="max-w-content mx-auto px-6 md:px-10 grid md:grid-cols-2 gap-14 items-center">
         <Reveal>
-          <div className="rounded-3xl overflow-hidden shadow-soft aspect-[4/5]">
+          {/* Same idle-motion + shine + tilt treatment as the extra-services
+              and room cards — a still photo next to a full column of text
+              read as flat by comparison once those other sections had it. */}
+          <div
+            onMouseMove={handleCardMouseMove}
+            onMouseLeave={handleCardMouseLeave}
+            style={TILT_TRANSITION}
+            className="relative rounded-3xl overflow-hidden shadow-soft aspect-[4/5] group hover:shadow-xl [transform-style:preserve-3d] will-change-transform"
+          >
             <Pic
               src="/images/sauna-vista-montagna.jpg"
               alt="Sauna a infrarossi privata"
               width={2000}
               height={1333}
               sizes="(min-width: 768px) 50vw, 100vw"
-              className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+              className="w-full h-full object-cover animate-kenburns motion-reduce:animate-none"
+            />
+            <div
+              className="pointer-events-none absolute inset-0 -translate-x-[120%] skew-x-[-20deg] bg-gradient-to-r from-transparent via-white/25 to-transparent opacity-0 group-hover:opacity-100 group-hover:translate-x-[120%] transition-[transform,opacity] duration-[1100ms] ease-out"
+              aria-hidden
             />
           </div>
         </Reveal>
