@@ -1,3 +1,6 @@
+'use client';
+
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Reveal from './Reveal';
 import Pic from './Pic';
@@ -21,6 +24,11 @@ const ebikePhotos = [
 
 export default function ExtraServices() {
   const t = useTranslations('extras');
+  // Reuses the main Gallery's close/prev/next labels rather than adding a
+  // parallel set under "extras" in all twelve locale files for a lightbox
+  // that behaves identically.
+  const tg = useTranslations('gallery');
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const items = [
     {
@@ -49,6 +57,46 @@ export default function ExtraServices() {
     }
   ];
 
+  // Every photo across both cards, flattened into one sequence so the
+  // lightbox can page through the whole set — the same "click a thumbnail,
+  // arrow through the rest" browse the main Gallery section already uses,
+  // rather than a second, more limited lightbox pattern just for this
+  // section. Each photo carries its parent item's title as a caption.
+  const allPhotos = items.flatMap((item) => item.photos.map((photo) => ({ ...photo, caption: item.title })));
+  const itemOffsets = items.reduce<number[]>((offsets, item, i) => {
+    offsets.push(i === 0 ? 0 : offsets[i - 1] + items[i - 1].photos.length);
+    return offsets;
+  }, []);
+
+  const close = useCallback(() => setActiveIndex(null), []);
+  const showPrev = useCallback(() => {
+    setActiveIndex((i) => (i === null ? null : (i - 1 + allPhotos.length) % allPhotos.length));
+  }, [allPhotos.length]);
+  const showNext = useCallback(() => {
+    setActiveIndex((i) => (i === null ? null : (i + 1) % allPhotos.length));
+  }, [allPhotos.length]);
+
+  useEffect(() => {
+    if (activeIndex === null) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') showPrev();
+      if (e.key === 'ArrowRight') showNext();
+    };
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [activeIndex, close, showPrev, showNext]);
+
+  const active = activeIndex !== null ? allPhotos[activeIndex] : null;
+
   return (
     <section id="servizi-extra" className="bg-mist py-20 md:py-24">
       <div className="max-w-content mx-auto px-6 md:px-10">
@@ -60,70 +108,115 @@ export default function ExtraServices() {
           <p className="text-ink/65 text-base">{t('subtitle')}</p>
         </Reveal>
 
-        <div className="grid sm:grid-cols-2 gap-6 max-w-3xl">
-          {items.map((item, i) => (
-            <Reveal
-              key={item.key}
-              delay={i * 100}
-              className="rounded-2xl border border-ink/10 bg-white/70 overflow-hidden flex flex-col"
-            >
-              {/* One featured shot plus two smaller details instead of three
-                  equal-sized squares — at this card width three-across left
-                  each photo too small to actually read, and flush against
-                  its neighbors with almost no gap felt like an afterthought
-                  next to the generous photography treatment everywhere else
-                  on the site. */}
-              <div className="grid grid-cols-2 gap-1 aspect-[4/3]">
-                <div className="row-span-2 overflow-hidden group">
-                  <Pic
-                    src={item.photos[0].src}
-                    alt={item.photos[0].alt}
-                    width={item.photos[0].w}
-                    height={item.photos[0].h}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                </div>
-                {item.photos.slice(1).map((photo) => (
-                  <div key={photo.src} className="overflow-hidden group">
-                    <Pic
-                      src={photo.src}
-                      alt={photo.alt}
-                      width={photo.w}
-                      height={photo.h}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
+        <div className="grid md:grid-cols-2 gap-8 max-w-5xl">
+          {items.map((item, i) => {
+            const offset = itemOffsets[i];
+            return (
+              <Reveal key={item.key} delay={i * 100}>
+                {/* Hover lift lives on this inner div, not on Reveal's own
+                    wrapper — Reveal's entrance animation also drives
+                    transform, and stacking a :hover transition on top of
+                    that risks the animation's forwards-filled transform
+                    fighting the hover one. */}
+                <div className="rounded-3xl shadow-soft bg-white overflow-hidden flex flex-col h-full transition-all duration-500 hover:-translate-y-1.5 hover:shadow-xl">
+                  {/* A big, full-bleed hero shot (with the item name revealed
+                      on hover, magazine-style) instead of three equally-
+                      cropped squares — food and the e-bikes need room to
+                      actually look appetizing/enticing, not just be legible.
+                      Two smaller detail shots underneath keep the "more
+                      photos exist" cue without competing with the hero for
+                      attention. The price and photo-count badges stay
+                      visible without hovering — the price is the strongest
+                      reason to book, and touch devices never see :hover. */}
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <button
+                      type="button"
+                      onClick={() => setActiveIndex(offset)}
+                      aria-label={item.photos[0].alt}
+                      className="group absolute inset-0 block w-full h-full cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brick focus-visible:ring-inset"
+                    >
+                      <Pic
+                        src={item.photos[0].src}
+                        alt={item.photos[0].alt}
+                        width={item.photos[0].w}
+                        height={item.photos[0].h}
+                        sizes="(min-width: 768px) 50vw, 100vw"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                      <div
+                        className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                        aria-hidden
+                      />
+                      <p className="absolute bottom-4 left-5 right-5 font-display text-mist text-xl md:text-2xl opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                        {item.title}
+                      </p>
+                    </button>
+
+                    <div className="absolute top-4 left-4 rounded-full bg-ink/85 backdrop-blur-sm border border-gold/40 px-4 py-1.5 pointer-events-none">
+                      <span className="font-display text-gold text-base md:text-lg">{item.price}</span>
+                    </div>
+
+                    <div className="absolute top-4 right-4 flex items-center gap-1.5 rounded-full bg-ink/70 backdrop-blur-sm px-2.5 py-1 pointer-events-none">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-mist" aria-hidden>
+                        <path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z" />
+                        <circle cx="12" cy="13.5" r="3.2" />
+                      </svg>
+                      <span className="text-mist text-xs tabular-nums">{item.photos.length}</span>
+                    </div>
                   </div>
-                ))}
-              </div>
 
-              <div className="p-6 flex-1 flex flex-col">
-                <div className="flex items-start gap-3 mb-2">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="text-brick shrink-0 mt-0.5"
-                    aria-hidden
-                  >
-                    {item.icon}
-                  </svg>
-                  <h3 className="font-display text-lg text-ink">{item.title}</h3>
+                  <div className="grid grid-cols-2 gap-1">
+                    {item.photos.slice(1).map((photo, j) => (
+                      <button
+                        key={photo.src}
+                        type="button"
+                        onClick={() => setActiveIndex(offset + 1 + j)}
+                        aria-label={photo.alt}
+                        className="group relative block aspect-[4/3] overflow-hidden cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brick focus-visible:ring-inset"
+                      >
+                        <Pic
+                          src={photo.src}
+                          alt={photo.alt}
+                          width={photo.w}
+                          height={photo.h}
+                          sizes="(min-width: 768px) 25vw, 50vw"
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/20 transition-colors duration-500" aria-hidden />
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="p-6 flex-1 flex flex-col">
+                    <div className="flex items-start gap-3 mb-2">
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.6"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="text-brick shrink-0 mt-0.5"
+                        aria-hidden
+                      >
+                        {item.icon}
+                      </svg>
+                      <h3 className="font-display text-lg text-ink">{item.title}</h3>
+                    </div>
+
+                    <div className="flex items-baseline gap-2 mb-2">
+                      <span className="font-display text-2xl text-brick">{item.price}</span>
+                      <span className="text-ink/55 text-xs">{item.unit}</span>
+                    </div>
+
+                    <p className="text-ink/65 text-sm leading-relaxed">{item.text}</p>
+                  </div>
                 </div>
-
-                <div className="flex items-baseline gap-2 mb-2">
-                  <span className="font-display text-2xl text-brick">{item.price}</span>
-                  <span className="text-ink/55 text-xs">{item.unit}</span>
-                </div>
-
-                <p className="text-ink/65 text-sm leading-relaxed">{item.text}</p>
-              </div>
-            </Reveal>
-          ))}
+              </Reveal>
+            );
+          })}
         </div>
 
         <Reveal delay={200} className="mt-6 max-w-3xl">
@@ -139,6 +232,74 @@ export default function ExtraServices() {
           </a>
         </Reveal>
       </div>
+
+      {active && (
+        <div
+          className="fixed inset-0 z-[100] bg-ink/95 flex items-center justify-center p-4 md:p-10 animate-fadeIn"
+          role="dialog"
+          aria-modal="true"
+          onClick={close}
+        >
+          <button
+            type="button"
+            onClick={close}
+            aria-label={tg('close_label')}
+            className="absolute top-4 right-4 md:top-6 md:right-6 text-white/90 hover:text-white w-11 h-11 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+          >
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <line x1="6" y1="6" x2="18" y2="18" />
+              <line x1="18" y1="6" x2="6" y2="18" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              showPrev();
+            }}
+            aria-label={tg('prev_label')}
+            className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 text-white/90 hover:text-white w-11 h-11 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+          >
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              showNext();
+            }}
+            aria-label={tg('next_label')}
+            className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 text-white/90 hover:text-white w-11 h-11 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+          >
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+
+          <div
+            className="max-w-[92vw] max-h-[88vh] flex flex-col items-center gap-3"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Pic
+              key={active.src}
+              src={active.src}
+              alt={active.alt}
+              width={active.w}
+              height={active.h}
+              loading="eager"
+              className="max-w-[92vw] max-h-[80vh] w-auto h-auto object-contain rounded-lg"
+            />
+            <p className="text-white/85 font-display text-base">{active.caption}</p>
+            <p className="text-white/60 text-sm tabular-nums">
+              {activeIndex! + 1} / {allPhotos.length}
+            </p>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
