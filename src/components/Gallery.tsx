@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Reveal from './Reveal';
 import Pic from './Pic';
+import { useTilt, TILT_TRANSITION } from './useTilt';
 
 // One deliberately-composed bento grid instead of a separate hero banner
 // above a CSS-columns masonry — a magazine spread, not a stack of
@@ -63,6 +64,7 @@ export default function Gallery() {
   }, [activeIndex, close, showPrev, showNext]);
 
   const active = activeIndex !== null ? images[activeIndex] : null;
+  const { onMouseMove: handleCardMouseMove, onMouseLeave: handleCardMouseLeave } = useTilt();
 
   // The closing shot (the whole chalet, a much squarer frame than every
   // other photo here) sits outside the bento grid on its own row, sized to
@@ -84,61 +86,94 @@ export default function Gallery() {
 
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:auto-rows-[13vw] md:gap-4 lg:auto-rows-[180px]">
           {gridImages.map((img, i) => (
-            <Reveal
-              key={img.src}
-              delay={Math.min(i, 5) * 80}
-              className={`rounded-2xl md:rounded-3xl overflow-hidden shadow-soft ${
-                img.big ? 'md:col-span-2 md:row-span-2' : ''
-              }`}
-            >
-              <button
-                type="button"
-                onClick={() => setActiveIndex(i)}
-                aria-label={img.alt}
-                className="group relative block w-full h-full aspect-square md:aspect-auto cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brick focus-visible:ring-offset-2"
+            <Reveal key={img.src} delay={Math.min(i, 5) * 80} className={img.big ? 'md:col-span-2 md:row-span-2' : ''}>
+              {/* Tilt + shine live on this inner div, which also owns the
+                  rounded/clip/shadow chrome, so the whole tile tilts as one
+                  rigid card instead of the photo rotating inside a clip
+                  region that doesn't move with it (which would show gaps at
+                  the corners). Reveal's own element stays untouched by any
+                  hover transform — its entrance animation drives transform
+                  too, and stacking a second transform source on top of that
+                  risks the two fighting each other. Only the two "big"
+                  feature cells get the idle Ken Burns zoom: with eleven
+                  photos in view at once, all of them breathing
+                  simultaneously would read as restless rather than alive —
+                  reserving it for the two anchor shots keeps the rest of
+                  the grid calm until a visitor actually hovers one. */}
+              <div
+                onMouseMove={handleCardMouseMove}
+                onMouseLeave={handleCardMouseLeave}
+                style={TILT_TRANSITION}
+                className="rounded-2xl md:rounded-3xl overflow-hidden shadow-soft w-full h-full hover:shadow-xl [transform-style:preserve-3d] will-change-transform"
               >
-                <Pic
-                  src={img.src}
-                  alt={img.alt}
-                  width={img.w}
-                  height={img.h}
-                  sizes={img.big ? '(min-width: 768px) 50vw, 100vw' : '(min-width: 768px) 25vw, 50vw'}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                {/* Caption on hover — a gradient scrim plus the room name,
-                    both fading/rising in together. Static on touch devices
-                    with no hover would just never show it, which is fine:
-                    the lightbox (a tap away) still names every photo via
-                    its alt text read out below. */}
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/0 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" aria-hidden />
-                <p className="absolute bottom-0 left-0 right-0 p-4 md:p-5 font-display text-mist text-sm md:text-base opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
-                  {img.caption}
-                </p>
-              </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveIndex(i)}
+                  aria-label={img.alt}
+                  className="group relative block w-full h-full aspect-square md:aspect-auto cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brick focus-visible:ring-offset-2"
+                >
+                  <Pic
+                    src={img.src}
+                    alt={img.alt}
+                    width={img.w}
+                    height={img.h}
+                    sizes={img.big ? '(min-width: 768px) 50vw, 100vw' : '(min-width: 768px) 25vw, 50vw'}
+                    className={
+                      img.big
+                        ? 'w-full h-full object-cover animate-kenburns motion-reduce:animate-none'
+                        : 'w-full h-full object-cover transition-transform duration-700 group-hover:scale-110'
+                    }
+                  />
+                  <div
+                    className="pointer-events-none absolute inset-0 -translate-x-[120%] skew-x-[-20deg] bg-gradient-to-r from-transparent via-white/25 to-transparent opacity-0 group-hover:opacity-100 group-hover:translate-x-[120%] transition-[transform,opacity] duration-[1100ms] ease-out"
+                    aria-hidden
+                  />
+                  {/* Caption on hover — a gradient scrim plus the room name,
+                      both fading/rising in together. Static on touch devices
+                      with no hover would just never show it, which is fine:
+                      the lightbox (a tap away) still names every photo via
+                      its alt text read out below. */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/0 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" aria-hidden />
+                  <p className="absolute bottom-0 left-0 right-0 p-4 md:p-5 font-display text-mist text-sm md:text-base opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
+                    {img.caption}
+                  </p>
+                </button>
+              </div>
             </Reveal>
           ))}
         </div>
 
         <Reveal className="mt-3 md:mt-4">
-          <button
-            type="button"
-            onClick={() => setActiveIndex(closingIndex)}
-            aria-label={closingImage.alt}
-            className="group relative block w-full aspect-[1181/787] rounded-2xl md:rounded-3xl overflow-hidden shadow-soft cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brick focus-visible:ring-offset-2"
+          <div
+            onMouseMove={handleCardMouseMove}
+            onMouseLeave={handleCardMouseLeave}
+            style={TILT_TRANSITION}
+            className="rounded-2xl md:rounded-3xl overflow-hidden shadow-soft hover:shadow-xl [transform-style:preserve-3d] will-change-transform"
           >
-            <Pic
-              src={closingImage.src}
-              alt={closingImage.alt}
-              width={closingImage.w}
-              height={closingImage.h}
-              sizes="100vw"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/0 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" aria-hidden />
-            <p className="absolute bottom-0 left-0 right-0 p-4 md:p-5 font-display text-mist text-sm md:text-base opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
-              {closingImage.caption}
-            </p>
-          </button>
+            <button
+              type="button"
+              onClick={() => setActiveIndex(closingIndex)}
+              aria-label={closingImage.alt}
+              className="group relative block w-full aspect-[1181/787] cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brick focus-visible:ring-offset-2"
+            >
+              <Pic
+                src={closingImage.src}
+                alt={closingImage.alt}
+                width={closingImage.w}
+                height={closingImage.h}
+                sizes="100vw"
+                className="w-full h-full object-cover animate-kenburns motion-reduce:animate-none"
+              />
+              <div
+                className="pointer-events-none absolute inset-0 -translate-x-[120%] skew-x-[-20deg] bg-gradient-to-r from-transparent via-white/25 to-transparent opacity-0 group-hover:opacity-100 group-hover:translate-x-[120%] transition-[transform,opacity] duration-[1100ms] ease-out"
+                aria-hidden
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/0 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" aria-hidden />
+              <p className="absolute bottom-0 left-0 right-0 p-4 md:p-5 font-display text-mist text-sm md:text-base opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
+                {closingImage.caption}
+              </p>
+            </button>
+          </div>
         </Reveal>
       </div>
 
