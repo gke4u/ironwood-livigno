@@ -87,7 +87,21 @@ export const landingPages: LandingPage[] = [
       href: '/blog/sci-a-livigno-guida-carosello-3000',
       label: 'Leggi la guida completa al comprensorio Carosello 3000'
     },
-    breadcrumbName: 'Inverno a Livigno'
+    breadcrumbName: 'Inverno a Livigno',
+    faq: [
+      {
+        q: 'Quanto dura la stagione sciistica a Livigno?',
+        a: 'Generalmente da fine novembre a inizio maggio: una delle stagioni sciistiche più lunghe delle Alpi italiane.'
+      },
+      {
+        q: 'Quanto dista l\'appartamento dagli impianti di risalita?',
+        a: 'Circa 100 metri a piedi dagli impianti; la scuola sci e il noleggio attrezzatura si trovano a 50 metri.'
+      },
+      {
+        q: 'C\'è un posto dove riporre sci, scarponi e attrezzatura?',
+        a: 'Sì, un deposito dedicato per sci, scarponi e attrezzatura, oltre a un posto auto gratuito per chi arriva in macchina.'
+      }
+    ]
   },
   {
     slug: 'estate',
@@ -138,7 +152,21 @@ export const landingPages: LandingPage[] = [
       href: '/blog/livigno-estate-mountain-bike-trekking-lago',
       label: "Leggi la guida completa all'estate a Livigno"
     },
-    breadcrumbName: 'Estate a Livigno'
+    breadcrumbName: 'Estate a Livigno',
+    faq: [
+      {
+        q: 'Quando è la stagione estiva per mountain bike e trekking a Livigno?',
+        a: 'Da giugno a settembre, con oltre 50 km di sentieri organizzati, il Mottolino Bike Park e gli impianti estivi di Carosello 3000 aperti.'
+      },
+      {
+        q: 'È possibile noleggiare e-bike?',
+        a: 'Sì, su richiesta mettiamo a disposizione 2 e-bike a noleggio direttamente in struttura.'
+      },
+      {
+        q: "Livigno d'estate è adatta anche a chi non pratica sport?",
+        a: 'Sì: la passeggiata intorno al Lago di Livigno è alla portata di tutti, e le temperature restano fresche anche ad agosto.'
+      }
+    ]
   },
   {
     slug: 'famiglie',
@@ -189,7 +217,21 @@ export const landingPages: LandingPage[] = [
       href: '/blog/livigno-con-bambini-attivita-famiglia',
       label: 'Leggi la guida completa a Livigno con bambini'
     },
-    breadcrumbName: 'Famiglie a Livigno'
+    breadcrumbName: 'Famiglie a Livigno',
+    faq: [
+      {
+        q: "L'appartamento è adatto a bambini piccoli?",
+        a: "Sì: su richiesta forniamo culla e seggiolone, e le 3 camere e 2 bagni danno spazio e un po' di privacy a genitori e bambini."
+      },
+      {
+        q: 'Quali attività sono adatte ai bambini a Livigno?',
+        a: 'In inverno gli anelli di sci di fondo che attraversano il centro del paese, in estate la Bike Academy (circa 5 km, pensata per principianti) e le passeggiate intorno al lago.'
+      },
+      {
+        q: 'La cucina è attrezzata per cucinare per i bambini?',
+        a: 'Sì, è completamente attrezzata con lavastoviglie, forno e macchina per il caffè, per preparare pasti su misura senza mangiare fuori ogni sera.'
+      }
+    ]
   },
   {
     slug: 'benessere',
@@ -239,7 +281,21 @@ export const landingPages: LandingPage[] = [
       href: '/it#esperienza',
       label: "Scopri tutti i dettagli di sauna e bagno turco privati"
     },
-    breadcrumbName: 'Benessere'
+    breadcrumbName: 'Benessere',
+    faq: [
+      {
+        q: 'Posso usare la sauna e il bagno turco a qualsiasi ora, anche la sera tardi?',
+        a: 'Sì: non essendo uno spazio condiviso con nessuna prenotazione da fare, sono disponibili in qualsiasi momento della giornata o della sera.'
+      },
+      {
+        q: 'Conviene un appartamento con sauna privata rispetto a un hotel con spa?',
+        a: "Per molti ospiti sì: niente orari di prenotazione, accappatoio da portare o rischio di condividere lo spazio con sconosciuti — è uno dei dettagli più citati nelle recensioni reali su Google e Airbnb."
+      },
+      {
+        q: 'È possibile abbinare colazione e relax dopo la sauna?',
+        a: 'Sì, su richiesta e a pagamento è disponibile un servizio colazione in una struttura convenzionata a pochi metri dall\'appartamento.'
+      }
+    ]
   },
   {
     slug: 'come-arrivare',
@@ -290,7 +346,21 @@ export const landingPages: LandingPage[] = [
       href: '/blog/come-arrivare-a-livigno',
       label: 'Leggi la guida completa: treno, auto o aereo da Milano'
     },
-    breadcrumbName: 'Come arrivare'
+    breadcrumbName: 'Come arrivare',
+    faq: [
+      {
+        q: "Qual è l'indirizzo esatto di Ironwood Livigno?",
+        a: 'Via Saroch 771, 23041 Livigno (SO) — coordinate GPS 46.525061, 10.126967.'
+      },
+      {
+        q: "C'è un parcheggio incluso?",
+        a: "Sì, l'appartamento include un posto auto gratuito."
+      },
+      {
+        q: 'Come si raggiunge Livigno in auto o in treno?',
+        a: 'In auto da Milano si percorre la SS38 fino al Passo di Foscagno (dalla Svizzera si passa invece dalla Forcola di Livigno); in treno si scende a Tirano e si prosegue con un autobus di linea, con cambio a Bormio.'
+      }
+    ]
   },
   {
     slug: 'chi-siamo',

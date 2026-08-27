@@ -83,7 +83,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Check availability for your winter in Livigno',
       breadcrumbName: 'Winter in Livigno',
       navLabel: 'Winter',
-      relatedLinkLabel: 'Read the full guide to the Carosello 3000 ski area'
+      relatedLinkLabel: 'Read the full guide to the Carosello 3000 ski area',
+      faq: [
+        { q: 'How long is the ski season in Livigno?', a: 'Typically from late November to early May — one of the longest ski seasons in the Italian Alps.' },
+        { q: 'How far is the apartment from the ski lifts?', a: 'About a 100-metre walk from the lifts; the ski school and equipment rental are 50 metres away.' },
+        { q: 'Is there somewhere to store skis, boots and gear?', a: 'Yes, a dedicated storage space for skis, boots and gear, plus a free parking space for anyone arriving by car.' }
+      ]
     },
     'en-us': {
       title: 'Winter in Livigno, Italy: skiing, a private sauna, and comfort steps from the slopes',
@@ -125,7 +130,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Check availability for your winter vacation in Livigno',
       breadcrumbName: 'Winter in Livigno, Italy',
       navLabel: 'Winter',
-      relatedLinkLabel: 'Read the full guide to the Carosello 3000 ski area'
+      relatedLinkLabel: 'Read the full guide to the Carosello 3000 ski area',
+      faq: [
+        { q: 'How long is the ski season in Livigno, Italy?', a: 'Typically from late November to early May — one of the longest ski seasons in the Italian Alps.' },
+        { q: 'How far is the apartment from the ski lifts?', a: 'About a 100-meter walk from the lifts; the ski school and equipment rental are 50 meters away.' },
+        { q: 'Is there somewhere to store skis, boots, and gear?', a: 'Yes, a dedicated storage space for skis, boots, and gear, plus a free parking spot for anyone arriving by car.' }
+      ]
     },
     de: {
       title: 'Winterurlaub in Livigno: Skifahren, private Sauna und Komfort direkt an der Piste',
@@ -166,7 +176,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Verfügbarkeit für Ihren Winterurlaub in Livigno prüfen',
       breadcrumbName: 'Winter in Livigno',
       navLabel: 'Winter',
-      relatedLinkLabel: 'Lesen Sie den vollständigen Guide zum Skigebiet Carosello 3000'
+      relatedLinkLabel: 'Lesen Sie den vollständigen Guide zum Skigebiet Carosello 3000',
+      faq: [
+        { q: 'Wie lange dauert die Skisaison in Livigno?', a: 'In der Regel von Ende November bis Anfang Mai — eine der längsten Skisaisons der italienischen Alpen.' },
+        { q: 'Wie weit ist die Wohnung von den Skiliften entfernt?', a: 'Etwa 100 Meter zu Fuß von den Liften; Skischule und Ausrüstungsverleih liegen 50 Meter entfernt.' },
+        { q: 'Gibt es einen Abstellraum für Ski, Skischuhe und Ausrüstung?', a: 'Ja, einen eigenen Abstellraum dafür, plus einen kostenlosen Parkplatz für die Anreise mit dem Auto.' }
+      ]
     },
     fr: {
       title: 'Hiver à Livigno : ski, sauna privé et confort à deux pas des pistes',
@@ -208,7 +223,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Vérifiez les disponibilités pour votre hiver à Livigno',
       breadcrumbName: 'Hiver à Livigno',
       navLabel: 'Hiver',
-      relatedLinkLabel: 'Lisez le guide complet du domaine skiable Carosello 3000'
+      relatedLinkLabel: 'Lisez le guide complet du domaine skiable Carosello 3000',
+      faq: [
+        { q: 'Combien de temps dure la saison de ski à Livigno ?', a: "Généralement de fin novembre à début mai — l'une des saisons de ski les plus longues des Alpes italiennes." },
+        { q: "À quelle distance l'appartement se trouve-t-il des remontées mécaniques ?", a: "À environ 100 mètres à pied des remontées ; l'école de ski et la location de matériel sont à 50 mètres." },
+        { q: 'Y a-t-il un espace pour ranger skis, chaussures et matériel ?', a: "Oui, un espace de rangement dédié, ainsi qu'une place de parking gratuite pour les arrivées en voiture." }
+      ]
     },
     da: {
       title: 'Vinter i Livigno: skiløb, privat sauna og komfort tæt på pisterne',
@@ -249,7 +269,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Tjek ledighed for din vinter i Livigno',
       breadcrumbName: 'Vinter i Livigno',
       navLabel: 'Vinter',
-      relatedLinkLabel: 'Læs den fulde guide til skiområdet Carosello 3000'
+      relatedLinkLabel: 'Læs den fulde guide til skiområdet Carosello 3000',
+      faq: [
+        { q: 'Hvor lang er skisæsonen i Livigno?', a: 'Typisk fra slutningen af november til begyndelsen af maj — en af de længste skisæsoner i de italienske Alper.' },
+        { q: 'Hvor langt er lejligheden fra skiliftene?', a: 'Cirka 100 meter til fods fra liftene; skiskole og udstyrsudlejning ligger 50 meter væk.' },
+        { q: 'Er der plads til opbevaring af ski, støvler og udstyr?', a: 'Ja, et eget opbevaringsrum til det, plus en gratis parkeringsplads for dem, der ankommer i bil.' }
+      ]
     },
     pl: {
       title: 'Zimowe wakacje w Livigno: narciarstwo, prywatna sauna i komfort tuż przy stokach',
@@ -291,7 +316,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Sprawdź dostępność na swoją zimę w Livigno',
       breadcrumbName: 'Zima w Livigno',
       navLabel: 'Zima',
-      relatedLinkLabel: 'Przeczytaj pełny przewodnik po obszarze narciarskim Carosello 3000'
+      relatedLinkLabel: 'Przeczytaj pełny przewodnik po obszarze narciarskim Carosello 3000',
+      faq: [
+        { q: 'Jak długo trwa sezon narciarski w Livigno?', a: 'Zazwyczaj od końca listopada do początku maja — jeden z najdłuższych sezonów narciarskich w Alpach włoskich.' },
+        { q: 'Jak daleko jest apartament od wyciągów narciarskich?', a: 'Około 100 metrów pieszo od wyciągów; szkółka narciarska i wypożyczalnia sprzętu znajdują się 50 metrów dalej.' },
+        { q: 'Czy jest miejsce na przechowanie nart, butów i sprzętu?', a: 'Tak, dedykowana przechowalnia, a także bezpłatne miejsce parkingowe dla przyjeżdżających samochodem.' }
+      ]
     },
     cs: {
       title: 'Zimní dovolená v Livignu: lyžování, soukromá sauna a komfort kousek od sjezdovek',
@@ -332,7 +362,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Ověřte dostupnost pro svou zimu v Livignu',
       breadcrumbName: 'Zima v Livignu',
       navLabel: 'Zima',
-      relatedLinkLabel: 'Přečtěte si kompletního průvodce lyžařským areálem Carosello 3000'
+      relatedLinkLabel: 'Přečtěte si kompletního průvodce lyžařským areálem Carosello 3000',
+      faq: [
+        { q: 'Jak dlouho trvá lyžařská sezóna v Livignu?', a: 'Obvykle od konce listopadu do začátku května — jedna z nejdelších lyžařských sezón v italských Alpách.' },
+        { q: 'Jak daleko je apartmán od lyžařských vleků?', a: 'Přibližně 100 metrů pěšky od vleků; lyžařská škola a půjčovna vybavení jsou vzdáleny 50 metrů.' },
+        { q: 'Je k dispozici místo na uschování lyží, bot a vybavení?', a: 'Ano, vyhrazená úschovna, a navíc bezplatné parkovací místo pro příjezd autem.' }
+      ]
     },
     no: {
       title: 'Vinter i Livigno: skikjøring, privat badstue og komfort like ved bakkene',
@@ -373,7 +408,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Sjekk tilgjengelighet for din vinter i Livigno',
       breadcrumbName: 'Vinter i Livigno',
       navLabel: 'Vinter',
-      relatedLinkLabel: 'Les den fullstendige guiden til skiområdet Carosello 3000'
+      relatedLinkLabel: 'Les den fullstendige guiden til skiområdet Carosello 3000',
+      faq: [
+        { q: 'Hvor lang er skisesongen i Livigno?', a: 'Vanligvis fra slutten av november til begynnelsen av mai — en av de lengste skisesongene i de italienske Alpene.' },
+        { q: 'Hvor langt er leiligheten fra skiheisene?', a: 'Omtrent 100 meter til fots fra heisene; skiskole og utstyrsutleie ligger 50 meter unna.' },
+        { q: 'Er det et sted å oppbevare ski, støvler og utstyr?', a: 'Ja, et eget lagringsrom for dette, i tillegg til en gratis parkeringsplass for dem som kommer med bil.' }
+      ]
     },
     nl: {
       title: 'Winter in Livigno: skiën, een privésauna en comfort vlak bij de piste',
@@ -414,7 +454,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Check de beschikbaarheid voor jouw winter in Livigno',
       breadcrumbName: 'Winter in Livigno',
       navLabel: 'Winter',
-      relatedLinkLabel: 'Lees de volledige gids over het skigebied Carosello 3000'
+      relatedLinkLabel: 'Lees de volledige gids over het skigebied Carosello 3000',
+      faq: [
+        { q: 'Hoe lang duurt het skiseizoen in Livigno?', a: 'Meestal van eind november tot begin mei — een van de langste skiseizoenen van de Italiaanse Alpen.' },
+        { q: 'Hoe ver ligt het appartement van de skiliften?', a: 'Ongeveer 100 meter lopen van de liften; de skischool en verhuur van uitrusting liggen op 50 meter.' },
+        { q: "Is er een plek om ski's, schoenen en uitrusting op te bergen?", a: "Ja, een eigen bergruimte hiervoor, plus een gratis parkeerplaats voor wie met de auto komt." }
+      ]
     },
     zh: {
       title: '利维尼奥冬季度假:滑雪、私人桑拿与近在咫尺的舒适体验',
@@ -455,7 +500,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: '查询您在利维尼奥冬季的入住空房情况',
       breadcrumbName: '利维尼奥的冬天',
       navLabel: '冬季',
-      relatedLinkLabel: '阅读Carosello 3000滑雪区完整指南'
+      relatedLinkLabel: '阅读Carosello 3000滑雪区完整指南',
+      faq: [
+        { q: '利维尼奥的滑雪季有多长?', a: '通常从11月末持续到次年5月初——是意大利阿尔卑斯山滑雪季最长的地区之一。' },
+        { q: '公寓距离滑雪缆车有多远?', a: '步行约100米即可到达缆车;滑雪学校和器材租赁点距离50米。' },
+        { q: '有地方存放滑雪板、雪靴和装备吗?', a: '有,配有专用储藏室存放这些物品,自驾前来的客人还可享有免费停车位。' }
+      ]
     },
     ja: {
       title: 'リヴィニョの冬:スキー、専用サウナ、ゲレンデ目の前の快適さ',
@@ -496,7 +546,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'リヴィニョでの冬のご滞在、空室状況を確認する',
       breadcrumbName: 'リヴィニョの冬',
       navLabel: '冬',
-      relatedLinkLabel: 'Carosello 3000スキーエリアの完全ガイドを読む'
+      relatedLinkLabel: 'Carosello 3000スキーエリアの完全ガイドを読む',
+      faq: [
+        { q: 'リヴィニョのスキーシーズンはどのくらい続きますか?', a: '通常11月下旬から5月初旬までで、イタリアアルプスの中でも屈指の長さのスキーシーズンです。' },
+        { q: 'アパートメントからスキーリフトまでの距離は?', a: '徒歩約100mでリフトに到着します。スキースクールとレンタル用品店は50mの距離です。' },
+        { q: 'スキー板やブーツ、用具を収納する場所はありますか?', a: 'はい、専用の収納スペースをご用意しており、車でお越しの方には無料駐車場もございます。' }
+      ]
     }
   },
   estate: {
@@ -540,7 +595,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Check availability for your summer in Livigno',
       breadcrumbName: 'Summer in Livigno',
       navLabel: 'Summer',
-      relatedLinkLabel: 'Read the full guide to summer in Livigno'
+      relatedLinkLabel: 'Read the full guide to summer in Livigno',
+      faq: [
+        { q: 'When is the summer season for mountain biking and hiking in Livigno?', a: "From June to September, with over 50 km of organised trails, Mottolino Bike Park and Carosello 3000's summer lifts open." },
+        { q: 'Is e-bike hire available?', a: 'Yes, on request we provide 2 e-bikes for hire directly at the property.' },
+        { q: "Is Livigno in summer worth visiting even if you don't do sport?", a: 'Yes — the loop around Lake Livigno is suited to everyone, and temperatures stay cool even in August.' }
+      ]
     },
     'en-us': {
       title: 'Summer in Livigno, Italy: mountain biking, hiking, and unwinding in the apartment with a sauna',
@@ -582,7 +642,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Check availability for your summer vacation in Livigno',
       breadcrumbName: 'Summer in Livigno, Italy',
       navLabel: 'Summer',
-      relatedLinkLabel: 'Read the full guide to summer in Livigno'
+      relatedLinkLabel: 'Read the full guide to summer in Livigno',
+      faq: [
+        { q: 'When is the summer season for mountain biking and hiking in Livigno, Italy?', a: "From June to September, with over 50 km of organized trails, Mottolino Bike Park and Carosello 3000's summer lifts open." },
+        { q: 'Is e-bike rental available?', a: 'Yes, on request we provide 2 e-bikes for rent directly at the property.' },
+        { q: "Is Livigno in summer worth visiting even if you don't do sports?", a: 'Yes — the loop around Lake Livigno is suited to everyone, and temperatures stay cool even in August.' }
+      ]
     },
     de: {
       title: 'Sommer in Livigno: Mountainbike, Wandern und Entspannung in der Ferienwohnung mit Sauna',
@@ -624,7 +689,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Verfügbarkeit für Ihren Sommer in Livigno prüfen',
       breadcrumbName: 'Sommer in Livigno',
       navLabel: 'Sommer',
-      relatedLinkLabel: 'Lesen Sie den vollständigen Guide zum Sommer in Livigno'
+      relatedLinkLabel: 'Lesen Sie den vollständigen Guide zum Sommer in Livigno',
+      faq: [
+        { q: 'Wann ist die Sommersaison für Mountainbike und Wandern in Livigno?', a: 'Von Juni bis September, mit über 50 km ausgeschilderten Trails, dem Mottolino Bike Park und den geöffneten Sommerliften von Carosello 3000.' },
+        { q: 'Ist ein E-Bike-Verleih verfügbar?', a: 'Ja, auf Wunsch stellen wir 2 E-Bikes direkt vor Ort zur Verfügung.' },
+        { q: 'Lohnt sich Livigno im Sommer auch ohne Sport?', a: 'Ja — die Runde um den Lago di Livigno ist für alle geeignet, und die Temperaturen bleiben auch im August angenehm kühl.' }
+      ]
     },
     fr: {
       title: "Été à Livigno : VTT, randonnée et détente dans l'appartement avec sauna",
@@ -666,7 +736,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: "Vérifiez les disponibilités pour votre été à Livigno",
       breadcrumbName: 'Été à Livigno',
       navLabel: 'Été',
-      relatedLinkLabel: "Lisez le guide complet de l'été à Livigno"
+      relatedLinkLabel: "Lisez le guide complet de l'été à Livigno",
+      faq: [
+        { q: 'Quand est la saison estivale pour le VTT et la randonnée à Livigno ?', a: 'De juin à septembre, avec plus de 50 km de sentiers balisés, le Mottolino Bike Park et les remontées estivales du Carosello 3000 ouvertes.' },
+        { q: 'La location de vélos électriques est-elle disponible ?', a: 'Oui, sur demande nous mettons à disposition 2 vélos électriques directement sur place.' },
+        { q: 'Livigno en été vaut-il le détour même sans pratiquer de sport ?', a: 'Oui — le tour du lac de Livigno est accessible à tous, et les températures restent fraîches même en août.' }
+      ]
     },
     da: {
       title: 'Livigno om sommeren: mountainbike, vandreture og afslapning i lejligheden med sauna',
@@ -707,7 +782,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Tjek ledighed for din sommer i Livigno',
       breadcrumbName: 'Sommer i Livigno',
       navLabel: 'Sommer',
-      relatedLinkLabel: 'Læs den fulde guide til sommeren i Livigno'
+      relatedLinkLabel: 'Læs den fulde guide til sommeren i Livigno',
+      faq: [
+        { q: 'Hvornår er sommersæsonen for mountainbike og vandreture i Livigno?', a: "Fra juni til september, med over 50 km organiserede stier, Mottolino Bike Park og Carosello 3000's sommerlifte åbne." },
+        { q: 'Er der udlejning af el-cykler?', a: 'Ja, efter ønske stiller vi 2 el-cykler til rådighed direkte fra ejendommen.' },
+        { q: 'Er Livigno om sommeren et besøg værd, selv uden sport?', a: 'Ja — ruten rundt om Livigno-søen passer til alle, og temperaturerne forbliver kølige selv i august.' }
+      ]
     },
     pl: {
       title: 'Livigno latem: rowery górskie, trekking i relaks w apartamencie z sauną',
@@ -748,7 +828,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Sprawdź dostępność na swoje lato w Livigno',
       breadcrumbName: 'Lato w Livigno',
       navLabel: 'Lato',
-      relatedLinkLabel: 'Przeczytaj pełny przewodnik po lecie w Livigno'
+      relatedLinkLabel: 'Przeczytaj pełny przewodnik po lecie w Livigno',
+      faq: [
+        { q: 'Kiedy jest letni sezon na rowery górskie i trekking w Livigno?', a: 'Od czerwca do września, z ponad 50 km oznakowanych szlaków, Mottolino Bike Park i otwartymi letnimi wyciągami Carosello 3000.' },
+        { q: "Czy dostępna jest wypożyczalnia e-bike'ów?", a: 'Tak, na życzenie udostępniamy 2 rowery elektryczne bezpośrednio na miejscu.' },
+        { q: 'Czy Livigno latem warto odwiedzić nawet bez uprawiania sportu?', a: 'Tak — trasa wokół Jeziora Livigno jest dostępna dla każdego, a temperatury pozostają chłodne nawet w sierpniu.' }
+      ]
     },
     cs: {
       title: 'Livigno v létě: horská kola, trekking a odpočinek v apartmánu se saunou',
@@ -789,7 +874,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Ověřte dostupnost pro své léto v Livignu',
       breadcrumbName: 'Léto v Livignu',
       navLabel: 'Léto',
-      relatedLinkLabel: 'Přečtěte si kompletního průvodce létem v Livignu'
+      relatedLinkLabel: 'Přečtěte si kompletního průvodce létem v Livignu',
+      faq: [
+        { q: 'Kdy je letní sezóna pro horská kola a trekking v Livignu?', a: 'Od června do září, s více než 50 km organizovaných tras, Mottolino Bike Parkem a otevřenými letními vleky Carosello 3000.' },
+        { q: 'Je k dispozici půjčovna elektrokol?', a: 'Ano, na přání zajistíme zapůjčení 2 elektrokol přímo v objektu.' },
+        { q: 'Vyplatí se Livigno v létě navštívit i bez sportu?', a: 'Ano — procházka kolem jezera Livigno je vhodná pro každého a teploty zůstávají příjemně chladné i v srpnu.' }
+      ]
     },
     no: {
       title: 'Livigno om sommeren: sykling i fjellet, fotturer og avslapning i leiligheten med badstue',
@@ -830,7 +920,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Sjekk tilgjengelighet for din sommer i Livigno',
       breadcrumbName: 'Sommer i Livigno',
       navLabel: 'Sommer',
-      relatedLinkLabel: 'Les den fullstendige guiden til sommeren i Livigno'
+      relatedLinkLabel: 'Les den fullstendige guiden til sommeren i Livigno',
+      faq: [
+        { q: 'Når er sommersesongen for fjellsykling og fotturer i Livigno?', a: 'Fra juni til september, med over 50 km organiserte stier, Mottolino Bike Park og Carosello 3000s sommerheiser åpne.' },
+        { q: 'Er utleie av el-sykler tilgjengelig?', a: 'Ja, på forespørsel stiller vi 2 el-sykler til rådighet direkte fra eiendommen.' },
+        { q: 'Er Livigno om sommeren verdt et besøk selv uten sport?', a: 'Ja — runden rundt Livigno-sjøen passer for alle, og temperaturene holder seg kjølige selv i august.' }
+      ]
     },
     nl: {
       title: 'Livigno in de zomer: mountainbiken, wandelen en ontspannen in het appartement met sauna',
@@ -871,7 +966,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Check de beschikbaarheid voor jouw zomer in Livigno',
       breadcrumbName: 'Zomer in Livigno',
       navLabel: 'Zomer',
-      relatedLinkLabel: 'Lees de volledige gids over de zomer in Livigno'
+      relatedLinkLabel: 'Lees de volledige gids over de zomer in Livigno',
+      faq: [
+        { q: 'Wanneer is het zomerseizoen voor mountainbiken en wandelen in Livigno?', a: 'Van juni tot september, met meer dan 50 km aan georganiseerde paden, het Mottolino Bike Park en de geopende zomerliften van Carosello 3000.' },
+        { q: 'Is e-bikeverhuur beschikbaar?', a: 'Ja, op aanvraag stellen we 2 e-bikes rechtstreeks bij de accommodatie ter beschikking.' },
+        { q: 'Is Livigno in de zomer de moeite waard, ook zonder sport?', a: 'Ja — het rondje rond het Meer van Livigno is geschikt voor iedereen, en de temperaturen blijven ook in augustus aangenaam koel.' }
+      ]
     },
     zh: {
       title: '利维尼奥的夏天:山地自行车、徒步与带桑拿公寓的悠然放松',
@@ -912,7 +1012,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: '查询您在利维尼奥夏季的入住空房情况',
       breadcrumbName: '利维尼奥的夏天',
       navLabel: '夏季',
-      relatedLinkLabel: '阅读利维尼奥夏季完整指南'
+      relatedLinkLabel: '阅读利维尼奥夏季完整指南',
+      faq: [
+        { q: '利维尼奥的山地自行车和徒步夏季是什么时候?', a: '从6月到9月,拥有超过50公里的规划步道,Mottolino自行车公园和Carosello 3000的夏季缆车均开放。' },
+        { q: '可以租赁电动自行车吗?', a: '可以,如有需要,我们可直接在住处提供2辆电动自行车租赁。' },
+        { q: '即使不运动,夏天的利维尼奥也值得游览吗?', a: '是的——环绕利维尼奥湖的步道适合所有人,即使在8月气温也依然凉爽。' }
+      ]
     },
     ja: {
       title: 'リヴィニョの夏:マウンテンバイク、トレッキング、サウナ付きアパートメントでのくつろぎ',
@@ -953,7 +1058,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'リヴィニョでの夏のご滞在、空室状況を確認する',
       breadcrumbName: 'リヴィニョの夏',
       navLabel: '夏',
-      relatedLinkLabel: 'リヴィニョの夏の完全ガイドを読む'
+      relatedLinkLabel: 'リヴィニョの夏の完全ガイドを読む',
+      faq: [
+        { q: 'リヴィニョでマウンテンバイクやトレッキングを楽しめる夏のシーズンはいつですか?', a: '6月から9月で、50kmを超える整備されたトレイル、Mottolino Bike Park、Carosello 3000の夏季リフトが利用できます。' },
+        { q: 'eバイクのレンタルはありますか?', a: 'はい、ご要望に応じて施設から直接利用できるeバイク2台をご用意しています。' },
+        { q: 'スポーツをしなくても夏のリヴィニョは楽しめますか?', a: 'はい。リヴィニョ湖を一周する散策コースは誰でも楽しめ、8月でも気温は涼しく保たれています。' }
+      ]
     }
   },
   famiglie: {
@@ -997,7 +1107,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Check availability for your family',
       breadcrumbName: 'Families in Livigno',
       navLabel: 'Families',
-      relatedLinkLabel: 'Read the full guide to Livigno with children'
+      relatedLinkLabel: 'Read the full guide to Livigno with children',
+      faq: [
+        { q: 'Is the apartment suitable for young children?', a: 'Yes: on request we provide a cot and high chair, and the 3 bedrooms and 2 bathrooms give parents and children space and a bit of privacy.' },
+        { q: 'What activities are suitable for children in Livigno?', a: 'In winter, the cross-country ski loops through the town centre; in summer, the Bike Academy (about 5 km, built for beginners) and walks around the lake.' },
+        { q: 'Is the kitchen equipped for cooking for children?', a: "Yes, it's fully equipped with a dishwasher, oven and coffee machine, for preparing tailored meals without eating out every night." }
+      ]
     },
     'en-us': {
       title: 'Livigno, Italy with kids: the apartment designed for families',
@@ -1039,7 +1154,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Check availability for your family',
       breadcrumbName: 'Families in Livigno, Italy',
       navLabel: 'Families',
-      relatedLinkLabel: 'Read the full guide to Livigno with kids'
+      relatedLinkLabel: 'Read the full guide to Livigno with kids',
+      faq: [
+        { q: 'Is the apartment suitable for young kids?', a: 'Yes: on request we provide a crib and high chair, and the 3 bedrooms and 2 bathrooms give parents and kids space and a bit of privacy.' },
+        { q: 'What activities are suitable for kids in Livigno?', a: 'In winter, the cross-country ski loops through the town center; in summer, the Bike Academy (about 5 km, built for beginners) and walks around the lake.' },
+        { q: 'Is the kitchen equipped for cooking for kids?', a: "Yes, it's fully equipped with a dishwasher, oven, and coffee machine, for preparing tailored meals without eating out every night." }
+      ]
     },
     de: {
       title: 'Livigno mit Kindern: die Ferienwohnung für Familien',
@@ -1081,7 +1201,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Verfügbarkeit für Ihre Familie prüfen',
       breadcrumbName: 'Familien in Livigno',
       navLabel: 'Familien',
-      relatedLinkLabel: 'Lesen Sie den vollständigen Guide zu Livigno mit Kindern'
+      relatedLinkLabel: 'Lesen Sie den vollständigen Guide zu Livigno mit Kindern',
+      faq: [
+        { q: 'Ist die Wohnung für kleine Kinder geeignet?', a: 'Ja: Auf Anfrage stellen wir Kinderbett und Hochstuhl zur Verfügung, und die 3 Schlafzimmer und 2 Bäder geben Eltern und Kindern Platz und etwas Privatsphäre.' },
+        { q: 'Welche Aktivitäten eignen sich für Kinder in Livigno?', a: 'Im Winter die Langlaufloipen durch das Ortszentrum, im Sommer die Bike Academy (rund 5 km, für Anfänger konzipiert) und Spaziergänge um den See.' },
+        { q: 'Ist die Küche zum Kochen für Kinder ausgestattet?', a: 'Ja, sie ist voll ausgestattet mit Geschirrspüler, Backofen und Kaffeemaschine, um Mahlzeiten nach Maß zuzubereiten, ohne jeden Abend auswärts essen zu müssen.' }
+      ]
     },
     fr: {
       title: "Livigno avec des enfants : l'appartement pensé pour les familles",
@@ -1123,7 +1248,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Vérifiez les disponibilités pour votre famille',
       breadcrumbName: 'Familles à Livigno',
       navLabel: 'Familles',
-      relatedLinkLabel: 'Lisez le guide complet de Livigno avec des enfants'
+      relatedLinkLabel: 'Lisez le guide complet de Livigno avec des enfants',
+      faq: [
+        { q: 'L\'appartement convient-il aux jeunes enfants ?', a: "Oui : sur demande nous fournissons lit bébé et chaise haute, et les 3 chambres et 2 salles de bains offrent de l'espace et un peu d'intimité aux parents et aux enfants." },
+        { q: 'Quelles activités conviennent aux enfants à Livigno ?', a: 'En hiver, les boucles de ski de fond qui traversent le centre du village ; en été, la Bike Academy (environ 5 km, pensée pour les débutants) et les promenades autour du lac.' },
+        { q: 'La cuisine est-elle équipée pour cuisiner pour les enfants ?', a: 'Oui, elle est entièrement équipée avec lave-vaisselle, four et machine à café, pour préparer des repas adaptés sans devoir sortir manger tous les soirs.' }
+      ]
     },
     da: {
       title: 'Livigno med børn: lejligheden designet til familier',
@@ -1164,7 +1294,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Tjek ledighed for din familie',
       breadcrumbName: 'Familier i Livigno',
       navLabel: 'Familier',
-      relatedLinkLabel: 'Læs den fulde guide til Livigno med børn'
+      relatedLinkLabel: 'Læs den fulde guide til Livigno med børn',
+      faq: [
+        { q: 'Er lejligheden velegnet til små børn?', a: 'Ja: efter ønske stiller vi barneseng og højstol til rådighed, og de 3 soveværelser og 2 badeværelser giver forældre og børn plads og lidt privatliv.' },
+        { q: 'Hvilke aktiviteter passer til børn i Livigno?', a: 'Om vinteren langrendssporene gennem byens centrum, om sommeren Bike Academy (cirka 5 km, bygget til begyndere) og gåture rundt om søen.' },
+        { q: 'Er køkkenet udstyret til at lave mad til børn?', a: 'Ja, det er fuldt udstyret med opvaskemaskine, ovn og kaffemaskine, så man kan tilberede skræddersyede måltider uden at skulle spise ude hver aften.' }
+      ]
     },
     pl: {
       title: 'Livigno z dziećmi: apartament pomyślany dla rodzin',
@@ -1205,7 +1340,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Sprawdź dostępność dla swojej rodziny',
       breadcrumbName: 'Rodziny w Livigno',
       navLabel: 'Rodziny',
-      relatedLinkLabel: 'Przeczytaj pełny przewodnik po Livigno z dziećmi'
+      relatedLinkLabel: 'Przeczytaj pełny przewodnik po Livigno z dziećmi',
+      faq: [
+        { q: 'Czy apartament jest odpowiedni dla małych dzieci?', a: 'Tak: na życzenie zapewniamy łóżeczko i krzesełko, a 3 sypialnie i 2 łazienki dają rodzicom i dzieciom przestrzeń oraz odrobinę prywatności.' },
+        { q: 'Jakie atrakcje są odpowiednie dla dzieci w Livigno?', a: 'Zimą pętle narciarstwa biegowego przez centrum miasteczka, latem Bike Academy (około 5 km, stworzona dla początkujących) oraz spacery wokół jeziora.' },
+        { q: 'Czy kuchnia jest wyposażona do gotowania dla dzieci?', a: 'Tak, jest w pełni wyposażona w zmywarkę, piekarnik i ekspres do kawy, dzięki czemu można przygotować posiłki na miarę bez konieczności jedzenia na mieście co wieczór.' }
+      ]
     },
     cs: {
       title: 'Livigno s dětmi: apartmán navržený pro rodiny',
@@ -1246,7 +1386,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Ověřte dostupnost pro svou rodinu',
       breadcrumbName: 'Rodiny v Livignu',
       navLabel: 'Rodiny',
-      relatedLinkLabel: 'Přečtěte si kompletního průvodce Livignem s dětmi'
+      relatedLinkLabel: 'Přečtěte si kompletního průvodce Livignem s dětmi',
+      faq: [
+        { q: 'Je apartmán vhodný pro malé děti?', a: 'Ano: na přání zajistíme dětskou postýlku a jídelní židličku a 3 ložnice a 2 koupelny poskytují rodičům i dětem prostor a trochu soukromí.' },
+        { q: 'Jaké aktivity jsou vhodné pro děti v Livignu?', a: 'V zimě okruhy pro běžecké lyžování centrem městečka, v létě Bike Academy (přibližně 5 km, navržená pro začátečníky) a procházky kolem jezera.' },
+        { q: 'Je kuchyně vybavená pro vaření pro děti?', a: 'Ano, je plně vybavená myčkou, troubou a kávovarem, takže lze připravit jídla na míru bez nutnosti chodit každý večer ven.' }
+      ]
     },
     no: {
       title: 'Livigno med barn: leiligheten designet for familier',
@@ -1287,7 +1432,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Sjekk tilgjengelighet for din familie',
       breadcrumbName: 'Familier i Livigno',
       navLabel: 'Familier',
-      relatedLinkLabel: 'Les den fullstendige guiden til Livigno med barn'
+      relatedLinkLabel: 'Les den fullstendige guiden til Livigno med barn',
+      faq: [
+        { q: 'Er leiligheten egnet for små barn?', a: 'Ja: på forespørsel stiller vi barneseng og barnestol til rådighet, og de 3 soverommene og 2 badene gir foreldre og barn plass og litt privatliv.' },
+        { q: 'Hvilke aktiviteter passer for barn i Livigno?', a: 'Om vinteren langrennsløypene gjennom sentrum, om sommeren Bike Academy (omtrent 5 km, laget for nybegynnere) og turer rundt sjøen.' },
+        { q: 'Er kjøkkenet utstyrt for å lage mat til barn?', a: 'Ja, det er fullt utstyrt med oppvaskmaskin, stekeovn og kaffemaskin, for å lage skreddersydde måltider uten å måtte spise ute hver kveld.' }
+      ]
     },
     nl: {
       title: 'Livigno met kinderen: het appartement ontworpen voor gezinnen',
@@ -1328,7 +1478,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Check de beschikbaarheid voor jouw gezin',
       breadcrumbName: 'Gezinnen in Livigno',
       navLabel: 'Gezinnen',
-      relatedLinkLabel: 'Lees de volledige gids over Livigno met kinderen'
+      relatedLinkLabel: 'Lees de volledige gids over Livigno met kinderen',
+      faq: [
+        { q: 'Is het appartement geschikt voor kleine kinderen?', a: 'Ja: op aanvraag zorgen we voor een kinderbedje en kinderstoel, en de 3 slaapkamers en 2 badkamers geven ouders en kinderen ruimte en wat privacy.' },
+        { q: 'Welke activiteiten zijn geschikt voor kinderen in Livigno?', a: 'In de winter de langlaufroutes door het centrum, in de zomer de Bike Academy (ongeveer 5 km, ontworpen voor beginners) en wandelingen rond het meer.' },
+        { q: 'Is de keuken uitgerust om voor kinderen te koken?', a: 'Ja, ze is volledig uitgerust met vaatwasser, oven en koffiemachine, om maaltijden op maat te bereiden zonder elke avond buitenshuis te hoeven eten.' }
+      ]
     },
     zh: {
       title: '带孩子游利维尼奥:专为家庭设计的公寓',
@@ -1369,7 +1524,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: '查询您家庭入住的空房情况',
       breadcrumbName: '利维尼奥的家庭',
       navLabel: '家庭',
-      relatedLinkLabel: '阅读带孩子游利维尼奥完整指南'
+      relatedLinkLabel: '阅读带孩子游利维尼奥完整指南',
+      faq: [
+        { q: '公寓适合小孩子入住吗?', a: '适合:应要求我们提供婴儿床和餐椅,3间卧室和2间浴室为父母和孩子提供了空间和一定的私密性。' },
+        { q: '利维尼奥有哪些适合儿童的活动?', a: '冬季有穿过镇中心的越野滑雪环线,夏季有专为初学者设计的自行车学院路线(约5公里)以及环湖散步。' },
+        { q: '厨房是否配备了适合给孩子做饭的设施?', a: '是的,厨房设备齐全,配有洗碗机、烤箱和咖啡机,可以准备量身定制的餐点,无需每晚外出就餐。' }
+      ]
     },
     ja: {
       title: '子連れのリヴィニョ:ファミリーのために考え抜かれたアパートメント',
@@ -1410,7 +1570,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'ご家族でのご滞在、空室状況を確認する',
       breadcrumbName: 'リヴィニョのファミリー',
       navLabel: 'ファミリー',
-      relatedLinkLabel: '子連れのリヴィニョ完全ガイドを読む'
+      relatedLinkLabel: '子連れのリヴィニョ完全ガイドを読む',
+      faq: [
+        { q: '小さなお子様でも利用できますか?', a: 'はい。ご要望に応じてベビーベッドとハイチェアをご用意しており、3ベッドルーム・2バスルームでご両親とお子様それぞれにスペースとプライバシーを確保できます。' },
+        { q: 'リヴィニョで子供に適したアクティビティはありますか?', a: '冬は町の中心部を通るクロスカントリースキーコース、夏は初心者向けに作られた約5kmのBike Academyのコースや湖の周りの散策がおすすめです。' },
+        { q: 'キッチンは子供のための調理に対応していますか?', a: 'はい、食洗機、オーブン、コーヒーマシンを完備しており、毎晩外食することなくお子様に合わせた食事を用意できます。' }
+      ]
     }
   },
   benessere: {
@@ -1453,7 +1618,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Book your moment of wellness in Livigno',
       breadcrumbName: 'Wellness',
       navLabel: 'Wellness',
-      relatedLinkLabel: 'See all the details of the private sauna and steam bath'
+      relatedLinkLabel: 'See all the details of the private sauna and steam bath',
+      faq: [
+        { q: 'Can I use the sauna and steam bath at any time, even late in the evening?', a: "Yes: since it's not a shared space with any booking to make, it's available at any time of day or evening." },
+        { q: 'Is an apartment with a private sauna worth it compared to a hotel with a spa?', a: 'For many guests, yes: no booking slots, no robe to bring, no risk of sharing the space with strangers — one of the details most often mentioned in the real reviews on Google and Airbnb.' },
+        { q: 'Can I pair breakfast with relaxing after the sauna?', a: 'Yes, on request and for a fee, a breakfast service is available at a partner venue just steps from the apartment.' }
+      ]
     },
     'en-us': {
       title: 'Wellness in Livigno, Italy: private infrared sauna and steam bath',
@@ -1494,7 +1664,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Book your moment of wellness in Livigno',
       breadcrumbName: 'Wellness',
       navLabel: 'Wellness',
-      relatedLinkLabel: 'See all the details of the private sauna and steam bath'
+      relatedLinkLabel: 'See all the details of the private sauna and steam bath',
+      faq: [
+        { q: 'Can I use the sauna and steam bath at any time, even late in the evening?', a: "Yes: since it isn't a shared space with any reservation to make, it's available at any time of day or evening." },
+        { q: 'Is an apartment with a private sauna worth it compared to a hotel with a spa?', a: 'For many guests, yes: no reservation times, no robe to bring, no risk of sharing the space with strangers — one of the details most often mentioned in the real reviews on Google and Airbnb.' },
+        { q: 'Can I pair breakfast with relaxing after the sauna?', a: 'Yes, on request and for a fee, a breakfast service is available at a partner venue just steps from the apartment.' }
+      ]
     },
     de: {
       title: 'Wellness in Livigno: private Infrarotsauna und Dampfbad',
@@ -1535,7 +1710,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Buchen Sie Ihren Wellness-Moment in Livigno',
       breadcrumbName: 'Wellness',
       navLabel: 'Wellness',
-      relatedLinkLabel: 'Alle Details zu privater Sauna und Dampfbad ansehen'
+      relatedLinkLabel: 'Alle Details zu privater Sauna und Dampfbad ansehen',
+      faq: [
+        { q: 'Kann ich Sauna und Dampfbad zu jeder Tageszeit nutzen, auch spätabends?', a: 'Ja: Da es kein Gemeinschaftsbereich mit Buchung ist, stehen sie zu jeder Tages- oder Abendstunde zur Verfügung.' },
+        { q: 'Lohnt sich eine Wohnung mit privater Sauna im Vergleich zu einem Hotel mit Spa?', a: 'Für viele Gäste ja: keine Buchungszeiten, kein Bademantel mitzubringen, kein Risiko, den Raum mit Fremden zu teilen — eines der am häufigsten genannten Details in den echten Bewertungen auf Google und Airbnb.' },
+        { q: 'Lässt sich Frühstück mit Entspannung nach der Sauna verbinden?', a: 'Ja, auf Anfrage und gegen Gebühr gibt es einen Frühstücksservice in einer Partnerunterkunft nur wenige Meter von der Wohnung entfernt.' }
+      ]
     },
     fr: {
       title: 'Bien-être à Livigno : sauna infrarouge et hammam privés',
@@ -1576,7 +1756,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Réservez votre moment bien-être à Livigno',
       breadcrumbName: 'Bien-être',
       navLabel: 'Bien-être',
-      relatedLinkLabel: 'Voir tous les détails du sauna et du hammam privés'
+      relatedLinkLabel: 'Voir tous les détails du sauna et du hammam privés',
+      faq: [
+        { q: 'Puis-je utiliser le sauna et le hammam à toute heure, même tard le soir ?', a: "Oui : n'étant pas un espace partagé nécessitant une réservation, ils sont disponibles à toute heure du jour ou du soir." },
+        { q: 'Un appartement avec sauna privé vaut-il le coût par rapport à un hôtel avec spa ?', a: "Pour beaucoup de clients, oui : pas de créneaux à réserver, pas de peignoir à apporter, pas de risque de partager l'espace avec des inconnus — l'un des détails les plus souvent mentionnés dans les avis réels sur Google et Airbnb." },
+        { q: 'Peut-on associer petit-déjeuner et détente après le sauna ?', a: "Oui, sur demande et moyennant un supplément, un service de petit-déjeuner est disponible dans un établissement partenaire à quelques mètres de l'appartement." }
+      ]
     },
     da: {
       title: 'Velvære i Livigno: privat infrarød sauna og dampbad',
@@ -1616,7 +1801,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Book dit velværemoment i Livigno',
       breadcrumbName: 'Velvære',
       navLabel: 'Velvære',
-      relatedLinkLabel: 'Se alle detaljer om den private sauna og dampbadet'
+      relatedLinkLabel: 'Se alle detaljer om den private sauna og dampbadet',
+      faq: [
+        { q: 'Kan jeg bruge saunaen og dampbadet på et hvilket som helst tidspunkt, også sent om aftenen?', a: 'Ja: da det ikke er et delt rum med booking, er de tilgængelige på ethvert tidspunkt af dagen eller aftenen.' },
+        { q: 'Er en lejlighed med privat sauna det værd sammenlignet med et hotel med spa?', a: 'For mange gæster ja: ingen bookingtider, intet håndklæde at medbringe, ingen risiko for at dele rummet med fremmede — en af de detaljer, der oftest nævnes i de rigtige anmeldelser på Google og Airbnb.' },
+        { q: 'Kan man kombinere morgenmad med afslapning efter saunaen?', a: 'Ja, efter ønske og mod betaling er der en morgenmadsservice hos et samarbejdssted få meter fra lejligheden.' }
+      ]
     },
     pl: {
       title: 'Wellness w Livigno: prywatna sauna na podczerwień i łaźnia parowa',
@@ -1656,7 +1846,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Zarezerwuj swój moment wellness w Livigno',
       breadcrumbName: 'Wellness',
       navLabel: 'Wellness',
-      relatedLinkLabel: 'Poznaj wszystkie szczegóły prywatnej sauny i łaźni parowej'
+      relatedLinkLabel: 'Poznaj wszystkie szczegóły prywatnej sauny i łaźni parowej',
+      faq: [
+        { q: 'Czy mogę korzystać z sauny i łaźni parowej o dowolnej porze, nawet późnym wieczorem?', a: 'Tak: ponieważ to nie jest przestrzeń wspólna wymagająca rezerwacji, są dostępne o każdej porze dnia i wieczoru.' },
+        { q: 'Czy apartament z prywatną sauną się opłaca w porównaniu z hotelem ze spa?', a: 'Dla wielu gości tak: brak godzin rezerwacji, brak szlafroka do przyniesienia, brak ryzyka dzielenia przestrzeni z nieznajomymi — jeden ze szczegółów najczęściej wymienianych w prawdziwych opiniach na Google i Airbnb.' },
+        { q: 'Czy można połączyć śniadanie z relaksem po saunie?', a: 'Tak, na życzenie i odpłatnie dostępna jest usługa śniadaniowa w partnerskim obiekcie kilka metrów od apartamentu.' }
+      ]
     },
     cs: {
       title: 'Wellness v Livignu: soukromá infrasauna a parní lázeň',
@@ -1696,7 +1891,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Rezervujte si svůj wellness moment v Livignu',
       breadcrumbName: 'Wellness',
       navLabel: 'Wellness',
-      relatedLinkLabel: 'Podívejte se na všechny detaily soukromé sauny a parní lázně'
+      relatedLinkLabel: 'Podívejte se na všechny detaily soukromé sauny a parní lázně',
+      faq: [
+        { q: 'Mohu saunu a parní lázeň používat kdykoli, i pozdě večer?', a: 'Ano: jelikož nejde o sdílený prostor s rezervací, jsou k dispozici v kteroukoli denní či večerní hodinu.' },
+        { q: 'Vyplatí se apartmán se soukromou saunou ve srovnání s hotelem se spa?', a: 'Pro mnoho hostů ano: žádné rezervační časy, žádný župan k přinesení, žádné riziko sdílení prostoru s cizími lidmi — jeden z detailů nejčastěji zmiňovaných ve skutečných recenzích na Google a Airbnb.' },
+        { q: 'Lze spojit snídani s odpočinkem po sauně?', a: 'Ano, na přání a za poplatek je k dispozici snídaňová služba ve smluvním zařízení pár metrů od apartmánu.' }
+      ]
     },
     no: {
       title: 'Velvære i Livigno: privat infrarød badstue og dampbad',
@@ -1736,7 +1936,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Book ditt velværeøyeblikk i Livigno',
       breadcrumbName: 'Velvære',
       navLabel: 'Velvære',
-      relatedLinkLabel: 'Se alle detaljer om den private badstuen og dampbadet'
+      relatedLinkLabel: 'Se alle detaljer om den private badstuen og dampbadet',
+      faq: [
+        { q: 'Kan jeg bruke badstuen og dampbadet når som helst, også sent på kvelden?', a: 'Ja: siden det ikke er et delt rom med booking, er de tilgjengelige når som helst på dagen eller kvelden.' },
+        { q: 'Er en leilighet med privat badstue verdt det sammenlignet med et hotell med spa?', a: 'For mange gjester ja: ingen bookingtider, ingen badekåpe å ta med, ingen risiko for å dele rommet med fremmede — en av detaljene som oftest nevnes i de ekte anmeldelsene på Google og Airbnb.' },
+        { q: 'Kan man kombinere frokost med avslapning etter badstuen?', a: 'Ja, på forespørsel og mot betaling er det en frokosttjeneste hos et samarbeidssted få meter fra leiligheten.' }
+      ]
     },
     nl: {
       title: 'Wellness in Livigno: privé infraroodsauna en stoombad',
@@ -1776,7 +1981,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Boek jouw wellnessmoment in Livigno',
       breadcrumbName: 'Wellness',
       navLabel: 'Wellness',
-      relatedLinkLabel: 'Bekijk alle details van de privésauna en het stoombad'
+      relatedLinkLabel: 'Bekijk alle details van de privésauna en het stoombad',
+      faq: [
+        { q: 'Kan ik de sauna en het stoombad op elk moment gebruiken, ook laat op de avond?', a: 'Ja: aangezien het geen gedeelde ruimte met reservering is, zijn ze op elk moment van de dag of avond beschikbaar.' },
+        { q: 'Is een appartement met privésauna de moeite waard vergeleken met een hotel met spa?', a: 'Voor veel gasten wel: geen boekingstijden, geen badjas om mee te nemen, geen risico om de ruimte met vreemden te delen — een van de details die het vaakst worden genoemd in de echte recensies op Google en Airbnb.' },
+        { q: 'Kan ik ontbijt combineren met ontspanning na de sauna?', a: 'Ja, op aanvraag en tegen betaling is er een ontbijtservice bij een partneraccommodatie op een paar meter van het appartement.' }
+      ]
     },
     zh: {
       title: '利维尼奥的养生体验:私人红外线桑拿与土耳其蒸汽浴',
@@ -1816,7 +2026,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: '预订您在利维尼奥的养生时光',
       breadcrumbName: '养生',
       navLabel: '养生',
-      relatedLinkLabel: '了解私人桑拿与土耳其蒸汽浴的全部详情'
+      relatedLinkLabel: '了解私人桑拿与土耳其蒸汽浴的全部详情',
+      faq: [
+        { q: '我可以在任何时间使用桑拿和蒸汽浴吗,包括深夜?', a: '可以:由于这不是需要预约的共用空间,因此一天中任何时刻都可以使用。' },
+        { q: '与带水疗中心的酒店相比,带私人桑拿的公寓值得选择吗?', a: '对许多客人来说是值得的:无需预约时段、无需自带浴袍、也没有与陌生人共用空间的风险——这是Google和Airbnb真实评价中最常被提及的细节之一。' },
+        { q: '可以在桑拿后享用早餐放松吗?', a: '可以,如有需要并支付额外费用,可在距公寓仅几米的合作场所享用早餐服务。' }
+      ]
     },
     ja: {
       title: 'リヴィニョのウェルネス:専用の赤外線サウナとスチームバス',
@@ -1856,7 +2071,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'リヴィニョでのウェルネスなひとときを予約する',
       breadcrumbName: 'ウェルネス',
       navLabel: 'ウェルネス',
-      relatedLinkLabel: '専用サウナとスチームバスの詳細をすべて見る'
+      relatedLinkLabel: '専用サウナとスチームバスの詳細をすべて見る',
+      faq: [
+        { q: 'サウナやスチームバスは、夜遅くを含めいつでも利用できますか?', a: 'はい。予約が必要な共用スペースではないため、昼夜を問わずいつでもご利用いただけます。' },
+        { q: 'スパ付きホテルと比べて、専用サウナ付きのアパートメントには価値がありますか?', a: '多くのゲストにとってはい。予約時間もバスローブの持参も、見知らぬ人と空間を共有するリスクもありません。GoogleやAirbnbの実際のレビューで最もよく触れられる点のひとつです。' },
+        { q: 'サウナの後に朝食でくつろぐことはできますか?', a: 'はい、ご要望に応じて有料で、アパートメントから数メートルの提携施設で朝食サービスをご利用いただけます。' }
+      ]
     }
   },
   'come-arrivare': {
@@ -1900,7 +2120,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Message us on WhatsApp for arrival directions',
       breadcrumbName: 'Getting here',
       navLabel: 'Getting here',
-      relatedLinkLabel: 'Read the full guide: train, car or plane from Milan'
+      relatedLinkLabel: 'Read the full guide: train, car or plane from Milan',
+      faq: [
+        { q: 'What is the exact address of Ironwood Livigno?', a: 'Via Saroch 771, 23041 Livigno (SO) — GPS coordinates 46.525061, 10.126967.' },
+        { q: 'Is parking included?', a: 'Yes, the apartment includes a free parking space.' },
+        { q: 'How do you reach Livigno by car or train?', a: 'By car from Milan, take the SS38 to the Foscagno Pass (from Switzerland, take the Forcola di Livigno instead); by train, get off at Tirano and continue with a scheduled bus, changing at Bormio.' }
+      ]
     },
     'en-us': {
       title: 'How to reach Ironwood Livigno, Italy: address, parking, and the final stretch',
@@ -1942,7 +2167,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Message us on WhatsApp for arrival directions',
       breadcrumbName: 'Getting here',
       navLabel: 'Getting here',
-      relatedLinkLabel: 'Read the full guide: train, car or plane from Milan'
+      relatedLinkLabel: 'Read the full guide: train, car or plane from Milan',
+      faq: [
+        { q: 'What is the exact address of Ironwood Livigno, Italy?', a: 'Via Saroch 771, 23041 Livigno (SO), Italy — GPS coordinates 46.525061, 10.126967.' },
+        { q: 'Is parking included?', a: 'Yes, the apartment includes a free parking space.' },
+        { q: 'How do you get to Livigno by car or train?', a: 'By car from Milan, take the SS38 to the Foscagno Pass (from Switzerland, take the Forcola di Livigno instead); by train, get off at Tirano and continue with a scheduled bus, changing at Bormio.' }
+      ]
     },
     de: {
       title: 'So erreichen Sie Ironwood Livigno: Adresse, Parkplatz und die letzten Kilometer',
@@ -1984,7 +2214,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Schreiben Sie uns auf WhatsApp für Wegbeschreibungen',
       breadcrumbName: 'Anreise',
       navLabel: 'Anreise',
-      relatedLinkLabel: 'Lesen Sie den vollständigen Guide: Zug, Auto oder Flugzeug ab Mailand'
+      relatedLinkLabel: 'Lesen Sie den vollständigen Guide: Zug, Auto oder Flugzeug ab Mailand',
+      faq: [
+        { q: 'Wie lautet die genaue Adresse von Ironwood Livigno?', a: 'Via Saroch 771, 23041 Livigno (SO) — GPS-Koordinaten 46.525061, 10.126967.' },
+        { q: 'Ist ein Parkplatz inklusive?', a: 'Ja, zur Wohnung gehört ein kostenloser Parkplatz.' },
+        { q: 'Wie erreicht man Livigno mit dem Auto oder mit dem Zug?', a: 'Mit dem Auto von Mailand aus über die SS38 zum Passo di Foscagno (aus der Schweiz stattdessen über die Forcola di Livigno); mit dem Zug bis Tirano und weiter mit dem Linienbus, Umstieg in Bormio.' }
+      ]
     },
     fr: {
       title: 'Comment rejoindre Ironwood Livigno : adresse, parking et derniers kilomètres',
@@ -2026,7 +2261,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: "Écrivez-nous sur WhatsApp pour les indications d'arrivée",
       breadcrumbName: 'Comment venir',
       navLabel: 'Comment venir',
-      relatedLinkLabel: 'Lisez le guide complet : train, voiture ou avion depuis Milan'
+      relatedLinkLabel: 'Lisez le guide complet : train, voiture ou avion depuis Milan',
+      faq: [
+        { q: "Quelle est l'adresse exacte d'Ironwood Livigno ?", a: 'Via Saroch 771, 23041 Livigno (SO) — coordonnées GPS 46.525061, 10.126967.' },
+        { q: 'Le parking est-il inclus ?', a: 'Oui, l\'appartement inclut une place de parking gratuite.' },
+        { q: 'Comment rejoindre Livigno en voiture ou en train ?', a: 'En voiture depuis Milan, prenez la SS38 jusqu\'au col de Foscagno (depuis la Suisse, passez plutôt par la Forcola di Livigno) ; en train, descendez à Tirano puis continuez en bus de ligne, avec correspondance à Bormio.' }
+      ]
     },
     da: {
       title: 'Sådan kommer du til Ironwood Livigno: adresse, parkering og de sidste kilometer',
@@ -2067,7 +2307,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Skriv til os på WhatsApp for ankomstvejledning',
       breadcrumbName: 'Sådan kommer du hertil',
       navLabel: 'Sådan kommer du hertil',
-      relatedLinkLabel: 'Læs den fulde guide: tog, bil eller fly fra Milano'
+      relatedLinkLabel: 'Læs den fulde guide: tog, bil eller fly fra Milano',
+      faq: [
+        { q: 'Hvad er den præcise adresse på Ironwood Livigno?', a: 'Via Saroch 771, 23041 Livigno (SO) — GPS-koordinater 46.525061, 10.126967.' },
+        { q: 'Er parkering inkluderet?', a: 'Ja, lejligheden inkluderer en gratis parkeringsplads.' },
+        { q: 'Hvordan kommer man til Livigno med bil eller tog?', a: 'Med bil fra Milano ad SS38 til Foscagno-passet (fra Schweiz tages i stedet Forcola di Livigno); med tog til Tirano og videre med rutebus, med skift i Bormio.' }
+      ]
     },
     pl: {
       title: 'Jak dojechać do Ironwood Livigno: adres, parking i ostatnie kilometry',
@@ -2108,7 +2353,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Napisz do nas na WhatsApp po wskazówki dojazdu',
       breadcrumbName: 'Jak dojechać',
       navLabel: 'Jak dojechać',
-      relatedLinkLabel: 'Przeczytaj pełny przewodnik: pociąg, samochód lub samolot z Mediolanu'
+      relatedLinkLabel: 'Przeczytaj pełny przewodnik: pociąg, samochód lub samolot z Mediolanu',
+      faq: [
+        { q: 'Jaki jest dokładny adres Ironwood Livigno?', a: 'Via Saroch 771, 23041 Livigno (SO) — współrzędne GPS 46.525061, 10.126967.' },
+        { q: 'Czy parking jest wliczony w cenę?', a: 'Tak, apartament obejmuje bezpłatne miejsce parkingowe.' },
+        { q: 'Jak dojechać do Livigno samochodem lub pociągiem?', a: 'Samochodem z Mediolanu przez SS38 do Przełęczy Foscagno (ze Szwajcarii przez przełęcz Forcola di Livigno); pociągiem do Tirano, a następnie autobusem rejsowym z przesiadką w Bormio.' }
+      ]
     },
     cs: {
       title: 'Jak se dostat do Ironwood Livigno: adresa, parkování a poslední kilometry',
@@ -2149,7 +2399,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Napište nám na WhatsApp pro pokyny k příjezdu',
       breadcrumbName: 'Jak se k nám dostat',
       navLabel: 'Jak se k nám dostat',
-      relatedLinkLabel: 'Přečtěte si kompletního průvodce: vlak, auto nebo letadlo z Milána'
+      relatedLinkLabel: 'Přečtěte si kompletního průvodce: vlak, auto nebo letadlo z Milána',
+      faq: [
+        { q: 'Jaká je přesná adresa Ironwood Livigno?', a: 'Via Saroch 771, 23041 Livigno (SO) — GPS souřadnice 46.525061, 10.126967.' },
+        { q: 'Je parkování součástí pobytu?', a: 'Ano, apartmán zahrnuje bezplatné parkovací místo.' },
+        { q: 'Jak se dostat do Livigna autem nebo vlakem?', a: 'Autem z Milána po silnici SS38 k průsmyku Foscagno (ze Švýcarska přes Forcolu di Livigno); vlakem do Tirana a dále linkovým autobusem s přestupem v Bormiu.' }
+      ]
     },
     no: {
       title: 'Slik kommer du til Ironwood Livigno: adresse, parkering og de siste kilometerne',
@@ -2190,7 +2445,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Skriv til oss på WhatsApp for veibeskrivelse',
       breadcrumbName: 'Slik kommer du hit',
       navLabel: 'Slik kommer du hit',
-      relatedLinkLabel: 'Les den fullstendige guiden: tog, bil eller fly fra Milano'
+      relatedLinkLabel: 'Les den fullstendige guiden: tog, bil eller fly fra Milano',
+      faq: [
+        { q: 'Hva er den nøyaktige adressen til Ironwood Livigno?', a: 'Via Saroch 771, 23041 Livigno (SO) — GPS-koordinater 46.525061, 10.126967.' },
+        { q: 'Er parkering inkludert?', a: 'Ja, leiligheten inkluderer en gratis parkeringsplass.' },
+        { q: 'Hvordan kommer man til Livigno med bil eller tog?', a: 'Med bil fra Milano via SS38 til Foscagno-passet (fra Sveits tar man i stedet Forcola di Livigno); med tog til Tirano og videre med rutebuss, med bytte i Bormio.' }
+      ]
     },
     nl: {
       title: 'Zo bereik je Ironwood Livigno: adres, parkeren en de laatste kilometers',
@@ -2231,7 +2491,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'Stuur ons een bericht op WhatsApp voor route-aanwijzingen',
       breadcrumbName: 'Hoe je hier komt',
       navLabel: 'Hoe je hier komt',
-      relatedLinkLabel: 'Lees de volledige gids: trein, auto of vliegtuig vanuit Milaan'
+      relatedLinkLabel: 'Lees de volledige gids: trein, auto of vliegtuig vanuit Milaan',
+      faq: [
+        { q: 'Wat is het exacte adres van Ironwood Livigno?', a: 'Via Saroch 771, 23041 Livigno (SO) — GPS-coördinaten 46.525061, 10.126967.' },
+        { q: 'Is parkeren inbegrepen?', a: 'Ja, bij het appartement hoort een gratis parkeerplaats.' },
+        { q: 'Hoe bereik je Livigno met de auto of trein?', a: 'Met de auto vanuit Milaan via de SS38 naar de Foscagno-pas (vanuit Zwitserland neem je in plaats daarvan de Forcola di Livigno); met de trein tot Tirano en verder met een lijnbus, met overstap in Bormio.' }
+      ]
     },
     zh: {
       title: '如何抵达Ironwood Livigno:地址、停车与最后几公里',
@@ -2272,7 +2537,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: '通过WhatsApp联系我们获取抵达指引',
       breadcrumbName: '如何抵达',
       navLabel: '如何抵达',
-      relatedLinkLabel: '阅读完整指南:从米兰出发的火车、汽车或飞机'
+      relatedLinkLabel: '阅读完整指南:从米兰出发的火车、汽车或飞机',
+      faq: [
+        { q: 'Ironwood Livigno的确切地址是什么?', a: 'Via Saroch 771, 23041 Livigno (SO)——GPS坐标46.525061, 10.126967。' },
+        { q: '是否含停车位?', a: '是的,公寓附带一个免费停车位。' },
+        { q: '如何自驾或乘火车抵达利维尼奥?', a: '自驾从米兰出发沿SS38公路前往Foscagno山口(从瑞士方向则经由Forcola di Livigno山口);乘火车可到Tirano站,再转乘班车,在Bormio换乘。' }
+      ]
     },
     ja: {
       title: 'Ironwood Livignoへのアクセス:住所、駐車場、そして最後の道のり',
@@ -2313,7 +2583,12 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       ctaText: 'WhatsAppでアクセス方法をお問い合わせください',
       breadcrumbName: 'アクセス',
       navLabel: 'アクセス',
-      relatedLinkLabel: '完全ガイドを読む:ミラノからの電車・車・飛行機'
+      relatedLinkLabel: '完全ガイドを読む:ミラノからの電車・車・飛行機',
+      faq: [
+        { q: 'Ironwood Livignoの正確な住所は?', a: 'Via Saroch 771, 23041 Livigno (SO)——GPS座標46.525061, 10.126967。' },
+        { q: '駐車場は含まれていますか?', a: 'はい、アパートメントには無料駐車場が含まれています。' },
+        { q: '車や電車でリヴィニョへ行くにはどうすればよいですか?', a: '車の場合、ミラノからSS38号線でFoscagno峠へ向かいます(スイスからの場合はForcola di Livignoを経由)。電車の場合はティラノ駅で下車し、ボルミオで乗り換えて路線バスで向かいます。' }
+      ]
     }
   },
   'chi-siamo': {
