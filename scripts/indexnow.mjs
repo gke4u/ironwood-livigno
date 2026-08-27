@@ -8,7 +8,7 @@
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
 const KEY = 'fe5658eb3315e4118eb566649f881415';
-const LOCALES = ['it', 'en', 'de', 'fr', 'da', 'pl', 'cs', 'no', 'nl'];
+const LOCALES = ['it', 'en', 'en-us', 'de', 'fr', 'da', 'pl', 'cs', 'no', 'nl', 'zh', 'ja'];
 
 const urlList = LOCALES.map((locale) => `${SITE_URL}/${locale}`);
 
