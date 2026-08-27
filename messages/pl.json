@@ -71,7 +71,7 @@
   "rooms": {
     "eyebrow": "Miejsce na odpoczynek",
     "title": "3 sypialnie, stworzone dla rodzin i grup",
-    "text": "Nasz apartament w Livigno oferuje elastyczne konfiguracje pozwalające wygodnie pomieścić do 6 gości, z 2 łazienkami wspólnymi dla całego apartamentu — idealne dla rodzin i grup.",
+    "text": "Nasz apartament w Livigno oferuje elastyczne konfiguracje pozwalające wygodnie pomieścić do 6 gości — idealne dla rodzin i grup.",
     "room1_title": "Pokój dwuosobowy (połączone łóżka pojedyncze)",
     "room1_text": "Dwa pojedyncze łóżka połączone topperem, dające komfort prawdziwego łóżka małżeńskiego — idealne dla pary lub rodziców w grupie.",
     "room2_title": "Sypialnia z łóżkami pojedynczymi",
@@ -179,7 +179,7 @@
     "eyebrow": "Nie tylko zima",
     "title": "Livigno zachwyca również latem",
     "text": "Szlaki trekkingowe, górska jazda na rowerze wśród szczytów, Jezioro Livigno i kwitnące hale: ta sama strategiczna lokalizacja, która czyni zimę idealną, latem staje się doskonałą bazą do odkrywania alpejskiej przyrody.",
-    "ebike_note": "2 rowery elektryczne do wypożyczenia bezpośrednio na miejscu za 35,00 € od osoby za dobę, na życzenie, z rezerwacją z wyprzedzeniem (płatność na miejscu), by odkrywać szlaki wokół Livigno.",
+    "ebike_note": "Rowery elektryczne dostępne na miejscu ułatwiają pokonanie większego dystansu bez nadmiernego wysiłku na podjazdach — przydatne również dla osób bez dużego doświadczenia kolarskiego.",
     "winter_caption": "A zima pozostaje równie magiczna"
   },
   "extras": {

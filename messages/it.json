@@ -71,7 +71,7 @@
   "rooms": {
     "eyebrow": "Dove riposare",
     "title": "3 camere, pensate per famiglie e gruppi",
-    "text": "Il nostro appartamento a Livigno offre configurazioni flessibili per accogliere fino a 6 persone comodamente, con 2 bagni a disposizione di tutta la casa — ideale per famiglie e gruppi.",
+    "text": "Il nostro appartamento a Livigno offre configurazioni flessibili per accogliere fino a 6 persone comodamente — ideale per famiglie e gruppi.",
     "room1_title": "Camera Doppia (letti uniti)",
     "room1_text": "Due letti singoli uniti da un topper, per un comfort continuo da vero letto matrimoniale — ideale per la coppia o per i genitori del gruppo.",
     "room2_title": "Camera Letti Singoli",
@@ -179,7 +179,7 @@
     "eyebrow": "Non solo inverno",
     "title": "Livigno è meraviglia anche d'estate",
     "text": "Sentieri per il trekking, mountain bike tra le vette, il Lago di Livigno e gli alpeggi fioriti: la stessa posizione strategica che rende l'inverno perfetto, d'estate diventa la base ideale per esplorare la natura alpina.",
-    "ebike_note": "Noleggio di 2 e-bike direttamente in struttura a € 35,00 a persona al giorno, su richiesta e da prenotare in anticipo (pagamento in loco), per esplorare i sentieri intorno a Livigno.",
+    "ebike_note": "Le e-bike a noleggio, disponibili in struttura, aiutano a coprire più terreno senza affaticarsi troppo in salita — utili anche per chi non è un ciclista allenato.",
     "winter_caption": "E l'inverno resta magico quanto sempre"
   },
   "extras": {

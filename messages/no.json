@@ -71,7 +71,7 @@
   "rooms": {
     "eyebrow": "Et sted å hvile",
     "title": "3 soverom, laget for familier og grupper",
-    "text": "Vår leilighet i Livigno tilbyr fleksible løsninger for komfortabelt å huse opptil 6 gjester, med 2 bad som deles i hele leiligheten — ideelt for familier og grupper.",
+    "text": "Vår leilighet i Livigno tilbyr fleksible løsninger for komfortabelt å huse opptil 6 gjester — ideelt for familier og grupper.",
     "room1_title": "Dobbeltrom (sammenkoblede enkeltsenger)",
     "room1_text": "To enkeltsenger forbundet med en topper, for komforten til en ekte dobbeltseng — perfekt for paret eller foreldrene i gruppen.",
     "room2_title": "Tosengsrom",
@@ -179,7 +179,7 @@
     "eyebrow": "Ikke bare vinter",
     "title": "Livigno er like vakkert om sommeren",
     "text": "Turstier, sykling i fjellet mellom toppene, Livigno-sjøen og blomstrende fjellbeiter: den samme strategiske beliggenheten som gjør vinteren perfekt, blir om sommeren den ideelle basen for å utforske alpin natur.",
-    "ebike_note": "2 el-sykler til leie direkte på stedet for 35,00 € per person per dag, mot bestilling og skal bookes på forhånd (betaling på stedet), for å utforske stiene rundt Livigno.",
+    "ebike_note": "El-syklene som er tilgjengelige for utleie på stedet, gjør det lettere å dekke mer terreng uten å slite seg ut i motbakkene — nyttig også for dem som ikke er erfarne syklister.",
     "winter_caption": "Og vinteren er fortsatt like magisk"
   },
   "extras": {

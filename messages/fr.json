@@ -71,7 +71,7 @@
   "rooms": {
     "eyebrow": "Pour se reposer",
     "title": "3 chambres, pensées pour les familles et les groupes",
-    "text": "Notre appartement à Livigno propose des configurations flexibles pour accueillir confortablement jusqu'à 6 personnes, avec 2 salles de bain pour tout l'appartement — idéal pour les familles et les groupes.",
+    "text": "Notre appartement à Livigno propose des configurations flexibles pour accueillir confortablement jusqu'à 6 personnes — idéal pour les familles et les groupes.",
     "room1_title": "Chambre double (lits jumeaux réunis)",
     "room1_text": "Deux lits simples réunis par un topper, pour le confort d'un vrai lit double — idéal pour le couple ou les parents du groupe.",
     "room2_title": "Chambre jumelle",
@@ -179,7 +179,7 @@
     "eyebrow": "Pas seulement l'hiver",
     "title": "Livigno est tout aussi magnifique en été",
     "text": "Sentiers de randonnée, VTT à travers les sommets, le lac de Livigno et les alpages fleuris : le même emplacement stratégique qui rend l'hiver parfait devient, en été, la base idéale pour explorer la nature alpine.",
-    "ebike_note": "2 vélos électriques disponibles à la location directement sur place à 35,00 € par personne et par jour, sur demande et à réserver à l'avance (paiement sur place), pour explorer les sentiers autour de Livigno.",
+    "ebike_note": "Les vélos électriques disponibles à la location sur place permettent de couvrir plus de terrain sans trop forcer dans les montées — pratique même pour qui n'est pas un cycliste entraîné.",
     "winter_caption": "Et l'hiver reste tout aussi magique"
   },
   "extras": {

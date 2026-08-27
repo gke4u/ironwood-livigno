@@ -71,7 +71,7 @@
   "rooms": {
     "eyebrow": "Zum Ausruhen",
     "title": "3 Schlafzimmer, gemacht für Familien und Gruppen",
-    "text": "Unsere Ferienwohnung in Livigno bietet flexible Konfigurationen für bis zu 6 Gäste, mit 2 Bädern für die gesamte Wohnung — ideal für Familien und Gruppen.",
+    "text": "Unsere Ferienwohnung in Livigno bietet flexible Konfigurationen für bis zu 6 Gäste — ideal für Familien und Gruppen.",
     "room1_title": "Doppelzimmer (zusammengeschobene Einzelbetten)",
     "room1_text": "Zwei Einzelbetten, durch einen Topper verbunden, für den Komfort eines echten Doppelbetts — ideal für das Paar oder die Eltern der Gruppe.",
     "room2_title": "Zweibettzimmer",
@@ -179,7 +179,7 @@
     "eyebrow": "Nicht nur Winter",
     "title": "Livigno ist auch im Sommer wunderschön",
     "text": "Wanderwege, Mountainbiken über die Gipfel, der Lago di Livigno und blühende Almwiesen: dieselbe strategische Lage, die den Winter perfekt macht, wird im Sommer zur idealen Basis, um die alpine Natur zu erkunden.",
-    "ebike_note": "2 E-Bikes direkt vor Ort mietbar für € 35,00 pro Person und Tag, auf Anfrage und im Voraus zu buchen (Zahlung vor Ort), um die Wege rund um Livigno zu erkunden.",
+    "ebike_note": "Die im Haus verfügbaren Leih-E-Bikes helfen dabei, mehr Strecke zurückzulegen, ohne sich bei den Anstiegen zu sehr anzustrengen — praktisch auch für alle, die keine geübten Radfahrer sind.",
     "winter_caption": "Und der Winter bleibt genauso magisch"
   },
   "extras": {
