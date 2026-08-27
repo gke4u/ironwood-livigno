@@ -6,6 +6,7 @@
 // keeps the same look (logo, colors, sticky nav, WhatsApp CTA) without
 // pulling in i18n machinery for sections that don't need it.
 import Logo from './Logo';
+import BlogMobileMenu from './BlogMobileMenu';
 
 export function BlogHeader() {
   return (
@@ -14,7 +15,12 @@ export function BlogHeader() {
         <a href="/it" aria-label="Ironwood Livigno — home">
           <Logo className="text-mist" />
         </a>
-        <nav className="flex items-center gap-6 text-mist/90 text-sm uppercase tracking-widest">
+        {/* Below `lg`, four inline items (three text links plus a pill
+            button) had no room to breathe next to the logo on a phone —
+            no wrap handling, so they'd overflow or crowd together. Hidden
+            here in favour of BlogMobileMenu, same breakpoint and pattern
+            already used by the main site's Nav.tsx. */}
+        <nav className="hidden lg:flex items-center gap-6 text-mist/90 text-sm uppercase tracking-widest">
           <a href="/it" className="hover:text-gold transition-colors">
             Home
           </a>
@@ -31,6 +37,7 @@ export function BlogHeader() {
             Prenota
           </a>
         </nav>
+        <BlogMobileMenu />
       </div>
     </header>
   );
