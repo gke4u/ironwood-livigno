@@ -42,7 +42,7 @@ export default function Hero() {
       />
 
       <div className="relative max-w-content w-full mx-auto px-6 md:px-10 pt-28 pb-16 md:pt-0 md:pb-28 min-h-[100svh] md:min-h-0 flex flex-col justify-end">
-        <p className="text-gold tracking-[0.2em] uppercase text-xs md:text-sm mb-3 md:mb-5 animate-fadeIn">
+        <p className="text-gold tracking-[0.2em] uppercase text-xs md:text-sm mb-3 md:mb-5 animate-fadeIn [text-shadow:0_1px_4px_rgba(36,28,21,0.9)]">
           {t('eyebrow')}
         </p>
         <h1 className="font-display text-mist text-3xl sm:text-4xl md:text-6xl lg:text-7xl leading-[1.1] md:leading-[1.05] max-w-3xl mb-4 md:mb-6 animate-fadeUp">
@@ -77,7 +77,7 @@ export default function Hero() {
             width it needs and wrap as a whole item, and a smaller,
             non-display font keeps the row compact enough that wrapping is
             rare even for the longest translations. */}
-        <ul className="flex flex-wrap gap-x-8 gap-y-2 max-w-xl border-t border-mist/20 pt-6 animate-fadeUp [animation-delay:350ms] list-none p-0 m-0">
+        <ul className="flex flex-wrap gap-x-8 gap-y-2 max-w-xl border-t border-mist/20 pt-6 animate-fadeUp [animation-delay:350ms] list-none p-0 m-0 [text-shadow:0_1px_3px_rgba(36,28,21,0.85)]">
           <li className="text-mist font-medium text-sm md:text-base whitespace-nowrap">{t('stat_sleeps')}</li>
           <li className="text-mist font-medium text-sm md:text-base whitespace-nowrap">{t('stat_rooms')}</li>
           <li className="text-mist font-medium text-sm md:text-base whitespace-nowrap">{t('stat_distance')}</li>
