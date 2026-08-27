@@ -113,7 +113,18 @@
     "title": "Ciepłe wnętrza, dopracowane detale",
     "close_label": "Zamknij",
     "prev_label": "Poprzednie zdjęcie",
-    "next_label": "Następne zdjęcie"
+    "next_label": "Następne zdjęcie",
+    "img0_caption": "Salon z otwartą kuchnią",
+    "img1_caption": "Elewacja wieczorem",
+    "img2_caption": "W pełni wyposażona kuchnia",
+    "img3_caption": "Łazienka z kamienia",
+    "img4_caption": "Chłodziarka do wina",
+    "img5_caption": "Łazienka z prysznicem",
+    "img6_caption": "Salon z widokiem",
+    "img7_caption": "Jedna z dwóch łazienek",
+    "img8_caption": "Detal kuchenny",
+    "img9_caption": "Strefa dzienna",
+    "img10_caption": "Elewacja w ciągu dnia"
   },
   "reviews": {
     "eyebrow": "Ci, którzy tu byli",

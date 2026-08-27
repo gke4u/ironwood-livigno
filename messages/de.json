@@ -113,7 +113,18 @@
     "title": "Warme Räume, liebevolle Details",
     "close_label": "Schließen",
     "prev_label": "Vorheriges Foto",
-    "next_label": "Nächstes Foto"
+    "next_label": "Nächstes Foto",
+    "img0_caption": "Wohnzimmer mit offener Küche",
+    "img1_caption": "Die Außenansicht, abends",
+    "img2_caption": "Voll ausgestattete Küche",
+    "img3_caption": "Badezimmer mit Stein",
+    "img4_caption": "Weinkühlschrank",
+    "img5_caption": "Badezimmer mit Dusche",
+    "img6_caption": "Wohnzimmer mit Aussicht",
+    "img7_caption": "Eines der beiden Badezimmer",
+    "img8_caption": "Küchendetail",
+    "img9_caption": "Wohnbereich",
+    "img10_caption": "Die Außenansicht, tagsüber"
   },
   "reviews": {
     "eyebrow": "Wer schon hier war",

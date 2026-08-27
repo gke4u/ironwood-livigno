@@ -113,7 +113,18 @@
     "title": "Varme rom, gjennomtenkte detaljer",
     "close_label": "Lukk",
     "prev_label": "Forrige bilde",
-    "next_label": "Neste bilde"
+    "next_label": "Neste bilde",
+    "img0_caption": "Stue med åpent kjøkken",
+    "img1_caption": "Fasaden, om kvelden",
+    "img2_caption": "Fullt utstyrt kjøkken",
+    "img3_caption": "Bad i stein",
+    "img4_caption": "Vinkjøleskap",
+    "img5_caption": "Bad med dusj",
+    "img6_caption": "Stue med utsikt",
+    "img7_caption": "Et av de to badene",
+    "img8_caption": "Kjøkkendetalj",
+    "img9_caption": "Oppholdsrom",
+    "img10_caption": "Fasaden, om dagen"
   },
   "reviews": {
     "eyebrow": "De som har vært her",

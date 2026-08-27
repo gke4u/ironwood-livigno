@@ -113,7 +113,18 @@
     "title": "Warme ruimtes, verzorgde details",
     "close_label": "Sluiten",
     "prev_label": "Vorige foto",
-    "next_label": "Volgende foto"
+    "next_label": "Volgende foto",
+    "img0_caption": "Woonkamer met open keuken",
+    "img1_caption": "De buitenkant, 's avonds",
+    "img2_caption": "Volledig uitgeruste keuken",
+    "img3_caption": "Badkamer met natuursteen",
+    "img4_caption": "Wijnkoeler",
+    "img5_caption": "Badkamer met douche",
+    "img6_caption": "Woonkamer met uitzicht",
+    "img7_caption": "Een van de twee badkamers",
+    "img8_caption": "Keukendetail",
+    "img9_caption": "Woongedeelte",
+    "img10_caption": "De buitenkant, overdag"
   },
   "reviews": {
     "eyebrow": "Wie hier al is geweest",

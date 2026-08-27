@@ -113,7 +113,18 @@
     "title": "Ambienti caldi, dettagli curati",
     "close_label": "Chiudi",
     "prev_label": "Foto precedente",
-    "next_label": "Foto successiva"
+    "next_label": "Foto successiva",
+    "img0_caption": "Soggiorno e cucina a vista",
+    "img1_caption": "L'esterno, di sera",
+    "img2_caption": "Cucina attrezzata",
+    "img3_caption": "Bagno in pietra",
+    "img4_caption": "Cantinetta vini",
+    "img5_caption": "Bagno con doccia",
+    "img6_caption": "Soggiorno con vista",
+    "img7_caption": "Uno dei due bagni",
+    "img8_caption": "Dettaglio cucina",
+    "img9_caption": "Zona giorno",
+    "img10_caption": "L'esterno, di giorno"
   },
   "reviews": {
     "eyebrow": "Chi è stato qui",

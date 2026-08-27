@@ -113,7 +113,18 @@
     "title": "Vřelé prostory, pečlivé detaily",
     "close_label": "Zavřít",
     "prev_label": "Předchozí fotka",
-    "next_label": "Další fotka"
+    "next_label": "Další fotka",
+    "img0_caption": "Obývací pokoj s otevřenou kuchyní",
+    "img1_caption": "Exteriér večer",
+    "img2_caption": "Plně vybavená kuchyně",
+    "img3_caption": "Koupelna z kamene",
+    "img4_caption": "Vinotéka",
+    "img5_caption": "Koupelna se sprchou",
+    "img6_caption": "Obývací pokoj s výhledem",
+    "img7_caption": "Jedna ze dvou koupelen",
+    "img8_caption": "Detail kuchyně",
+    "img9_caption": "Obytný prostor",
+    "img10_caption": "Exteriér ve dne"
   },
   "reviews": {
     "eyebrow": "Ti, kdo tu byli",

@@ -113,7 +113,18 @@
     "title": "Varme rum, omhyggelige detaljer",
     "close_label": "Luk",
     "prev_label": "Forrige foto",
-    "next_label": "Næste foto"
+    "next_label": "Næste foto",
+    "img0_caption": "Stue med åbent køkken",
+    "img1_caption": "Facaden, om aftenen",
+    "img2_caption": "Fuldt udstyret køkken",
+    "img3_caption": "Badeværelse i sten",
+    "img4_caption": "Vinkøleskab",
+    "img5_caption": "Badeværelse med bruser",
+    "img6_caption": "Stue med udsigt",
+    "img7_caption": "Et af de to badeværelser",
+    "img8_caption": "Køkkendetalje",
+    "img9_caption": "Opholdsområde",
+    "img10_caption": "Facaden, om dagen"
   },
   "reviews": {
     "eyebrow": "Dem der har været her",

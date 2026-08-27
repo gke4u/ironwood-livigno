@@ -113,7 +113,18 @@
     "title": "温馨的空间，用心的细节",
     "close_label": "关闭",
     "prev_label": "上一张照片",
-    "next_label": "下一张照片"
+    "next_label": "下一张照片",
+    "img0_caption": "开放式客厅与厨房",
+    "img1_caption": "夜晚的外观",
+    "img2_caption": "配备齐全的厨房",
+    "img3_caption": "石材浴室",
+    "img4_caption": "酒柜",
+    "img5_caption": "带淋浴的浴室",
+    "img6_caption": "有景观的客厅",
+    "img7_caption": "两间浴室之一",
+    "img8_caption": "厨房细节",
+    "img9_caption": "起居区",
+    "img10_caption": "白天的外观"
   },
   "reviews": {
     "eyebrow": "住客评价",

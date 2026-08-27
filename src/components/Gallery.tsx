@@ -18,6 +18,11 @@ import { useTilt, TILT_TRANSITION } from './useTilt';
 // grid-column/row coordinates to keep in sync by hand, and no risk of the
 // gaps a masonry column that runs short can leave (the problem this
 // replaced).
+// `alt` stays Italian-only (it's read by screen readers/crawlers, not a
+// caption a sighted visitor is meant to read) — `caption`, the text every
+// visitor actually sees, comes from the `gallery` translation namespace
+// (img{index}_caption) instead, so each locale reads it in its own
+// language rather than always seeing the Italian original.
 const images = [
   // The apartment's single most representative shot — living room and open
   // kitchen together. Sharing "big" status with the bathroom cell inside
@@ -25,22 +30,24 @@ const images = [
   // entirely into its own full-width showcase banner above the grid (see
   // `images[0]` usage below) instead of competing for attention as just
   // the largest tile in a field of ten.
-  { src: '/images/hero-ironwood.jpg', alt: 'Soggiorno e cucina a vista, appartamento Ironwood a Livigno', caption: 'Soggiorno e cucina a vista', w: 1920, h: 1280 },
-  { src: '/images/esterno-notte.jpg', alt: 'Esterno dell’appartamento Ironwood a Livigno di sera, sotto la neve', caption: 'L’esterno, di sera', w: 1920, h: 1440 },
-  { src: '/images/cucina.jpg', alt: 'Cucina completamente attrezzata nell’appartamento vacanze a Livigno', caption: 'Cucina attrezzata', w: 2000, h: 1333 },
-  { src: '/images/bagno-extra.jpg', alt: 'Bagno con doccia in pietra nell’appartamento a Livigno', caption: 'Bagno in pietra', w: 1333, h: 2000 },
-  { src: '/images/dettaglio-vini.jpg', alt: 'Cantinetta vini in cucina nella casa vacanze a Livigno', caption: 'Cantinetta vini', w: 1333, h: 2000 },
-  { src: '/images/bagno-extra2.jpg', alt: 'Dettaglio del secondo bagno nella casa vacanze a Livigno', caption: 'Bagno con doccia', w: 1333, h: 2000, big: true },
-  { src: '/images/soggiorno.jpg', alt: 'Soggiorno con divano e vista sulle Alpi, appartamento a Livigno', caption: 'Soggiorno con vista', w: 1920, h: 1280 },
-  { src: '/images/bagno.jpg', alt: 'Uno dei due bagni completi dell’appartamento a Livigno', caption: 'Uno dei due bagni', w: 1168, h: 1752 },
-  { src: '/images/cucina-dettaglio.jpg', alt: 'Dettaglio del piano cucina nell’appartamento con cucina attrezzata a Livigno', caption: 'Dettaglio cucina', w: 2000, h: 1500 },
-  { src: '/images/appartamento-soggiorno.jpg', alt: 'Zona giorno dell’appartamento a Livigno con vista sulle montagne', caption: 'Zona giorno', w: 2000, h: 1333 },
-  { src: '/images/esterno-giorno.jpg', alt: 'Esterno dell’appartamento a Livigno vicino agli impianti, di giorno', caption: 'L’esterno, di giorno', w: 1181, h: 787, wide: true }
+  { src: '/images/hero-ironwood.jpg', alt: 'Soggiorno e cucina a vista, appartamento Ironwood a Livigno', w: 1920, h: 1280 },
+  { src: '/images/esterno-notte.jpg', alt: 'Esterno dell’appartamento Ironwood a Livigno di sera, sotto la neve', w: 1920, h: 1440 },
+  { src: '/images/cucina.jpg', alt: 'Cucina completamente attrezzata nell’appartamento vacanze a Livigno', w: 2000, h: 1333 },
+  { src: '/images/bagno-extra.jpg', alt: 'Bagno con doccia in pietra nell’appartamento a Livigno', w: 1333, h: 2000 },
+  { src: '/images/dettaglio-vini.jpg', alt: 'Cantinetta vini in cucina nella casa vacanze a Livigno', w: 1333, h: 2000 },
+  { src: '/images/bagno-extra2.jpg', alt: 'Dettaglio del secondo bagno nella casa vacanze a Livigno', w: 1333, h: 2000, big: true },
+  { src: '/images/soggiorno.jpg', alt: 'Soggiorno con divano e vista sulle Alpi, appartamento a Livigno', w: 1920, h: 1280 },
+  { src: '/images/bagno.jpg', alt: 'Uno dei due bagni completi dell’appartamento a Livigno', w: 1168, h: 1752 },
+  { src: '/images/cucina-dettaglio.jpg', alt: 'Dettaglio del piano cucina nell’appartamento con cucina attrezzata a Livigno', w: 2000, h: 1500 },
+  { src: '/images/appartamento-soggiorno.jpg', alt: 'Zona giorno dell’appartamento a Livigno con vista sulle montagne', w: 2000, h: 1333 },
+  { src: '/images/esterno-giorno.jpg', alt: 'Esterno dell’appartamento a Livigno vicino agli impianti, di giorno', w: 1181, h: 787, wide: true }
 ];
 
 export default function Gallery() {
   const t = useTranslations('gallery');
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const imagesWithCaptions = images.map((img, i) => ({ ...img, caption: t(`img${i}_caption`) }));
 
   const close = useCallback(() => setActiveIndex(null), []);
   const showPrev = useCallback(() => {
@@ -71,19 +78,19 @@ export default function Gallery() {
     };
   }, [activeIndex, close, showPrev, showNext]);
 
-  const active = activeIndex !== null ? images[activeIndex] : null;
+  const active = activeIndex !== null ? imagesWithCaptions[activeIndex] : null;
   const { onMouseMove: handleCardMouseMove, onMouseLeave: handleCardMouseLeave } = useTilt();
 
   // The opening (most representative) and closing (whole chalet) shots
   // both live outside the bento grid, each on its own full-width row —
   // `gridImages` is everything in between.
-  const featureImage = images[0];
-  const gridImages = images.slice(1, -1);
+  const featureImage = imagesWithCaptions[0];
+  const gridImages = imagesWithCaptions.slice(1, -1);
   // Sized to its real aspect ratio instead of a fixed grid-row height — the
   // only way to show the entire building with zero cropping and no
   // letterbox bars.
-  const closingImage = images[images.length - 1];
-  const closingIndex = images.length - 1;
+  const closingImage = imagesWithCaptions[imagesWithCaptions.length - 1];
+  const closingIndex = imagesWithCaptions.length - 1;
 
   return (
     <section id="galleria" className="bg-mist pt-24 md:pt-32 pb-16 md:pb-20">
@@ -126,9 +133,11 @@ export default function Gallery() {
                 aria-hidden
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" aria-hidden />
-              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
-                <span className="block h-px w-10 bg-gold mb-3" aria-hidden />
-                <p className="font-display text-mist text-2xl md:text-4xl leading-tight">{featureImage.caption}</p>
+              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 overflow-hidden">
+                <span className="gallery-caption-line block h-px w-10 bg-gold mb-3" aria-hidden />
+                <p className="gallery-caption-text font-display text-mist text-2xl md:text-4xl leading-tight">
+                  {featureImage.caption}
+                </p>
               </div>
             </button>
           </div>

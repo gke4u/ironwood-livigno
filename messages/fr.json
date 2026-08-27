@@ -113,7 +113,18 @@
     "title": "Espaces chaleureux, détails soignés",
     "close_label": "Fermer",
     "prev_label": "Photo précédente",
-    "next_label": "Photo suivante"
+    "next_label": "Photo suivante",
+    "img0_caption": "Salon avec cuisine ouverte",
+    "img1_caption": "L'extérieur, le soir",
+    "img2_caption": "Cuisine équipée",
+    "img3_caption": "Salle de bains en pierre",
+    "img4_caption": "Cave à vin",
+    "img5_caption": "Salle de bains avec douche",
+    "img6_caption": "Salon avec vue",
+    "img7_caption": "L'une des deux salles de bains",
+    "img8_caption": "Détail de la cuisine",
+    "img9_caption": "Espace de vie",
+    "img10_caption": "L'extérieur, le jour"
   },
   "reviews": {
     "eyebrow": "Ils sont déjà venus",

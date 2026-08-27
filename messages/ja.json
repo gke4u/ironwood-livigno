@@ -113,7 +113,18 @@
     "title": "温かみのある空間、細部までこだわったディテール",
     "close_label": "閉じる",
     "prev_label": "前の写真",
-    "next_label": "次の写真"
+    "next_label": "次の写真",
+    "img0_caption": "オープンキッチンのリビングルーム",
+    "img1_caption": "夜の外観",
+    "img2_caption": "設備完備のキッチン",
+    "img3_caption": "石造りのバスルーム",
+    "img4_caption": "ワインセラー",
+    "img5_caption": "シャワー付きバスルーム",
+    "img6_caption": "眺めの良いリビングルーム",
+    "img7_caption": "2つあるバスルームのひとつ",
+    "img8_caption": "キッチンのディテール",
+    "img9_caption": "リビングエリア",
+    "img10_caption": "昼間の外観"
   },
   "reviews": {
     "eyebrow": "宿泊されたお客様の声",

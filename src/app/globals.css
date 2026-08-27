@@ -145,3 +145,31 @@ body {
     animation: none;
   }
 }
+
+/* Gallery feature-photo caption (the permanent, non-hover-gated title over
+   the opening shot): the gold line grows in and the caption text lifts
+   into place once the containing Reveal wrapper scrolls into view. Hidden
+   state only applies under .reveal-pending — same reasoning as .reveal
+   itself above — so a visitor with no JS, or with reduced motion (which
+   means Reveal.tsx never adds reveal-pending/is-visible at all), always
+   sees the line and text in their normal, fully visible state instead of
+   stuck at scaleX(0)/opacity:0. */
+@keyframes growLine {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.reveal.reveal-pending .gallery-caption-line {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.reveal.is-visible .gallery-caption-line {
+  animation: growLine 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 250ms;
+}
+.reveal.reveal-pending .gallery-caption-text {
+  opacity: 0;
+}
+.reveal.is-visible .gallery-caption-text {
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 400ms;
+}

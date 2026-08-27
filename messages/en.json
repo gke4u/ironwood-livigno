@@ -113,7 +113,18 @@
     "title": "Warm spaces, curated details",
     "close_label": "Close",
     "prev_label": "Previous photo",
-    "next_label": "Next photo"
+    "next_label": "Next photo",
+    "img0_caption": "Open-plan living room and kitchen",
+    "img1_caption": "The exterior, by night",
+    "img2_caption": "Fully equipped kitchen",
+    "img3_caption": "Stone bathroom",
+    "img4_caption": "Wine fridge",
+    "img5_caption": "Bathroom with shower",
+    "img6_caption": "Living room with a view",
+    "img7_caption": "One of the two bathrooms",
+    "img8_caption": "Kitchen detail",
+    "img9_caption": "Living area",
+    "img10_caption": "The exterior, by day"
   },
   "reviews": {
     "eyebrow": "Who's been here",
