@@ -93,6 +93,15 @@ export function BlogFooter() {
               info@ironwoodlivigno.com
             </a>
             <span className="opacity-30">·</span>
+            <a
+              href="https://instagram.com/ironwood_livigno"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-mist transition-colors"
+            >
+              Instagram
+            </a>
+            <span className="opacity-30">·</span>
             <a href="/it/contatti" className="hover:text-mist transition-colors underline underline-offset-4">
               Contatti
             </a>

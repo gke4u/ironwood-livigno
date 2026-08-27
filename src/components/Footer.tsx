@@ -57,6 +57,15 @@ export default function Footer({ locale }: { locale: Locale }) {
               {EMAIL}
             </a>
             <span className="opacity-30">·</span>
+            <a
+              href="https://instagram.com/ironwood_livigno"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-mist transition-colors"
+            >
+              Instagram
+            </a>
+            <span className="opacity-30">·</span>
             <a href={`/${locale}/${contactSlugs[locale]}`} className="hover:text-mist transition-colors underline underline-offset-4">
               {tNav('contact')}
             </a>

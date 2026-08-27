@@ -81,7 +81,8 @@ export default async function StructuredData({ locale }: { locale: Locale }) {
     // 3 bedrooms, private sauna, fireplace, wine fridge — all match).
     sameAs: [
       'https://www.holiduhost.com/d/54247934',
-      'https://www.airbnb.com/rooms/1001347662140918475'
+      'https://www.airbnb.com/rooms/1001347662140918475',
+      'https://instagram.com/ironwood_livigno'
     ],
     // Links directly to the exact pin (see geo coordinates below), provided
     // by the property owner from Google Maps.
