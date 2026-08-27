@@ -36,7 +36,7 @@ export default function FAQ() {
   const t = useTranslations('faq');
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((n) => ({
+  const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((n) => ({
     q: t(`q${n}_q`),
     a: t(`q${n}_a`)
   }));
