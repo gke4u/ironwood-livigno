@@ -41,7 +41,7 @@ export default function Hero() {
         aria-hidden
       />
 
-      <div className="relative max-w-content w-full mx-auto px-6 md:px-10 pt-28 pb-16 md:pt-0 md:pb-28 min-h-[100svh] md:min-h-0 flex flex-col justify-end">
+      <div className="relative max-w-content w-full mx-auto px-6 md:px-10 pt-28 pb-16 md:pt-24 md:pb-28 min-h-[100svh] md:min-h-0 flex flex-col justify-end">
         <p className="text-mist tracking-[0.2em] uppercase text-xs md:text-sm mb-3 md:mb-5 animate-fadeIn [text-shadow:0_1px_4px_rgba(36,28,21,0.9)]">
           {t('eyebrow')}
         </p>
