@@ -70,6 +70,7 @@ export const blogPosts: BlogPost[] = [
       }
     ],
     relatedLinks: [
+      { href: '/come-arrivare', label: "Indirizzo, parcheggio e l'ultimo tratto per raggiungere Ironwood Livigno" },
       { href: '/it/contatti', label: 'Scrivici per organizzare il tuo arrivo e la disponibilità' },
       { href: '/camere-appartamento-livigno', label: "Scopri l'appartamento a 100 m dagli impianti" },
       { href: '/blog/shopping-duty-free-livigno-cosa-comprare', label: 'Leggi cosa conviene comprare a Livigno duty-free' }
@@ -719,6 +720,7 @@ export const blogPosts: BlogPost[] = [
       }
     ],
     relatedLinks: [
+      { href: '/sauna-bagno-turco-privato-livigno', label: 'Scopri la pagina dedicata alla sauna privata a Livigno' },
       { href: '/benessere', label: 'Scopri tutti i dettagli di sauna e bagno turco privati' },
       { href: '/blog/sauna-privata-vs-condivisa-livigno', label: 'Leggi il confronto completo tra sauna privata e condivisa' },
       { href: '/camere-appartamento-livigno', label: "Guarda l'appartamento nel dettaglio" }
