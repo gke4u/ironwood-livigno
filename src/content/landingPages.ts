@@ -618,7 +618,7 @@ export const landingPages: LandingPage[] = [
   },
   {
     slug: 'livigno-estate',
-    title: "Cosa fare a Livigno d'estate: 10 esperienze imperdibili",
+    title: "Livigno d'estate: 10 esperienze da vivere da Ironwood",
     metaTitle: "Livigno d'Estate | 10 Cose da Fare tra Bike, Trekking e Lago",
     metaDescription:
       "Mountain bike, trekking, il Lago di Livigno e sauna privata dopo lo sport: 10 esperienze da non perdere per organizzare al meglio la tua estate a Livigno.",
