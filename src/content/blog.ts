@@ -100,9 +100,15 @@ export const blogPosts: BlogPost[] = [
         ]
       },
       {
-        heading: 'Il vantaggio di soggiornare a Ironwood Livigno',
+        heading: 'Livigno Park: il snowpark per freestyle e rail',
         paragraphs: [
-          'Per chi soggiorna a [Ironwood Livigno](/camere-appartamento-livigno), il vantaggio pratico è la vicinanza: 100 metri dagli impianti di risalita e 50 metri da scuola sci e noleggio attrezzatura. Vuol dire non dover usare l\'auto o le navette per raggiungere le piste, e poter rientrare in appartamento durante la pausa pranzo, o subito dopo l\'ultima discesa, per scaldarsi nella [sauna a infrarossi privata](/sauna-bagno-turco-privato-livigno) prima ancora di cena — uno dei motivi per cui molti ospiti ce lo segnalano come punto di forza nelle recensioni.'
+          "Chi cerca più del semplice sci in pista trova nel Livigno Park uno snowpark strutturato con salti, rail e strutture pensate per il freestyle, distribuite su livelli di difficoltà diversi — dai principianti che vogliono provare i primi salti fino a chi cerca linee più tecniche. È un buon motivo per scegliere Carosello 3000 anche per gruppi misti: chi preferisce piste tranquille resta sul versante classico, chi cerca adrenalina si sposta nello snowpark senza cambiare comprensorio."
+        ]
+      },
+      {
+        heading: 'Skipass: le opzioni disponibili',
+        paragraphs: [
+          "Livigno propone uno skipass unico valido su entrambi i versanti (Carosello 3000 e Mottolino), disponibile in versione giornaliera, plurigiornaliera o stagionale, con tariffe che variano tra bassa e alta stagione. Per le cifre aggiornate e qualche consiglio su come risparmiare, la [guida ai prezzi dello sci a Livigno](/blog/quanto-costa-sciare-a-livigno-guida-prezzi) entra nel dettaglio."
         ]
       },
       {
@@ -114,7 +120,7 @@ export const blogPosts: BlogPost[] = [
     ],
     relatedLinks: [
       { href: '/inverno', label: "Scopri la guida completa all'inverno a Livigno da Ironwood" },
-      { href: '/benessere', label: 'Sauna e bagno turco privati per recuperare dopo lo sci' },
+      { href: '/blog/carosello-3000-vs-mottolino-quale-scegliere', label: 'Indeciso tra i due versanti? Leggi il confronto Carosello 3000 vs Mottolino' },
       { href: '/blog/migliori-piste-sci-livigno-famiglie', label: 'Leggi la guida alle piste per famiglie' }
     ]
   },
