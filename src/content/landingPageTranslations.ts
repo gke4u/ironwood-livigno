@@ -45,7 +45,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
   inverno: {
     en: {
       title: 'Winter in Livigno: skiing, a private sauna, and comfort steps from the slopes',
-      metaTitle: 'Winter Holiday in Livigno | Apartment with Sauna 100 m from the Lifts',
+      metaTitle: 'Winter Holiday in Livigno | Sauna 100 m from the Lifts',
       metaDescription:
         'Private infrared sauna and steam bath 100 m from Carosello 3000: discover what winter in Livigno feels like at Ironwood.',
       eyebrow: 'Winter in Livigno',
@@ -92,7 +92,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     'en-us': {
       title: 'Winter in Livigno, Italy: skiing, a private sauna, and comfort steps from the slopes',
-      metaTitle: 'Winter Vacation in Livigno, Italy | Apartment with Sauna 100 m from the Lifts',
+      metaTitle: 'Winter Vacation in Livigno, Italy | Sauna 100 m from Lifts',
       metaDescription:
         'Private infrared sauna and steam bath 100 m from Carosello 3000: discover what winter in the Italian Alps feels like at Ironwood, in Livigno, Italy.',
       eyebrow: 'Winter in Livigno, Italy',
@@ -139,7 +139,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     de: {
       title: 'Winterurlaub in Livigno: Skifahren, private Sauna und Komfort direkt an der Piste',
-      metaTitle: 'Winterurlaub in Livigno | Ferienwohnung mit Sauna, 100 m von den Liften',
+      metaTitle: 'Winterurlaub in Livigno | Sauna, 100 m von den Liften',
       metaDescription: 'Private Infrarotsauna und Dampfbad, 100 m vom Carosello 3000: entdecken Sie den Winter in Livigno bei Ironwood.',
       eyebrow: 'Winter in Livigno',
       intro:
@@ -185,7 +185,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     fr: {
       title: 'Hiver à Livigno : ski, sauna privé et confort à deux pas des pistes',
-      metaTitle: "Vacances d'hiver à Livigno | Appartement avec sauna à 100 m des remontées",
+      metaTitle: "Vacances d'hiver à Livigno | Sauna à 100 m des remontées",
       metaDescription:
         "Sauna infrarouge et hammam privés à 100 m du Carosello 3000 : découvrez l'hiver à Livigno chez Ironwood.",
       eyebrow: 'Hiver à Livigno',
@@ -232,7 +232,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     da: {
       title: 'Vinter i Livigno: skiløb, privat sauna og komfort tæt på pisterne',
-      metaTitle: 'Vinterferie i Livigno | Lejlighed med sauna 100 m fra liftene',
+      metaTitle: 'Vinterferie i Livigno | Sauna 100 m fra liftene',
       metaDescription: 'Privat infrarød sauna og dampbad 100 m fra Carosello 3000: oplev vinteren i Livigno hos Ironwood.',
       eyebrow: 'Vinter i Livigno',
       intro:
@@ -278,7 +278,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     pl: {
       title: 'Zimowe wakacje w Livigno: narciarstwo, prywatna sauna i komfort tuż przy stokach',
-      metaTitle: 'Zimowe wakacje w Livigno | Apartament z sauną 100 m od wyciągów',
+      metaTitle: 'Zimowe wakacje w Livigno | Sauna 100 m od wyciągów',
       metaDescription:
         'Prywatna sauna na podczerwień i łaźnia parowa 100 m od Carosello 3000: odkryj, jak wygląda zima w Livigno w Ironwood.',
       eyebrow: 'Zima w Livigno',
@@ -371,7 +371,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     no: {
       title: 'Vinter i Livigno: skikjøring, privat badstue og komfort like ved bakkene',
-      metaTitle: 'Vinterferie i Livigno | Leilighet med badstue 100 m fra heisene',
+      metaTitle: 'Vinterferie i Livigno | Badstue 100 m fra heisene',
       metaDescription: 'Privat infrarød badstue og dampbad 100 m fra Carosello 3000: oppdag hvordan vinteren i Livigno oppleves hos Ironwood.',
       eyebrow: 'Vinter i Livigno',
       intro:
@@ -417,7 +417,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     nl: {
       title: 'Winter in Livigno: skiën, een privésauna en comfort vlak bij de piste',
-      metaTitle: 'Wintervakantie in Livigno | Appartement met sauna, 100 m van de liften',
+      metaTitle: 'Wintervakantie in Livigno | Sauna, 100 m van de liften',
       metaDescription: 'Privé infraroodsauna en stoombad, 100 m van Carosello 3000: ontdek hoe de winter in Livigno aanvoelt bij Ironwood.',
       eyebrow: 'Winter in Livigno',
       intro:
@@ -557,7 +557,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
   estate: {
     en: {
       title: 'Summer in Livigno: mountain biking, hiking, and unwinding in the apartment with a sauna',
-      metaTitle: 'Summer Holiday in Livigno | Mountain Biking, Hiking and a Private Sauna',
+      metaTitle: 'Summer Holiday in Livigno | Biking, Hiking, Private Sauna',
       metaDescription:
         "Bike park, trails for every level and Lake Livigno: discover summer in Livigno and why an apartment with a private sauna is the ideal base.",
       eyebrow: 'Summer in Livigno',
@@ -604,7 +604,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     'en-us': {
       title: 'Summer in Livigno, Italy: mountain biking, hiking, and unwinding in the apartment with a sauna',
-      metaTitle: 'Summer Vacation in Livigno, Italy | Mountain Biking, Hiking and a Private Sauna',
+      metaTitle: 'Summer Vacation in Livigno, Italy | Biking and Private Sauna',
       metaDescription:
         'Bike park, trails for every level and Lake Livigno: discover summer in the Italian Alps and why an apartment with a private sauna is the ideal base.',
       eyebrow: 'Summer in Livigno, Italy',
@@ -651,7 +651,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     de: {
       title: 'Sommer in Livigno: Mountainbike, Wandern und Entspannung in der Ferienwohnung mit Sauna',
-      metaTitle: 'Sommerurlaub in Livigno | Mountainbike, Wandern und private Sauna',
+      metaTitle: 'Sommerurlaub in Livigno | Bike, Wandern, private Sauna',
       metaDescription:
         'Bikepark, Wege für jedes Niveau und der Lago di Livigno: entdecken Sie den Sommer in Livigno und warum eine Ferienwohnung mit privater Sauna die ideale Basis ist.',
       eyebrow: 'Sommer in Livigno',
@@ -745,7 +745,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     da: {
       title: 'Livigno om sommeren: mountainbike, vandreture og afslapning i lejligheden med sauna',
-      metaTitle: 'Sommerferie i Livigno | Mountainbike, vandreture og privat sauna',
+      metaTitle: 'Sommerferie i Livigno | Mountainbike og privat sauna',
       metaDescription: 'Bikepark, stier til alle niveauer og Livigno-søen: oplev sommeren i Livigno, og hvorfor en lejlighed med privat sauna er den ideelle base.',
       eyebrow: 'Sommer i Livigno',
       intro:
@@ -791,7 +791,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     pl: {
       title: 'Livigno latem: rowery górskie, trekking i relaks w apartamencie z sauną',
-      metaTitle: 'Letnie wakacje w Livigno | Rowery górskie, trekking i prywatna sauna',
+      metaTitle: 'Letnie wakacje w Livigno | Rowery i prywatna sauna',
       metaDescription: 'Bike park, szlaki dla każdego poziomu i Jezioro Livigno: odkryj lato w Livigno i dlaczego apartament z prywatną sauną to idealna baza.',
       eyebrow: 'Lato w Livigno',
       intro:
@@ -837,7 +837,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     cs: {
       title: 'Livigno v létě: horská kola, trekking a odpočinek v apartmánu se saunou',
-      metaTitle: 'Letní dovolená v Livignu | Horská kola, trekking a soukromá sauna',
+      metaTitle: 'Letní dovolená v Livignu | Kola a soukromá sauna',
       metaDescription: 'Bikepark, trasy pro všechny úrovně a jezero Livigno: objevte léto v Livignu a proč je apartmán se soukromou saunou ideální základnou.',
       eyebrow: 'Léto v Livignu',
       intro:
@@ -883,7 +883,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     no: {
       title: 'Livigno om sommeren: sykling i fjellet, fotturer og avslapning i leiligheten med badstue',
-      metaTitle: 'Sommerferie i Livigno | Fjellsykling, fotturer og privat badstue',
+      metaTitle: 'Sommerferie i Livigno | Fjellsykling og privat badstue',
       metaDescription: 'Bikepark, stier for alle nivåer og Livigno-sjøen: oppdag sommeren i Livigno, og hvorfor en leilighet med privat badstue er den ideelle basen.',
       eyebrow: 'Sommer i Livigno',
       intro:
@@ -929,7 +929,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     nl: {
       title: 'Livigno in de zomer: mountainbiken, wandelen en ontspannen in het appartement met sauna',
-      metaTitle: 'Zomervakantie in Livigno | Mountainbiken, wandelen en privésauna',
+      metaTitle: 'Zomervakantie in Livigno | Mountainbiken en privésauna',
       metaDescription: 'Bikepark, paden voor elk niveau en het Meer van Livigno: ontdek de zomer in Livigno en waarom een appartement met privésauna de ideale uitvalsbasis is.',
       eyebrow: 'Zomer in Livigno',
       intro:
@@ -1069,7 +1069,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
   famiglie: {
     en: {
       title: 'Livigno with children: the apartment designed for families',
-      metaTitle: 'Family Apartment in Livigno | Up to 6 Guests, Cot and High Chair',
+      metaTitle: 'Family Apartment in Livigno, Up to 6 Guests',
       metaDescription:
         '3 bedrooms, 2 bathrooms, cot and high chair on request: discover why Ironwood Livigno is designed for families and groups up to 6.',
       eyebrow: 'Families in Livigno',
@@ -1116,7 +1116,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     'en-us': {
       title: 'Livigno, Italy with kids: the apartment designed for families',
-      metaTitle: 'Family Apartment in Livigno, Italy | Up to 6 Guests, Crib and High Chair',
+      metaTitle: 'Family Apartment in Livigno, Italy | Up to 6 Guests',
       metaDescription:
         '3 bedrooms, 2 bathrooms, crib and high chair on request: discover why Ironwood Livigno, in the Italian Alps, is designed for families and groups up to 6.',
       eyebrow: 'Families in Livigno, Italy',
@@ -1163,7 +1163,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     de: {
       title: 'Livigno mit Kindern: die Ferienwohnung für Familien',
-      metaTitle: 'Familienwohnung in Livigno | Bis zu 6 Personen, Kinderbett und Hochstuhl',
+      metaTitle: 'Familienwohnung in Livigno, bis zu 6 Personen',
       metaDescription:
         '3 Schlafzimmer, 2 Bäder, Kinderbett und Hochstuhl auf Anfrage: entdecken Sie, warum Ironwood Livigno für Familien und Gruppen bis 6 Personen konzipiert ist.',
       eyebrow: 'Familien in Livigno',
@@ -1210,7 +1210,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     fr: {
       title: "Livigno avec des enfants : l'appartement pensé pour les familles",
-      metaTitle: 'Appartement familial à Livigno | Jusqu\'à 6 personnes, lit bébé et chaise haute',
+      metaTitle: 'Appartement familial à Livigno, jusqu\'à 6 personnes',
       metaDescription:
         "3 chambres, 2 salles de bains, lit bébé et chaise haute sur demande : découvrez pourquoi Ironwood Livigno est pensé pour les familles et groupes jusqu'à 6 personnes.",
       eyebrow: 'Familles à Livigno',
@@ -1257,7 +1257,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     da: {
       title: 'Livigno med børn: lejligheden designet til familier',
-      metaTitle: 'Familielejlighed i Livigno | Op til 6 personer, barneseng og højstol',
+      metaTitle: 'Familielejlighed i Livigno, op til 6 personer',
       metaDescription: '3 soveværelser, 2 badeværelser, barneseng og højstol efter ønske: oplev hvorfor Ironwood Livigno er designet til familier og grupper på op til 6 personer.',
       eyebrow: 'Familier i Livigno',
       intro:
@@ -1303,7 +1303,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     pl: {
       title: 'Livigno z dziećmi: apartament pomyślany dla rodzin',
-      metaTitle: 'Apartament dla rodzin w Livigno | Do 6 osób, łóżeczko i krzesełko',
+      metaTitle: 'Apartament dla rodzin w Livigno, do 6 osób',
       metaDescription: '3 sypialnie, 2 łazienki, łóżeczko i krzesełko na życzenie: odkryj, dlaczego Ironwood Livigno jest pomyślany dla rodzin i grup do 6 osób.',
       eyebrow: 'Rodziny w Livigno',
       intro:
@@ -1349,7 +1349,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     cs: {
       title: 'Livigno s dětmi: apartmán navržený pro rodiny',
-      metaTitle: 'Rodinný apartmán v Livignu | Až 6 osob, dětská postýlka a židlička',
+      metaTitle: 'Rodinný apartmán v Livignu, až 6 osob',
       metaDescription: '3 ložnice, 2 koupelny, dětská postýlka a jídelní židlička na přání: objevte, proč je Ironwood Livigno navržen pro rodiny a skupiny až 6 osob.',
       eyebrow: 'Rodiny v Livignu',
       intro:
@@ -1395,7 +1395,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     no: {
       title: 'Livigno med barn: leiligheten designet for familier',
-      metaTitle: 'Familieleilighet i Livigno | Opptil 6 personer, barneseng og barnestol',
+      metaTitle: 'Familieleilighet i Livigno, opptil 6 personer',
       metaDescription: '3 soverom, 2 bad, barneseng og barnestol på forespørsel: oppdag hvorfor Ironwood Livigno er designet for familier og grupper på opptil 6 personer.',
       eyebrow: 'Familier i Livigno',
       intro:
@@ -1441,7 +1441,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     nl: {
       title: 'Livigno met kinderen: het appartement ontworpen voor gezinnen',
-      metaTitle: 'Gezinsappartement in Livigno | Tot 6 personen, kinderbedje en kinderstoel',
+      metaTitle: 'Gezinsappartement in Livigno, tot 6 personen',
       metaDescription: '3 slaapkamers, 2 badkamers, kinderbedje en kinderstoel op aanvraag: ontdek waarom Ironwood Livigno is ontworpen voor gezinnen en groepen tot 6 personen.',
       eyebrow: 'Gezinnen in Livigno',
       intro:
@@ -1581,7 +1581,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
   benessere: {
     en: {
       title: 'Wellness in Livigno: private infrared sauna and steam bath',
-      metaTitle: 'Private Sauna in Livigno | Steam Bath and Wellness in the Apartment',
+      metaTitle: 'Private Sauna in Livigno | Steam Bath in the Apartment',
       metaDescription:
         'Private infrared sauna and steam bath, never shared with other guests: discover the wellness side of a stay in Livigno at Ironwood.',
       eyebrow: 'Wellness',
@@ -1627,7 +1627,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     'en-us': {
       title: 'Wellness in Livigno, Italy: private infrared sauna and steam bath',
-      metaTitle: 'Private Sauna in Livigno, Italy | Steam Bath and Wellness in the Apartment',
+      metaTitle: 'Private Sauna in Livigno, Italy | Steam Bath Included',
       metaDescription:
         'Private infrared sauna and steam bath, never shared with other guests: discover the wellness side of a vacation in the Italian Alps at Ironwood.',
       eyebrow: 'Wellness',
@@ -1673,7 +1673,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     de: {
       title: 'Wellness in Livigno: private Infrarotsauna und Dampfbad',
-      metaTitle: 'Private Sauna in Livigno | Dampfbad und Wellness in der Ferienwohnung',
+      metaTitle: 'Private Sauna in Livigno | Dampfbad in der Wohnung',
       metaDescription:
         'Private Infrarotsauna und Dampfbad, nie mit anderen Gästen geteilt: entdecken Sie die Wellness-Seite eines Aufenthalts in Livigno bei Ironwood.',
       eyebrow: 'Wellness',
@@ -1719,7 +1719,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     fr: {
       title: 'Bien-être à Livigno : sauna infrarouge et hammam privés',
-      metaTitle: 'Sauna privé à Livigno | Hammam et bien-être dans l\'appartement',
+      metaTitle: 'Sauna privé à Livigno | Hammam dans l\'appartement',
       metaDescription:
         "Sauna infrarouge et hammam privés, jamais partagés avec d'autres clients : découvrez le volet bien-être d'un séjour à Livigno chez Ironwood.",
       eyebrow: 'Bien-être',
@@ -1810,7 +1810,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     pl: {
       title: 'Wellness w Livigno: prywatna sauna na podczerwień i łaźnia parowa',
-      metaTitle: 'Prywatna sauna w Livigno | Łaźnia parowa i wellness w apartamencie',
+      metaTitle: 'Prywatna sauna w Livigno | Łaźnia parowa w apartamencie',
       metaDescription: 'Prywatna sauna na podczerwień i łaźnia parowa, nigdy niedzielone z innymi gośćmi: odkryj stronę wellness pobytu w Livigno w Ironwood.',
       eyebrow: 'Wellness',
       intro:
@@ -1855,7 +1855,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     cs: {
       title: 'Wellness v Livignu: soukromá infrasauna a parní lázeň',
-      metaTitle: 'Soukromá sauna v Livignu | Parní lázeň a wellness v apartmánu',
+      metaTitle: 'Soukromá sauna v Livignu | Parní lázeň v apartmánu',
       metaDescription: 'Soukromá infrasauna a parní lázeň, nikdy sdílené s jinými hosty: objevte wellness stránku pobytu v Livignu v Ironwood.',
       eyebrow: 'Wellness',
       intro:
@@ -1945,7 +1945,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     nl: {
       title: 'Wellness in Livigno: privé infraroodsauna en stoombad',
-      metaTitle: 'Privésauna in Livigno | Stoombad en wellness in het appartement',
+      metaTitle: 'Privésauna in Livigno | Stoombad in het appartement',
       metaDescription: 'Privé infraroodsauna en stoombad, nooit gedeeld met andere gasten: ontdek de wellnesskant van een verblijf in Livigno bij Ironwood.',
       eyebrow: 'Wellness',
       intro:
@@ -2082,7 +2082,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
   'come-arrivare': {
     en: {
       title: 'How to reach Ironwood Livigno: address, parking, and the final stretch',
-      metaTitle: 'How to Get to Ironwood Livigno | Address, Parking and Final Stretch',
+      metaTitle: 'How to Get to Ironwood Livigno | Address and Parking',
       metaDescription:
         'Address, free parking and distance from the lifts: the practical guide to reaching Ironwood Livigno, Via Saroch 771, with no surprises.',
       eyebrow: 'Getting here',
@@ -2129,7 +2129,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     'en-us': {
       title: 'How to reach Ironwood Livigno, Italy: address, parking, and the final stretch',
-      metaTitle: 'How to Get to Ironwood Livigno, Italy | Address, Parking and Final Stretch',
+      metaTitle: 'How to Get to Ironwood Livigno, Italy | Address and Parking',
       metaDescription:
         'Address, free parking and distance from the lifts: the practical guide to reaching Ironwood Livigno, Via Saroch 771, Italy, with no surprises.',
       eyebrow: 'Getting here',
@@ -2176,7 +2176,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     de: {
       title: 'So erreichen Sie Ironwood Livigno: Adresse, Parkplatz und die letzten Kilometer',
-      metaTitle: 'Anreise zu Ironwood Livigno | Adresse, Parkplatz und letzter Streckenabschnitt',
+      metaTitle: 'Anreise zu Ironwood Livigno | Adresse und Parkplatz',
       metaDescription:
         'Adresse, kostenloser Parkplatz und Entfernung zu den Liften: der praktische Guide zur Anreise nach Ironwood Livigno, Via Saroch 771, ganz ohne Überraschungen.',
       eyebrow: 'Anreise',
@@ -2223,7 +2223,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     fr: {
       title: 'Comment rejoindre Ironwood Livigno : adresse, parking et derniers kilomètres',
-      metaTitle: 'Comment venir à Ironwood Livigno | Adresse, parking et dernier tronçon',
+      metaTitle: 'Comment venir à Ironwood Livigno | Adresse et parking',
       metaDescription:
         'Adresse, parking gratuit et distance des remontées : le guide pratique pour rejoindre Ironwood Livigno, via Saroch 771, sans surprises.',
       eyebrow: "Comment venir",
@@ -2270,7 +2270,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     da: {
       title: 'Sådan kommer du til Ironwood Livigno: adresse, parkering og de sidste kilometer',
-      metaTitle: 'Sådan kommer du til Ironwood Livigno | Adresse, parkering og sidste strækning',
+      metaTitle: 'Sådan kommer du til Ironwood Livigno | Adresse og parkering',
       metaDescription: 'Adresse, gratis parkering og afstand til liftene: den praktiske guide til at komme til Ironwood Livigno, Via Saroch 771, uden overraskelser.',
       eyebrow: 'Sådan kommer du hertil',
       intro:
@@ -2316,7 +2316,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     pl: {
       title: 'Jak dojechać do Ironwood Livigno: adres, parking i ostatnie kilometry',
-      metaTitle: 'Jak dojechać do Ironwood Livigno | Adres, parking i ostatni odcinek',
+      metaTitle: 'Jak dojechać do Ironwood Livigno | Adres i parking',
       metaDescription: 'Adres, bezpłatny parking i odległość od wyciągów: praktyczny przewodnik dojazdu do Ironwood Livigno, via Saroch 771, bez niespodzianek.',
       eyebrow: 'Jak dojechać',
       intro:
@@ -2362,7 +2362,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     cs: {
       title: 'Jak se dostat do Ironwood Livigno: adresa, parkování a poslední kilometry',
-      metaTitle: 'Jak se dostat do Ironwood Livigno | Adresa, parkování a poslední úsek',
+      metaTitle: 'Jak se dostat do Ironwood Livigno | Adresa a parkování',
       metaDescription: 'Adresa, bezplatné parkování a vzdálenost od vleků: praktický průvodce cestou do Ironwood Livigno, Via Saroch 771, bez překvapení.',
       eyebrow: 'Jak se k nám dostat',
       intro:
@@ -2408,7 +2408,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     no: {
       title: 'Slik kommer du til Ironwood Livigno: adresse, parkering og de siste kilometerne',
-      metaTitle: 'Slik kommer du til Ironwood Livigno | Adresse, parkering og siste strekning',
+      metaTitle: 'Slik kommer du til Ironwood Livigno | Adresse og parkering',
       metaDescription: 'Adresse, gratis parkering og avstand til heisene: den praktiske guiden til å komme til Ironwood Livigno, Via Saroch 771, uten overraskelser.',
       eyebrow: 'Slik kommer du hit',
       intro:
@@ -2454,7 +2454,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     nl: {
       title: 'Zo bereik je Ironwood Livigno: adres, parkeren en de laatste kilometers',
-      metaTitle: 'Zo kom je bij Ironwood Livigno | Adres, parkeren en laatste stuk',
+      metaTitle: 'Zo kom je bij Ironwood Livigno | Adres en parkeren',
       metaDescription: 'Adres, gratis parkeren en afstand tot de liften: de praktische gids om Ironwood Livigno, Via Saroch 771, zonder verrassingen te bereiken.',
       eyebrow: 'Hoe je hier komt',
       intro:
@@ -2671,7 +2671,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     'en-us': {
       title: 'About us: the Livigno, Italy family behind Ironwood Livigno',
-      metaTitle: 'About Us | Ironwood Livigno — A Host Family in Livigno, Italy',
+      metaTitle: 'About Us | Ironwood Livigno — A Host Family',
       metaDescription:
         'Ironwood Livigno, Italy is run directly by Francesco and his family, Livigno natives through and through: read our story and reviews, book with no commission.',
       eyebrow: 'About us',
@@ -2748,7 +2748,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     de: {
       title: 'Über uns: die Livigno-Familie hinter Ironwood Livigno',
-      metaTitle: 'Über Uns | Ironwood Livigno — Eine Gastgeberfamilie in Livigno',
+      metaTitle: 'Über Uns | Ironwood Livigno — Eine Gastgeberfamilie',
       metaDescription:
         'Ironwood Livigno wird direkt von Francesco und seiner Familie geführt, waschechten Livignesern: lesen Sie unsere Geschichte und Bewertungen, buchen Sie ohne Provision.',
       eyebrow: 'Über uns',
@@ -2823,7 +2823,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     fr: {
       title: 'Qui sommes-nous : la famille de Livigno derrière Ironwood Livigno',
-      metaTitle: 'Qui Sommes-Nous | Ironwood Livigno — Une Famille d\'Hôtes à Livigno',
+      metaTitle: 'Qui Sommes-Nous | Ironwood Livigno — Famille d\'Hôtes',
       metaDescription:
         'Ironwood Livigno est géré directement par Francesco et sa famille, natifs de Livigno depuis toujours : découvrez notre histoire et nos avis, réservez sans commission.',
       eyebrow: 'Qui sommes-nous',
@@ -3486,7 +3486,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     'en-us': {
       title: 'Apartment with private sauna in Livigno, Italy: exclusive infrared sauna and steam bath',
-      metaTitle: 'Private Sauna Livigno, Italy | Apartment with Private Steam Bath',
+      metaTitle: 'Private Sauna Livigno, Italy | Private Steam Bath',
       metaDescription:
         'In Livigno, Italy, an apartment with a private infrared sauna and steam bath, never shared: no reservation needed, available every day at any time.',
       eyebrow: 'Private sauna',
@@ -4677,7 +4677,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     nl: {
       title: 'De 3 slaapkamers van het appartement in Livigno: indeling, bedden en details',
-      metaTitle: 'Appartement met 3 Slaapkamers in Livigno | Indeling van de Kamers',
+      metaTitle: 'Appartement met 3 Slaapkamers in Livigno',
       metaDescription: '3 slaapkamers, 2 badkamers, 90 m²: ontdek de gedetailleerde indeling van het appartement in Livigno, kamer voor kamer, ontworpen voor gezinnen en groepen tot 6 personen.',
       eyebrow: 'De slaapkamers',
       intro:
@@ -4871,7 +4871,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
   'livigno-estate': {
     en: {
       title: 'What to do in Livigno in summer: 10 unmissable experiences',
-      metaTitle: 'Livigno in Summer | 10 Things to Do: Biking, Hiking and the Lake',
+      metaTitle: 'Livigno in Summer | 10 Things to Do: Bike, Hike, Lake',
       metaDescription:
         'Mountain biking, hiking, Lake Livigno and a private sauna after sport: 10 unmissable experiences to help plan your summer in Livigno.',
       eyebrow: 'Livigno in summer',
@@ -4941,7 +4941,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     'en-us': {
       title: 'What to do in Livigno, Italy in summer: 10 unmissable experiences',
-      metaTitle: 'Livigno, Italy in Summer | 10 Things to Do: Biking, Hiking and the Lake',
+      metaTitle: 'Livigno, Italy in Summer | 10 Things to Do',
       metaDescription:
         'Mountain biking, hiking, Lake Livigno and a private sauna after sport: 10 unmissable experiences to help plan your summer vacation in the Italian Alps.',
       eyebrow: 'Livigno in summer',
@@ -5011,7 +5011,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     de: {
       title: 'Was man im Sommer in Livigno unternehmen kann: 10 unverzichtbare Erlebnisse',
-      metaTitle: 'Livigno im Sommer | 10 Dinge zu tun: Biken, Wandern und der See',
+      metaTitle: 'Livigno im Sommer | 10 Dinge zu tun',
       metaDescription:
         'Mountainbike, Wandern, der Lago di Livigno und private Sauna nach dem Sport: 10 unverzichtbare Erlebnisse, um Ihren Sommer in Livigno perfekt zu planen.',
       eyebrow: 'Livigno im Sommer',
@@ -5081,7 +5081,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     fr: {
       title: "Que faire à Livigno en été : 10 expériences à ne pas manquer",
-      metaTitle: "Livigno en Été | 10 Choses à Faire : VTT, Randonnée et le Lac",
+      metaTitle: "Livigno en Été | 10 Choses à Faire",
       metaDescription:
         "VTT, randonnée, le lac de Livigno et sauna privé après le sport : 10 expériences à ne pas manquer pour organiser votre été à Livigno.",
       eyebrow: 'Livigno en été',
@@ -5151,7 +5151,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     da: {
       title: 'Hvad kan man lave i Livigno om sommeren: 10 uundgåelige oplevelser',
-      metaTitle: 'Livigno om Sommeren | 10 Ting at Lave: Cykling, Vandreture og Søen',
+      metaTitle: 'Livigno om Sommeren | 10 Ting at Lave',
       metaDescription: 'Mountainbike, vandreture, Livigno-søen og privat sauna efter sport: 10 uundgåelige oplevelser til at planlægge din sommer i Livigno.',
       eyebrow: 'Livigno om sommeren',
       intro:
@@ -5220,7 +5220,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     pl: {
       title: 'Co robić w Livigno latem: 10 niezapomnianych doświadczeń',
-      metaTitle: 'Livigno Latem | 10 Rzeczy do Zrobienia: Rowery, Trekking i Jezioro',
+      metaTitle: 'Livigno Latem | 10 Rzeczy do Zrobienia',
       metaDescription: 'Rowery górskie, trekking, Jezioro Livigno i prywatna sauna po sporcie: 10 niezapomnianych doświadczeń, które pomogą zaplanować lato w Livigno.',
       eyebrow: 'Livigno latem',
       intro:
@@ -5289,7 +5289,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     cs: {
       title: 'Co dělat v Livignu v létě: 10 nezapomenutelných zážitků',
-      metaTitle: 'Livigno v Létě | 10 Věcí k Vyzkoušení: Kola, Trekking a Jezero',
+      metaTitle: 'Livigno v Létě | 10 Věcí k Vyzkoušení',
       metaDescription: 'Horská kola, trekking, jezero Livigno a soukromá sauna po sportu: 10 nezapomenutelných zážitků, které vám pomohou naplánovat léto v Livignu.',
       eyebrow: 'Livigno v létě',
       intro:
@@ -5358,7 +5358,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     no: {
       title: 'Hva du kan gjøre i Livigno om sommeren: 10 uforglemmelige opplevelser',
-      metaTitle: 'Livigno om Sommeren | 10 Ting å Gjøre: Sykling, Fotturer og Sjøen',
+      metaTitle: 'Livigno om Sommeren | 10 Ting å Gjøre',
       metaDescription: 'Fjellsykling, fotturer, Livigno-sjøen og privat badstue etter sport: 10 uforglemmelige opplevelser som hjelper deg med å planlegge sommeren i Livigno.',
       eyebrow: 'Livigno om sommeren',
       intro:
@@ -5427,7 +5427,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     },
     nl: {
       title: 'Wat te doen in Livigno in de zomer: 10 onmisbare ervaringen',
-      metaTitle: 'Livigno in de Zomer | 10 Dingen om te Doen: Fietsen, Wandelen en het Meer',
+      metaTitle: 'Livigno in de Zomer | 10 Dingen om te Doen',
       metaDescription: 'Mountainbiken, wandelen, het Meer van Livigno en privésauna na de sport: 10 onmisbare ervaringen om jouw zomer in Livigno te plannen.',
       eyebrow: 'Livigno in de zomer',
       intro:

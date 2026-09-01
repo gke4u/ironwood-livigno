@@ -41,7 +41,7 @@ export const landingPages: LandingPage[] = [
   {
     slug: 'inverno',
     title: 'Vacanza sulla neve a Livigno: sci, sauna privata e comfort a due passi dalle piste',
-    metaTitle: 'Vacanza invernale a Livigno | Appartamento con sauna a 100 m dagli impianti',
+    metaTitle: 'Vacanza invernale a Livigno | Sauna a 100 m dagli impianti',
     metaDescription:
       "Sci, sauna a infrarossi e bagno turco privati a 100 m dal Carosello 3000: scopri come vivere l'inverno a Livigno da Ironwood.",
     eyebrow: 'Inverno a Livigno',
@@ -106,7 +106,7 @@ export const landingPages: LandingPage[] = [
   {
     slug: 'estate',
     title: "Livigno d'estate: mountain bike, trekking e relax nell'appartamento con sauna",
-    metaTitle: 'Vacanza estiva a Livigno | Mountain bike, trekking e sauna privata',
+    metaTitle: 'Vacanza estiva a Livigno | Bike, trekking e sauna privata',
     metaDescription:
       "Bike park, sentieri per tutti i livelli e il Lago di Livigno: scopri l'estate a Livigno e perché un appartamento con sauna privata è la base ideale.",
     eyebrow: 'Estate a Livigno',
@@ -171,7 +171,7 @@ export const landingPages: LandingPage[] = [
   {
     slug: 'famiglie',
     title: "Livigno con bambini: l'appartamento pensato per le famiglie",
-    metaTitle: 'Appartamento per famiglie a Livigno | Fino a 6 persone, culla e seggiolone',
+    metaTitle: 'Appartamento per famiglie a Livigno, fino a 6 persone',
     metaDescription:
       '3 camere, 2 bagni, culla e seggiolone su richiesta: scopri perché Ironwood Livigno è pensato per famiglie e gruppi fino a 6 persone.',
     eyebrow: 'Famiglie a Livigno',
@@ -236,7 +236,7 @@ export const landingPages: LandingPage[] = [
   {
     slug: 'benessere',
     title: 'Benessere a Livigno: sauna a infrarossi e bagno turco privati',
-    metaTitle: 'Sauna privata a Livigno | Bagno turco e benessere in appartamento',
+    metaTitle: 'Sauna privata a Livigno | Bagno turco in appartamento',
     metaDescription:
       'Sauna a infrarossi e bagno turco privati, mai condivisi con altri ospiti: scopri il lato benessere di un soggiorno a Livigno da Ironwood.',
     eyebrow: 'Benessere',
@@ -300,7 +300,7 @@ export const landingPages: LandingPage[] = [
   {
     slug: 'come-arrivare',
     title: 'Come raggiungere Ironwood Livigno: indirizzo, parcheggio e ultimi chilometri',
-    metaTitle: 'Come arrivare a Ironwood Livigno | Indirizzo, parcheggio e ultimo tratto',
+    metaTitle: 'Come arrivare a Ironwood Livigno | Indirizzo e parcheggio',
     metaDescription:
       'Indirizzo, parcheggio gratuito e distanza dagli impianti: la guida pratica per arrivare a Ironwood Livigno, via Saroch 771, senza sorprese.',
     eyebrow: 'Come arrivare',

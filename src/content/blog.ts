@@ -449,7 +449,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'sauna-privata-vs-condivisa-livigno',
-    title: 'Sauna privata vs sauna condivisa: perché scegliere un appartamento con spa esclusiva',
+    title: 'Sauna privata vs condivisa a Livigno: perché sceglierla',
     description:
       'Sauna privata o spa condivisa in hotel? Vantaggi reali, orari, igiene e comfort: cosa considerare prima di prenotare il tuo alloggio a Livigno.',
     date: '2026-08-06',
@@ -596,7 +596,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'carosello-3000-vs-mottolino-quale-scegliere',
-    title: 'Carosello 3000 vs Mottolino: quale comprensorio scegliere a Livigno',
+    title: 'Carosello 3000 vs Mottolino: quale scegliere a Livigno',
     description:
       'Le differenze tra i due comprensori sciistici di Livigno — piste, atmosfera e a chi conviene ciascuno — e perché la posizione dell\'alloggio conta più della scelta.',
     date: '2026-08-06',
@@ -685,7 +685,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'appartamento-con-sauna-privata-livigno-vs-hotel',
-    title: 'Appartamento con sauna privata a Livigno: perché conviene rispetto a un hotel',
+    title: 'Appartamento con sauna privata a Livigno vs hotel',
     description:
       "Cosa cambia tra una spa condivisa in hotel e una sauna privata inclusa nell'appartamento: niente orari, niente prenotazioni, tutti i giorni della vacanza.",
     date: '2026-08-09',
@@ -728,7 +728,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'livigno-per-gruppi-numerosi-fino-a-6-persone',
-    title: 'Livigno per gruppi numerosi: come organizzare il soggiorno fino a 6 persone',
+    title: 'Livigno per gruppi numerosi: come organizzare il soggiorno',
     description:
       'Consigli pratici per organizzare una vacanza a Livigno in gruppo: spazi, bagni, cucina e logistica per stare comodi fino a 6 persone.',
     date: '2026-08-09',
@@ -770,7 +770,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'deposito-sci-e-attrezzatura-a-livigno-cosa-cercare',
-    title: 'Deposito sci e attrezzatura a Livigno: cosa cercare in un alloggio',
+    title: 'Deposito sci e attrezzatura a Livigno: cosa cercare',
     description:
       "Perché un deposito sci dedicato nell'alloggio cambia la vacanza sulla neve, e cosa verificare prima di prenotare.",
     date: '2026-08-09',
@@ -854,7 +854,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'vacanza-senza-pensieri-a-livigno-colazione-ed-e-bike',
-    title: 'Vacanza senza pensieri a Livigno: colazione ed e-bike, come funziona',
+    title: 'Vacanza senza pensieri a Livigno: colazione ed e-bike',
     description:
       "Due servizi pensati per semplificarti la vacanza a Ironwood Livigno: colazione su richiesta e noleggio e-bike direttamente in struttura.",
     date: '2026-08-09',

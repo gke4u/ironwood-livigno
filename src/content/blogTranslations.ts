@@ -308,7 +308,7 @@ export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocal
   },
   'carosello-3000-vs-mottolino-quale-scegliere': {
     en: {
-      title: 'Carosello 3000 vs Mottolino: Which Ski Area to Choose in Livigno',
+      title: 'Carosello 3000 vs Mottolino: Which Ski Area to Choose',
       description:
         "The differences between Livigno's two ski areas — slopes, atmosphere and who each one suits best — and why where you stay matters more than which side you pick.",
       intro:
@@ -341,7 +341,7 @@ export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocal
       ]
     },
     de: {
-      title: 'Carosello 3000 oder Mottolino: Welches Skigebiet in Livigno wählen',
+      title: 'Carosello 3000 oder Mottolino: Welches Skigebiet wählen',
       description:
         'Die Unterschiede zwischen den beiden Skigebieten von Livigno – Pisten, Atmosphäre und wem welches Gebiet am besten passt – und warum die Wahl der Unterkunft wichtiger ist als die Wahl der Seite.',
       intro:
@@ -456,7 +456,7 @@ export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocal
   },
   'sauna-privata-vs-condivisa-livigno': {
     en: {
-      title: 'Private Sauna vs Shared Sauna: Why Choose an Apartment with an Exclusive Spa',
+      title: 'Private Sauna vs Shared: Why Choose an Exclusive Spa',
       description:
         'Private sauna or shared spa in a hotel? Real advantages, timing, hygiene and comfort: what to consider before booking your stay in Livigno.',
       intro:
@@ -489,7 +489,7 @@ export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocal
       ]
     },
     de: {
-      title: 'Private Sauna vs. Gemeinschaftssauna: Warum ein Apartment mit eigenem Spa wählen',
+      title: 'Private vs. geteilte Sauna: Warum ein eigenes Spa wählen',
       description:
         'Private Sauna oder Gemeinschaftsspa im Hotel? Echte Vorteile, Zeitplanung, Hygiene und Komfort: was Sie vor der Buchung Ihres Aufenthalts in Livigno bedenken sollten.',
       intro:
@@ -627,7 +627,7 @@ export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocal
       ]
     },
     de: {
-      title: 'Was man in Livigno essen sollte: typische Gerichte der Valtellina',
+      title: 'Was man in Livigno isst: Gerichte der Valtellina',
       description:
         'Pizzoccheri, Sciatt und Bresaola: die typischen Gerichte, die man während eines Urlaubs in Livigno probieren sollte, verwurzelt in bäuerlicher Tradition und Zutaten aus den Bergen.',
       intro:
@@ -811,7 +811,7 @@ export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocal
       ]
     },
     de: {
-      title: 'Was man in Livigno im Sommer unternehmen kann: 10 Erlebnisse, die man nicht verpassen sollte',
+      title: 'Was man in Livigno im Sommer erleben kann: 10 Highlights',
       description:
         'Von Mountainbiken über den Lago di Livigno bis zum Duty-free-Shopping und der privaten Sauna: 10 Erlebnisse, die man sich in einem Sommerurlaub in Livigno nicht entgehen lassen sollte.',
       intro:
