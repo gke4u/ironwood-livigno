@@ -157,7 +157,6 @@ export const blogPosts: BlogPost[] = [
     ],
     relatedLinks: [
       { href: '/estate', label: "Scopri la guida completa all'estate a Livigno da Ironwood" },
-      { href: '/livigno-estate', label: "Vedi tutte le esperienze estive in un'unica pagina" },
       { href: '/blog/livigno-estate-10-esperienze-imperdibili', label: "Leggi le 10 esperienze imperdibili d'estate" }
     ]
   },
@@ -390,7 +389,6 @@ export const blogPosts: BlogPost[] = [
     ],
     relatedLinks: [
       { href: '/estate', label: "Scopri la guida completa all'estate a Livigno da Ironwood" },
-      { href: '/livigno-estate', label: "Vedi tutte le esperienze estive in un'unica pagina" },
       { href: '/blog/cosa-mangiare-a-livigno-piatti-tipici', label: 'Leggi la guida ai piatti tipici della Valtellina' }
     ]
   },
@@ -872,7 +870,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: 'Noleggio e-bike direttamente in struttura',
         paragraphs: [
-          "Mettiamo a disposizione, su richiesta, il noleggio di e-bike direttamente in appartamento: utile per esplorare più terreno in estate senza affaticarsi troppo in salita, dai sentieri intorno al [Lago di Livigno](/livigno-estate) ai percorsi verso gli alpeggi in quota."
+          "Mettiamo a disposizione, su richiesta, il noleggio di e-bike direttamente in appartamento: utile per esplorare più terreno in estate senza affaticarsi troppo in salita, dai sentieri intorno al [Lago di Livigno](/estate) ai percorsi verso gli alpeggi in quota."
         ]
       },
       {
@@ -1057,7 +1055,7 @@ export const blogPosts: BlogPost[] = [
       }
     ],
     relatedLinks: [
-      { href: '/livigno-estate', label: 'Scopri tutte le esperienze estive a Livigno' },
+      { href: '/estate', label: 'Scopri tutte le esperienze estive a Livigno' },
       { href: '/blog/livigno-estate-mountain-bike-trekking-lago', label: 'Leggi gli itinerari trekking intorno al lago' },
       { href: '/benessere', label: 'Scopri la sauna con vista montagna' }
     ]

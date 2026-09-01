@@ -277,3 +277,22 @@
 /en/sauna /sauna-bagno-turco-privato-livigno/en 301
 /it/photogallery /it 301
 /it/dove-siamo /it#posizione 301
+
+# ------------------------------------------------------------------
+# /livigno-estate merged into /estate (2026-09): the two pages covered
+# almost the same sub-topics (mountain bike, trekking, lago, sauna) in
+# the same order, competing against each other for the same searches
+# instead of reinforcing one page. /estate absorbed the unique content
+# (canoa, shopping duty-free, piatti tipici) before this redirect went in.
+/livigno-estate /estate 301
+/livigno-estate/en /estate/en 301
+/livigno-estate/en-us /estate/en-us 301
+/livigno-estate/de /estate/de 301
+/livigno-estate/fr /estate/fr 301
+/livigno-estate/da /estate/da 301
+/livigno-estate/pl /estate/pl 301
+/livigno-estate/cs /estate/cs 301
+/livigno-estate/no /estate/no 301
+/livigno-estate/nl /estate/nl 301
+/livigno-estate/zh /estate/zh 301
+/livigno-estate/ja /estate/ja 301

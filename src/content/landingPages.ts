@@ -122,15 +122,21 @@ export const landingPages: LandingPage[] = [
       {
         heading: 'Mountain bike: dal Mottolino Bike Park alla Bike Academy',
         body: [
-          "Il Mottolino Bike Park è il punto di riferimento per chi cerca adrenalina, con tracciati tra downhill, jump area e sezioni north shore. Anche Carosello 3000 apre gli impianti in estate, collegando sentieri panoramici in quota. Per chi muove i primi pedali o viaggia con bambini, la Bike Academy offre un percorso pensato apposta per principianti.",
+          "Il Mottolino Bike Park è il punto di riferimento per chi cerca adrenalina, con tracciati tra downhill, jump area e sezioni north shore. Anche Carosello 3000 apre gli impianti in estate — indicativamente dal 20 giugno al 13 settembre — collegando sentieri panoramici in quota. Per chi muove i primi pedali o viaggia con bambini, la Bike Academy offre un percorso pensato apposta per principianti.",
           "In totale il comprensorio conta oltre 50 km di sentieri organizzati, adatti sia a chi cerca discese tecniche sia a chi preferisce un giro tranquillo tra i boschi di larici."
         ]
       },
       {
         heading: 'Trekking, il Lago di Livigno e gli alpeggi',
         body: [
-          "Non serve essere biker per godersi Livigno d'estate. La conca è attraversata da sentieri di trekking di ogni difficoltà, tra alpeggi fioriti — l'arnica è il fiore simbolo della zona — e panorami sulle Alpi Retiche. Una passeggiata alla portata di tutti è quella intorno al Lago di Livigno, con soste per un picnic nelle giornate più calde.",
+          "Non serve essere biker per godersi Livigno d'estate. La conca è attraversata da sentieri di trekking di ogni difficoltà, tra alpeggi fioriti — l'arnica è il fiore simbolo della zona — e panorami sulle Alpi Retiche. Una passeggiata alla portata di tutti è quella intorno al Lago di Livigno, con soste per un picnic nelle giornate più calde o un giro in canoa per chi vuole vivere la vallata dall'acqua.",
           'Le temperature estive restano fresche anche ad agosto, un altro motivo per cui Livigno è una meta apprezzata da chi cerca sollievo dal caldo delle città.'
+        ]
+      },
+      {
+        heading: 'Shopping duty-free e piatti tipici della Valtellina',
+        body: [
+          "Il centro pedonale di Livigno, zona franca doganale, resta una tappa quasi obbligata anche per chi non fa sport: alcolici, profumi e cosmetici sono tra i prodotti più convenienti. Da provare anche i piatti tipici della Valtellina — pizzoccheri, sciatt e bresaola IGP — nei ristoranti del paese o cucinati con calma nella cucina attrezzata dell'appartamento."
         ]
       },
       {
@@ -164,7 +170,7 @@ export const landingPages: LandingPage[] = [
       },
       {
         q: "Livigno d'estate è adatta anche a chi non pratica sport?",
-        a: 'Sì: la passeggiata intorno al Lago di Livigno è alla portata di tutti, e le temperature restano fresche anche ad agosto.'
+        a: 'Sì: la passeggiata intorno al Lago di Livigno è alla portata di tutti, il centro pedonale duty-free è una tappa piacevole per lo shopping, e le temperature restano fresche anche ad agosto.'
       }
     ]
   },
@@ -615,84 +621,5 @@ export const landingPages: LandingPage[] = [
       label: "Scopri tutti i dettagli pensati per famiglie e gruppi"
     },
     breadcrumbName: 'Le camere'
-  },
-  {
-    slug: 'livigno-estate',
-    title: "Livigno d'estate: 10 esperienze da vivere da Ironwood",
-    metaTitle: "Livigno d'Estate | 10 Cose da Fare tra Bike, Trekking e Lago",
-    metaDescription:
-      "Mountain bike, trekking, il Lago di Livigno e sauna privata dopo lo sport: 10 esperienze da non perdere per organizzare al meglio la tua estate a Livigno.",
-    eyebrow: "Livigno d'estate",
-    intro:
-      "Cosa fare a Livigno d'estate, in pratica? Da giugno a settembre la conca alpina si trasforma in una delle capitali della mountain bike in Europa, con sentieri per ogni livello, un lago da scoprire in canoa o a piedi, e un centro pedonale duty-free tutto da girare. Ecco 10 esperienze imperdibili per organizzare la tua estate a Livigno, in sintesi.",
-    image: {
-      src: '/images/mucca-alpeggio-livigno.jpg',
-      alt: 'Mucca al pascolo sugli alpeggi intorno a Livigno d’estate',
-      w: 1119,
-      h: 1200
-    },
-    sections: [
-      {
-        heading: '1–2. Mountain bike: Mottolino Bike Park e Bike Academy',
-        body: [
-          "Il Mottolino Bike Park è il riferimento per l'adrenalina, con 14 tracciati tra downhill, jump area e sezioni north shore. Per chi viaggia con bambini o muove i primi pedali, la Bike Academy offre un percorso di circa 5 km pensato apposta per principianti."
-        ]
-      },
-      {
-        heading: '3–4. Trekking: il Lago di Livigno e gli alpeggi fioriti',
-        body: [
-          "Il giro intorno al Lago di Livigno è la passeggiata più semplice e alla portata di tutti, con soste per un picnic. Per chi cerca un'escursione più impegnativa, i sentieri tra gli alpeggi fioriti — l'arnica è il fiore simbolo della zona — offrono panorami sulle Alpi Retiche."
-        ]
-      },
-      {
-        heading: '5–6. Carosello 3000 d\'estate e un giro in canoa',
-        body: [
-          "Anche gli impianti del comprensorio sciistico invernale aprono in estate (indicativamente dal 20 giugno al 13 settembre), collegando sentieri panoramici in quota. Nelle giornate più calde, il lago si presta anche a un giro in canoa."
-        ]
-      },
-      {
-        heading: '7–8. Shopping duty-free e piatti tipici della Valtellina',
-        body: [
-          "Il centro pedonale di Livigno, zona franca doganale, resta una tappa quasi obbligata per lo shopping. Da provare anche i piatti tipici della Valtellina — pizzoccheri, sciatt e bresaola IGP — nei ristoranti del paese o cucinati con calma in appartamento."
-        ]
-      },
-      {
-        heading: '9–10. Sauna privata dopo lo sport e temperature fresche anche ad agosto',
-        body: [
-          "Dopo una giornata di trekking o mountain bike, la sauna a infrarossi e il bagno turco privati aiutano a sciogliere i muscoli prima di cena. E le temperature estive a Livigno restano fresche anche nel pieno dell'estate — un motivo in più per chi cerca sollievo dal caldo delle città."
-        ]
-      }
-    ],
-    highlights: [
-      'Oltre 50 km di sentieri per mountain bike e trekking',
-      'Lago di Livigno: passeggiata, picnic o canoa',
-      'Centro pedonale duty-free a 15 minuti a piedi',
-      'Sauna privata disponibile anche dopo lo sport estivo'
-    ],
-    faq: [
-      {
-        q: 'Livigno è una meta valida anche per chi non fa mountain bike?',
-        a: "Sì: il giro intorno al lago, gli alpeggi fioriti, lo shopping duty-free e i piatti tipici della Valtellina sono esperienze alla portata di tutti, non richiedono essere biker o escursionisti esperti."
-      },
-      {
-        q: 'Quando sono aperti gli impianti estivi di Carosello 3000?',
-        a: 'Indicativamente dal 20 giugno al 13 settembre, per collegare sentieri panoramici in quota — le date esatte possono variare di anno in anno.'
-      },
-      {
-        q: 'Fa caldo a Livigno in estate?',
-        a: 'Le temperature restano generalmente fresche anche ad agosto, uno dei motivi per cui Livigno è apprezzata da chi cerca sollievo dal caldo delle città.'
-      }
-    ],
-    internalLinks: [
-      { href: '/estate', label: "Leggi la guida completa all'estate a Livigno da Ironwood" },
-      { href: '/blog/livigno-estate-10-esperienze-imperdibili', label: "Leggi l'articolo completo con tutti i dettagli" },
-      { href: '/famiglie', label: 'Scopri le attività adatte anche ai bambini' }
-    ],
-    ctaText: 'Verifica la disponibilità per la tua estate a Livigno',
-    relatedLink: {
-      href: '/blog/livigno-estate-mountain-bike-trekking-lago',
-      label: "Leggi anche la guida su mountain bike, trekking e lago"
-    },
-    breadcrumbName: "Livigno d'estate"
   }
 ];

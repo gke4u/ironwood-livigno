@@ -62,8 +62,7 @@ const satellitePageMeta: Record<string, { image: string; priority: number; chang
   'come-arrivare': { image: '/images/esterno-giorno.jpg', priority: 0.8, changeFrequency: 'monthly' },
   'chi-siamo': { image: '/images/esterno-giorno.jpg', priority: 0.6, changeFrequency: 'yearly' },
   'sauna-bagno-turco-privato-livigno': { image: '/images/sauna.jpg', priority: 0.8, changeFrequency: 'monthly' },
-  'camere-appartamento-livigno': { image: '/images/camera3.jpg', priority: 0.8, changeFrequency: 'monthly' },
-  'livigno-estate': { image: '/images/mucca-alpeggio-livigno.jpg', priority: 0.8, changeFrequency: 'monthly' }
+  'camere-appartamento-livigno': { image: '/images/camera3.jpg', priority: 0.8, changeFrequency: 'monthly' }
 };
 
 // A slug present in satelliteSlugs but missing here would otherwise silently

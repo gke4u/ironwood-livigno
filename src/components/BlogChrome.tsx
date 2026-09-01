@@ -72,8 +72,7 @@ const RELATED_PAGES = [
   { href: '/come-arrivare', label: 'Come arrivare' },
   { href: '/chi-siamo', label: 'Chi siamo' },
   { href: '/sauna-bagno-turco-privato-livigno', label: 'Sauna privata' },
-  { href: '/camere-appartamento-livigno', label: 'Le camere' },
-  { href: '/livigno-estate', label: "Livigno d'estate" }
+  { href: '/camere-appartamento-livigno', label: 'Le camere' }
 ];
 
 export function BlogFooter() {
