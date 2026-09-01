@@ -193,7 +193,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: 'Dove provarli',
         paragraphs: [
-          'Molti ristoranti di Livigno propongono questi piatti nella loro versione tradizionale. Ma se preferisci una serata più tranquilla in appartamento, la cucina completamente attrezzata di Ironwood Livigno permette di comprare bresaola, formaggi e pizzoccheri freschi al supermercato o al mercato locale e cucinarli con calma — un modo semplice per portare a tavola un pezzo autentico di Valtellina.'
+          'Molti ristoranti di Livigno propongono questi piatti nella loro versione tradizionale. Ma se preferisci una serata più tranquilla in appartamento, [la cucina completamente attrezzata di Ironwood Livigno](/camere-appartamento-livigno) permette di comprare bresaola, formaggi e pizzoccheri freschi al supermercato o al mercato locale e cucinarli con calma — un modo semplice per portare a tavola un pezzo autentico di Valtellina.'
         ]
       }
     ],
@@ -256,7 +256,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: 'Dove fare shopping',
         paragraphs: [
-          'Il centro pedonale di Livigno, con negozi duty-free, è a circa 15 minuti a piedi da Ironwood Livigno — comodo per una passeggiata tra i negozi dopo una giornata sugli sci o come tappa serale prima di cena.'
+          'Il centro pedonale di Livigno, con negozi duty-free, è a circa 15 minuti a piedi da [Ironwood Livigno](/camere-appartamento-livigno) — comodo per una passeggiata tra i negozi dopo una giornata sugli sci o come tappa serale prima di cena.'
         ]
       }
     ],
@@ -372,13 +372,13 @@ export const blogPosts: BlogPost[] = [
       {
         heading: '8. I piatti tipici della Valtellina',
         paragraphs: [
-          'Dopo una giornata attiva, i pizzoccheri, gli sciatt e la bresaola della Valtellina IGP sono da provare nei ristoranti del paese, oppure da cucinare con calma nella cucina completamente attrezzata dell\'appartamento.'
+          'Dopo una giornata attiva, i pizzoccheri, gli sciatt e la bresaola della Valtellina IGP sono da provare nei ristoranti del paese, oppure da cucinare con calma nella [cucina completamente attrezzata dell\'appartamento](/camere-appartamento-livigno).'
         ]
       },
       {
         heading: '9. Relax nella sauna privata dopo una giornata attiva',
         paragraphs: [
-          "Il vantaggio di una sauna a infrarossi e un bagno turco privati non è solo invernale: dopo una giornata di trekking o mountain bike, il calore aiuta a sciogliere i muscoli prima ancora di pensare alla cena."
+          "Il vantaggio di [una sauna a infrarossi e un bagno turco privati](/sauna-bagno-turco-privato-livigno) non è solo invernale: dopo una giornata di trekking o mountain bike, il calore aiuta a sciogliere i muscoli prima ancora di pensare alla cena."
         ]
       },
       {
@@ -437,7 +437,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: 'Perché la posizione dell\'alloggio conta più di quanto pensi',
         paragraphs: [
-          "Con bambini piccoli, la vicinanza alla scuola sci e agli impianti fa una differenza enorme sulla gestione delle giornate. A Ironwood Livigno la scuola sci si trova a soli 50 metri e gli impianti di risalita a 100 metri: comodo per lezioni, cambi rapidi e pause pranzo in appartamento senza dover usare l'auto."
+          "Con bambini piccoli, la vicinanza alla scuola sci e agli impianti fa una differenza enorme sulla gestione delle giornate. A [Ironwood Livigno](/camere-appartamento-livigno) la scuola sci si trova a soli 50 metri e gli impianti di risalita a 100 metri: comodo per lezioni, cambi rapidi e pause pranzo in appartamento senza dover usare l'auto."
         ]
       }
     ],
@@ -466,7 +466,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: 'Orari e prenotazione: nessuna attesa con la sauna privata',
         paragraphs: [
-          "In molte strutture ricettive di montagna, sauna e bagno turco sono spazi comuni, con orari di prenotazione e la possibilità concreta di doverli condividere con sconosciuti. Con una sauna privata in appartamento, come quella di Ironwood Livigno, non ci sono slot da prenotare né code: è disponibile in qualunque momento della giornata."
+          "In molte strutture ricettive di montagna, sauna e bagno turco sono spazi comuni, con orari di prenotazione e la possibilità concreta di doverli condividere con sconosciuti. Con una sauna privata in appartamento, come quella di [Ironwood Livigno](/camere-appartamento-livigno), non ci sono slot da prenotare né code: è disponibile in qualunque momento della giornata."
         ]
       },
       {
@@ -531,7 +531,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: 'Dove si risparmia davvero: alloggio e pasti',
         paragraphs: [
-          'La voce che fa la differenza maggiore sul budget totale è spesso l\'alloggio abbinato ai pasti. Un appartamento con cucina attrezzata, come Ironwood Livigno, permette di fare colazione e alcuni pasti in autonomia, con un risparmio concreto rispetto a mangiare sempre fuori — oltre a offrire più flessibilità di orari rispetto a un hotel con pensione fissa. Prenotare l\'alloggio direttamente dal sito del proprietario, quando possibile, evita anche le commissioni applicate dai portali di prenotazione.'
+          'La voce che fa la differenza maggiore sul budget totale è spesso l\'alloggio abbinato ai pasti. Un appartamento con cucina attrezzata, come [Ironwood Livigno](/camere-appartamento-livigno), permette di fare colazione e alcuni pasti in autonomia, con un risparmio concreto rispetto a mangiare sempre fuori — oltre a offrire più flessibilità di orari rispetto a un hotel con pensione fissa. Prenotare l\'alloggio direttamente dal sito del proprietario, quando possibile, evita anche le commissioni applicate dai portali di prenotazione.'
         ]
       },
       {
@@ -584,7 +584,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: 'Perché prenotare con largo anticipo',
         paragraphs: [
-          "Tra Natale e Capodanno, Livigno raggiunge una delle occupazioni più alte dell'anno: gli alloggi migliori (soprattutto quelli vicini agli impianti) si esauriscono con mesi di anticipo. Un appartamento come Ironwood Livigno, con cucina attrezzata, è comodo in questo periodo anche per chi vuole organizzare un pranzo di Natale in famiglia con calma, senza dipendere dagli orari di un ristorante, e concludere la giornata con la sauna privata invece che in coda per una spa condivisa."
+          "Tra Natale e Capodanno, Livigno raggiunge una delle occupazioni più alte dell'anno: gli alloggi migliori (soprattutto quelli vicini agli impianti) si esauriscono con mesi di anticipo. Un appartamento come [Ironwood Livigno](/camere-appartamento-livigno), con cucina attrezzata, è comodo in questo periodo anche per chi vuole organizzare un pranzo di Natale in famiglia con calma, senza dipendere dagli orari di un ristorante, e concludere la giornata con [la sauna privata](/sauna-bagno-turco-privato-livigno) invece che in coda per una spa condivisa."
         ]
       }
     ],
@@ -631,7 +631,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: "Perché la posizione dell'alloggio conta più della scelta del versante",
         paragraphs: [
-          "Il vero vincolo pratico, più che scegliere un comprensorio, è la posizione di dove dormi: alloggiando a un'estremità del paese, raggiungere il versante opposto richiede tempo. Ironwood Livigno si trova in Via Saroch, a 100 metri sia dagli impianti di Carosello 3000 sia da quelli del Mottolino — quindi ogni mattina puoi decidere sul momento dove sciare, senza che la scelta dipenda da quanto è comodo arrivarci."
+          "Il vero vincolo pratico, più che scegliere un comprensorio, è la posizione di dove dormi: alloggiando a un'estremità del paese, raggiungere il versante opposto richiede tempo. [Ironwood Livigno si trova in Via Saroch](/come-arrivare), a 100 metri sia dagli impianti di Carosello 3000 sia da quelli del Mottolino — quindi ogni mattina puoi decidere sul momento dove sciare, senza che la scelta dipenda da quanto è comodo arrivarci."
         ]
       }
     ],
@@ -740,7 +740,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: 'Quanto spazio serve davvero per un gruppo',
         paragraphs: [
-          "Un appartamento pensato per gruppi numerosi ha bisogno di più di semplici posti letto: servono spazi comuni abbastanza ampi da ospitare tutti insieme la sera, senza che qualcuno finisca sempre relegato in camera. Ironwood Livigno si sviluppa su 90 m² con 3 camere da letto, per un massimo di 6 ospiti — pensato apposta per questo tipo di soggiorno."
+          "Un appartamento pensato per gruppi numerosi ha bisogno di più di semplici posti letto: servono spazi comuni abbastanza ampi da ospitare tutti insieme la sera, senza che qualcuno finisca sempre relegato in camera. [Ironwood Livigno si sviluppa su 90 m² con 3 camere da letto](/camere-appartamento-livigno), per un massimo di 6 ospiti — pensato apposta per questo tipo di soggiorno."
         ]
       },
       {
@@ -794,7 +794,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: 'Il deposito sci e bici di Ironwood Livigno',
         paragraphs: [
-          "Ironwood Livigno include un deposito sci e bici dedicato, pensato apposta per chi arriva con l'attrezzatura al seguito, in inverno per gli sci o in estate per le bici. Essendo l'appartamento a soli 100 metri dagli impianti di risalita, il tragitto tra deposito e piste è comunque brevissimo."
+          "Ironwood Livigno include un deposito sci e bici dedicato, pensato apposta per chi arriva con l'attrezzatura al seguito, in inverno per gli sci o in estate per le bici. Essendo [l'appartamento a soli 100 metri dagli impianti di risalita](/come-arrivare), il tragitto tra deposito e piste è comunque brevissimo."
         ]
       },
       {
@@ -872,7 +872,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: 'Noleggio e-bike direttamente in struttura',
         paragraphs: [
-          "Mettiamo a disposizione, su richiesta, il noleggio di e-bike direttamente in appartamento: utile per esplorare più terreno in estate senza affaticarsi troppo in salita, dai sentieri intorno al Lago di Livigno ai percorsi verso gli alpeggi in quota."
+          "Mettiamo a disposizione, su richiesta, il noleggio di e-bike direttamente in appartamento: utile per esplorare più terreno in estate senza affaticarsi troppo in salita, dai sentieri intorno al [Lago di Livigno](/livigno-estate) ai percorsi verso gli alpeggi in quota."
         ]
       },
       {
@@ -1052,7 +1052,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: 'Il tramonto visto da casa',
         paragraphs: [
-          "Non serve sempre uscire: la sauna a infrarossi di Ironwood Livigno si affaccia sulla vista di montagna, un modo comodo per goderti la luce del tardo pomeriggio che cambia sulle vette, senza muoverti dall'appartamento dopo una giornata sulle piste o sui sentieri."
+          "Non serve sempre uscire: [la sauna a infrarossi di Ironwood Livigno](/sauna-bagno-turco-privato-livigno) si affaccia sulla vista di montagna, un modo comodo per goderti la luce del tardo pomeriggio che cambia sulle vette, senza muoverti dall'appartamento dopo una giornata sulle piste o sui sentieri."
         ]
       }
     ],
