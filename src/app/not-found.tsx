@@ -41,9 +41,14 @@ export default function NotFound() {
 
   useEffect(() => {
     const seg = window.location.pathname.split('/')[1];
-    if ((locales as readonly string[]).includes(seg)) {
-      setLocale(seg as Locale);
-    }
+    // The root layout renders no <html> wrapper (shared across [locale] and
+    // /blog, each of which sets its own), and this page — outside both —
+    // renders none either, so `lang` is never declared for a screen reader
+    // otherwise. Set it explicitly once the real locale is known from the
+    // URL, matching the language the COPY text below actually renders in.
+    const detected = (locales as readonly string[]).includes(seg) ? (seg as Locale) : defaultLocale;
+    setLocale(detected);
+    document.documentElement.lang = detected;
   }, []);
 
   const c = COPY[locale];
