@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { landingPages } from '@/content/landingPages';
+import { buildTitle } from '@/lib/buildTitle';
 import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
 import LandingPageBody from '@/components/LandingPageBody';
 
@@ -8,7 +9,7 @@ const page = landingPages.find((p) => p.slug === 'camere-appartamento-livigno')!
 const url = `${siteUrl}/${page.slug}`;
 
 export const metadata: Metadata = {
-  title: `${page.metaTitle} | Ironwood Livigno`,
+  title: buildTitle(page.metaTitle),
   description: page.metaDescription,
   alternates: { canonical: url, languages: { it: url, 'x-default': url } },
   openGraph: {

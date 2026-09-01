@@ -6,6 +6,7 @@ import { blogTranslations, translatedBlogLocales } from '@/content/blogTranslati
 import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
 import Pic from '@/components/Pic';
 import { renderInlineLinks } from '@/lib/renderInlineLinks';
+import { buildTitle } from '@/lib/buildTitle';
 
 const LANG_LABEL: Record<string, string> = { en: 'English', de: 'Deutsch' };
 
@@ -29,7 +30,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   });
 
   return {
-    title: `${post.title} | Ironwood Livigno`,
+    title: buildTitle(post.title),
     description: post.description,
     alternates: { canonical: url, languages },
     openGraph: {

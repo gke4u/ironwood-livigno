@@ -10,6 +10,7 @@ import {
 } from '@/content/landingPageTranslations';
 import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
 import LandingPageBody from '@/components/LandingPageBody';
+import { buildTitle } from '@/lib/buildTitle';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
 const SLUG = 'benessere';
@@ -41,7 +42,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   });
 
   return {
-    title: `${translation.metaTitle} | Ironwood Livigno`,
+    title: buildTitle(translation.metaTitle),
     description: translation.metaDescription,
     alternates: { canonical: url, languages },
     openGraph: {
