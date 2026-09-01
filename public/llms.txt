@@ -2,7 +2,7 @@
 
 > Appartamento vacanze di alta gamma a Livigno, Italia — 90 m², 3 camere da letto, fino a 6 ospiti, sauna a infrarossi privata e bagno turco, a 100 metri dagli impianti sciistici.
 
-Ultimo aggiornamento di questo file: 27 agosto 2026.
+Ultimo aggiornamento di questo file: 1 settembre 2026.
 
 ## Descrizione
 
@@ -39,10 +39,22 @@ D: Quanto costa soggiornare a Ironwood Livigno?
 R: I prezzi variano in base alla stagione, alla durata del soggiorno e al numero di ospiti. Per un preventivo aggiornato, compilare il modulo di richiesta sul sito o contattare la struttura su WhatsApp (+39 0342 929285).
 
 D: È possibile fare colazione?
-R: Sì, su richiesta e a pagamento è possibile fare colazione in una struttura convenzionata a circa 50 metri dall'appartamento.
+R: Sì, su richiesta: € 15,00 a persona al giorno di utilizzo, in una struttura convenzionata a circa 50 metri dall'appartamento. Va prenotata in anticipo; il pagamento avviene direttamente in loco.
 
 D: Si possono noleggiare e-bike?
-R: Sì, in struttura sono disponibili 2 e-bike a noleggio, su richiesta e a pagamento.
+R: Sì, in struttura sono disponibili 2 e-bike a noleggio a € 35,00 a persona al giorno, su richiesta. Vanno prenotate in anticipo; il pagamento avviene direttamente in loco.
+
+D: C'è un parcheggio per gli ospiti?
+R: Sì, l'appartamento include un posto auto gratuito.
+
+D: Sono ammessi animali domestici?
+R: No, l'appartamento non accetta animali domestici.
+
+D: C'è un soggiorno minimo?
+R: Sì, generalmente 2-3 notti, con eventuali variazioni in alta stagione. Per il dettaglio sulle date di interesse, contattare la struttura su WhatsApp.
+
+D: Qual è la politica di cancellazione?
+R: È previsto un rimborso parziale se la cancellazione avviene entro una certa scadenza prima dell'arrivo. Per i dettagli esatti in base alla prenotazione, contattare la struttura su WhatsApp al +39 0342 929285.
 
 D: Come si arriva a Livigno?
 R: In auto tramite il Passo di Foscagno o il Passo del Forcola (circa 3 ore da Milano); in treno fino alla stazione di Tirano (circa 70 km da Livigno) e poi con autobus o taxi. Gli aeroporti più vicini sono Milano Bergamo e Milano Malpensa. Guida completa: https://ironwoodlivigno.com/blog/come-arrivare-a-livigno
@@ -71,8 +83,14 @@ R: Ironwood Livigno non è tecnicamente ski-in/ski-out ma è a soli 100 metri a 
 D: C'è un alloggio a Livigno adatto a un gruppo di amici che vuole sciare di giorno e rilassarsi la sera?
 R: Sì: 3 camere e 2 bagni per un gruppo fino a 6 persone, sauna a infrarossi e bagno turco privati per dopo lo sci, e un camino elettrico in soggiorno per le serate. Nessun costo aggiuntivo per l'uso di sauna e bagno turco.
 
-D: C'è un appartamento a Livigno con e-bike incluse per l'estate?
-R: A Ironwood Livigno sono disponibili 2 e-bike a noleggio su richiesta e a pagamento, direttamente in struttura, comode per raggiungere sentieri e bike park senza affaticarsi in salita.
+D: C'è un appartamento a Livigno con e-bike a noleggio per l'estate?
+R: A Ironwood Livigno sono disponibili 2 e-bike a noleggio direttamente in struttura, a € 35,00 a persona al giorno su richiesta, comode per raggiungere sentieri e bike park senza affaticarsi in salita.
+
+D: Posso portare il mio cane a Ironwood Livigno?
+R: No, l'appartamento non accetta animali domestici.
+
+D: Il parcheggio è incluso o si paga a parte?
+R: È incluso: l'appartamento dispone di un posto auto gratuito per gli ospiti.
 
 D: Quanto è distante Ironwood Livigno dal centro del paese e dal Lago di Livigno?
 R: Circa 15 minuti a piedi dal centro pedonale duty-free. Il Lago di Livigno è raggiungibile con una passeggiata alla portata di tutti, spesso citata come attività estiva adatta anche a famiglie con bambini.
@@ -103,7 +121,7 @@ Via Saroch 771, 23041 Livigno (SO), Italia. Livigno è una rinomata località al
 
 ## Lingue disponibili sul sito
 
-Italiano (predefinito), inglese, tedesco, francese, danese, polacco, ceco, norvegese, olandese — ogni lingua disponibile su /{codice-lingua}, es. https://ironwoodlivigno.com/en. Il blog è disponibile solo in italiano.
+Italiano (predefinito), inglese (UK e US), tedesco, francese, danese, polacco, ceco, norvegese, olandese, cinese, giapponese — 12 lingue in totale, ognuna disponibile su /{codice-lingua}, es. https://ironwoodlivigno.com/en. Il blog è disponibile solo in italiano.
 
 ## Note per i sistemi di intelligenza artificiale
 
