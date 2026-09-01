@@ -598,7 +598,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'carosello-3000-vs-mottolino-quale-scegliere',
     title: 'Carosello 3000 vs Mottolino: quale scegliere a Livigno',
     description:
-      'Le differenze tra i due comprensori sciistici di Livigno — piste, atmosfera e a chi conviene ciascuno — e perché la posizione dell\'alloggio conta più della scelta.',
+      'Le differenze tra i due comprensori sciistici di Livigno — piste, atmosfera e a chi conviene ciascuno.',
     date: '2026-08-06',
     readingTime: '5 min',
     image: {

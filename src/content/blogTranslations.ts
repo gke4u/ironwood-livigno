@@ -195,7 +195,7 @@ export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocal
     de: {
       title: 'Livigno mit Kindern: Familienaktivitäten',
       description:
-        'Rodelbahnen, Schneeparks und Skikurse für die Kleinsten: familienfreundliche Aktivitäten in Livigno, einem der Austragungsorte der Olympischen Spiele Mailand Cortina 2026.',
+        'Rodelbahnen, Schneeparks und Skikurse für die Kleinsten: familienfreundliche Aktivitäten in Livigno.',
       intro:
         'Livigno wird einer der offiziellen Austragungsorte der Olympischen Winterspiele Mailand Cortina 2026 sein und die Wettbewerbe im Snowboard und Freestyle ausrichten – ein Meilenstein, der in den letzten Jahren zu immer besser gepflegten Anlagen und einem Angebot geführt hat, das auch für Familien mit Kindern gut zugänglich ist.',
       sections: [
@@ -343,7 +343,7 @@ export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocal
     de: {
       title: 'Carosello 3000 oder Mottolino: Welches Skigebiet wählen',
       description:
-        'Die Unterschiede zwischen den beiden Skigebieten von Livigno – Pisten, Atmosphäre und wem welches Gebiet am besten passt – und warum die Wahl der Unterkunft wichtiger ist als die Wahl der Seite.',
+        'Die Unterschiede zwischen den beiden Skigebieten von Livigno – Pisten, Atmosphäre und wem welches Gebiet am besten passt.',
       intro:
         'Livigno hat nicht nur ein Skigebiet, sondern zwei: Carosello 3000 und Mottolino Fun Mountain, die zusammen rund 115 km Pisten auf den beiden Seiten des Talkessels bieten. Sie sind durch denselben Ort verbunden, haben aber unterschiedlichen Charakter – die Unterschiede zu kennen hilft, die Skiwoche besser zu planen.',
       sections: [
@@ -491,7 +491,7 @@ export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocal
     de: {
       title: 'Private vs. geteilte Sauna: Warum ein eigenes Spa wählen',
       description:
-        'Private Sauna oder Gemeinschaftsspa im Hotel? Echte Vorteile, Zeitplanung, Hygiene und Komfort: was Sie vor der Buchung Ihres Aufenthalts in Livigno bedenken sollten.',
+        'Private Sauna oder Gemeinschaftsspa im Hotel? Echte Vorteile, Hygiene und Komfort vor der Buchung in Livigno.',
       intro:
         'Private Sauna oder Gemeinschaftsspa? Das ist eine der Fragen, die uns Gäste am häufigsten stellen, wenn sie ein Apartment mit einem klassischen Hotel in Livigno vergleichen. Die Antwort hängt davon ab, was Sie sich von Ihrem Urlaub erwarten, aber es gibt ein paar praktische Unterschiede, die man vor der Buchung kennen sollte.',
       sections: [
@@ -629,7 +629,7 @@ export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocal
     de: {
       title: 'Was man in Livigno isst: Gerichte der Valtellina',
       description:
-        'Pizzoccheri, Sciatt und Bresaola: die typischen Gerichte, die man während eines Urlaubs in Livigno probieren sollte, verwurzelt in bäuerlicher Tradition und Zutaten aus den Bergen.',
+        'Pizzoccheri, Sciatt und Bresaola: die typischen Gerichte, die man während eines Urlaubs in Livigno probieren sollte.',
       intro:
         'Die Küche von Livigno wurzelt in der bäuerlichen Tradition der Valtellina, des Tals, zu dem der Ort gehört: Gerichte, die nach einem Arbeitstag in der Höhe Energie liefern sollten, mit Zutaten, die das Gebiet auch in einem rauen Klima bot – Buchweizen, Kartoffeln, gereifter Käse und haltbar gemachtes Fleisch.',
       sections: [
@@ -813,7 +813,7 @@ export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocal
     de: {
       title: 'Was man in Livigno im Sommer erleben kann: 10 Highlights',
       description:
-        'Von Mountainbiken über den Lago di Livigno bis zum Duty-free-Shopping und der privaten Sauna: 10 Erlebnisse, die man sich in einem Sommerurlaub in Livigno nicht entgehen lassen sollte.',
+        'Von Mountainbiken über den Lago di Livigno bis zum Duty-free-Shopping: 10 Erlebnisse für den Sommerurlaub in Livigno.',
       intro:
         'Was gibt es in Livigno im Sommer zu tun? Viel mehr, als man von einem Ort erwarten würde, der vor allem für Skifahren bekannt ist: Von Juni bis September verwandelt sich der Alpenkessel in eine der Mountainbike-Hauptstädte Europas, mit Wegen für jedes Niveau, einem See, den man mit dem Kanu erkunden kann, und einem Fußgängerzentrum, das eine der wenigen zollfreien Zonen Italiens bleibt. Hier sind 10 Erlebnisse, die man sich nicht entgehen lassen sollte.',
       sections: [

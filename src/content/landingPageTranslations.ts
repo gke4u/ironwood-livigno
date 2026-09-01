@@ -653,7 +653,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       title: 'Sommer in Livigno: Mountainbike, Wandern und Entspannung in der Ferienwohnung mit Sauna',
       metaTitle: 'Sommerurlaub in Livigno | Bike, Wandern, private Sauna',
       metaDescription:
-        'Bikepark, Wege für jedes Niveau und der Lago di Livigno: entdecken Sie den Sommer in Livigno und warum eine Ferienwohnung mit privater Sauna die ideale Basis ist.',
+        'Bikepark, Wege für jedes Niveau und der Lago di Livigno: entdecken Sie den Sommer in Livigno bei Ironwood.',
       eyebrow: 'Sommer in Livigno',
       intro:
         'Livigno ist nicht nur ein Winterziel: Von Juni bis September verwandelt sich das Alpenbecken in eine der Mountainbike-Hauptstädte Europas, mit Trails für Familien, Wanderer und erfahrene Biker.',
@@ -1212,7 +1212,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       title: "Livigno avec des enfants : l'appartement pensé pour les familles",
       metaTitle: 'Appartement familial à Livigno, jusqu\'à 6 personnes',
       metaDescription:
-        "3 chambres, 2 salles de bains, lit bébé et chaise haute sur demande : découvrez pourquoi Ironwood Livigno est pensé pour les familles et groupes jusqu'à 6 personnes.",
+        "3 chambres, 2 salles de bains, lit bébé et chaise haute sur demande : pensé pour les familles jusqu'à 6 personnes.",
       eyebrow: 'Familles à Livigno',
       intro:
         "Organiser des vacances en famille à Livigno, c'est chercher de l'espace, de la sécurité et du confort — pas seulement un lit supplémentaire. Ironwood Livigno a été conçu précisément dans cet esprit : familles et groupes jusqu'à 6 personnes, dans un appartement où chacun a son propre espace.",
@@ -2750,7 +2750,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       title: 'Über uns: die Livigno-Familie hinter Ironwood Livigno',
       metaTitle: 'Über Uns | Ironwood Livigno — Eine Gastgeberfamilie',
       metaDescription:
-        'Ironwood Livigno wird direkt von Francesco und seiner Familie geführt, waschechten Livignesern: lesen Sie unsere Geschichte und Bewertungen, buchen Sie ohne Provision.',
+        'Ironwood Livigno wird direkt von Francesco und seiner Familie geführt, waschechten Livignesern: lesen Sie unsere Geschichte.',
       eyebrow: 'Über uns',
       intro:
         'Wer steckt hinter Ironwood Livigno? Keine Immobilienagentur und keine Ferienwohnungskette, sondern eine echte Familie, die das ganze Jahr über in Livigno lebt. Ich bin Francesco, hier geboren und aufgewachsen, und gemeinsam mit meiner Frau Tania und unseren beiden Töchtern, Nicole und Giulia, haben wir unser Familienhaus in eine Wohnung verwandelt, die für alle gedacht ist, die im Winter zum Skifahren oder im Sommer zum Wandern nach Livigno kommen. Wenn Sie bei uns buchen, schreiben Sie nicht an ein Callcenter: Sie schreiben direkt an die Menschen, die dieses Haus mit den eigenen Händen renoviert haben, Zimmer für Zimmer.',
@@ -2825,7 +2825,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       title: 'Qui sommes-nous : la famille de Livigno derrière Ironwood Livigno',
       metaTitle: 'Qui Sommes-Nous | Ironwood Livigno — Famille d\'Hôtes',
       metaDescription:
-        'Ironwood Livigno est géré directement par Francesco et sa famille, natifs de Livigno depuis toujours : découvrez notre histoire et nos avis, réservez sans commission.',
+        'Ironwood Livigno est géré directement par Francesco et sa famille, natifs de Livigno depuis toujours.',
       eyebrow: 'Qui sommes-nous',
       intro:
         "Qui se cache derrière Ironwood Livigno ? Ni une agence immobilière ni une chaîne de locations de vacances, mais une vraie famille qui vit à Livigno toute l'année. Je m'appelle Francesco, né et grandi ici, et avec mon épouse Tania et nos deux filles, Nicole et Giulia, nous avons transformé notre maison de famille en un appartement pensé pour ceux qui viennent à Livigno skier en hiver ou randonner en montagne en été. Quand vous réservez chez nous, vous n'écrivez pas à un centre d'appels : vous écrivez directement à ceux qui ont rénové cette maison de leurs propres mains, pièce par pièce.",
@@ -2973,7 +2973,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     pl: {
       title: 'O nas: livignijska rodzina stojąca za Ironwood Livigno',
       metaTitle: 'O Nas | Ironwood Livigno — Rodzina Gospodarzy w Livigno',
-      metaDescription: 'Ironwood Livigno jest prowadzony bezpośrednio przez Francesco i jego rodzinę, mieszkańców Livigno od zawsze: poznaj naszą historię i opinie, rezerwuj bez prowizji.',
+      metaDescription: 'Ironwood Livigno jest prowadzony bezpośrednio przez Francesco i jego rodzinę, mieszkańców Livigno od zawsze.',
       eyebrow: 'O nas',
       intro:
         'Kto stoi za Ironwood Livigno? Nie agencja nieruchomości ani sieć domów wakacyjnych, lecz prawdziwa rodzina, która mieszka w Livigno przez cały rok. Nazywam się Francesco, urodziłem się i wychowałem tutaj, i wraz z żoną Tanią oraz naszymi dwiema córkami, Nicole i Giulią, zamieniliśmy nasz rodzinny dom w apartament pomyślany dla tych, którzy przyjeżdżają do Livigno, by jeździć na nartach zimą lub wędrować po górach latem. Rezerwując u nas, nie piszesz do call center: piszesz bezpośrednio do osób, które własnymi rękami wyremontowały ten dom, pokój po pokoju.',
@@ -3195,7 +3195,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     nl: {
       title: 'Over ons: de Livigno-familie achter Ironwood Livigno',
       metaTitle: 'Over Ons | Ironwood Livigno — Een gastfamilie in Livigno',
-      metaDescription: 'Ironwood Livigno wordt rechtstreeks beheerd door Francesco en zijn familie, geboren en getogen in Livigno: ontdek ons verhaal en onze recensies, boek zonder commissie.',
+      metaDescription: 'Ironwood Livigno wordt rechtstreeks beheerd door Francesco en zijn familie, geboren en getogen in Livigno.',
       eyebrow: 'Over ons',
       intro:
         "Wie schuilt er achter Ironwood Livigno? Geen makelaarskantoor of vakantiehuizenketen, maar een echt gezin dat het hele jaar door in Livigno woont. Ik ben Francesco, hier geboren en getogen, en samen met mijn vrouw Tania en onze twee dochters, Nicole en Giulia, hebben we ons familiehuis omgetoverd tot een appartement voor iedereen die naar Livigno komt om 's winters te skiën of 's zomers in de bergen te wandelen. Als je bij ons boekt, schrijf je niet naar een callcenter: je schrijft rechtstreeks naar de mensen die dat huis met hun eigen handen hebben gerenoveerd, kamer voor kamer.",
@@ -4293,7 +4293,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       title: 'Die 3 Schlafzimmer der Wohnung in Livigno: Aufteilung, Betten und Details',
       metaTitle: '3-Zimmer-Wohnung in Livigno | Raumaufteilung',
       metaDescription:
-        '3 Schlafzimmer, 2 Bäder, 90 m²: entdecken Sie die detaillierte Aufteilung der Wohnung in Livigno, Zimmer für Zimmer, konzipiert für Familien und Gruppen bis 6 Personen.',
+        '3 Schlafzimmer, 2 Bäder, 90 m²: entdecken Sie die detaillierte Aufteilung der Wohnung in Livigno, Zimmer für Zimmer.',
       eyebrow: 'Die Schlafzimmer',
       intro:
         'Suchen Sie eine 3-Zimmer-Wohnung in Livigno und möchten vor der Buchung genau wissen, wie die Räume aufgeteilt sind? Ironwood Livigno erstreckt sich über 90 m² mit 3 Schlafzimmern und 2 vollständigen Bädern, für bis zu 6 Gäste, nur 100 Meter zu Fuß von den Skiliften entfernt. Hier finden Sie die Details Zimmer für Zimmer, damit Sie genau wissen, was Sie erwartet.',
@@ -4358,7 +4358,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       title: "Les 3 chambres de l'appartement à Livigno : disposition, lits et détails",
       metaTitle: 'Appartement 3 Chambres à Livigno | Disposition des Pièces',
       metaDescription:
-        "3 chambres, 2 salles de bains, 90 m² : découvrez la disposition détaillée de l'appartement à Livigno, pièce par pièce, pensé pour les familles et groupes jusqu'à 6 personnes.",
+        "3 chambres, 2 salles de bains, 90 m² : découvrez la disposition détaillée de l'appartement à Livigno, pièce par pièce.",
       eyebrow: 'Les chambres',
       intro:
         "Vous cherchez un appartement 3 chambres à Livigno et voulez savoir exactement comment les espaces sont organisés avant de réserver ? Ironwood Livigno s'étend sur 90 m² avec 3 chambres et 2 salles de bains complètes, pour un maximum de 6 personnes, à seulement 100 mètres à pied des remontées mécaniques. Voici le détail pièce par pièce, pour savoir exactement à quoi vous attendre.",
@@ -4422,7 +4422,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     da: {
       title: 'Lejlighedens 3 soveværelser i Livigno: layout, senge og detaljer',
       metaTitle: 'Lejlighed med 3 Soveværelser i Livigno | Værelsesindretning',
-      metaDescription: '3 soveværelser, 2 badeværelser, 90 m²: oplev den detaljerede indretning af lejligheden i Livigno, værelse for værelse, designet til familier og grupper på op til 6 personer.',
+      metaDescription: '3 soveværelser, 2 badeværelser, 90 m²: oplev den detaljerede indretning af lejligheden i Livigno, værelse for værelse.',
       eyebrow: 'Soveværelserne',
       intro:
         'Leder du efter en lejlighed med 3 soveværelser i Livigno og vil vide præcis, hvordan rummene er indrettet, inden du booker? Ironwood Livigno strækker sig over 90 m² med 3 soveværelser og 2 fulde badeværelser, til op til 6 gæster, kun 100 meter til fods fra skiliftene. Her finder du detaljerne værelse for værelse, så du ved præcis, hvad du kan forvente.',
@@ -4678,7 +4678,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     nl: {
       title: 'De 3 slaapkamers van het appartement in Livigno: indeling, bedden en details',
       metaTitle: 'Appartement met 3 Slaapkamers in Livigno',
-      metaDescription: '3 slaapkamers, 2 badkamers, 90 m²: ontdek de gedetailleerde indeling van het appartement in Livigno, kamer voor kamer, ontworpen voor gezinnen en groepen tot 6 personen.',
+      metaDescription: '3 slaapkamers, 2 badkamers, 90 m²: ontdek de gedetailleerde indeling van het appartement in Livigno, kamer voor kamer.',
       eyebrow: 'De slaapkamers',
       intro:
         'Ben je op zoek naar een appartement met 3 slaapkamers in Livigno en wil je precies weten hoe de ruimtes zijn ingedeeld voordat je boekt? Ironwood Livigno beslaat 90 m² met 3 slaapkamers en 2 volledige badkamers, voor maximaal 6 gasten, op slechts 100 meter lopen van de skiliften. Hier vind je de details per kamer, zodat je precies weet wat je kunt verwachten.',
