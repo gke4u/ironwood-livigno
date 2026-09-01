@@ -10,7 +10,6 @@ const IT_PAGES = [
   { href: '/inverno', label: 'Inverno' },
   { href: '/estate', label: 'Estate' },
   { href: '/famiglie', label: 'Famiglie' },
-  { href: '/benessere', label: 'Benessere' },
   { href: '/come-arrivare', label: 'Come arrivare' },
   { href: '/chi-siamo', label: 'Chi siamo' },
   { href: '/sauna-bagno-turco-privato-livigno', label: 'Sauna privata' },

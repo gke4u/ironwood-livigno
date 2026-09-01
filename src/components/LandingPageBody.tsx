@@ -20,7 +20,7 @@ const defaultUi: LandingUiStrings = {
 };
 
 // Shared body for the standalone SEO landing pages (/inverno, /estate,
-// /famiglie, /benessere, /come-arrivare, ...) in Italian AND their
+// /famiglie, /come-arrivare, ...) in Italian AND their
 // translated /slug/[locale] variants. `ui` supplies the few bits of chrome
 // text that live in this component rather than in `page` itself (back
 // link, section headings, CTA hrefs) — defaults reproduce the original

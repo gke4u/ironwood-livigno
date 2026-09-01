@@ -57,7 +57,7 @@ export default function BlogIndex() {
                 { href: '/inverno', label: 'Inverno a Livigno' },
                 { href: '/estate', label: 'Estate a Livigno' },
                 { href: '/famiglie', label: 'Famiglie' },
-                { href: '/benessere', label: 'Benessere' },
+                { href: '/sauna-bagno-turco-privato-livigno', label: 'Sauna privata' },
                 { href: '/come-arrivare', label: 'Come arrivare' }
               ].map((p) => (
                 <a

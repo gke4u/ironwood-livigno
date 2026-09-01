@@ -296,3 +296,24 @@
 /livigno-estate/nl /estate/nl 301
 /livigno-estate/zh /estate/zh 301
 /livigno-estate/ja /estate/ja 301
+
+# ------------------------------------------------------------------
+# /benessere merged into /sauna-bagno-turco-privato-livigno (2026-09):
+# the two pages shared near-identical sentences on the same benefit
+# (infrared sauna for muscle recovery, no booking needed) and competed
+# for the same "sauna privata Livigno" query. Kept the page whose URL
+# is an exact match for that query; /sauna-bagno-turco-privato-livigno
+# absorbed the unique content (camino, colazione, recensioni) before
+# this redirect went in.
+/benessere /sauna-bagno-turco-privato-livigno 301
+/benessere/en /sauna-bagno-turco-privato-livigno/en 301
+/benessere/en-us /sauna-bagno-turco-privato-livigno/en-us 301
+/benessere/de /sauna-bagno-turco-privato-livigno/de 301
+/benessere/fr /sauna-bagno-turco-privato-livigno/fr 301
+/benessere/da /sauna-bagno-turco-privato-livigno/da 301
+/benessere/pl /sauna-bagno-turco-privato-livigno/pl 301
+/benessere/cs /sauna-bagno-turco-privato-livigno/cs 301
+/benessere/no /sauna-bagno-turco-privato-livigno/no 301
+/benessere/nl /sauna-bagno-turco-privato-livigno/nl 301
+/benessere/zh /sauna-bagno-turco-privato-livigno/zh 301
+/benessere/ja /sauna-bagno-turco-privato-livigno/ja 301

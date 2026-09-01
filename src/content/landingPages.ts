@@ -1,4 +1,4 @@
-// Standalone SEO landing pages — /inverno, /estate, /famiglie, /benessere,
+// Standalone SEO landing pages — /inverno, /estate, /famiglie,
 // /come-arrivare. Same rationale as src/content/blog.ts: Italian-only,
 // living outside the [locale] routing tree, ~500+ words each, written to
 // intercept search intent that the homepage (a single long scroll) doesn't
@@ -240,70 +240,6 @@ export const landingPages: LandingPage[] = [
     ]
   },
   {
-    slug: 'benessere',
-    title: 'Benessere a Livigno: sauna a infrarossi e bagno turco privati',
-    metaTitle: 'Sauna privata a Livigno | Bagno turco in appartamento',
-    metaDescription:
-      'Sauna a infrarossi e bagno turco privati, mai condivisi con altri ospiti: scopri il lato benessere di un soggiorno a Livigno da Ironwood.',
-    eyebrow: 'Benessere',
-    intro:
-      "Dopo una giornata sugli sci o sui sentieri, il modo in cui recuperi conta quanto l'attività stessa. A Ironwood Livigno, sauna a infrarossi e bagno turco non sono un servizio condiviso in uno spazio comune: sono privati, dentro l'appartamento, a disposizione solo di chi soggiorna qui.",
-    image: {
-      src: '/images/sauna-vista-montagna.jpg',
-      alt: 'Sauna a infrarossi privata',
-      w: 2000,
-      h: 1333
-    },
-    sections: [
-      {
-        heading: 'Perché una sauna privata fa la differenza',
-        body: [
-          'In molte strutture ricettive di montagna, sauna e bagno turco sono spazi comuni, con orari di prenotazione, accappatoi da portare e la possibilità concreta di doverli condividere con sconosciuti. A Livigno da Ironwood la sauna a infrarossi e il bagno turco sono invece riservati esclusivamente agli ospiti dell\'appartamento: nessuna attesa, nessuna prenotazione, nessuna condivisione — a qualunque ora del giorno o della sera.',
-          'La sauna a infrarossi, in particolare, è indicata per il recupero muscolare: il calore penetra in profondità nei tessuti, un aiuto concreto dopo una giornata di sci, trekking o mountain bike, quando gambe e schiena chiedono di essere sciolte prima ancora di sedersi a cena.'
-        ]
-      },
-      {
-        heading: 'Un rituale semplice, ripetibile ogni giorno',
-        body: [
-          "Il vantaggio di avere sauna e bagno turco in casa, invece che in una spa condivisa, è la libertà di farne un'abitudine quotidiana della vacanza: si rientra dalle piste o dal sentiero, ci si scalda con calma, magari un bicchiere di vino dalla cantinetta in cucina, e solo dopo si pensa alla cena. Nessun orario da rispettare, nessuna app per prenotare uno slot.",
-          'Il soggiorno, con il suo camino elettrico, completa il quadro: la sera in appartamento diventa parte dell\'esperienza tanto quanto la giornata sulle piste o sui sentieri, non un semplice posto dove dormire.'
-        ]
-      },
-      {
-        heading: 'Un plus che gli ospiti notano davvero',
-        body: [
-          'Non è solo una descrizione di marketing: è uno dei dettagli più citati nelle recensioni reali che riceviamo su Google e Airbnb, spesso descritto come uno dei motivi principali per scegliere Ironwood invece di un hotel tradizionale. E per chi vuole completare l\'esperienza con una colazione curata prima di uscire, offriamo anche un servizio di colazione su richiesta, a pagamento, in una struttura convenzionata a pochi metri dall\'appartamento.'
-        ]
-      }
-    ],
-    highlights: [
-      'Sauna a infrarossi e bagno turco privati, mai condivisi',
-      'Nessuna prenotazione, disponibili in ogni momento della giornata',
-      'Camino elettrico in soggiorno per le serate',
-      "Colazione su richiesta a pochi metri dall'appartamento"
-    ],
-    ctaText: 'Prenota il tuo momento di benessere a Livigno',
-    relatedLink: {
-      href: '/it#esperienza',
-      label: "Scopri tutti i dettagli di sauna e bagno turco privati"
-    },
-    breadcrumbName: 'Benessere',
-    faq: [
-      {
-        q: 'Posso usare la sauna e il bagno turco a qualsiasi ora, anche la sera tardi?',
-        a: 'Sì: non essendo uno spazio condiviso con nessuna prenotazione da fare, sono disponibili in qualsiasi momento della giornata o della sera.'
-      },
-      {
-        q: 'Conviene un appartamento con sauna privata rispetto a un hotel con spa?',
-        a: "Per molti ospiti sì: niente orari di prenotazione, accappatoio da portare o rischio di condividere lo spazio con sconosciuti — è uno dei dettagli più citati nelle recensioni reali su Google e Airbnb."
-      },
-      {
-        q: 'È possibile abbinare colazione e relax dopo la sauna?',
-        a: 'Sì, su richiesta e a pagamento è disponibile un servizio colazione in una struttura convenzionata a pochi metri dall\'appartamento.'
-      }
-    ]
-  },
-  {
     slug: 'come-arrivare',
     title: 'Come raggiungere Ironwood Livigno: indirizzo, parcheggio e ultimi chilometri',
     metaTitle: 'Come arrivare a Ironwood Livigno | Indirizzo e parcheggio',
@@ -510,12 +446,20 @@ export const landingPages: LandingPage[] = [
         body: [
           "Abbiamo scritto una guida dedicata al confronto tra sauna privata e sauna condivisa, con i vantaggi pratici in termini di igiene, orari e comfort — utile se stai ancora valutando se un appartamento con sauna privata sia la scelta giusta per il tuo soggiorno a Livigno."
         ]
+      },
+      {
+        heading: 'Il resto della serata: camino e colazione su richiesta',
+        body: [
+          "Il rituale non si esaurisce nella sauna: il soggiorno ha un camino elettrico che completa il quadro delle serate in appartamento, e per chi vuole partire con calma il giorno dopo offriamo anche un servizio di colazione su richiesta, a pagamento, in una struttura convenzionata a pochi metri da qui.",
+          "Non è solo una descrizione di marketing: sauna e bagno turco privati sono uno dei dettagli più citati nelle recensioni reali che riceviamo su Google e Airbnb, spesso indicato come uno dei motivi principali per scegliere Ironwood invece di un hotel tradizionale."
+        ]
       }
     ],
     highlights: [
       'Sauna a infrarossi privata, mai condivisa con altri ospiti',
       'Bagno turco privato incluso nell\'appartamento',
       'Disponibili in ogni momento, nessuna prenotazione',
+      'Camino elettrico in soggiorno e colazione su richiesta',
       'Parte di un appartamento di 90 m², 3 camere, fino a 6 persone'
     ],
     faq: [
@@ -537,14 +481,14 @@ export const landingPages: LandingPage[] = [
       }
     ],
     internalLinks: [
-      { href: '/benessere', label: 'Scopri la sezione benessere completa di Ironwood Livigno' },
+      { href: '/camere-appartamento-livigno', label: "Scopri l'appartamento camera per camera" },
       { href: '/blog/sauna-privata-vs-condivisa-livigno', label: 'Leggi il confronto: sauna privata vs sauna condivisa' },
       { href: '/chi-siamo', label: 'Scopri perché abbiamo scelto una sauna privata per la nostra casa' }
     ],
     ctaText: 'Verifica la disponibilità e prenota la tua sauna privata',
     relatedLink: {
-      href: '/benessere',
-      label: 'Scopri anche camino, colazione e gli altri dettagli benessere'
+      href: '/blog/sauna-privata-vs-condivisa-livigno',
+      label: 'Leggi il confronto completo: sauna privata vs sauna condivisa'
     },
     breadcrumbName: 'Sauna privata'
   },

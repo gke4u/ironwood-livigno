@@ -58,7 +58,6 @@ const satellitePageMeta: Record<string, { image: string; priority: number; chang
   inverno: { image: '/images/livigno-skilift-vallata-nebbia.jpg', priority: 0.8, changeFrequency: 'monthly' },
   estate: { image: '/images/mountain-bike-estate.jpg', priority: 0.8, changeFrequency: 'monthly' },
   famiglie: { image: '/images/appartamento-soggiorno.jpg', priority: 0.8, changeFrequency: 'monthly' },
-  benessere: { image: '/images/sauna-vista-montagna.jpg', priority: 0.8, changeFrequency: 'monthly' },
   'come-arrivare': { image: '/images/esterno-giorno.jpg', priority: 0.8, changeFrequency: 'monthly' },
   'chi-siamo': { image: '/images/esterno-giorno.jpg', priority: 0.6, changeFrequency: 'yearly' },
   'sauna-bagno-turco-privato-livigno': { image: '/images/sauna.jpg', priority: 0.8, changeFrequency: 'monthly' },

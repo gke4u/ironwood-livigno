@@ -493,7 +493,6 @@ export const blogPosts: BlogPost[] = [
       }
     ],
     relatedLinks: [
-      { href: '/benessere', label: 'Scopri tutti i dettagli su sauna e bagno turco privati' },
       { href: '/sauna-bagno-turco-privato-livigno', label: 'Vedi le specifiche complete della sauna privata' },
       { href: '/chi-siamo', label: 'Scopri la storia della nostra famiglia e della ristrutturazione' }
     ]
@@ -725,7 +724,6 @@ export const blogPosts: BlogPost[] = [
     ],
     relatedLinks: [
       { href: '/sauna-bagno-turco-privato-livigno', label: 'Scopri la pagina dedicata alla sauna privata a Livigno' },
-      { href: '/benessere', label: 'Scopri tutti i dettagli di sauna e bagno turco privati' },
       { href: '/blog/sauna-privata-vs-condivisa-livigno', label: 'Leggi il confronto completo tra sauna privata e condivisa' },
       { href: '/camere-appartamento-livigno', label: "Guarda l'appartamento nel dettaglio" }
     ]
@@ -894,7 +892,7 @@ export const blogPosts: BlogPost[] = [
     ],
     relatedLinks: [
       { href: '/it/contatti', label: 'Scrivici per richiedere colazione o e-bike' },
-      { href: '/benessere', label: "Scopri gli altri dettagli dell'appartamento" },
+      { href: '/sauna-bagno-turco-privato-livigno', label: "Scopri gli altri dettagli dell'appartamento" },
       { href: '/blog/livigno-estate-mountain-bike-trekking-lago', label: 'Leggi gli itinerari e-bike intorno al lago' }
     ]
   },
@@ -1063,7 +1061,7 @@ export const blogPosts: BlogPost[] = [
     relatedLinks: [
       { href: '/estate', label: 'Scopri tutte le esperienze estive a Livigno' },
       { href: '/blog/livigno-estate-mountain-bike-trekking-lago', label: 'Leggi gli itinerari trekking intorno al lago' },
-      { href: '/benessere', label: 'Scopri la sauna con vista montagna' }
+      { href: '/sauna-bagno-turco-privato-livigno', label: 'Scopri la sauna con vista montagna' }
     ]
   }
 ];

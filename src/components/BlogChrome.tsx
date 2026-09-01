@@ -1,5 +1,5 @@
 // Standalone header/footer for the /blog section and the standalone landing
-// pages (/inverno, /estate, /famiglie, /benessere, /come-arrivare). Italian-
+// pages (/inverno, /estate, /famiglie, /come-arrivare). Italian-
 // only (see README) and living outside the [locale] routing tree, so they
 // can't use Nav/Footer/StickyWhatsApp directly — those depend on the
 // next-intl provider that only wraps pages under src/app/[locale]/. This
@@ -68,7 +68,6 @@ const RELATED_PAGES = [
   { href: '/inverno', label: 'Inverno' },
   { href: '/estate', label: 'Estate' },
   { href: '/famiglie', label: 'Famiglie' },
-  { href: '/benessere', label: 'Benessere' },
   { href: '/come-arrivare', label: 'Come arrivare' },
   { href: '/chi-siamo', label: 'Chi siamo' },
   { href: '/sauna-bagno-turco-privato-livigno', label: 'Sauna privata' },
