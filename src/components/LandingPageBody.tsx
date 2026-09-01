@@ -94,7 +94,7 @@ export default function LandingPageBody({ page, ui }: { page: LandingPage; ui?: 
           <div className="mt-14 grid sm:grid-cols-3 gap-5">
             {page.testimonials.map((t) => (
               <blockquote key={t.author} className="bg-white rounded-2xl shadow-soft p-6 flex flex-col gap-3">
-                <p className="text-ink/75 text-sm leading-relaxed">"{t.quote}"</p>
+                <p className="text-ink/75 text-sm leading-relaxed">&quot;{t.quote}&quot;</p>
                 <cite className="text-ink/50 text-xs not-italic mt-auto">— {t.author}</cite>
               </blockquote>
             ))}

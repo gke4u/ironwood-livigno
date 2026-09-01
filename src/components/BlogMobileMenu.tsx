@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 
 // Mobile hamburger menu for BlogHeader (satellite/blog pages, Italian-only,
 // no next-intl provider available out here — see BlogChrome.tsx). Mirrors
@@ -80,22 +81,22 @@ export default function BlogMobileMenu() {
       {open && (
         <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-mist text-ink shadow-soft overflow-hidden z-50">
           {LINKS.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               onClick={close}
               className="block px-6 py-3.5 min-h-[44px] text-sm uppercase tracking-widest border-b border-ink/10 hover:bg-cream/60 flex items-center"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
-          <a
+          <Link
             href="/it#prenota"
             onClick={close}
             className="block px-6 py-4 min-h-[44px] text-sm uppercase tracking-widest font-medium text-brick hover:bg-cream/60 flex items-center"
           >
             Prenota
-          </a>
+          </Link>
         </div>
       )}
     </div>

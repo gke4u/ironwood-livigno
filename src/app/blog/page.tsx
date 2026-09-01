@@ -48,8 +48,8 @@ export default function BlogIndex() {
               Consigli pratici per la tua vacanza a Livigno
             </h1>
             <p className="text-ink/70 text-base md:text-lg max-w-2xl mb-14">
-              Guide su come arrivare, sciare e vivere Livigno d'estate — scritte da chi ospita viaggiatori in questa
-              valle tutto l'anno.
+              Guide su come arrivare, sciare e vivere Livigno d&apos;estate — scritte da chi ospita viaggiatori in questa
+              valle tutto l&apos;anno.
             </p>
 
             <div className="flex flex-wrap gap-3 mb-14">

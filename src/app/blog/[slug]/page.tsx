@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { blogPosts } from '@/content/blog';
 import { blogTranslations, translatedBlogLocales } from '@/content/blogTranslations';
@@ -114,9 +115,9 @@ export default async function BlogArticle({ params }: { params: Params }) {
         <BlogHeader />
         <main className="bg-mist min-h-screen">
           <div className="max-w-content mx-auto px-6 md:px-10 py-16 md:py-20">
-            <a href="/blog" className="text-brick text-sm font-medium hover:underline">
+            <Link href="/blog" className="text-brick text-sm font-medium hover:underline">
               ← Tutte le guide
-            </a>
+            </Link>
 
             <p className="text-ink/65 text-xs mt-6 mb-3">
               {new Date(post.date).toLocaleDateString('it-IT', { year: 'numeric', month: 'long', day: 'numeric' })} ·{' '}
@@ -180,12 +181,12 @@ export default async function BlogArticle({ params }: { params: Params }) {
 
             <div className="max-w-3xl mt-8 p-8 bg-white rounded-3xl shadow-soft flex flex-col sm:flex-row items-center justify-between gap-4">
               <p className="font-display text-lg text-ink">Pronto a organizzare il tuo soggiorno a Livigno?</p>
-              <a
+              <Link
                 href="/it#prenota"
                 className="bg-brick text-mist rounded-full px-7 py-3 font-medium hover:bg-brick/90 transition-colors whitespace-nowrap"
               >
                 Verifica disponibilità
-              </a>
+              </Link>
             </div>
           </div>
         </main>

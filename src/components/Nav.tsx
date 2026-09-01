@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { contactSlugs, type Locale } from '@/i18n/routing';
 import { getSatellitePages } from '@/data/satellite-pages';
 import LangSwitcher from './LangSwitcher';
@@ -123,9 +124,9 @@ export default function Nav({ locale }: { locale: Locale }) {
               </div>
             </div>
           </div>
-          <a href="/blog" className="hover:text-gold transition-colors">
+          <Link href="/blog" className="hover:text-gold transition-colors">
             Blog
-          </a>
+          </Link>
           <a href={contactHref} className="hover:text-gold transition-colors">
             {t('contact')}
           </a>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { locales, defaultLocale, type Locale } from '@/i18n/routing';
 
 // Custom branded 404, served for any URL that doesn't match a real route
@@ -102,7 +103,7 @@ export default function NotFound() {
         >
           {c.rooms}
         </a>
-        <a
+        <Link
           href="/blog"
           style={{
             border: '1px solid rgba(247,243,236,0.3)',
@@ -116,7 +117,7 @@ export default function NotFound() {
           }}
         >
           {c.blog}
-        </a>
+        </Link>
         <a
           href={`/${locale}/${CONTACT_SLUGS[locale]}`}
           style={{

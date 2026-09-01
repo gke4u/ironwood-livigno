@@ -5,6 +5,7 @@
 // next-intl provider that only wraps pages under src/app/[locale]/. This
 // keeps the same look (logo, colors, sticky nav, WhatsApp CTA) without
 // pulling in i18n machinery for sections that don't need it.
+import Link from 'next/link';
 import Logo from './Logo';
 import BlogMobileMenu from './BlogMobileMenu';
 
@@ -12,30 +13,30 @@ export function BlogHeader() {
   return (
     <header className="sticky top-0 z-40 bg-ink py-6 shadow-soft">
       <div className="max-w-content mx-auto px-6 md:px-10 flex items-center justify-between">
-        <a href="/it" aria-label="Ironwood Livigno — home">
+        <Link href="/it" aria-label="Ironwood Livigno — home">
           <Logo className="text-mist" />
-        </a>
+        </Link>
         {/* Below `lg`, four inline items (three text links plus a pill
             button) had no room to breathe next to the logo on a phone —
             no wrap handling, so they'd overflow or crowd together. Hidden
             here in favour of BlogMobileMenu, same breakpoint and pattern
             already used by the main site's Nav.tsx. */}
         <nav className="hidden lg:flex items-center gap-6 text-mist/90 text-sm uppercase tracking-widest">
-          <a href="/it" className="hover:text-gold transition-colors">
+          <Link href="/it" className="hover:text-gold transition-colors">
             Home
-          </a>
-          <a href="/blog" className="hover:text-gold transition-colors">
+          </Link>
+          <Link href="/blog" className="hover:text-gold transition-colors">
             Blog
-          </a>
-          <a href="/it/contatti" className="hover:text-gold transition-colors">
+          </Link>
+          <Link href="/it/contatti" className="hover:text-gold transition-colors">
             Contatti
-          </a>
-          <a
+          </Link>
+          <Link
             href="/it#prenota"
             className="border border-gold text-gold rounded-full px-5 py-2 hover:bg-gold hover:text-ink transition-colors"
           >
             Prenota
-          </a>
+          </Link>
         </nav>
         <BlogMobileMenu />
       </div>
@@ -81,15 +82,15 @@ export function BlogFooter() {
       <div className="max-w-content mx-auto px-6 md:px-10">
         <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs uppercase tracking-widest mb-8 pb-8 border-b border-mist/10">
           {RELATED_PAGES.map((p) => (
-            <a key={p.href} href={p.href} className="hover:text-mist transition-colors">
+            <Link key={p.href} href={p.href} className="hover:text-mist transition-colors">
               {p.label}
-            </a>
+            </Link>
           ))}
         </nav>
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm mb-8">
-          <a href="/it">
+          <Link href="/it">
             <Logo className="text-mist/70 [&_svg]:opacity-70" />
-          </a>
+          </Link>
           <p>Ironwood Livigno — Via Saroch 771</p>
           <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
             <a href="tel:+390342929285" className="hover:text-mist transition-colors">
@@ -109,13 +110,13 @@ export function BlogFooter() {
               Instagram
             </a>
             <span className="opacity-30">·</span>
-            <a href="/it/contatti" className="hover:text-mist transition-colors underline underline-offset-4">
+            <Link href="/it/contatti" className="hover:text-mist transition-colors underline underline-offset-4">
               Contatti
-            </a>
+            </Link>
             <span className="opacity-30">·</span>
-            <a href="/it/privacy" className="hover:text-mist transition-colors underline underline-offset-4">
+            <Link href="/it/privacy" className="hover:text-mist transition-colors underline underline-offset-4">
               Privacy
-            </a>
+            </Link>
           </div>
         </div>
         <p className="text-center text-xs text-mist/45 mb-2">

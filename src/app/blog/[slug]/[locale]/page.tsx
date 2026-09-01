@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { blogPosts } from '@/content/blog';
 import { blogTranslations, translatedBlogLocales, type TranslatedBlogLocale } from '@/content/blogTranslations';
@@ -142,9 +143,9 @@ export default async function TranslatedBlogArticle({ params }: { params: Params
         <BlogHeader />
         <main className="bg-mist min-h-screen">
           <div className="max-w-content mx-auto px-6 md:px-10 py-16 md:py-20">
-            <a href="/blog" className="text-brick text-sm font-medium hover:underline">
+            <Link href="/blog" className="text-brick text-sm font-medium hover:underline">
               {ui.backLink}
-            </a>
+            </Link>
 
             <p className="text-ink/65 text-xs mt-6 mb-3">
               {new Date(post.date).toLocaleDateString(ui.dateLocale, { year: 'numeric', month: 'long', day: 'numeric' })} ·{' '}
