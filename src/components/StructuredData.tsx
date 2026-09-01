@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { locales, type Locale } from '@/i18n/routing';
 import { rates, CURRENCY } from '@/data/rates';
+import { galleryImages } from '@/data/gallery-images';
 
 // Every language the site actually publishes content in (see
 // messages/*.json) — was hardcoded to just ['it', 'en'], understating the
@@ -17,6 +18,31 @@ export default async function StructuredData({ locale }: { locale: Locale }) {
   const faq = await getTranslations({ locale, namespace: 'faq' });
   const amenities = await getTranslations({ locale, namespace: 'amenities' });
   const reviews = await getTranslations({ locale, namespace: 'reviews' });
+  const gallery = await getTranslations({ locale, namespace: 'gallery' });
+  const experience = await getTranslations({ locale, namespace: 'experience' });
+  const rooms = await getTranslations({ locale, namespace: 'rooms' });
+
+  // Same 11 photos as Gallery.tsx (src/data/gallery-images.ts is the
+  // shared source), each as an ImageObject with its real caption instead
+  // of a bare URL — lets search engines and AI answer engines attribute a
+  // specific room/feature to each photo instead of an undifferentiated list.
+  // Two more signature photos that live outside the Gallery component
+  // (Experience.tsx's sauna shot and Rooms.tsx's main bedroom) are
+  // prepended first since they're the property's headline features —
+  // sauna/bagno turco is the top selling point everywhere else on the
+  // site — and shouldn't be dropped just because they're not part of the
+  // 11-photo gallery grid.
+  const propertyImages = [
+    { '@type': 'ImageObject', url: `${siteUrl}/images/sauna-vista-montagna.jpg`, caption: experience('point_1_title'), width: 2000, height: 1333 },
+    { '@type': 'ImageObject', url: `${siteUrl}/images/camera1.jpg`, caption: rooms('room3_title'), width: 1905, height: 1269 },
+    ...galleryImages.map((img, i) => ({
+      '@type': 'ImageObject',
+      url: `${siteUrl}${img.src}`,
+      caption: gallery(`img${i}_caption`),
+      width: img.w,
+      height: img.h
+    }))
+  ];
 
   const lodgingBusiness = {
     '@context': 'https://schema.org',
@@ -24,12 +50,7 @@ export default async function StructuredData({ locale }: { locale: Locale }) {
     name: 'Ironwood Livigno',
     description: hero('meta_description'),
     url: `${siteUrl}/${locale}`,
-    image: [
-      `${siteUrl}/images/hero-ironwood.jpg`,
-      `${siteUrl}/images/sauna-vista-montagna.jpg`,
-      `${siteUrl}/images/soggiorno.jpg`,
-      `${siteUrl}/images/camera1.jpg`
-    ],
+    image: propertyImages,
     telephone: '+39 0342 929285',
     email: 'info@ironwoodlivigno.com',
     priceRange: '€€€',
