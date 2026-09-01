@@ -65,7 +65,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: 'Un consiglio pratico',
         paragraphs: [
-          'Se arrivi in inverno, controlla le condizioni del Passo di Foscagno prima di partire (può chiudere in caso di forti nevicate) e valuta pneumatici invernali o catene a bordo. Una volta arrivato, con Ironwood Livigno sei a soli 100 metri dagli impianti di risalita: parcheggi l\'auto e per il resto della vacanza puoi muoverti quasi tutto a piedi.'
+          'Se arrivi in inverno, controlla le condizioni del Passo di Foscagno prima di partire (può chiudere in caso di forti nevicate) e valuta pneumatici invernali o catene a bordo. Una volta arrivato, con Ironwood Livigno sei a soli 100 metri dagli impianti di risalita: parcheggi l\'auto — [gratuito](/come-arrivare) — e per il resto della vacanza puoi muoverti quasi tutto a piedi.'
         ]
       }
     ],
@@ -102,7 +102,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: 'Il vantaggio di soggiornare a Ironwood Livigno',
         paragraphs: [
-          'Per chi soggiorna a Ironwood Livigno, il vantaggio pratico è la vicinanza: 100 metri dagli impianti di risalita e 50 metri da scuola sci e noleggio attrezzatura. Vuol dire non dover usare l\'auto o le navette per raggiungere le piste, e poter rientrare in appartamento durante la pausa pranzo, o subito dopo l\'ultima discesa, per scaldarsi nella sauna a infrarossi privata prima ancora di cena — uno dei motivi per cui molti ospiti ce lo segnalano come punto di forza nelle recensioni.'
+          'Per chi soggiorna a [Ironwood Livigno](/camere-appartamento-livigno), il vantaggio pratico è la vicinanza: 100 metri dagli impianti di risalita e 50 metri da scuola sci e noleggio attrezzatura. Vuol dire non dover usare l\'auto o le navette per raggiungere le piste, e poter rientrare in appartamento durante la pausa pranzo, o subito dopo l\'ultima discesa, per scaldarsi nella [sauna a infrarossi privata](/sauna-bagno-turco-privato-livigno) prima ancora di cena — uno dei motivi per cui molti ospiti ce lo segnalano come punto di forza nelle recensioni.'
         ]
       },
       {
@@ -302,7 +302,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: 'Ironwood Livigno per famiglie',
         paragraphs: [
-          'Per chi soggiorna con bambini, Ironwood Livigno mette a disposizione culla e seggiolone su richiesta, e gli spazi dell\'appartamento (fino a 6 posti letto su 3 camere) sono pensati proprio per ospitare famiglie comodamente — con il vantaggio, dopo una giornata di attività con i più piccoli, di poter rientrare in pochi minuti a piedi e rilassarsi nella sauna privata mentre i bambini si scaldano davanti al camino.'
+          'Per chi soggiorna con bambini, Ironwood Livigno mette a disposizione culla e seggiolone su richiesta, e [gli spazi dell\'appartamento](/camere-appartamento-livigno) (fino a 6 posti letto su 3 camere) sono pensati proprio per ospitare famiglie comodamente — con il vantaggio, dopo una giornata di attività con i più piccoli, di poter rientrare in pochi minuti a piedi e rilassarsi nella sauna privata mentre i bambini si scaldano davanti al camino.'
         ]
       }
     ],
@@ -703,7 +703,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: "Sauna e bagno turco come parte dell'appartamento, non come extra",
         paragraphs: [
-          "A Ironwood Livigno sauna a infrarossi e bagno turco fanno parte dell'appartamento stesso, non sono un servizio a pagamento in uno spazio comune: sono esclusivi di chi soggiorna qui, disponibili quando vuoi, senza condividerli con altri ospiti né dover prenotare nulla."
+          "A Ironwood Livigno [sauna a infrarossi e bagno turco](/sauna-bagno-turco-privato-livigno) fanno parte dell'appartamento stesso, non sono un servizio a pagamento in uno spazio comune: sono esclusivi di chi soggiorna qui, disponibili quando vuoi, senza condividerli con altri ospiti né dover prenotare nulla."
         ]
       },
       {

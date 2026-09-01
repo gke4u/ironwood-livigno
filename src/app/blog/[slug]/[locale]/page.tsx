@@ -5,6 +5,7 @@ import { blogPosts } from '@/content/blog';
 import { blogTranslations, translatedBlogLocales, type TranslatedBlogLocale } from '@/content/blogTranslations';
 import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
 import Pic from '@/components/Pic';
+import { renderInlineLinks } from '@/lib/renderInlineLinks';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
 
@@ -165,13 +166,13 @@ export default async function TranslatedBlogArticle({ params }: { params: Params
             </div>
 
             <div className="max-w-3xl space-y-5">
-              <p className="text-ink/75 text-base md:text-lg leading-relaxed">{translation.intro}</p>
+              <p className="text-ink/75 text-base md:text-lg leading-relaxed">{renderInlineLinks(translation.intro)}</p>
               {translation.sections.map((section, i) => (
                 <div key={i} className="pt-3">
                   <h2 className="font-display text-xl md:text-2xl text-ink mb-3">{section.heading}</h2>
                   {section.paragraphs.map((para, j) => (
                     <p key={j} className="text-ink/75 text-base md:text-lg leading-relaxed mb-4 last:mb-0">
-                      {para}
+                      {renderInlineLinks(para)}
                     </p>
                   ))}
                 </div>
