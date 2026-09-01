@@ -415,7 +415,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     ]
   },
   'en-us': {
-    title: 'Privacy Policy',
+    title: 'Privacy Policy for Guests in Italy',
     lastUpdated: 'Last updated: August 4, 2026',
     intro:
       'This policy describes how Ironwood Livigno processes the personal data of visitors to ironwoodlivigno.com and guests who request information or bookings, in accordance with Regulation (EU) 2016/679 ("GDPR") and Italian Legislative Decree 196/2003, as amended by Legislative Decree 101/2018. Because our property is located in Italy, GDPR applies to how we handle your data regardless of where you are booking from.',
