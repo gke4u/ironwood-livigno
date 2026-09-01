@@ -62,7 +62,7 @@ export default function MapEmbed() {
     <div className="relative w-full h-full">
       <Pic
         src="/images/esterno-giorno.jpg"
-        alt=""
+        alt="Esterno Ironwood Livigno"
         width={1181}
         height={787}
         sizes="(min-width: 768px) 50vw, 100vw"
