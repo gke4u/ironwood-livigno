@@ -66,6 +66,20 @@ export default function VirtualTour() {
               </button>
             )}
           </div>
+          {/* Kept visible in both states (poster and loaded iframe): a plain
+              link to the same tour on Lapentor's own site works even if the
+              in-page embed itself is ever restricted or misbehaves — a
+              cheap fallback for a piece of content we don't host. */}
+          <p className="mt-4 text-center text-sm">
+            <a
+              href={TOUR_SRC}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-ink/60 hover:text-brick underline underline-offset-4 transition-colors"
+            >
+              {t('open_new_tab')}
+            </a>
+          </p>
         </Reveal>
       </div>
     </section>

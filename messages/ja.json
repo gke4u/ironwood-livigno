@@ -131,7 +131,8 @@
     "title": "360°バーチャルツアー",
     "text": "寝室、サウナ、スチームサウナをバーチャルで歩いてみましょう。リヴィーニョに到着する前に、アパートメントの隅々までご覧いただけます。",
     "open_button": "バーチャルツアーを見る",
-    "iframe_title": "Ironwood Livigno 360°バーチャルツアー"
+    "iframe_title": "Ironwood Livigno 360°バーチャルツアー",
+    "open_new_tab": "ツアーが表示されませんか？Lapentorで直接ご覧ください"
   },
   "reviews": {
     "eyebrow": "宿泊されたお客様の声",

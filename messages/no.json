@@ -131,7 +131,8 @@
     "title": "360°-omvisningen",
     "text": "Gå virtuelt gjennom soverommene, badstuen og dampbadet — se hver krok av leiligheten allerede før du kommer til Livigno.",
     "open_button": "Utforsk den virtuelle omvisningen",
-    "iframe_title": "360°-omvisning i Ironwood Livigno"
+    "iframe_title": "360°-omvisning i Ironwood Livigno",
+    "open_new_tab": "Åpner ikke omvisningen? Se den direkte på Lapentor"
   },
   "reviews": {
     "eyebrow": "De som har vært her",

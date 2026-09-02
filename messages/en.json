@@ -131,7 +131,8 @@
     "title": "The 360° virtual tour",
     "text": "Walk through the bedrooms, the sauna and the steam room virtually — see every corner of the apartment before you even arrive in Livigno.",
     "open_button": "Explore the virtual tour",
-    "iframe_title": "360° virtual tour of Ironwood Livigno"
+    "iframe_title": "360° virtual tour of Ironwood Livigno",
+    "open_new_tab": "Tour not loading? View it directly on Lapentor"
   },
   "reviews": {
     "eyebrow": "Who's been here",

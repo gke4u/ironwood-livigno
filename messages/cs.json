@@ -131,7 +131,8 @@
     "title": "Virtuální prohlídka 360°",
     "text": "Projděte se virtuálně ložnicemi, saunou a parní lázní — podívejte se do každého kouta apartmánu ještě předtím, než dorazíte do Livigna.",
     "open_button": "Prozkoumat virtuální prohlídku",
-    "iframe_title": "Virtuální prohlídka 360° apartmánu Ironwood Livigno"
+    "iframe_title": "Virtuální prohlídka 360° apartmánu Ironwood Livigno",
+    "open_new_tab": "Prohlídka se nenačítá? Podívejte se přímo na Lapentor"
   },
   "reviews": {
     "eyebrow": "Ti, kdo tu byli",

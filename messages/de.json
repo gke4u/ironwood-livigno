@@ -131,7 +131,8 @@
     "title": "Die 360°-Tour",
     "text": "Gehen Sie virtuell durch die Schlafzimmer, die Sauna und das Dampfbad — sehen Sie jeden Winkel der Wohnung, noch bevor Sie in Livigno ankommen.",
     "open_button": "Virtuelle Tour entdecken",
-    "iframe_title": "360°-Rundgang durch Ironwood Livigno"
+    "iframe_title": "360°-Rundgang durch Ironwood Livigno",
+    "open_new_tab": "Tour lädt nicht? Direkt auf Lapentor ansehen"
   },
   "reviews": {
     "eyebrow": "Wer schon hier war",

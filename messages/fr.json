@@ -131,7 +131,8 @@
     "title": "La visite virtuelle à 360°",
     "text": "Parcourez virtuellement les chambres, le sauna et le hammam — découvrez chaque recoin de l'appartement avant même d'arriver à Livigno.",
     "open_button": "Découvrir la visite virtuelle",
-    "iframe_title": "Visite virtuelle à 360° d'Ironwood Livigno"
+    "iframe_title": "Visite virtuelle à 360° d'Ironwood Livigno",
+    "open_new_tab": "La visite ne s'affiche pas ? Voir directement sur Lapentor"
   },
   "reviews": {
     "eyebrow": "Ils sont déjà venus",
