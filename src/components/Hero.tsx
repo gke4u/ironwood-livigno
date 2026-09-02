@@ -1,43 +1,42 @@
 import { useTranslations } from 'next-intl';
+import Pic from './Pic';
 
 export default function Hero() {
   const t = useTranslations('hero');
 
   return (
     <section className="relative min-h-[100svh] flex items-end overflow-hidden bg-ink">
-      {/* Hero photo is the page's LCP element; it's a CSS background so the
-          browser can't discover it from the HTML alone. React 19 hoists this
-          <link> into <head>, giving it top network priority instead of
-          waiting on CSS parsing. A slow, continuous "Ken Burns" zoom/pan
+      {/* Hero photo is the page's LCP element. It used to be a CSS
+          background (with manual <link rel=preload> hints to compensate
+          for the browser not discovering it from the HTML alone) — but a
+          real-world PageSpeed Insights run showed LCP dominated by "load
+          delay": the browser can't even consider the background paintable
+          until the render-blocking main CSS bundle finishes downloading
+          and parsing, no matter how early the image bytes themselves were
+          preloaded. A real <img>, discovered directly by the browser's
+          preload scanner while it streams the HTML, doesn't have that
+          dependency. Pic already emits AVIF/WebP/JPG responsive sources;
+          `loading="eager"` + `fetchPriority="high"` mark it as the LCP
+          candidate to prioritize. A slow, continuous "Ken Burns" zoom/pan
           (animate-kenburns, defined in tailwind.config.ts) gives the still
           photo the same sense of motion as a video background, without the
           weight of an actual video file — and it's paused for anyone with
-          prefers-reduced-motion set (see globals.css). */}
-      {/* Preloads the WebP at the same width tier the CSS below is about to
-          select for this viewport (mobile/tablet/desktop), via the
-          preload's own `media` attribute — three candidates, only the
-          matching one actually fetches. Every browser that supports <link
-          rel=preload> with `media` also supports WebP, and browsers that
-          support neither simply fall back to loading the JPG referenced by
-          the CSS below. Without the media split, a single preload here
-          would have to guess one size for every device — either wasting
-          bandwidth on mobile (preloading the desktop file) or serving a
-          soft image on a large screen (preloading the mobile file). */}
-      <link rel="preload" as="image" href="/images/hero-ironwood-768.webp" media="(max-width: 768px)" fetchPriority="high" />
-      <link
-        rel="preload"
-        as="image"
-        href="/images/hero-ironwood-1440.webp"
-        media="(min-width: 769px) and (max-width: 1440px)"
+          prefers-reduced-motion set. */}
+      <Pic
+        src="/images/hero-ironwood.jpg"
+        alt=""
+        width={1920}
+        height={1280}
+        sizes="100vw"
+        loading="eager"
         fetchPriority="high"
+        className="absolute inset-0 w-full h-full object-cover animate-kenburns motion-reduce:animate-none"
       />
-      <link rel="preload" as="image" href="/images/hero-ironwood-1920.webp" media="(min-width: 1441px)" fetchPriority="high" />
-      {/* Background (gradient + photo, WebP with JPG fallback via
-          image-set) lives in globals.css (.hero-bg) because inline styles
-          can't express a fallback chain of two background-image
-          declarations. */}
+      {/* Same dark gradient scrim that used to be baked into the CSS
+          background-image itself, now a separate layer on top of the
+          <img> — keeps hero text readable over any part of the photo. */}
       <div
-        className="hero-bg absolute inset-0 bg-cover bg-center animate-kenburns motion-reduce:animate-none"
+        className="absolute inset-0 bg-gradient-to-b from-ink/[0.32] via-ink/[0.62] via-60% to-ink/[0.94]"
         aria-hidden
       />
 
