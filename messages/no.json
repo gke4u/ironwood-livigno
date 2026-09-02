@@ -126,6 +126,13 @@
     "img9_caption": "Oppholdsrom",
     "img10_caption": "Fasaden, om dagen"
   },
+  "virtualtour": {
+    "eyebrow": "Før du bestiller",
+    "title": "360°-omvisningen",
+    "text": "Gå virtuelt gjennom soverommene, badstuen og dampbadet — se hver krok av leiligheten allerede før du kommer til Livigno.",
+    "open_button": "Utforsk den virtuelle omvisningen",
+    "iframe_title": "360°-omvisning i Ironwood Livigno"
+  },
   "reviews": {
     "eyebrow": "De som har vært her",
     "title": "Med gjestenes egne ord",

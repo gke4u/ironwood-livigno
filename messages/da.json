@@ -126,6 +126,13 @@
     "img9_caption": "Opholdsområde",
     "img10_caption": "Facaden, om dagen"
   },
+  "virtualtour": {
+    "eyebrow": "Før du booker",
+    "title": "360°-rundvisningen",
+    "text": "Gå virtuelt gennem soveværelserne, saunaen og dampbadet — se hver eneste krog af lejligheden, allerede inden du ankommer til Livigno.",
+    "open_button": "Udforsk den virtuelle rundvisning",
+    "iframe_title": "360°-rundvisning i Ironwood Livigno"
+  },
   "reviews": {
     "eyebrow": "Dem der har været her",
     "title": "Vores gæsters egne ord",

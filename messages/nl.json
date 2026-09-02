@@ -126,6 +126,13 @@
     "img9_caption": "Woongedeelte",
     "img10_caption": "De buitenkant, overdag"
   },
+  "virtualtour": {
+    "eyebrow": "Voordat je boekt",
+    "title": "De virtuele 360°-tour",
+    "text": "Loop virtueel door de slaapkamers, de sauna en het stoombad — bekijk elke hoek van het appartement nog voordat je in Livigno aankomt.",
+    "open_button": "Ontdek de virtuele tour",
+    "iframe_title": "Virtuele 360°-tour van Ironwood Livigno"
+  },
   "reviews": {
     "eyebrow": "Wie hier al is geweest",
     "title": "In de woorden van onze gasten",

@@ -126,6 +126,13 @@
     "img9_caption": "リビングエリア",
     "img10_caption": "昼間の外観"
   },
+  "virtualtour": {
+    "eyebrow": "ご予約の前に",
+    "title": "360°バーチャルツアー",
+    "text": "寝室、サウナ、スチームサウナをバーチャルで歩いてみましょう。リヴィーニョに到着する前に、アパートメントの隅々までご覧いただけます。",
+    "open_button": "バーチャルツアーを見る",
+    "iframe_title": "Ironwood Livigno 360°バーチャルツアー"
+  },
   "reviews": {
     "eyebrow": "宿泊されたお客様の声",
     "title": "ゲストの生の声",

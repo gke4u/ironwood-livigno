@@ -126,6 +126,13 @@
     "img9_caption": "Zona giorno",
     "img10_caption": "L'esterno, di giorno"
   },
+  "virtualtour": {
+    "eyebrow": "Prima di prenotare",
+    "title": "Il tour virtuale a 360°",
+    "text": "Cammina virtualmente tra le camere, la sauna e il bagno turco: guarda ogni angolo dell'appartamento prima ancora di arrivare a Livigno.",
+    "open_button": "Esplora il tour virtuale",
+    "iframe_title": "Tour virtuale 360° di Ironwood Livigno"
+  },
   "reviews": {
     "eyebrow": "Chi è stato qui",
     "title": "Le parole dei nostri ospiti",

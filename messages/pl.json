@@ -126,6 +126,13 @@
     "img9_caption": "Strefa dzienna",
     "img10_caption": "Elewacja w ciągu dnia"
   },
+  "virtualtour": {
+    "eyebrow": "Zanim zarezerwujesz",
+    "title": "Wirtualna wycieczka 360°",
+    "text": "Przejdź się wirtualnie po sypialniach, saunie i łaźni parowej — zobacz każdy zakątek apartamentu, zanim jeszcze dotrzesz do Livigno.",
+    "open_button": "Odkryj wirtualną wycieczkę",
+    "iframe_title": "Wirtualna wycieczka 360° po Ironwood Livigno"
+  },
   "reviews": {
     "eyebrow": "Ci, którzy tu byli",
     "title": "Słowami naszych gości",

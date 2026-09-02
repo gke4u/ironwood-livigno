@@ -126,6 +126,13 @@
     "img9_caption": "起居区",
     "img10_caption": "白天的外观"
   },
+  "virtualtour": {
+    "eyebrow": "预订之前",
+    "title": "360° 虚拟游览",
+    "text": "虚拟漫步卧室、桑拿房和土耳其浴室——在抵达利维尼奥之前，先看清公寓的每一个角落。",
+    "open_button": "探索虚拟游览",
+    "iframe_title": "Ironwood Livigno 360° 虚拟游览"
+  },
   "reviews": {
     "eyebrow": "住客评价",
     "title": "客人的真实反馈",

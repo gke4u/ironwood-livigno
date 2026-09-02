@@ -11,6 +11,7 @@ import ExtraServices from '@/components/ExtraServices';
 import LocationSection from '@/components/LocationSection';
 import Summer from '@/components/Summer';
 import Gallery from '@/components/Gallery';
+import VirtualTour from '@/components/VirtualTour';
 import BookingSection from '@/components/BookingSection';
 import Reviews from '@/components/Reviews';
 import FAQ from '@/components/FAQ';
@@ -36,6 +37,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
       <Hero />
       <WeatherSection />
       <Gallery />
+      <VirtualTour />
       <Rooms />
       <BookingSection />
       <RatesTable />

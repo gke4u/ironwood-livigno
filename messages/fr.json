@@ -126,6 +126,13 @@
     "img9_caption": "Espace de vie",
     "img10_caption": "L'extérieur, le jour"
   },
+  "virtualtour": {
+    "eyebrow": "Avant de réserver",
+    "title": "La visite virtuelle à 360°",
+    "text": "Parcourez virtuellement les chambres, le sauna et le hammam — découvrez chaque recoin de l'appartement avant même d'arriver à Livigno.",
+    "open_button": "Découvrir la visite virtuelle",
+    "iframe_title": "Visite virtuelle à 360° d'Ironwood Livigno"
+  },
   "reviews": {
     "eyebrow": "Ils sont déjà venus",
     "title": "Les mots de nos hôtes",

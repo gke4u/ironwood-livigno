@@ -126,6 +126,13 @@
     "img9_caption": "Living area",
     "img10_caption": "The exterior, by day"
   },
+  "virtualtour": {
+    "eyebrow": "Before you book",
+    "title": "The 360° virtual tour",
+    "text": "Walk through the bedrooms, the sauna and the steam room virtually — see every corner of the apartment before you even arrive in Livigno.",
+    "open_button": "Explore the virtual tour",
+    "iframe_title": "360° virtual tour of Ironwood Livigno"
+  },
   "reviews": {
     "eyebrow": "Who's been here",
     "title": "In our guests' words",
