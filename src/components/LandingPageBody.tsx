@@ -95,7 +95,7 @@ export default function LandingPageBody({ page, ui }: { page: LandingPage; ui?: 
             {page.testimonials.map((t) => (
               <blockquote key={t.author} className="bg-white rounded-2xl shadow-soft p-6 flex flex-col gap-3">
                 <p className="text-ink/75 text-sm leading-relaxed">&quot;{t.quote}&quot;</p>
-                <cite className="text-ink/50 text-xs not-italic mt-auto">— {t.author}</cite>
+                <cite className="text-ink/65 text-xs not-italic mt-auto">— {t.author}</cite>
               </blockquote>
             ))}
           </div>
@@ -103,7 +103,7 @@ export default function LandingPageBody({ page, ui }: { page: LandingPage; ui?: 
 
         {page.internalLinks && page.internalLinks.length > 0 && (
           <div className="mt-14">
-            <p className="text-ink/50 text-xs uppercase tracking-widest mb-3">Continua a scoprire Ironwood Livigno</p>
+            <p className="text-ink/65 text-xs uppercase tracking-widest mb-3">Continua a scoprire Ironwood Livigno</p>
             <ul className="flex flex-wrap gap-x-6 gap-y-2">
               {page.internalLinks.map((link) => (
                 <li key={link.href}>

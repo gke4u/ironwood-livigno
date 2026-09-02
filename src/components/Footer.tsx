@@ -79,7 +79,7 @@ export default function Footer({ locale }: { locale: Locale }) {
         {/* Legal / registry info: required to appear on-site for Italian
             short-term rentals (CIN), plus the identifying tax code since
             there's no VAT number (sole proprietor, not VAT-registered). */}
-        <div className="text-center text-xs text-mist/45 mb-8 space-y-1">
+        <div className="text-center text-xs text-mist/60 mb-8 space-y-1">
           <p>
             Ironwood Livigno — {FULL_ADDRESS} · CIN {CIN} · CF {TAX_CODE}
           </p>
@@ -95,7 +95,7 @@ export default function Footer({ locale }: { locale: Locale }) {
 
         <nav
           aria-label={t('language_nav_label')}
-          className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] text-mist/40 mb-6"
+          className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] text-mist/60 mb-6"
         >
           {locales.map((l, i) => (
             <span key={l} className="flex items-center gap-x-3">
@@ -111,7 +111,7 @@ export default function Footer({ locale }: { locale: Locale }) {
           ))}
         </nav>
 
-        <p className="text-center text-xs text-mist/40">
+        <p className="text-center text-xs text-mist/60">
           © {new Date().getFullYear()} Ironwood Livigno — {t('copyright')}
         </p>
       </div>

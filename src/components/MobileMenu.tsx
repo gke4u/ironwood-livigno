@@ -109,7 +109,7 @@ export default function MobileMenu({
               {link.label}
             </a>
           ))}
-          <p className="px-6 pt-3 pb-1 text-[11px] uppercase tracking-widest text-ink/40">{t('discover')}</p>
+          <p className="px-6 pt-3 pb-1 text-[11px] uppercase tracking-widest text-ink/65">{t('discover')}</p>
           {getSatellitePages(locale).map((link) => (
             <a
               key={link.href}

@@ -242,7 +242,7 @@ export default function ExtraServices() {
 
                     <div className="flex items-baseline gap-2 mb-2">
                       <span className="font-display text-2xl text-brick">{item.price}</span>
-                      <span className="text-ink/55 text-xs">{item.unit}</span>
+                      <span className="text-ink/65 text-xs">{item.unit}</span>
                     </div>
 
                     <p className="text-ink/65 text-sm leading-relaxed">{item.text}</p>
@@ -254,7 +254,7 @@ export default function ExtraServices() {
         </div>
 
         <Reveal delay={200} className="mt-6 max-w-3xl">
-          <p className="text-ink/55 text-sm leading-relaxed">{t('booking_note')}</p>
+          <p className="text-ink/65 text-sm leading-relaxed">{t('booking_note')}</p>
         </Reveal>
 
         <Reveal delay={240} className="mt-4">

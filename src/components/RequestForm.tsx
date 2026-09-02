@@ -46,7 +46,7 @@ const SOURCE_OPTIONS = ['google', 'instagram', 'facebook', 'booking', 'airbnb', 
 // every input) so the whole form reads as one deliberately designed piece
 // instead of default browser inputs: soft tinted fill that turns crisp
 // white on focus, generous padding, a small gold-adjacent focus ring.
-const LABEL_CLASS = 'block text-xs font-semibold uppercase tracking-wider text-ink/45 mb-2';
+const LABEL_CLASS = 'block text-xs font-semibold uppercase tracking-wider text-ink/65 mb-2';
 const INPUT_CLASS =
   'w-full rounded-2xl border border-ink/12 bg-mist/40 px-4 py-3.5 text-ink placeholder:text-ink/35 focus:outline-none focus:bg-white focus:border-brick focus:ring-4 focus:ring-brick/10 transition-all aria-[invalid=true]:border-brick aria-[invalid=true]:ring-brick/10';
 

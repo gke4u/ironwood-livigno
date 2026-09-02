@@ -153,7 +153,7 @@ export default function WeatherSection() {
                       </span>
                       <WeatherIcon category={day.category} className="h-6 w-6 md:h-7 md:w-7 text-mist/80" />
                       <span className="text-xs md:text-sm whitespace-nowrap">
-                        <b>{day.max}°</b> <span className="text-mist/45">{day.min}°</span>
+                        <b>{day.max}°</b> <span className="text-mist/60">{day.min}°</span>
                       </span>
                     </div>
                   ))}
@@ -161,7 +161,7 @@ export default function WeatherSection() {
               </div>
             )}
             <div className="px-8 md:px-10 pb-5 md:pb-6">
-              <p className="text-mist/35 text-xs">{t('source_label')}</p>
+              <p className="text-mist/60 text-xs">{t('source_label')}</p>
             </div>
           </div>
         </Reveal>

@@ -168,7 +168,7 @@ export default async function BlogArticle({ params }: { params: Params }) {
 
             {post.relatedLinks && post.relatedLinks.length > 0 && (
               <div className="max-w-3xl mt-14">
-                <p className="text-ink/50 text-xs uppercase tracking-widest mb-3">Continua a scoprire Ironwood Livigno</p>
+                <p className="text-ink/65 text-xs uppercase tracking-widest mb-3">Continua a scoprire Ironwood Livigno</p>
                 <ul className="flex flex-wrap gap-x-6 gap-y-2">
                   {post.relatedLinks.map((link) => (
                     <li key={link.href}>

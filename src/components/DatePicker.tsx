@@ -141,7 +141,7 @@ export default function DatePicker({
         aria-describedby={ariaDescribedBy}
         className="w-full flex items-center justify-between gap-2 rounded-2xl border border-ink/12 bg-mist/40 px-4 py-3.5 text-left text-ink focus:outline-none focus:bg-white focus:border-brick focus:ring-4 focus:ring-brick/10 transition-all aria-[invalid=true]:border-brick aria-[invalid=true]:ring-brick/10"
       >
-        <span className={displayValue ? '' : 'text-ink/35'}>{displayValue || '—'}</span>
+        <span className={displayValue ? '' : 'text-ink/65'}>{displayValue || '—'}</span>
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-ink/40 shrink-0" aria-hidden>
           <rect x="3" y="5" width="18" height="16" rx="3" />
           <path d="M8 3v4M16 3v4M3 10h18" />
@@ -180,7 +180,7 @@ export default function DatePicker({
 
           <div className="grid grid-cols-7 mb-1">
             {weekdays.map((w, i) => (
-              <span key={i} className="text-center text-[10px] uppercase tracking-wide text-ink/40 py-1">
+              <span key={i} className="text-center text-[10px] uppercase tracking-wide text-ink/65 py-1">
                 {w}
               </span>
             ))}
