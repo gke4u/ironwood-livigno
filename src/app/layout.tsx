@@ -11,8 +11,18 @@ import type { Metadata } from 'next';
 // imports emit @font-face rules; the font-family names they register are
 // wired to the design tokens via the --font-fraunces / --font-poppins CSS
 // variables in globals.css, which tailwind.config.ts consumes.
-import '@fontsource-variable/fraunces';
-import '@fontsource-variable/fraunces/wght-italic.css';
+//
+// Fraunces uses the static (single-weight) package, not the variable one:
+// every "font-display" element inherits font-weight from its default
+// (Tailwind's preflight resets h1-h6 to `font-weight: inherit`, and nothing
+// in this codebase ever sets a different weight on a font-display element)
+// — so only weight 400 is ever actually rendered, normal and italic. The
+// variable font ships the full 100-900 weight axis to support a range nothing
+// here uses; the static 400 files are less than half the size (measured:
+// ~18KB+22KB vs ~37KB+46KB) and cheaper for the browser to shape, for a
+// visually identical result.
+import '@fontsource/fraunces/400.css';
+import '@fontsource/fraunces/400-italic.css';
 import '@fontsource/poppins/300.css';
 import '@fontsource/poppins/400.css';
 import '@fontsource/poppins/500.css';

@@ -7,7 +7,7 @@
    registered by the Fontsource @font-face imports in src/app/layout.tsx
    (self-hosted .woff2, no Google Fonts request). */
 :root {
-  --font-fraunces: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --font-fraunces: 'Fraunces', Georgia, 'Times New Roman', serif;
   --font-poppins: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
