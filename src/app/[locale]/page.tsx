@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import type { Locale } from '@/i18n/routing';
 import Nav from '@/components/Nav';
@@ -10,8 +11,12 @@ import Amenities from '@/components/Amenities';
 import ExtraServices from '@/components/ExtraServices';
 import LocationSection from '@/components/LocationSection';
 import Summer from '@/components/Summer';
-import Gallery from '@/components/Gallery';
 import VirtualTour from '@/components/VirtualTour';
+
+// Code-split out of the initial bundle (see BookingSection.tsx for the same
+// pattern/rationale): the lightbox/keyboard-nav logic isn't needed until a
+// visitor actually opens a photo, well after the hero above it has painted.
+const Gallery = dynamic(() => import('@/components/Gallery'));
 import BookingSection from '@/components/BookingSection';
 import Reviews from '@/components/Reviews';
 import FAQ from '@/components/FAQ';

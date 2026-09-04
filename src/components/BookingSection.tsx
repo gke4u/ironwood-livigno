@@ -1,6 +1,16 @@
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import Reveal from './Reveal';
-import RequestForm from './RequestForm';
+
+// Code-split from the initial page bundle: RequestForm (+ the DatePicker it
+// renders) is ~900 combined lines of form/validation/calendar logic that
+// nobody touches in the first seconds of a homepage visit, well before this
+// mid-page section is even in view. Statically importing it meant its JS
+// had to be parsed and hydrated as part of the same synchronous pass the
+// hero's LCP text was waiting behind. `ssr: true` (the default) keeps it
+// in the static HTML export — only the JS execution is deferred to its own
+// chunk, not the markup.
+const RequestForm = dynamic(() => import('./RequestForm'));
 
 const CONTACT_PHONE = '390342929285';
 

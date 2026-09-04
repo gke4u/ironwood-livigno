@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import Reveal from './Reveal';
 import WeatherIcon, { categoryForCode, type WeatherCategory } from './WeatherIcon';
@@ -38,11 +38,19 @@ const API_URL =
   `&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min,snowfall_sum` +
   `&timezone=Europe%2FRome&forecast_days=${FORECAST_DAYS}`;
 
-function useWeather() {
+function useWeather(enabled: boolean) {
   const [data, setData] = useState<WeatherData | null>(null);
   const [error, setError] = useState(false);
 
   useEffect(() => {
+    // This section is the second one on the homepage, right after the hero
+    // — firing this fetch unconditionally on mount meant it competed for
+    // bandwidth/main-thread time with the actually-critical initial-load
+    // work regardless of whether the visitor ever scrolls this far. Gated
+    // to "about to enter viewport" (see the IntersectionObserver below)
+    // instead, same lazy-loading principle as Reveal/Pic elsewhere.
+    if (!enabled) return;
+
     const controller = new AbortController();
 
     fetch(API_URL, { signal: controller.signal })
@@ -73,7 +81,7 @@ function useWeather() {
       });
 
     return () => controller.abort();
-  }, []);
+  }, [enabled]);
 
   return { data, error };
 }
@@ -89,12 +97,36 @@ function DayLabel({ date, isToday, locale, todayLabel }: { date: string; isToday
 export default function WeatherSection() {
   const t = useTranslations('weather');
   const locale = useLocale();
-  const { data, error } = useWeather();
+  const sectionRef = useRef<HTMLElement>(null);
+  const [nearViewport, setNearViewport] = useState(false);
+
+  useEffect(() => {
+    const node = sectionRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setNearViewport(true);
+          observer.disconnect();
+        }
+      },
+      // Starts the fetch a bit before the section is actually on screen, so
+      // the forecast has time to arrive and the skeleton is brief rather
+      // than the fetch only starting once the visitor has already scrolled
+      // here.
+      { rootMargin: '200px' }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  const { data, error } = useWeather(nearViewport);
 
   const conditionLabel = (category: WeatherCategory) => t(`condition_${category}`);
 
   return (
-    <section id="meteo" className="bg-white py-20 md:py-24">
+    <section id="meteo" ref={sectionRef} className="bg-white py-20 md:py-24">
       <div className="max-w-content mx-auto px-6 md:px-10">
         <Reveal className="max-w-2xl mb-10">
           <p className="text-brick tracking-[0.2em] uppercase text-xs md:text-sm mb-4">{t('eyebrow')}</p>

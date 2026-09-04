@@ -1,6 +1,11 @@
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import Reveal from './Reveal';
-import MapEmbed from './MapEmbed';
+
+// Code-split out of the initial bundle (see BookingSection.tsx for the same
+// pattern/rationale) — this section sits below several others on the
+// homepage, so its JS doesn't need to be ready before the hero paints.
+const MapEmbed = dynamic(() => import('./MapEmbed'));
 
 export default function LocationSection() {
   const t = useTranslations('location');
