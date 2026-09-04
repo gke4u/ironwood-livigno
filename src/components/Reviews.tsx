@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 import Reveal from './Reveal';
+import Pic from './Pic';
 
 // Real, verified profile URLs for the platforms named in each review's
 // author line (see the matching `sameAs`/`hasMap` entries in
@@ -45,14 +46,28 @@ export default function Reviews() {
 
   return (
     <section id="recensioni" className="relative text-mist py-24 md:py-32 overflow-hidden">
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "linear-gradient(180deg, rgba(26,20,15,0.88) 0%, rgba(26,20,15,0.92) 100%), url('/images/livigno-vallata-inverno-bn.jpg')"
-        }}
-        aria-hidden
-      />
+      {/* This section sits well below the fold, unlike the hero — so the
+          background photo is a real <img loading="lazy">, not a CSS
+          background-image. A CSS background is never lazy: the browser
+          fetches it immediately regardless of scroll position, competing
+          for bandwidth with the actually-critical resources (fonts, LCP
+          text) during the initial load. */}
+      <div className="absolute inset-0" aria-hidden>
+        <Pic
+          src="/images/livigno-vallata-inverno-bn.jpg"
+          alt=""
+          width={1400}
+          height={933}
+          sizes="100vw"
+          className="w-full h-full object-cover"
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: 'linear-gradient(180deg, rgba(26,20,15,0.88) 0%, rgba(26,20,15,0.92) 100%)'
+          }}
+        />
+      </div>
       <div className="relative max-w-content mx-auto px-6 md:px-10">
         <Reveal className="max-w-2xl mb-14">
           <p className="text-gold tracking-[0.2em] uppercase text-xs md:text-sm mb-4">
