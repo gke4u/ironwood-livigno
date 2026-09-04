@@ -1,9 +1,10 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Reveal from './Reveal';
 import Pic from './Pic';
+import PhotoLightbox from './PhotoLightbox';
+import { usePhotoLightbox } from './usePhotoLightbox';
 import { useTilt, TILT_TRANSITION } from './useTilt';
 
 // Breakfast and e-bike rental are paid, on-request extras — not included in
@@ -29,7 +30,6 @@ export default function ExtraServices() {
   // parallel set under "extras" in all twelve locale files for a lightbox
   // that behaves identically.
   const tg = useTranslations('gallery');
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const items = [
     {
@@ -69,33 +69,7 @@ export default function ExtraServices() {
     return offsets;
   }, []);
 
-  const close = useCallback(() => setActiveIndex(null), []);
-  const showPrev = useCallback(() => {
-    setActiveIndex((i) => (i === null ? null : (i - 1 + allPhotos.length) % allPhotos.length));
-  }, [allPhotos.length]);
-  const showNext = useCallback(() => {
-    setActiveIndex((i) => (i === null ? null : (i + 1) % allPhotos.length));
-  }, [allPhotos.length]);
-
-  useEffect(() => {
-    if (activeIndex === null) return;
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') close();
-      if (e.key === 'ArrowLeft') showPrev();
-      if (e.key === 'ArrowRight') showNext();
-    };
-    window.addEventListener('keydown', onKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', onKeyDown);
-    };
-  }, [activeIndex, close, showPrev, showNext]);
-
+  const { activeIndex, open, close, showPrev, showNext } = usePhotoLightbox(allPhotos.length);
   const active = activeIndex !== null ? allPhotos[activeIndex] : null;
   const { onMouseMove: handleCardMouseMove, onMouseLeave: handleCardMouseLeave } = useTilt();
 
@@ -143,7 +117,7 @@ export default function ExtraServices() {
                   <div className="relative aspect-[16/10] overflow-hidden">
                     <button
                       type="button"
-                      onClick={() => setActiveIndex(offset)}
+                      onClick={() => open(offset)}
                       aria-label={item.photos[0].alt}
                       className="group absolute inset-0 block w-full h-full cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brick focus-visible:ring-inset"
                     >
@@ -194,7 +168,7 @@ export default function ExtraServices() {
                       <button
                         key={photo.src}
                         type="button"
-                        onClick={() => setActiveIndex(offset + 1 + j)}
+                        onClick={() => open(offset + 1 + j)}
                         aria-label={photo.alt}
                         className="group relative block aspect-[4/3] overflow-hidden cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brick focus-visible:ring-inset"
                       >
@@ -268,71 +242,17 @@ export default function ExtraServices() {
       </div>
 
       {active && (
-        <div
-          className="fixed inset-0 z-[100] bg-ink/95 flex items-center justify-center p-4 md:p-10 animate-fadeIn"
-          role="dialog"
-          aria-modal="true"
-          onClick={close}
-        >
-          <button
-            type="button"
-            onClick={close}
-            aria-label={tg('close_label')}
-            className="absolute top-4 right-4 md:top-6 md:right-6 text-white/90 hover:text-white w-11 h-11 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-          >
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <line x1="6" y1="6" x2="18" y2="18" />
-              <line x1="18" y1="6" x2="6" y2="18" />
-            </svg>
-          </button>
-
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              showPrev();
-            }}
-            aria-label={tg('prev_label')}
-            className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 text-white/90 hover:text-white w-11 h-11 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-          >
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6" />
-            </svg>
-          </button>
-
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              showNext();
-            }}
-            aria-label={tg('next_label')}
-            className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 text-white/90 hover:text-white w-11 h-11 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-          >
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6" />
-            </svg>
-          </button>
-
-          <div
-            className="max-w-[92vw] max-h-[88vh] flex flex-col items-center gap-3"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Pic
-              key={active.src}
-              src={active.src}
-              alt={active.alt}
-              width={active.w}
-              height={active.h}
-              loading="eager"
-              className="max-w-[92vw] max-h-[80vh] w-auto h-auto object-contain rounded-lg"
-            />
-            <p className="text-white/85 font-display text-base">{active.caption}</p>
-            <p className="text-white/60 text-sm tabular-nums">
-              {activeIndex! + 1} / {allPhotos.length}
-            </p>
-          </div>
-        </div>
+        <PhotoLightbox
+          photo={active}
+          index={activeIndex!}
+          total={allPhotos.length}
+          onClose={close}
+          onPrev={showPrev}
+          onNext={showNext}
+          closeLabel={tg('close_label')}
+          prevLabel={tg('prev_label')}
+          nextLabel={tg('next_label')}
+        />
       )}
     </section>
   );
