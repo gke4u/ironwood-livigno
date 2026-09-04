@@ -21,7 +21,12 @@ export default function StickyWhatsApp() {
       href={`https://wa.me/390342929285?text=${text}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 flex items-center gap-[3px] bg-[#25D366] text-white rounded-full pl-[9px] pr-[11px] py-[7px] shadow-soft hover:bg-[#20bd5a] transition-colors"
+      // #075E54 is WhatsApp's own darker brand green (used in the app's
+      // header bar) — still instantly recognizable as WhatsApp, but with
+      // white text on top it clears WCAG AA (~7.7:1); the brighter accent
+      // green #25D366 only reached 1.98:1 here, well under the 4.5:1 a
+      // small 11px label needs.
+      className="fixed bottom-6 right-6 z-50 flex items-center gap-[3px] bg-[#075E54] text-white rounded-full pl-[9px] pr-[11px] py-[7px] shadow-soft hover:bg-[#054942] transition-colors"
       aria-label={tc('whatsapp_cta')}
     >
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden>

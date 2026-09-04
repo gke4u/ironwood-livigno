@@ -53,7 +53,10 @@ export function BlogWhatsAppCta() {
       href="https://wa.me/390342929285?text=Ciao!%20Vorrei%20richiedere%20disponibilit%C3%A0%20per%20Ironwood%20Livigno."
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 flex items-center gap-[3px] bg-[#25D366] text-white rounded-full pl-[9px] pr-[11px] py-[7px] shadow-soft hover:bg-[#20bd5a] transition-colors"
+      // Same fix as StickyWhatsApp.tsx: #25D366 only hit 1.98:1 contrast
+      // with white text (needs 4.5:1) — #075E54 is WhatsApp's own darker
+      // brand green, still recognizable, ~7.7:1 with white on top.
+      className="fixed bottom-6 right-6 z-50 flex items-center gap-[3px] bg-[#075E54] text-white rounded-full pl-[9px] pr-[11px] py-[7px] shadow-soft hover:bg-[#054942] transition-colors"
       aria-label="WhatsApp"
     >
       <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
