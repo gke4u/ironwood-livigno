@@ -49,7 +49,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
       <Amenities />
       <ExtraServices locale={locale} />
       <LocationSection />
-      <Summer />
+      <Summer locale={locale} />
       <Experience locale={locale} />
       <Reviews />
       <FAQ />
