@@ -50,10 +50,10 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
       <ExtraServices />
       <LocationSection />
       <Summer />
-      <Experience />
+      <Experience locale={locale} />
       <Reviews />
       <FAQ />
-      <StickyWhatsApp />
+      <StickyWhatsApp locale={locale} />
       <Footer locale={locale} />
       </main>
     </>

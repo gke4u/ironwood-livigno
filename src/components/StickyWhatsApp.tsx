@@ -1,6 +1,5 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
+import type { Locale } from '@/i18n/routing';
 
 // Was hardcoded to an Italian pre-filled message regardless of locale — the
 // only place on the site where that still happened after the request-form
@@ -11,9 +10,15 @@ import { useTranslations } from 'next-intl';
 // the viewport where a plain unlabeled icon button is easiest to miss and
 // where most visitors to a vacation-rental site actually are. It now shows
 // the full localized "Message us on WhatsApp" text at every breakpoint.
-export default function StickyWhatsApp() {
-  const t = useTranslations('request');
-  const tc = useTranslations('contactPage');
+//
+// A plain link with no client-side state at all — converted from a client
+// component (useTranslations) to an async Server Component (getTranslations)
+// so it costs zero JS/hydration. Every other homepage section that's still
+// 'use client' genuinely needs it (lightbox state, a real fetch, a form);
+// this one didn't, it was client-only by inherited habit.
+export default async function StickyWhatsApp({ locale }: { locale: Locale }) {
+  const t = await getTranslations({ locale, namespace: 'request' });
+  const tc = await getTranslations({ locale, namespace: 'contactPage' });
   const text = encodeURIComponent(t('wa_intro'));
 
   return (

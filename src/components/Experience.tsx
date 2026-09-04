@@ -1,14 +1,16 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
+import type { Locale } from '@/i18n/routing';
 import Reveal from './Reveal';
 import Pic from './Pic';
-import { useTilt, TILT_TRANSITION } from './useTilt';
+import TiltCard from './TiltCard';
 
-export default function Experience() {
-  const t = useTranslations('experience');
-  const th = useTranslations('hero');
-  const { onMouseMove: handleCardMouseMove, onMouseLeave: handleCardMouseLeave } = useTilt();
+// Converted from a client component to an async Server Component: the only
+// reason this was 'use client' was useTilt's mouse-hover effect on the photo
+// card, now isolated in TiltCard.tsx. Everything else here (headings,
+// translated copy, Reveal's own fade-in) never needed hydration at all.
+export default async function Experience({ locale }: { locale: Locale }) {
+  const t = await getTranslations({ locale, namespace: 'experience' });
+  const th = await getTranslations({ locale, namespace: 'hero' });
 
   const points = [
     { title: t('point_1_title'), text: t('point_1_text') },
@@ -23,12 +25,7 @@ export default function Experience() {
           {/* Same idle-motion + shine + tilt treatment as the extra-services
               and room cards — a still photo next to a full column of text
               read as flat by comparison once those other sections had it. */}
-          <div
-            onMouseMove={handleCardMouseMove}
-            onMouseLeave={handleCardMouseLeave}
-            style={TILT_TRANSITION}
-            className="relative rounded-3xl overflow-hidden shadow-soft aspect-[4/5] group hover:shadow-xl [transform-style:preserve-3d] will-change-transform"
-          >
+          <TiltCard className="relative rounded-3xl overflow-hidden shadow-soft aspect-[4/5] group hover:shadow-xl [transform-style:preserve-3d] will-change-transform">
             <Pic
               src="/images/sauna-vista-montagna.jpg"
               alt="Sauna a infrarossi privata"
@@ -41,7 +38,7 @@ export default function Experience() {
               className="pointer-events-none absolute inset-0 -translate-x-[120%] skew-x-[-20deg] bg-gradient-to-r from-transparent via-white/25 to-transparent opacity-0 group-hover:opacity-100 group-hover:translate-x-[120%] transition-[transform,opacity] duration-[1100ms] ease-out"
               aria-hidden
             />
-          </div>
+          </TiltCard>
         </Reveal>
 
         <div>
