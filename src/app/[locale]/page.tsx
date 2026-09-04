@@ -47,7 +47,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
       <BookingSection />
       <RatesTable />
       <Amenities />
-      <ExtraServices />
+      <ExtraServices locale={locale} />
       <LocationSection />
       <Summer />
       <Experience locale={locale} />
