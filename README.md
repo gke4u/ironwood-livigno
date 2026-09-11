@@ -1,5 +1,7 @@
 # Ironwood Livigno — Sito web
 
+Repo: https://github.com/gke4u/ironwood-livigno
+
 Sito completo nelle sue fondamenta: design system "Refuge Moderno", 10 sezioni homepage, 12 lingue attive, SEO multilingua, widget di prenotazione, CTA WhatsApp. Esportato come sito statico, pronto per essere trascinato su Cloudflare Pages (nessun terminale necessario per pubblicarlo).
 
 ## Novità v29 (5 agosto 2026)
@@ -105,7 +107,7 @@ Ogni foto usata su una pagina esiste in due formati: il `.jpg` originale e una v
 - Header di sicurezza (CSP, HSTS, X-Content-Type-Options, Referrer-Policy, Permissions-Policy) via `public/_headers`, riconosciuto automaticamente da Cloudflare Pages.
 - IndexNow: chiave pubblicata in `public/<key>.txt`; `npm run indexnow` notifica Bing/Yandex/Naver dopo ogni deploy (Google non usa questo protocollo, viene gestito separatamente tramite Search Console).
 - Immagine hero precaricata con priorità alta (è l'elemento LCP della pagina); tutte le altre foto usano `loading="lazy"` per non competere con essa.
-- `aggregateRating` (5,0/5 su 28 recensioni, dato reale da Google/Airbnb) e 6 `review` reali nel JSON-LD `LodgingBusiness` — abilita le stelline nei risultati di ricerca Google.
+- Niente `aggregateRating`/`review` nel JSON-LD `LodgingBusiness` (rimossi volutamente): le linee guida di Google sui dati strutturati escludono dai rich result le recensioni/rating sul proprio business curate dal business stesso ("self-serving reviews"). Le aggregate rating vere restano sulle piattaforme terze già linkate via `sameAs` (Google Maps, Airbnb, Holidu) — è lì che vivono legittimamente e da dove Google può eventualmente mostrare le stelline.
 - `sameAs` verso il profilo recensioni Holidu verificato — rafforza l'identità dell'attività agli occhi di Google e dei motori AI.
 - `image` multiplo nel JSON-LD (foto reali: esterno, sauna, soggiorno, camera) invece di una singola immagine.
 - Immagine Open Graph dedicata (`og-image.jpg`, 1200×630 — il formato universale per anteprime social) invece di riusare l'hero a piena risoluzione: anteprime pulite e non ritagliate male su WhatsApp, Facebook, LinkedIn, X.
