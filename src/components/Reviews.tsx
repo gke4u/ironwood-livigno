@@ -8,7 +8,10 @@ import Pic from './Pic';
 // itself ("Google", "Airbnb", "Holidu") is written the same, untranslated,
 // across every locale's messages/*.json.
 const PLATFORM_LINKS: Record<string, string> = {
-  Google: 'https://www.google.com/maps?q=46.525061,10.126967',
+  // Business Profile place ID (see testi-google-business-profile.md),
+  // not the bare coordinate pin — this opens straight on the listing
+  // with its real reviews, not just a random map marker.
+  Google: 'https://www.google.com/maps?cid=08261644844997455473',
   Airbnb: 'https://www.airbnb.com/rooms/1001347662140918475',
   Holidu: 'https://www.holiduhost.com/d/54247934'
 };
@@ -32,15 +35,12 @@ function linkedAuthor(author: string) {
   );
 }
 
-// Turns every occurrence of a known platform name (Airbnb, Holidu — Google
-// deliberately excluded here since the disclaimer states real verified
-// counts only for the two platforms this can link straight to a review
-// list; the property's Google count isn't independently confirmable from
-// here) inside the disclaimer sentence into a link to that platform's real
-// review page — same PLATFORM_LINKS map as linkedAuthor, so the two stay
-// in sync automatically if a URL ever changes.
+// Turns every occurrence of a known platform name (Google, Airbnb, Holidu)
+// inside the disclaimer sentence into a link to that platform's real review
+// page — same PLATFORM_LINKS map as linkedAuthor, so the two stay in sync
+// automatically if a URL ever changes.
 function linkedDisclaimer(text: string) {
-  const pattern = new RegExp(`(${['Airbnb', 'Holidu'].join('|')})`, 'g');
+  const pattern = new RegExp(`(${Object.keys(PLATFORM_LINKS).join('|')})`, 'g');
   return text.split(pattern).map((part, i) =>
     PLATFORM_LINKS[part] ? (
       <a
