@@ -20,7 +20,7 @@ export type PrivacyContent = {
 export const privacyContent: Record<string, PrivacyContent> = {
   it: {
     title: 'Informativa sulla Privacy',
-    lastUpdated: 'Ultimo aggiornamento: 3 agosto 2026',
+    lastUpdated: 'Ultimo aggiornamento: 11 settembre 2026',
     intro:
       'La presente informativa descrive come Ironwood Livigno tratta i dati personali dei visitatori del sito ironwoodlivigno.com e degli ospiti che richiedono informazioni o prenotazioni, ai sensi del Regolamento (UE) 2016/679 ("GDPR") e del Codice Privacy italiano (D.Lgs. 196/2003, come modificato dal D.Lgs. 101/2018).',
     sections: [
@@ -30,7 +30,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '2. Quali dati raccolgono e perché',
-        body: 'Questo sito è statico (non ha un server che processa dati) e raccoglie solo i dati minimi indicati di seguito:\n\n• Contatto WhatsApp: se clicchi sul pulsante WhatsApp, si apre una conversazione con il nostro numero tramite l\'app WhatsApp (Meta): eventuali messaggi, numero di telefono e dati che ci invii in chat sono trattati secondo l\'informativa privacy di WhatsApp/Meta, oltre che da noi per rispondere alla tua richiesta e gestire l\'eventuale prenotazione.\n\n• Widget di prenotazione (Holidu): la sezione "Prenota" incorpora un modulo fornito da Holidu GmbH, che può raccogliere dati necessari a verificare disponibilità e gestire la prenotazione (nome, contatti, date di soggiorno, dati di pagamento). Questi dati sono trattati da Holidu in qualità di titolare autonomo o responsabile del trattamento, secondo la sua informativa privacy.\n\n• Mappa (Google Maps): la sezione "Dove siamo" incorpora una mappa di Google, che può impostare cookie o raccogliere dati tecnici (es. indirizzo IP) secondo l\'informativa privacy di Google.\n\n• Statistiche di utilizzo (Cloudflare Web Analytics): utilizziamo uno strumento di analisi del traffico che non usa cookie e non traccia i singoli utenti in modo identificativo; raccoglie solo dati aggregati e anonimi (es. numero di visite, pagine più viste), secondo l\'informativa privacy di Cloudflare.'
+        body: 'Il sito è in gran parte statico; il modulo di richiesta disponibilità è l\'eccezione, poiché si appoggia a un sistema di gestione delle richieste che processa i dati per nostro conto. Raccogliamo solo i dati minimi indicati di seguito:\n\n• Modulo di richiesta disponibilità: se compili il modulo "Richiedi disponibilità" sul sito, i dati che inserisci — nome, email, telefono, date del soggiorno, numero ed età degli ospiti, eventuali extra richiesti (colazione, e-bike), messaggio libero e lingua del sito — vengono inviati al nostro sistema interno di gestione delle richieste, che li rende disponibili a chi gestisce la struttura per rispondere alla tua richiesta ed evadere l\'eventuale prenotazione. Trattiamo questi dati in qualità di titolari del trattamento.\n\n• Contatto WhatsApp: se clicchi sul pulsante WhatsApp, si apre una conversazione con il nostro numero tramite l\'app WhatsApp (Meta): eventuali messaggi, numero di telefono e dati che ci invii in chat sono trattati secondo l\'informativa privacy di WhatsApp/Meta, oltre che da noi per rispondere alla tua richiesta e gestire l\'eventuale prenotazione.\n\n• Widget di prenotazione (Holidu): la sezione "Prenota" incorpora un modulo fornito da Holidu GmbH, che può raccogliere dati necessari a verificare disponibilità e gestire la prenotazione (nome, contatti, date di soggiorno, dati di pagamento). Questi dati sono trattati da Holidu in qualità di titolare autonomo o responsabile del trattamento, secondo la sua informativa privacy.\n\n• Mappa (Google Maps): la sezione "Dove siamo" incorpora una mappa di Google, che può impostare cookie o raccogliere dati tecnici (es. indirizzo IP) secondo l\'informativa privacy di Google.\n\n• Statistiche di utilizzo (Cloudflare Web Analytics): utilizziamo uno strumento di analisi del traffico che non usa cookie e non traccia i singoli utenti in modo identificativo; raccoglie solo dati aggregati e anonimi (es. numero di visite, pagine più viste), secondo l\'informativa privacy di Cloudflare.'
       },
       {
         heading: '3. Base giuridica del trattamento',
@@ -42,7 +42,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '5. Conservazione dei dati',
-        body: 'I dati raccolti tramite WhatsApp sono conservati per il tempo necessario a gestire la tua richiesta o il tuo soggiorno, e successivamente per il tempo previsto dagli obblighi fiscali e di legge (es. registrazione ospiti presso le autorità di pubblica sicurezza, conservazione documenti contabili).'
+        body: 'I dati raccolti tramite WhatsApp e tramite il modulo di richiesta disponibilità sono conservati per il tempo necessario a gestire la tua richiesta o il tuo soggiorno, e successivamente per il tempo previsto dagli obblighi fiscali e di legge (es. registrazione ospiti presso le autorità di pubblica sicurezza, conservazione documenti contabili).'
       },
       {
         heading: '6. I tuoi diritti',
@@ -64,7 +64,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
   },
   en: {
     title: 'Privacy Policy',
-    lastUpdated: 'Last updated: August 3, 2026',
+    lastUpdated: 'Last updated: September 11, 2026',
     intro:
       'This policy describes how Ironwood Livigno processes the personal data of visitors to ironwoodlivigno.com and guests who request information or bookings, in accordance with Regulation (EU) 2016/679 ("GDPR") and Italian Legislative Decree 196/2003, as amended by Legislative Decree 101/2018.',
     sections: [
@@ -74,7 +74,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '2. What data we collect and why',
-        body: 'This site is static (it has no server processing data) and only collects the minimal data described below:\n\n• WhatsApp contact: clicking the WhatsApp button opens a conversation with our number via the WhatsApp app (Meta). Any messages, phone number and data you send us in chat are handled according to WhatsApp/Meta\'s own privacy policy, as well as by us to respond to your request and manage any booking.\n\n• Booking widget (Holidu): the "Book" section embeds a form provided by Holidu GmbH, which may collect data needed to check availability and manage the booking (name, contact details, stay dates, payment data). This data is processed by Holidu as an independent controller or processor, per its own privacy policy.\n\n• Map (Google Maps): the "Location" section embeds a Google Map, which may set cookies or collect technical data (e.g. IP address) per Google\'s privacy policy.\n\n• Usage statistics (Cloudflare Web Analytics): we use a traffic analysis tool that does not use cookies and does not identify individual visitors; it only collects aggregated, anonymous data (e.g. number of visits, most viewed pages), per Cloudflare\'s privacy policy.'
+        body: 'This site is largely static; the availability request form is the exception, as it relies on a request-management system that processes data on our behalf. We only collect the minimal data described below:\n\n• Availability request form: if you fill in the "Check availability" form on the site, the data you enter — name, email, phone number, stay dates, number and ages of guests, any extras requested (breakfast, e-bike), free-text message and site language — is sent to our internal request-management system, which makes it available to the property manager to respond to your request and process any booking. We process this data as data controller.\n\n• WhatsApp contact: clicking the WhatsApp button opens a conversation with our number via the WhatsApp app (Meta). Any messages, phone number and data you send us in chat are handled according to WhatsApp/Meta\'s own privacy policy, as well as by us to respond to your request and manage any booking.\n\n• Booking widget (Holidu): the "Book" section embeds a form provided by Holidu GmbH, which may collect data needed to check availability and manage the booking (name, contact details, stay dates, payment data). This data is processed by Holidu as an independent controller or processor, per its own privacy policy.\n\n• Map (Google Maps): the "Location" section embeds a Google Map, which may set cookies or collect technical data (e.g. IP address) per Google\'s privacy policy.\n\n• Usage statistics (Cloudflare Web Analytics): we use a traffic analysis tool that does not use cookies and does not identify individual visitors; it only collects aggregated, anonymous data (e.g. number of visits, most viewed pages), per Cloudflare\'s privacy policy.'
       },
       {
         heading: '3. Legal basis for processing',
@@ -86,7 +86,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '5. Data retention',
-        body: 'Data collected via WhatsApp is retained for as long as needed to handle your request or stay, and afterwards for as long as required by tax and legal obligations (e.g. guest registration with public safety authorities, retention of accounting records).'
+        body: 'Data collected via WhatsApp and via the availability request form is retained for as long as needed to handle your request or stay, and afterwards for as long as required by tax and legal obligations (e.g. guest registration with public safety authorities, retention of accounting records).'
       },
       {
         heading: '6. Your rights',
@@ -99,6 +99,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       {
         heading: '8. Complaints',
         body: 'If you believe the processing of your data breaches applicable law, you have the right to lodge a complaint with the Italian Data Protection Authority, Garante per la protezione dei dati personali (www.garanteprivacy.it), or with the supervisory authority in your own EU country of residence.'
+
       },
       {
         heading: '9. Changes to this policy',
@@ -108,7 +109,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
   },
   de: {
     title: 'Datenschutzerklärung',
-    lastUpdated: 'Zuletzt aktualisiert: 3. August 2026',
+    lastUpdated: 'Zuletzt aktualisiert: 11. September 2026',
     intro:
       'Diese Datenschutzerklärung beschreibt, wie Ironwood Livigno personenbezogene Daten von Besuchern der Website ironwoodlivigno.com sowie von Gästen, die Informationen oder Buchungen anfragen, gemäß der Verordnung (EU) 2016/679 ("DSGVO") und dem italienischen Gesetzesdekret 196/2003 in der durch das Gesetzesdekret 101/2018 geänderten Fassung verarbeitet.',
     sections: [
@@ -118,7 +119,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '2. Welche Daten wir erheben und warum',
-        body: 'Diese Website ist statisch (kein Server verarbeitet Daten) und erhebt nur die folgenden minimalen Daten:\n\n• WhatsApp-Kontakt: Ein Klick auf den WhatsApp-Button öffnet ein Gespräch mit unserer Nummer über die WhatsApp-App (Meta). Nachrichten, Telefonnummer und weitere im Chat übermittelte Daten werden gemäß der Datenschutzerklärung von WhatsApp/Meta sowie von uns zur Bearbeitung Ihrer Anfrage und einer eventuellen Buchung verarbeitet.\n\n• Buchungs-Widget (Holidu): Der Bereich "Buchen" bindet ein Formular der Holidu GmbH ein, das Daten zur Verfügbarkeitsprüfung und Buchungsabwicklung erheben kann (Name, Kontaktdaten, Aufenthaltsdaten, Zahlungsdaten). Diese Daten werden von Holidu als eigenständig Verantwortlichem oder Auftragsverarbeiter gemäß dessen eigener Datenschutzerklärung verarbeitet.\n\n• Karte (Google Maps): Der Bereich "Lage" bindet eine Google-Karte ein, die gemäß der Datenschutzerklärung von Google Cookies setzen oder technische Daten (z. B. IP-Adresse) erheben kann.\n\n• Nutzungsstatistiken (Cloudflare Web Analytics): Wir verwenden ein Analysetool, das keine Cookies verwendet und einzelne Besucher nicht identifiziert; es erhebt nur aggregierte, anonyme Daten (z. B. Anzahl der Besuche, meistbesuchte Seiten) gemäß der Datenschutzerklärung von Cloudflare.'
+        body: 'Die Website ist größtenteils statisch; das Verfügbarkeitsanfrage-Formular bildet die Ausnahme, da es auf ein Anfragenverwaltungssystem zurückgreift, das Daten in unserem Auftrag verarbeitet. Wir erheben nur die folgenden minimalen Daten:\n\n• Verfügbarkeitsanfrage-Formular: Wenn Sie das Formular „Verfügbarkeit anfragen" auf der Website ausfüllen, werden die von Ihnen eingegebenen Daten — Name, E-Mail, Telefonnummer, Aufenthaltsdaten, Anzahl und Alter der Gäste, gewünschte Extras (Frühstück, E-Bike), Freitextnachricht und Sprache der Website — an unser internes Anfragenverwaltungssystem übermittelt, das sie der Unterkunftsverwaltung zur Beantwortung Ihrer Anfrage und Abwicklung einer eventuellen Buchung zur Verfügung stellt. Wir verarbeiten diese Daten als Verantwortlicher.\n\n• WhatsApp-Kontakt: Ein Klick auf den WhatsApp-Button öffnet ein Gespräch mit unserer Nummer über die WhatsApp-App (Meta). Nachrichten, Telefonnummer und weitere im Chat übermittelte Daten werden gemäß der Datenschutzerklärung von WhatsApp/Meta sowie von uns zur Bearbeitung Ihrer Anfrage und einer eventuellen Buchung verarbeitet.\n\n• Buchungs-Widget (Holidu): Der Bereich "Buchen" bindet ein Formular der Holidu GmbH ein, das Daten zur Verfügbarkeitsprüfung und Buchungsabwicklung erheben kann (Name, Kontaktdaten, Aufenthaltsdaten, Zahlungsdaten). Diese Daten werden von Holidu als eigenständig Verantwortlichem oder Auftragsverarbeiter gemäß dessen eigener Datenschutzerklärung verarbeitet.\n\n• Karte (Google Maps): Der Bereich "Lage" bindet eine Google-Karte ein, die gemäß der Datenschutzerklärung von Google Cookies setzen oder technische Daten (z. B. IP-Adresse) erheben kann.\n\n• Nutzungsstatistiken (Cloudflare Web Analytics): Wir verwenden ein Analysetool, das keine Cookies verwendet und einzelne Besucher nicht identifiziert; es erhebt nur aggregierte, anonyme Daten (z. B. Anzahl der Besuche, meistbesuchte Seiten) gemäß der Datenschutzerklärung von Cloudflare.'
       },
       {
         heading: '3. Rechtsgrundlage der Verarbeitung',
@@ -130,7 +131,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '5. Speicherdauer',
-        body: 'Über WhatsApp erhobene Daten werden so lange gespeichert, wie es zur Bearbeitung Ihrer Anfrage oder Ihres Aufenthalts erforderlich ist, danach so lange, wie es steuerliche und gesetzliche Pflichten vorsehen (z. B. Gästemeldung bei Sicherheitsbehörden, Aufbewahrung von Buchhaltungsunterlagen).'
+        body: 'Über WhatsApp und über das Verfügbarkeitsanfrage-Formular erhobene Daten werden so lange gespeichert, wie es zur Bearbeitung Ihrer Anfrage oder Ihres Aufenthalts erforderlich ist, danach so lange, wie es steuerliche und gesetzliche Pflichten vorsehen (z. B. Gästemeldung bei Sicherheitsbehörden, Aufbewahrung von Buchhaltungsunterlagen).'
       },
       {
         heading: '6. Ihre Rechte',
@@ -152,7 +153,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
   },
   fr: {
     title: 'Politique de confidentialité',
-    lastUpdated: 'Dernière mise à jour : 3 août 2026',
+    lastUpdated: 'Dernière mise à jour : 11 septembre 2026',
     intro:
       'Cette politique décrit comment Ironwood Livigno traite les données personnelles des visiteurs du site ironwoodlivigno.com et des hôtes qui demandent des informations ou effectuent une réservation, conformément au Règlement (UE) 2016/679 (« RGPD ») et au décret législatif italien 196/2003, tel que modifié par le décret législatif 101/2018.',
     sections: [
@@ -162,7 +163,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '2. Quelles données nous collectons et pourquoi',
-        body: 'Ce site est statique (aucun serveur ne traite de données) et ne collecte que les données minimales suivantes :\n\n• Contact WhatsApp : cliquer sur le bouton WhatsApp ouvre une conversation avec notre numéro via l\'application WhatsApp (Meta). Les messages, le numéro de téléphone et les données que vous nous transmettez dans le chat sont traités selon la politique de confidentialité de WhatsApp/Meta, ainsi que par nous-mêmes pour répondre à votre demande et gérer une éventuelle réservation.\n\n• Module de réservation (Holidu) : la section « Réserver » intègre un formulaire fourni par Holidu GmbH, susceptible de collecter les données nécessaires pour vérifier la disponibilité et gérer la réservation (nom, coordonnées, dates de séjour, données de paiement). Ces données sont traitées par Holidu en tant que responsable ou sous-traitant indépendant, selon sa propre politique de confidentialité.\n\n• Carte (Google Maps) : la section « Localisation » intègre une carte Google, qui peut déposer des cookies ou collecter des données techniques (ex. adresse IP) selon la politique de confidentialité de Google.\n\n• Statistiques de fréquentation (Cloudflare Web Analytics) : nous utilisons un outil d\'analyse du trafic qui n\'utilise pas de cookies et n\'identifie pas les visiteurs individuellement ; il ne collecte que des données agrégées et anonymes (ex. nombre de visites, pages les plus consultées), selon la politique de confidentialité de Cloudflare.'
+        body: 'Le site est majoritairement statique ; le formulaire de demande de disponibilité fait exception, car il s\'appuie sur un système de gestion des demandes qui traite les données pour notre compte. Nous ne collectons que les données minimales suivantes :\n\n• Formulaire de demande de disponibilité : si vous remplissez le formulaire « Demander la disponibilité » sur le site, les données que vous saisissez — nom, e-mail, téléphone, dates du séjour, nombre et âge des personnes, extras demandés (petit-déjeuner, e-bike), message libre et langue du site — sont transmises à notre système interne de gestion des demandes, qui les met à disposition du gestionnaire de la structure pour répondre à votre demande et traiter une éventuelle réservation. Nous traitons ces données en tant que responsable du traitement.\n\n• Contact WhatsApp : cliquer sur le bouton WhatsApp ouvre une conversation avec notre numéro via l\'application WhatsApp (Meta). Les messages, le numéro de téléphone et les données que vous nous transmettez dans le chat sont traités selon la politique de confidentialité de WhatsApp/Meta, ainsi que par nous-mêmes pour répondre à votre demande et gérer une éventuelle réservation.\n\n• Module de réservation (Holidu) : la section « Réserver » intègre un formulaire fourni par Holidu GmbH, susceptible de collecter les données nécessaires pour vérifier la disponibilité et gérer la réservation (nom, coordonnées, dates de séjour, données de paiement). Ces données sont traitées par Holidu en tant que responsable ou sous-traitant indépendant, selon sa propre politique de confidentialité.\n\n• Carte (Google Maps) : la section « Localisation » intègre une carte Google, qui peut déposer des cookies ou collecter des données techniques (ex. adresse IP) selon la politique de confidentialité de Google.\n\n• Statistiques de fréquentation (Cloudflare Web Analytics) : nous utilisons un outil d\'analyse du trafic qui n\'utilise pas de cookies et n\'identifie pas les visiteurs individuellement ; il ne collecte que des données agrégées et anonymes (ex. nombre de visites, pages les plus consultées), selon la politique de confidentialité de Cloudflare.'
       },
       {
         heading: '3. Base juridique du traitement',
@@ -174,7 +175,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '5. Conservation des données',
-        body: 'Les données collectées via WhatsApp sont conservées le temps nécessaire pour traiter votre demande ou votre séjour, puis pendant la durée requise par les obligations fiscales et légales (ex. enregistrement des hôtes auprès des autorités de sécurité publique, conservation des documents comptables).'
+        body: 'Les données collectées via WhatsApp et via le formulaire de demande de disponibilité sont conservées le temps nécessaire pour traiter votre demande ou votre séjour, puis pendant la durée requise par les obligations fiscales et légales (ex. enregistrement des hôtes auprès des autorités de sécurité publique, conservation des documents comptables).'
       },
       {
         heading: '6. Vos droits',
@@ -196,7 +197,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
   },
   da: {
     title: 'Privatlivspolitik',
-    lastUpdated: 'Sidst opdateret: 3. august 2026',
+    lastUpdated: 'Sidst opdateret: 11. september 2026',
     intro:
       'Denne politik beskriver, hvordan Ironwood Livigno behandler personoplysninger for besøgende på ironwoodlivigno.com og gæster, der anmoder om oplysninger eller foretager en booking, i overensstemmelse med Forordning (EU) 2016/679 ("GDPR") og det italienske lovdekret 196/2003 som ændret ved lovdekret 101/2018.',
     sections: [
@@ -206,7 +207,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '2. Hvilke data vi indsamler, og hvorfor',
-        body: 'Denne hjemmeside er statisk (ingen server behandler data) og indsamler kun følgende minimale data:\n\n• WhatsApp-kontakt: Et klik på WhatsApp-knappen åbner en samtale med vores nummer via WhatsApp-appen (Meta). Beskeder, telefonnummer og andre data, du sender os i chatten, behandles ifølge WhatsApp/Metas egen privatlivspolitik samt af os for at besvare din henvendelse og håndtere en eventuel booking.\n\n• Booking-widget (Holidu): Sektionen "Book" indeholder en formular fra Holidu GmbH, som kan indsamle data til at tjekke ledighed og håndtere bookingen (navn, kontaktoplysninger, opholdsdatoer, betalingsdata). Disse data behandles af Holidu som selvstændig dataansvarlig eller databehandler ifølge deres egen privatlivspolitik.\n\n• Kort (Google Maps): Sektionen "Beliggenhed" indeholder et Google-kort, som kan sætte cookies eller indsamle tekniske data (f.eks. IP-adresse) ifølge Googles privatlivspolitik.\n\n• Brugsstatistik (Cloudflare Web Analytics): Vi bruger et trafikanalyseværktøj, der ikke bruger cookies og ikke identificerer individuelle besøgende; det indsamler kun aggregerede, anonyme data (f.eks. antal besøg, mest viste sider) ifølge Cloudflares privatlivspolitik.'
+        body: 'Hjemmesiden er overvejende statisk; formularen til forespørgsel om ledighed er undtagelsen, da den anvender et system til håndtering af forespørgsler, som behandler data på vores vegne. Vi indsamler kun følgende minimale data:\n\n• Formular til forespørgsel om ledighed: Hvis du udfylder formularen "Forespørg om ledighed" på hjemmesiden, sendes de data, du indtaster — navn, e-mail, telefonnummer, opholdsdatoer, antal og alder på gæster, eventuelle ønskede ekstraydelser (morgenmad, e-bike), fritekstbesked og hjemmesidens sprog — til vores interne system til håndtering af forespørgsler, som gør dem tilgængelige for den, der administrerer stedet, så din forespørgsel kan besvares og en eventuel booking behandles. Vi behandler disse data som dataansvarlig.\n\n• WhatsApp-kontakt: Et klik på WhatsApp-knappen åbner en samtale med vores nummer via WhatsApp-appen (Meta). Beskeder, telefonnummer og andre data, du sender os i chatten, behandles ifølge WhatsApp/Metas egen privatlivspolitik samt af os for at besvare din henvendelse og håndtere en eventuel booking.\n\n• Booking-widget (Holidu): Sektionen "Book" indeholder en formular fra Holidu GmbH, som kan indsamle data til at tjekke ledighed og håndtere bookingen (navn, kontaktoplysninger, opholdsdatoer, betalingsdata). Disse data behandles af Holidu som selvstændig dataansvarlig eller databehandler ifølge deres egen privatlivspolitik.\n\n• Kort (Google Maps): Sektionen "Beliggenhed" indeholder et Google-kort, som kan sætte cookies eller indsamle tekniske data (f.eks. IP-adresse) ifølge Googles privatlivspolitik.\n\n• Brugsstatistik (Cloudflare Web Analytics): Vi bruger et trafikanalyseværktøj, der ikke bruger cookies og ikke identificerer individuelle besøgende; det indsamler kun aggregerede, anonyme data (f.eks. antal besøg, mest viste sider) ifølge Cloudflares privatlivspolitik.'
       },
       {
         heading: '3. Retsgrundlag for behandlingen',
@@ -218,7 +219,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '5. Opbevaring af data',
-        body: 'Data indsamlet via WhatsApp opbevares, så længe det er nødvendigt for at håndtere din anmodning eller dit ophold, og derefter så længe skattemæssige og juridiske forpligtelser kræver det (f.eks. gæsteregistrering hos offentlige sikkerhedsmyndigheder, opbevaring af regnskabsbilag).'
+        body: 'Data indsamlet via WhatsApp og via formularen til forespørgsel om ledighed opbevares, så længe det er nødvendigt for at håndtere din anmodning eller dit ophold, og derefter så længe skattemæssige og juridiske forpligtelser kræver det (f.eks. gæsteregistrering hos offentlige sikkerhedsmyndigheder, opbevaring af regnskabsbilag).'
       },
       {
         heading: '6. Dine rettigheder',
@@ -240,7 +241,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
   },
   pl: {
     title: 'Polityka prywatności',
-    lastUpdated: 'Ostatnia aktualizacja: 3 sierpnia 2026',
+    lastUpdated: 'Ostatnia aktualizacja: 11 września 2026',
     intro:
       'Niniejsza polityka opisuje, w jaki sposób Ironwood Livigno przetwarza dane osobowe osób odwiedzających stronę ironwoodlivigno.com oraz gości, którzy proszą o informacje lub dokonują rezerwacji, zgodnie z Rozporządzeniem (UE) 2016/679 („RODO") oraz włoskim dekretem ustawodawczym nr 196/2003, zmienionym dekretem ustawodawczym nr 101/2018.',
     sections: [
@@ -250,7 +251,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '2. Jakie dane zbieramy i dlaczego',
-        body: 'Ta strona jest statyczna (żaden serwer nie przetwarza danych) i zbiera wyłącznie poniższe minimalne dane:\n\n• Kontakt WhatsApp: kliknięcie przycisku WhatsApp otwiera rozmowę z naszym numerem za pośrednictwem aplikacji WhatsApp (Meta). Wiadomości, numer telefonu i inne dane przesłane nam na czacie są przetwarzane zgodnie z polityką prywatności WhatsApp/Meta, a także przez nas w celu odpowiedzi na Twoje zapytanie i obsługi ewentualnej rezerwacji.\n\n• Widget rezerwacji (Holidu): sekcja „Rezerwuj" zawiera formularz dostarczony przez Holidu GmbH, który może zbierać dane potrzebne do sprawdzenia dostępności i obsługi rezerwacji (imię i nazwisko, dane kontaktowe, daty pobytu, dane płatności). Dane te są przetwarzane przez Holidu jako niezależnego administratora lub podmiot przetwarzający, zgodnie z jego własną polityką prywatności.\n\n• Mapa (Google Maps): sekcja „Lokalizacja" zawiera mapę Google, która może ustawiać pliki cookie lub zbierać dane techniczne (np. adres IP) zgodnie z polityką prywatności Google.\n\n• Statystyki użytkowania (Cloudflare Web Analytics): korzystamy z narzędzia do analizy ruchu, które nie używa plików cookie i nie identyfikuje pojedynczych odwiedzających; zbiera wyłącznie zagregowane, anonimowe dane (np. liczbę wizyt, najczęściej odwiedzane strony), zgodnie z polityką prywatności Cloudflare.'
+        body: 'Strona jest w większości statyczna; formularz zapytania o dostępność stanowi wyjątek, ponieważ korzysta z systemu zarządzania zapytaniami, który przetwarza dane w naszym imieniu. Zbieramy wyłącznie poniższe minimalne dane:\n\n• Formularz zapytania o dostępność: jeśli wypełnisz formularz „Zapytaj o dostępność" na stronie, dane, które wpisujesz — imię i nazwisko, e-mail, telefon, daty pobytu, liczba i wiek gości, ewentualne dodatkowe usługi (śniadanie, e-bike), wiadomość oraz język strony — są przesyłane do naszego wewnętrznego systemu zarządzania zapytaniami, który udostępnia je osobie zarządzającej obiektem w celu odpowiedzi na Twoje zapytanie i obsługi ewentualnej rezerwacji. Przetwarzamy te dane jako administrator danych.\n\n• Kontakt WhatsApp: kliknięcie przycisku WhatsApp otwiera rozmowę z naszym numerem za pośrednictwem aplikacji WhatsApp (Meta). Wiadomości, numer telefonu i inne dane przesłane nam na czacie są przetwarzane zgodnie z polityką prywatności WhatsApp/Meta, a także przez nas w celu odpowiedzi na Twoje zapytanie i obsługi ewentualnej rezerwacji.\n\n• Widget rezerwacji (Holidu): sekcja „Rezerwuj" zawiera formularz dostarczony przez Holidu GmbH, który może zbierać dane potrzebne do sprawdzenia dostępności i obsługi rezerwacji (imię i nazwisko, dane kontaktowe, daty pobytu, dane płatności). Dane te są przetwarzane przez Holidu jako niezależnego administratora lub podmiot przetwarzający, zgodnie z jego własną polityką prywatności.\n\n• Mapa (Google Maps): sekcja „Lokalizacja" zawiera mapę Google, która może ustawiać pliki cookie lub zbierać dane techniczne (np. adres IP) zgodnie z polityką prywatności Google.\n\n• Statystyki użytkowania (Cloudflare Web Analytics): korzystamy z narzędzia do analizy ruchu, które nie używa plików cookie i nie identyfikuje pojedynczych odwiedzających; zbiera wyłącznie zagregowane, anonimowe dane (np. liczbę wizyt, najczęściej odwiedzane strony), zgodnie z polityką prywatności Cloudflare.'
       },
       {
         heading: '3. Podstawa prawna przetwarzania',
@@ -262,7 +263,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '5. Przechowywanie danych',
-        body: 'Dane zebrane za pośrednictwem WhatsApp są przechowywane przez czas niezbędny do obsługi Twojego zapytania lub pobytu, a następnie przez okres wymagany przez obowiązki podatkowe i prawne (np. rejestracja gości u organów bezpieczeństwa publicznego, przechowywanie dokumentów księgowych).'
+        body: 'Dane zebrane za pośrednictwem WhatsApp oraz formularza zapytania o dostępność są przechowywane przez czas niezbędny do obsługi Twojego zapytania lub pobytu, a następnie przez okres wymagany przez obowiązki podatkowe i prawne (np. rejestracja gości u organów bezpieczeństwa publicznego, przechowywanie dokumentów księgowych).'
       },
       {
         heading: '6. Twoje prawa',
@@ -284,7 +285,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
   },
   cs: {
     title: 'Zásady ochrany osobních údajů',
-    lastUpdated: 'Poslední aktualizace: 3. srpna 2026',
+    lastUpdated: 'Poslední aktualizace: 11. září 2026',
     intro:
       'Tyto zásady popisují, jak Ironwood Livigno zpracovává osobní údaje návštěvníků webu ironwoodlivigno.com a hostů, kteří žádají o informace nebo rezervaci, v souladu s nařízením (EU) 2016/679 („GDPR") a italským legislativním nařízením č. 196/2003, ve znění legislativního nařízení č. 101/2018.',
     sections: [
@@ -294,7 +295,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '2. Jaké údaje shromažďujeme a proč',
-        body: 'Tento web je statický (žádný server nezpracovává data) a shromažďuje pouze následující minimální údaje:\n\n• Kontakt přes WhatsApp: kliknutím na tlačítko WhatsApp se otevře konverzace s naším číslem prostřednictvím aplikace WhatsApp (Meta). Zprávy, telefonní číslo a další údaje, které nám v chatu zašlete, jsou zpracovávány podle zásad ochrany osobních údajů WhatsApp/Meta a také námi za účelem odpovědi na váš dotaz a případné vyřízení rezervace.\n\n• Rezervační widget (Holidu): sekce „Rezervovat" obsahuje formulář poskytovaný společností Holidu GmbH, který může shromažďovat údaje potřebné k ověření dostupnosti a vyřízení rezervace (jméno, kontaktní údaje, data pobytu, platební údaje). Tyto údaje zpracovává Holidu jako samostatný správce nebo zpracovatel podle svých vlastních zásad ochrany osobních údajů.\n\n• Mapa (Google Maps): sekce „Kde se nacházíme" obsahuje mapu Google, která může nastavovat cookies nebo shromažďovat technické údaje (např. IP adresu) podle zásad ochrany osobních údajů Google.\n\n• Statistiky používání (Cloudflare Web Analytics): používáme nástroj pro analýzu návštěvnosti, který nepoužívá cookies a neidentifikuje jednotlivé návštěvníky; shromažďuje pouze agregovaná, anonymní data (např. počet návštěv, nejnavštěvovanější stránky) podle zásad ochrany osobních údajů Cloudflare.'
+        body: 'Web je převážně statický; formulář žádosti o dostupnost je výjimkou, jelikož využívá systém pro správu žádostí, který zpracovává údaje naším jménem. Shromažďujeme pouze následující minimální údaje:\n\n• Formulář žádosti o dostupnost: pokud vyplníte formulář „Zjistit dostupnost" na webu, údaje, které zadáte — jméno, e-mail, telefon, data pobytu, počet a věk hostů, případné požadované extra služby (snídaně, e-bike), volný text zprávy a jazyk webu — jsou odeslány do našeho interního systému pro správu žádostí, který je zpřístupní správci ubytování k vyřízení vaší žádosti a případné rezervace. Tyto údaje zpracováváme jako správce údajů.\n\n• Kontakt přes WhatsApp: kliknutím na tlačítko WhatsApp se otevře konverzace s naším číslem prostřednictvím aplikace WhatsApp (Meta). Zprávy, telefonní číslo a další údaje, které nám v chatu zašlete, jsou zpracovávány podle zásad ochrany osobních údajů WhatsApp/Meta a také námi za účelem odpovědi na váš dotaz a případné vyřízení rezervace.\n\n• Rezervační widget (Holidu): sekce „Rezervovat" obsahuje formulář poskytovaný společností Holidu GmbH, který může shromažďovat údaje potřebné k ověření dostupnosti a vyřízení rezervace (jméno, kontaktní údaje, data pobytu, platební údaje). Tyto údaje zpracovává Holidu jako samostatný správce nebo zpracovatel podle svých vlastních zásad ochrany osobních údajů.\n\n• Mapa (Google Maps): sekce „Kde se nacházíme" obsahuje mapu Google, která může nastavovat cookies nebo shromažďovat technické údaje (např. IP adresu) podle zásad ochrany osobních údajů Google.\n\n• Statistiky používání (Cloudflare Web Analytics): používáme nástroj pro analýzu návštěvnosti, který nepoužívá cookies a neidentifikuje jednotlivé návštěvníky; shromažďuje pouze agregovaná, anonymní data (např. počet návštěv, nejnavštěvovanější stránky) podle zásad ochrany osobních údajů Cloudflare.'
       },
       {
         heading: '3. Právní základ zpracování',
@@ -306,7 +307,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '5. Doba uchovávání údajů',
-        body: 'Údaje shromážděné přes WhatsApp jsou uchovávány po dobu nezbytnou k vyřízení vaší žádosti nebo pobytu, poté po dobu vyžadovanou daňovými a zákonnými povinnostmi (např. evidence hostů u orgánů veřejné bezpečnosti, uchovávání účetních dokladů).'
+        body: 'Údaje shromážděné přes WhatsApp a přes formulář žádosti o dostupnost jsou uchovávány po dobu nezbytnou k vyřízení vaší žádosti nebo pobytu, poté po dobu vyžadovanou daňovými a zákonnými povinnostmi (např. evidence hostů u orgánů veřejné bezpečnosti, uchovávání účetních dokladů).'
       },
       {
         heading: '6. Vaše práva',
@@ -328,7 +329,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
   },
   no: {
     title: 'Personvernerklæring',
-    lastUpdated: 'Sist oppdatert: 3. august 2026',
+    lastUpdated: 'Sist oppdatert: 11. september 2026',
     intro:
       'Denne erklæringen beskriver hvordan Ironwood Livigno behandler personopplysninger til besøkende på ironwoodlivigno.com og gjester som ber om informasjon eller booking, i samsvar med forordning (EU) 2016/679 ("GDPR") og den italienske lovforordningen 196/2003, endret ved lovforordning 101/2018.',
     sections: [
@@ -338,7 +339,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '2. Hvilke data vi samler inn, og hvorfor',
-        body: 'Dette nettstedet er statisk (ingen server behandler data) og samler kun inn følgende minimale data:\n\n• WhatsApp-kontakt: Et klikk på WhatsApp-knappen åpner en samtale med vårt nummer via WhatsApp-appen (Meta). Meldinger, telefonnummer og andre data du sender oss i chatten behandles i henhold til WhatsApp/Metas egen personvernerklæring, samt av oss for å svare på din henvendelse og håndtere en eventuell booking.\n\n• Booking-widget (Holidu): Seksjonen "Book" inneholder et skjema fra Holidu GmbH, som kan samle inn data som trengs for å sjekke tilgjengelighet og håndtere bookingen (navn, kontaktinformasjon, oppholdsdatoer, betalingsdata). Disse dataene behandles av Holidu som selvstendig behandlingsansvarlig eller databehandler i henhold til deres egen personvernerklæring.\n\n• Kart (Google Maps): Seksjonen "Beliggenhet" inneholder et Google-kart, som kan sette informasjonskapsler eller samle inn tekniske data (f.eks. IP-adresse) i henhold til Googles personvernerklæring.\n\n• Bruksstatistikk (Cloudflare Web Analytics): Vi bruker et trafikkanalyseverktøy som ikke bruker informasjonskapsler og ikke identifiserer enkeltbesøkende; det samler kun inn aggregerte, anonyme data (f.eks. antall besøk, mest viste sider) i henhold til Cloudflares personvernerklæring.'
+        body: 'Nettstedet er stort sett statisk; skjemaet for forespørsel om tilgjengelighet er unntaket, siden det bruker et system for håndtering av forespørsler som behandler data på våre vegne. Vi samler kun inn følgende minimale data:\n\n• Skjema for forespørsel om tilgjengelighet: Hvis du fyller ut skjemaet "Spør om tilgjengelighet" på nettstedet, sendes dataene du oppgir — navn, e-post, telefonnummer, oppholdsdatoer, antall og alder på gjestene, eventuelle ønskede tillegg (frokost, e-sykkel), fritekstmelding og nettstedets språk — til vårt interne system for håndtering av forespørsler, som gjør dem tilgjengelige for den som administrerer stedet, slik at forespørselen din kan besvares og en eventuell booking behandles. Vi behandler disse dataene som behandlingsansvarlig.\n\n• WhatsApp-kontakt: Et klikk på WhatsApp-knappen åpner en samtale med vårt nummer via WhatsApp-appen (Meta). Meldinger, telefonnummer og andre data du sender oss i chatten behandles i henhold til WhatsApp/Metas egen personvernerklæring, samt av oss for å svare på din henvendelse og håndtere en eventuell booking.\n\n• Booking-widget (Holidu): Seksjonen "Book" inneholder et skjema fra Holidu GmbH, som kan samle inn data som trengs for å sjekke tilgjengelighet og håndtere bookingen (navn, kontaktinformasjon, oppholdsdatoer, betalingsdata). Disse dataene behandles av Holidu som selvstendig behandlingsansvarlig eller databehandler i henhold til deres egen personvernerklæring.\n\n• Kart (Google Maps): Seksjonen "Beliggenhet" inneholder et Google-kart, som kan sette informasjonskapsler eller samle inn tekniske data (f.eks. IP-adresse) i henhold til Googles personvernerklæring.\n\n• Bruksstatistikk (Cloudflare Web Analytics): Vi bruker et trafikkanalyseverktøy som ikke bruker informasjonskapsler og ikke identifiserer enkeltbesøkende; det samler kun inn aggregerte, anonyme data (f.eks. antall besøk, mest viste sider) i henhold til Cloudflares personvernerklæring.'
       },
       {
         heading: '3. Rettslig grunnlag for behandlingen',
@@ -350,7 +351,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '5. Lagring av data',
-        body: 'Data samlet inn via WhatsApp lagres så lenge det er nødvendig for å håndtere din forespørsel eller ditt opphold, og deretter så lenge skattemessige og juridiske forpliktelser krever det (f.eks. gjesteregistrering hos offentlige sikkerhetsmyndigheter, oppbevaring av regnskapsdokumenter).'
+        body: 'Data samlet inn via WhatsApp og via skjemaet for forespørsel om tilgjengelighet lagres så lenge det er nødvendig for å håndtere din forespørsel eller ditt opphold, og deretter så lenge skattemessige og juridiske forpliktelser krever det (f.eks. gjesteregistrering hos offentlige sikkerhetsmyndigheter, oppbevaring av regnskapsdokumenter).'
       },
       {
         heading: '6. Dine rettigheter',
@@ -372,7 +373,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
   },
   nl: {
     title: 'Privacybeleid',
-    lastUpdated: 'Laatst bijgewerkt: 3 augustus 2026',
+    lastUpdated: 'Laatst bijgewerkt: 11 september 2026',
     intro:
       'Dit beleid beschrijft hoe Ironwood Livigno persoonsgegevens verwerkt van bezoekers van ironwoodlivigno.com en gasten die om informatie of een boeking vragen, in overeenstemming met Verordening (EU) 2016/679 ("AVG") en het Italiaanse wetsbesluit 196/2003, zoals gewijzigd bij wetsbesluit 101/2018.',
     sections: [
@@ -382,7 +383,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '2. Welke gegevens we verzamelen en waarom',
-        body: 'Deze website is statisch (geen server verwerkt gegevens) en verzamelt alleen de volgende minimale gegevens:\n\n• WhatsApp-contact: door op de WhatsApp-knop te klikken, opent u een gesprek met ons nummer via de WhatsApp-app (Meta). Berichten, telefoonnummer en andere gegevens die u ons in de chat stuurt, worden verwerkt volgens het eigen privacybeleid van WhatsApp/Meta, en ook door ons om te reageren op uw verzoek en een eventuele boeking te beheren.\n\n• Boekingswidget (Holidu): de sectie "Boek" bevat een formulier van Holidu GmbH, dat gegevens kan verzamelen die nodig zijn om beschikbaarheid te controleren en de boeking te beheren (naam, contactgegevens, verblijfsdata, betalingsgegevens). Deze gegevens worden door Holidu verwerkt als zelfstandige verwerkingsverantwoordelijke of verwerker, volgens haar eigen privacybeleid.\n\n• Kaart (Google Maps): de sectie "Locatie" bevat een Google-kaart, die cookies kan plaatsen of technische gegevens (bijv. IP-adres) kan verzamelen volgens het privacybeleid van Google.\n\n• Gebruiksstatistieken (Cloudflare Web Analytics): we gebruiken een verkeersanalysetool die geen cookies gebruikt en individuele bezoekers niet identificeert; het verzamelt alleen geaggregeerde, anonieme gegevens (bijv. aantal bezoeken, meest bekeken pagina\'s) volgens het privacybeleid van Cloudflare.'
+        body: 'De website is grotendeels statisch; het beschikbaarheidsaanvraagformulier vormt de uitzondering, aangezien het gebruikmaakt van een aanvraagbeheersysteem dat gegevens namens ons verwerkt. Wij verzamelen alleen de volgende minimale gegevens:\n\n• Beschikbaarheidsaanvraagformulier: als u het formulier "Beschikbaarheid aanvragen" op de site invult, worden de gegevens die u invoert — naam, e-mail, telefoonnummer, verblijfsdata, aantal en leeftijd van de gasten, eventueel gevraagde extra\'s (ontbijt, e-bike), vrije tekst bericht en taal van de site — verzonden naar ons interne aanvraagbeheersysteem, dat deze beschikbaar stelt aan de beheerder van de accommodatie om uw aanvraag te beantwoorden en een eventuele boeking te verwerken. Wij verwerken deze gegevens als verwerkingsverantwoordelijke.\n\n• WhatsApp-contact: door op de WhatsApp-knop te klikken, opent u een gesprek met ons nummer via de WhatsApp-app (Meta). Berichten, telefoonnummer en andere gegevens die u ons in de chat stuurt, worden verwerkt volgens het eigen privacybeleid van WhatsApp/Meta, en ook door ons om te reageren op uw verzoek en een eventuele boeking te beheren.\n\n• Boekingswidget (Holidu): de sectie "Boek" bevat een formulier van Holidu GmbH, dat gegevens kan verzamelen die nodig zijn om beschikbaarheid te controleren en de boeking te beheren (naam, contactgegevens, verblijfsdata, betalingsgegevens). Deze gegevens worden door Holidu verwerkt als zelfstandige verwerkingsverantwoordelijke of verwerker, volgens haar eigen privacybeleid.\n\n• Kaart (Google Maps): de sectie "Locatie" bevat een Google-kaart, die cookies kan plaatsen of technische gegevens (bijv. IP-adres) kan verzamelen volgens het privacybeleid van Google.\n\n• Gebruiksstatistieken (Cloudflare Web Analytics): we gebruiken een verkeersanalysetool die geen cookies gebruikt en individuele bezoekers niet identificeert; het verzamelt alleen geaggregeerde, anonieme gegevens (bijv. aantal bezoeken, meest bekeken pagina\'s) volgens het privacybeleid van Cloudflare.'
       },
       {
         heading: '3. Rechtsgrondslag voor de verwerking',
@@ -394,7 +395,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '5. Bewaring van gegevens',
-        body: 'Gegevens verzameld via WhatsApp worden bewaard zolang als nodig is om uw verzoek of verblijf te behandelen, en daarna zolang als vereist door fiscale en wettelijke verplichtingen (bijv. gastregistratie bij openbare veiligheidsautoriteiten, bewaring van boekhoudkundige documenten).'
+        body: 'Gegevens verzameld via WhatsApp en via het beschikbaarheidsaanvraagformulier worden bewaard zolang als nodig is om uw verzoek of verblijf te behandelen, en daarna zolang als vereist door fiscale en wettelijke verplichtingen (bijv. gastregistratie bij openbare veiligheidsautoriteiten, bewaring van boekhoudkundige documenten).'
       },
       {
         heading: '6. Uw rechten',
@@ -416,7 +417,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
   },
   'en-us': {
     title: 'Privacy Policy for Guests in Italy',
-    lastUpdated: 'Last updated: August 4, 2026',
+    lastUpdated: 'Last updated: September 11, 2026',
     intro:
       'This policy describes how Ironwood Livigno processes the personal data of visitors to ironwoodlivigno.com and guests who request information or bookings, in accordance with Regulation (EU) 2016/679 ("GDPR") and Italian Legislative Decree 196/2003, as amended by Legislative Decree 101/2018. Because our property is located in Italy, GDPR applies to how we handle your data regardless of where you are booking from.',
     sections: [
@@ -426,7 +427,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '2. What data we collect and why',
-        body: 'This site is static (it has no server processing data) and only collects the minimal data described below:\n\n• WhatsApp contact: clicking the WhatsApp button opens a conversation with our number via the WhatsApp app (Meta). Any messages, phone number and data you send us in chat are handled according to WhatsApp/Meta\'s own privacy policy, as well as by us to respond to your request and manage any booking.\n\n• Booking widget (Holidu): the "Book" section embeds a form provided by Holidu GmbH, which may collect data needed to check availability and manage the booking (name, contact details, stay dates, payment data). This data is processed by Holidu as an independent controller or processor, per its own privacy policy.\n\n• Map (Google Maps): the "Location" section embeds a Google Map, which may set cookies or collect technical data (e.g. IP address) per Google\'s privacy policy.\n\n• Usage statistics (Cloudflare Web Analytics): we use a traffic analysis tool that does not use cookies and does not identify individual visitors; it only collects aggregated, anonymous data (e.g. number of visits, most viewed pages), per Cloudflare\'s privacy policy.'
+        body: 'This site is largely static; the availability request form is the exception, as it relies on a request-management system that processes data on our behalf. We only collect the minimal data described below:\n\n• Availability request form: if you fill in the "Check availability" form on the site, the data you enter — name, email, phone number, stay dates, number and ages of guests, any extras requested (breakfast, e-bike), free-text message and site language — is sent to our internal request-management system, which makes it available to the property manager to respond to your request and process any booking. We process this data as data controller.\n\n• WhatsApp contact: clicking the WhatsApp button opens a conversation with our number via the WhatsApp app (Meta). Any messages, phone number and data you send us in chat are handled according to WhatsApp/Meta\'s own privacy policy, as well as by us to respond to your request and manage any booking.\n\n• Booking widget (Holidu): the "Book" section embeds a form provided by Holidu GmbH, which may collect data needed to check availability and manage the booking (name, contact details, stay dates, payment data). This data is processed by Holidu as an independent controller or processor, per its own privacy policy.\n\n• Map (Google Maps): the "Location" section embeds a Google Map, which may set cookies or collect technical data (e.g. IP address) per Google\'s privacy policy.\n\n• Usage statistics (Cloudflare Web Analytics): we use a traffic analysis tool that does not use cookies and does not identify individual visitors; it only collects aggregated, anonymous data (e.g. number of visits, most viewed pages), per Cloudflare\'s privacy policy.'
       },
       {
         heading: '3. Legal basis for processing',
@@ -438,7 +439,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '5. Data retention',
-        body: 'Data collected via WhatsApp is retained for as long as needed to handle your request or stay, and afterwards for as long as required by tax and legal obligations (e.g. guest registration with public safety authorities, retention of accounting records).'
+        body: 'Data collected via WhatsApp and via the availability request form is retained for as long as needed to handle your request or stay, and afterwards for as long as required by tax and legal obligations (e.g. guest registration with public safety authorities, retention of accounting records).'
       },
       {
         heading: '6. Your rights',
@@ -460,7 +461,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
   },
   zh: {
     title: '隐私政策',
-    lastUpdated: '最后更新时间：2026年8月4日',
+    lastUpdated: '最后更新时间：2026年9月11日',
     intro:
       '本政策说明 Ironwood Livigno 如何根据欧盟《通用数据保护条例》（(EU) 2016/679，简称"GDPR"）以及经第101/2018号立法令修订的意大利第196/2003号立法令，处理访问 ironwoodlivigno.com 网站的访客以及咨询信息或预订的客人的个人数据。',
     sections: [
@@ -470,7 +471,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '2. 我们收集哪些数据及原因',
-        body: '本网站为静态网站（没有处理数据的服务器），仅收集以下最基本的数据：\n\n• WhatsApp联系：点击WhatsApp按钮会通过WhatsApp应用程序（Meta旗下）打开与我们号码的对话。您在聊天中发送给我们的消息、电话号码及其他数据将根据WhatsApp/Meta自身的隐私政策进行处理，同时我们也会使用这些信息来回复您的咨询并处理相关预订。\n\n• 预订插件（Holidu）："预订"部分嵌入了由 Holidu GmbH 提供的表单，该表单可能会收集核实空房情况和管理预订所需的数据（姓名、联系方式、入住日期、付款信息）。这些数据由 Holidu 作为独立的数据控制者或处理者，根据其自身的隐私政策进行处理。\n\n• 地图（谷歌地图）："位置"部分嵌入了谷歌地图，根据谷歌的隐私政策，该地图可能会设置cookie或收集技术数据（如IP地址）。\n\n• 使用统计（Cloudflare Web Analytics）：我们使用一款不使用cookie、也不会识别具体访客身份的流量分析工具；它仅根据Cloudflare的隐私政策收集汇总的匿名数据（如访问次数、浏览量最高的页面）。'
+        body: '本网站大部分为静态网站；可预订查询表单是例外情况，因为它依赖一个代表我们处理数据的查询管理系统。我们仅收集以下最基本的数据：\n\n• 可预订查询表单：如果您填写网站上的"查询可预订情况"表单，您输入的数据——姓名、电子邮箱、电话号码、入住日期、客人人数及年龄、所需的额外服务（早餐、电动自行车）、自由文本留言以及所使用的网站语言——将被发送至我们内部的查询管理系统，该系统会将这些信息提供给房源管理者，以便回复您的查询并处理可能的预订。我们作为数据控制者处理这些数据。\n\n• WhatsApp联系：点击WhatsApp按钮会通过WhatsApp应用程序（Meta旗下）打开与我们号码的对话。您在聊天中发送给我们的消息、电话号码及其他数据将根据WhatsApp/Meta自身的隐私政策进行处理，同时我们也会使用这些信息来回复您的咨询并处理相关预订。\n\n• 预订插件（Holidu）："预订"部分嵌入了由 Holidu GmbH 提供的表单，该表单可能会收集核实空房情况和管理预订所需的数据（姓名、联系方式、入住日期、付款信息）。这些数据由 Holidu 作为独立的数据控制者或处理者，根据其自身的隐私政策进行处理。\n\n• 地图（谷歌地图）："位置"部分嵌入了谷歌地图，根据谷歌的隐私政策，该地图可能会设置cookie或收集技术数据（如IP地址）。\n\n• 使用统计（Cloudflare Web Analytics）：我们使用一款不使用cookie、也不会识别具体访客身份的流量分析工具；它仅根据Cloudflare的隐私政策收集汇总的匿名数据（如访问次数、浏览量最高的页面）。'
       },
       {
         heading: '3. 处理数据的法律依据',
@@ -482,7 +483,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '5. 数据保留',
-        body: '通过WhatsApp收集的数据将在处理您的咨询或入住事宜所需的时间内予以保留，此后将根据税务和法律义务所要求的期限继续保留（例如向公共安全机关进行的客人登记、会计凭证的保存）。'
+        body: '通过WhatsApp及可预订查询表单收集的数据将在处理您的咨询或入住事宜所需的时间内予以保留，此后将根据税务和法律义务所要求的期限继续保留（例如向公共安全机关进行的客人登记、会计凭证的保存）。'
       },
       {
         heading: '6. 您的权利',
@@ -504,7 +505,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
   },
   ja: {
     title: 'プライバシーポリシー',
-    lastUpdated: '最終更新日：2026年8月4日',
+    lastUpdated: '最終更新日：2026年9月11日',
     intro:
       '本ポリシーは、Ironwood Livignoが、EU一般データ保護規則（(EU) 2016/679、以下「GDPR」）およびイタリア立法令第101/2018号により改正されたイタリア立法令第196/2003号に基づき、ironwoodlivigno.comの訪問者および情報や予約を問い合わせるゲストの個人データをどのように取り扱うかについて説明するものです。',
     sections: [
@@ -514,7 +515,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '2. 収集するデータとその目的',
-        body: '当サイトは静的サイトであり（データを処理するサーバーは存在しません）、以下の最小限のデータのみを収集します。\n\n• WhatsApp連絡：WhatsAppボタンをクリックすると、WhatsAppアプリ（Meta社）を通じて当方の番号とのチャットが開始されます。チャットで送信されたメッセージ、電話番号、その他のデータは、WhatsApp/Metaのプライバシーポリシーに従って取り扱われるとともに、お問い合わせへの返信や予約管理のために当方でも利用いたします。\n\n• 予約ウィジェット（Holidu）：「予約」セクションには、Holidu GmbHが提供するフォームが埋め込まれており、空室状況の確認や予約管理に必要なデータ（氏名、連絡先、宿泊日程、支払い情報）を収集する場合があります。これらのデータはHoliduが独自のデータ管理者または処理者として、同社独自のプライバシーポリシーに基づき処理します。\n\n• 地図（Googleマップ）：「アクセス」セクションにはGoogleマップが埋め込まれており、Googleのプライバシーポリシーに基づき、Cookieの設定や技術データ（IPアドレスなど）の収集が行われる場合があります。\n\n• 利用統計（Cloudflare Web Analytics）：当方はCookieを使用せず、個々の訪問者を特定しないトラフィック分析ツールを利用しています。Cloudflareのプライバシーポリシーに基づき、集計・匿名化されたデータ（訪問回数や閲覧数の多いページなど）のみを収集します。'
+        body: '当サイトの大部分は静的です。空室状況お問い合わせフォームはその例外であり、当方に代わってデータを処理するお問い合わせ管理システムを利用しています。当方が収集するのは、以下の最小限のデータのみです。\n\n• 空室状況お問い合わせフォーム：サイト上の「空室状況を問い合わせる」フォームにご入力いただいたデータ（氏名、メールアドレス、電話番号、宿泊日程、ゲストの人数と年齢、ご希望の追加サービス（朝食、eバイク）、自由記述のメッセージ、サイトの言語）は、当方の内部お問い合わせ管理システムに送信され、施設管理者がお問い合わせへの対応や予約の処理を行うために利用されます。当方はこれらのデータをデータ管理者として処理します。\n\n• WhatsApp連絡：WhatsAppボタンをクリックすると、WhatsAppアプリ（Meta社）を通じて当方の番号とのチャットが開始されます。チャットで送信されたメッセージ、電話番号、その他のデータは、WhatsApp/Metaのプライバシーポリシーに従って取り扱われるとともに、お問い合わせへの返信や予約管理のために当方でも利用いたします。\n\n• 予約ウィジェット（Holidu）：「予約」セクションには、Holidu GmbHが提供するフォームが埋め込まれており、空室状況の確認や予約管理に必要なデータ（氏名、連絡先、宿泊日程、支払い情報）を収集する場合があります。これらのデータはHoliduが独自のデータ管理者または処理者として、同社独自のプライバシーポリシーに基づき処理します。\n\n• 地図（Googleマップ）：「アクセス」セクションにはGoogleマップが埋め込まれており、Googleのプライバシーポリシーに基づき、Cookieの設定や技術データ（IPアドレスなど）の収集が行われる場合があります。\n\n• 利用統計（Cloudflare Web Analytics）：当方はCookieを使用せず、個々の訪問者を特定しないトラフィック分析ツールを利用しています。Cloudflareのプライバシーポリシーに基づき、集計・匿名化されたデータ（訪問回数や閲覧数の多いページなど）のみを収集します。'
       },
       {
         heading: '3. 処理の法的根拠',
@@ -526,7 +527,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '5. データの保存期間',
-        body: 'WhatsApp経由で収集されたデータは、お問い合わせやご滞在の対応に必要な期間保存され、その後は税務・法的義務（治安当局へのゲスト登録、会計書類の保存など）で定められた期間保存されます。'
+        body: 'WhatsApp経由および空室状況お問い合わせフォーム経由で収集されたデータは、お問い合わせやご滞在の対応に必要な期間保存され、その後は税務・法的義務（治安当局へのゲスト登録、会計書類の保存など）で定められた期間保存されます。'
       },
       {
         heading: '6. お客様の権利',
