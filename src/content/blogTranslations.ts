@@ -335,7 +335,7 @@ export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocal
         {
           heading: 'Why where you stay matters more than which side you choose',
           paragraphs: [
-            "The real practical constraint isn't so much which ski area to pick, but where you sleep: staying at one end of town, reaching the opposite side takes time. Ironwood Livigno is located on Via Saroch, 100 metres from both the Carosello 3000 and Mottolino lifts — so every morning you can decide on the spot where to ski, without the choice depending on how easy it is to get there."
+            "The real practical constraint isn't so much which ski area to pick, but where you sleep: staying at one end of town, reaching the opposite side takes time. Ironwood Livigno is located on Via Saroch, 100 metres from the ski lifts and in a convenient spot to reach both sides — so every morning you can decide on the spot where to ski, without the choice depending on how easy it is to get there."
           ]
         }
       ]
@@ -368,7 +368,7 @@ export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocal
         {
           heading: 'Warum die Lage der Unterkunft wichtiger ist als die Wahl der Seite',
           paragraphs: [
-            'Die eigentliche praktische Einschränkung ist weniger, welches Skigebiet man wählt, sondern wo man übernachtet: Wohnt man an einem Ende des Ortes, dauert es, die gegenüberliegende Seite zu erreichen. Das Ironwood Livigno liegt in der Via Saroch, 100 Meter sowohl von den Liften von Carosello 3000 als auch von Mottolino entfernt – sodass Sie jeden Morgen spontan entscheiden können, wo Sie fahren möchten, ohne dass die Wahl von der Erreichbarkeit abhängt.'
+            'Die eigentliche praktische Einschränkung ist weniger, welches Skigebiet man wählt, sondern wo man übernachtet: Wohnt man an einem Ende des Ortes, dauert es, die gegenüberliegende Seite zu erreichen. Das Ironwood Livigno liegt in der Via Saroch, 100 Meter von den Liften entfernt und günstig gelegen, um beide Seiten gut zu erreichen – sodass Sie jeden Morgen spontan entscheiden können, wo Sie fahren möchten, ohne dass die Wahl von der Erreichbarkeit abhängt.'
           ]
         }
       ]

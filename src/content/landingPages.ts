@@ -43,7 +43,7 @@ export const landingPages: LandingPage[] = [
     title: 'Vacanza sulla neve a Livigno: sci, sauna privata e comfort a due passi dalle piste',
     metaTitle: 'Vacanza invernale a Livigno | Sauna a 100 m dagli impianti',
     metaDescription:
-      "Sci, sauna a infrarossi e bagno turco privati a 100 m dal Carosello 3000: scopri come vivere l'inverno a Livigno da Ironwood.",
+      "Sci, sauna a infrarossi e bagno turco privati a 100 m dagli impianti di risalita: scopri come vivere l'inverno a Livigno da Ironwood.",
     eyebrow: 'Inverno a Livigno',
     intro:
       "Livigno è una delle mete alpine italiane con la stagione sciistica più lunga: piste aperte da fine novembre a inizio maggio, un comprensorio che sale oltre i 3.000 metri e la comodità, rara, di poter tornare a scaldarsi in una sauna privata dopo l'ultima discesa.",

@@ -47,7 +47,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       title: 'Winter in Livigno: skiing, a private sauna, and comfort steps from the slopes',
       metaTitle: 'Winter Holiday in Livigno | Sauna 100 m from the Lifts',
       metaDescription:
-        'Private infrared sauna and steam bath 100 m from Carosello 3000: discover what winter in Livigno feels like at Ironwood.',
+        'Private infrared sauna and steam bath 100 m from the ski lifts: discover what winter in Livigno feels like at Ironwood.',
       eyebrow: 'Winter in Livigno',
       intro:
         "Livigno has one of the longest ski seasons in the Italian Alps: slopes open from late November to early May, a ski area that climbs past 3,000 metres, and the rare comfort of coming home to a private sauna after the last run of the day.",
@@ -94,7 +94,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       title: 'Winter in Livigno, Italy: skiing, a private sauna, and comfort steps from the slopes',
       metaTitle: 'Winter Vacation in Livigno, Italy | Sauna 100 m from Lifts',
       metaDescription:
-        'Private infrared sauna and steam bath 100 m from Carosello 3000: discover what winter in the Italian Alps feels like at Ironwood, in Livigno, Italy.',
+        'Private infrared sauna and steam bath 100 m from the ski lifts: discover what winter in the Italian Alps feels like at Ironwood, in Livigno, Italy.',
       eyebrow: 'Winter in Livigno, Italy',
       intro:
         "Livigno, in the Italian Alps, has one of the longest ski seasons in Italy: slopes open from late November to early May, a ski area that climbs past 3,000 metres, and the rare comfort of coming home to a private sauna after the last run of the day.",
@@ -140,7 +140,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     de: {
       title: 'Winterurlaub in Livigno: Skifahren, private Sauna und Komfort direkt an der Piste',
       metaTitle: 'Winterurlaub in Livigno | Sauna, 100 m von den Liften',
-      metaDescription: 'Private Infrarotsauna und Dampfbad, 100 m vom Carosello 3000: entdecken Sie den Winter in Livigno bei Ironwood.',
+      metaDescription: 'Private Infrarotsauna und Dampfbad, 100 m von den Liften: entdecken Sie den Winter in Livigno bei Ironwood.',
       eyebrow: 'Winter in Livigno',
       intro:
         'Livigno hat eine der längsten Skisaisons der italienischen Alpen: Die Pisten sind von Ende November bis Anfang Mai geöffnet, das Skigebiet reicht auf über 3.000 Meter, und nach der letzten Abfahrt wartet der seltene Komfort einer privaten Sauna.',
@@ -187,7 +187,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       title: 'Hiver à Livigno : ski, sauna privé et confort à deux pas des pistes',
       metaTitle: "Vacances d'hiver à Livigno | Sauna à 100 m des remontées",
       metaDescription:
-        "Sauna infrarouge et hammam privés à 100 m du Carosello 3000 : découvrez l'hiver à Livigno chez Ironwood.",
+        "Sauna infrarouge et hammam privés à 100 m des remontées mécaniques : découvrez l'hiver à Livigno chez Ironwood.",
       eyebrow: 'Hiver à Livigno',
       intro:
         "Livigno bénéficie de l'une des saisons de ski les plus longues des Alpes italiennes : pistes ouvertes de fin novembre à début mai, un domaine skiable qui culmine à plus de 3 000 mètres, et le rare confort de rentrer se réchauffer dans un sauna privé après la dernière descente.",
@@ -233,7 +233,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     da: {
       title: 'Vinter i Livigno: skiløb, privat sauna og komfort tæt på pisterne',
       metaTitle: 'Vinterferie i Livigno | Sauna 100 m fra liftene',
-      metaDescription: 'Privat infrarød sauna og dampbad 100 m fra Carosello 3000: oplev vinteren i Livigno hos Ironwood.',
+      metaDescription: 'Privat infrarød sauna og dampbad 100 m fra skiliftene: oplev vinteren i Livigno hos Ironwood.',
       eyebrow: 'Vinter i Livigno',
       intro:
         'Livigno har en af de længste skisæsoner i de italienske Alper: pisterne er åbne fra slutningen af november til begyndelsen af maj, skiområdet når over 3.000 meter, og efter dagens sidste tur venter den sjældne komfort ved en privat sauna.',
@@ -280,7 +280,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       title: 'Zimowe wakacje w Livigno: narciarstwo, prywatna sauna i komfort tuż przy stokach',
       metaTitle: 'Zimowe wakacje w Livigno | Sauna 100 m od wyciągów',
       metaDescription:
-        'Prywatna sauna na podczerwień i łaźnia parowa 100 m od Carosello 3000: odkryj, jak wygląda zima w Livigno w Ironwood.',
+        'Prywatna sauna na podczerwień i łaźnia parowa 100 m od wyciągów narciarskich: odkryj, jak wygląda zima w Livigno w Ironwood.',
       eyebrow: 'Zima w Livigno',
       intro:
         "Livigno to jeden z alpejskich kurortów we Włoszech z najdłuższym sezonem narciarskim: stoki otwarte od końca listopada do początku maja, obszar narciarski sięgający ponad 3000 metrów i rzadki komfort powrotu do rozgrzewającej prywatnej sauny po ostatnim zjeździe.",
@@ -326,7 +326,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     cs: {
       title: 'Zimní dovolená v Livignu: lyžování, soukromá sauna a komfort kousek od sjezdovek',
       metaTitle: 'Zimní dovolená v Livignu | Apartmán se saunou 100 m od vleků',
-      metaDescription: 'Soukromá infrasauna a parní lázeň 100 m od Carosello 3000: objevte, jaké je trávit zimu v Livignu v Ironwood.',
+      metaDescription: 'Soukromá infrasauna a parní lázeň 100 m od vleků: objevte, jaké je trávit zimu v Livignu v Ironwood.',
       eyebrow: 'Zima v Livignu',
       intro:
         'Livigno patří mezi italská alpská střediska s nejdelší lyžařskou sezónou: sjezdovky otevřené od konce listopadu do začátku května, lyžařský areál sahající přes 3 000 metrů a vzácný komfort návratu do soukromé sauny po posledním sjezdu dne.',
@@ -372,7 +372,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     no: {
       title: 'Vinter i Livigno: skikjøring, privat badstue og komfort like ved bakkene',
       metaTitle: 'Vinterferie i Livigno | Badstue 100 m fra heisene',
-      metaDescription: 'Privat infrarød badstue og dampbad 100 m fra Carosello 3000: oppdag hvordan vinteren i Livigno oppleves hos Ironwood.',
+      metaDescription: 'Privat infrarød badstue og dampbad 100 m fra skiheisene: oppdag hvordan vinteren i Livigno oppleves hos Ironwood.',
       eyebrow: 'Vinter i Livigno',
       intro:
         'Livigno har en av de lengste skisesongene i de italienske Alpene: bakker åpne fra slutten av november til begynnelsen av mai, et skiområde som strekker seg over 3000 meter, og den sjeldne komforten ved å komme hjem til en privat badstue etter dagens siste tur.',
@@ -418,7 +418,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     nl: {
       title: 'Winter in Livigno: skiën, een privésauna en comfort vlak bij de piste',
       metaTitle: 'Wintervakantie in Livigno | Sauna, 100 m van de liften',
-      metaDescription: 'Privé infraroodsauna en stoombad, 100 m van Carosello 3000: ontdek hoe de winter in Livigno aanvoelt bij Ironwood.',
+      metaDescription: 'Privé infraroodsauna en stoombad, 100 m van de skiliften: ontdek hoe de winter in Livigno aanvoelt bij Ironwood.',
       eyebrow: 'Winter in Livigno',
       intro:
         'Livigno heeft een van de langste skiseizoenen van de Italiaanse Alpen: piste open van eind november tot begin mei, een skigebied dat tot boven de 3000 meter reikt, en het zeldzame comfort om na de laatste afdaling thuis te komen in een privésauna.',
@@ -464,7 +464,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     zh: {
       title: '利维尼奥冬季度假:滑雪、私人桑拿与近在咫尺的舒适体验',
       metaTitle: '利维尼奥冬季度假 | 距缆车仅100米的带桑拿公寓',
-      metaDescription: '私人红外线桑拿与土耳其蒸汽浴,距Carosello 3000仅100米:在Ironwood体验利维尼奥的冬日时光。',
+      metaDescription: '私人红外线桑拿与土耳其蒸汽浴,距滑雪缆车仅100米:在Ironwood体验利维尼奥的冬日时光。',
       eyebrow: '利维尼奥的冬天',
       intro:
         '利维尼奥是意大利阿尔卑斯山滑雪季最长的度假胜地之一:雪道从11月末开放至次年5月初,滑雪区海拔超过3000米,滑完最后一趟雪后还能回到私人桑拿房暖身,这样的舒适实属难得。',
@@ -510,7 +510,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     ja: {
       title: 'リヴィニョの冬:スキー、専用サウナ、ゲレンデ目の前の快適さ',
       metaTitle: 'リヴィニョ冬のバカンス | リフトから100mのサウナ付きアパートメント',
-      metaDescription: 'Carosello 3000から100m、専用の赤外線サウナとスチームバス。Ironwoodでリヴィニョの冬を体験しませんか。',
+      metaDescription: 'リフトから100m、専用の赤外線サウナとスチームバス。Ironwoodでリヴィニョの冬を体験しませんか。',
       eyebrow: 'リヴィニョの冬',
       intro:
         'リヴィニョはイタリアアルプスの中でも屈指の長さを誇るスキーシーズンで知られています。ゲレンデは11月下旬から5月初旬までオープンし、スキーエリアは標高3,000mを超え、最後の滑走のあとは専用サウナで暖まって帰れるという贅沢な体験ができます。',

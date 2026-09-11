@@ -634,7 +634,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: "Perché la posizione dell'alloggio conta più della scelta del versante",
         paragraphs: [
-          "Il vero vincolo pratico, più che scegliere un comprensorio, è la posizione di dove dormi: alloggiando a un'estremità del paese, raggiungere il versante opposto richiede tempo. [Ironwood Livigno si trova in Via Saroch](/come-arrivare), a 100 metri sia dagli impianti di Carosello 3000 sia da quelli del Mottolino — quindi ogni mattina puoi decidere sul momento dove sciare, senza che la scelta dipenda da quanto è comodo arrivarci."
+          "Il vero vincolo pratico, più che scegliere un comprensorio, è la posizione di dove dormi: alloggiando a un'estremità del paese, raggiungere il versante opposto richiede tempo. [Ironwood Livigno si trova in Via Saroch](/come-arrivare), a 100 metri dagli impianti di risalita e in una posizione comoda per raggiungere entrambi i versanti — quindi ogni mattina puoi decidere sul momento dove sciare, senza che la scelta dipenda da quanto è comodo arrivarci."
         ]
       }
     ],
@@ -664,7 +664,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: 'Cosa fa salire il prezzo, oltre alla data',
         paragraphs: [
-          "Alla stagionalità si sommano altri fattori: quanto anticipo hai nella prenotazione, quante notti resti (soggiorni più lunghi spuntano spesso condizioni migliori), e la posizione — un appartamento a pochi passi dagli impianti, come il nostro a 100 metri da Carosello 3000 e Mottolino, ha in genere un valore diverso rispetto a uno che richiede l'auto per raggiungere le piste."
+          "Alla stagionalità si sommano altri fattori: quanto anticipo hai nella prenotazione, quante notti resti (soggiorni più lunghi spuntano spesso condizioni migliori), e la posizione — un appartamento vicino agli impianti, come il nostro a 100 metri dagli impianti di risalita, ha in genere un valore diverso rispetto a uno che richiede l'auto per raggiungere le piste."
         ]
       },
       {
