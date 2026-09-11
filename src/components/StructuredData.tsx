@@ -17,7 +17,6 @@ export default async function StructuredData({ locale }: { locale: Locale }) {
   const hero = await getTranslations({ locale, namespace: 'hero' });
   const faq = await getTranslations({ locale, namespace: 'faq' });
   const amenities = await getTranslations({ locale, namespace: 'amenities' });
-  const reviews = await getTranslations({ locale, namespace: 'reviews' });
   const gallery = await getTranslations({ locale, namespace: 'gallery' });
   const experience = await getTranslations({ locale, namespace: 'experience' });
   const rooms = await getTranslations({ locale, namespace: 'rooms' });
@@ -137,20 +136,14 @@ export default async function StructuredData({ locale }: { locale: Locale }) {
       floorSize: { '@type': 'QuantitativeValue', value: 90, unitCode: 'MTK' }
     },
     knowsLanguage: knownLanguages,
-    // Real, verified rating (Google + Airbnb) as published on
-    // ironwoodlivigno.com/recensioni.html — update this figure if it changes.
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '5.0',
-      bestRating: '5',
-      reviewCount: '28'
-    },
-    review: [1, 2, 3, 4, 5, 6].map((n) => ({
-      '@type': 'Review',
-      reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
-      author: { '@type': 'Person', name: reviews(`author${n}`).split(',')[0].trim() },
-      reviewBody: reviews(`quote${n}`)
-    })),
+    // No `review`/`aggregateRating` here on purpose: Google's structured
+    // data guidelines disallow self-serving review markup (ratings/reviews
+    // about a business, authored or curated by that same business) from
+    // rich-result eligibility. The genuine aggregate ratings already live
+    // on the third-party platforms linked via `sameAs` below (Google Maps,
+    // Airbnb, Holidu) — that's where this data legitimately belongs. The
+    // on-page testimonials in Reviews.tsx are unaffected; a visible
+    // testimonials section is ordinary marketing copy, not schema markup.
     amenityFeature: [
       amenities('g1_1'),
       amenities('g1_2'),
