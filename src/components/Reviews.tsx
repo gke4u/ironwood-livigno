@@ -32,6 +32,32 @@ function linkedAuthor(author: string) {
   );
 }
 
+// Turns every occurrence of a known platform name (Airbnb, Holidu — Google
+// deliberately excluded here since the disclaimer states real verified
+// counts only for the two platforms this can link straight to a review
+// list; the property's Google count isn't independently confirmable from
+// here) inside the disclaimer sentence into a link to that platform's real
+// review page — same PLATFORM_LINKS map as linkedAuthor, so the two stay
+// in sync automatically if a URL ever changes.
+function linkedDisclaimer(text: string) {
+  const pattern = new RegExp(`(${['Airbnb', 'Holidu'].join('|')})`, 'g');
+  return text.split(pattern).map((part, i) =>
+    PLATFORM_LINKS[part] ? (
+      <a
+        key={i}
+        href={PLATFORM_LINKS[part]}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline underline-offset-2 hover:text-gold transition-colors"
+      >
+        {part}
+      </a>
+    ) : (
+      part
+    )
+  );
+}
+
 export default function Reviews() {
   const t = useTranslations('reviews');
 
@@ -89,7 +115,7 @@ export default function Reviews() {
           ))}
         </div>
 
-        <p className="mt-8 text-mist/60 text-xs italic">{t('disclaimer')}</p>
+        <p className="mt-8 text-mist/60 text-xs italic">{linkedDisclaimer(t('disclaimer'))}</p>
       </div>
     </section>
   );
