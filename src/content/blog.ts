@@ -15,6 +15,13 @@
 // of an undifferentiated wall of text).
 export type BlogSection = { heading: string; paragraphs: string[] };
 
+// A short call to action shown in the middle of an article (after roughly
+// half of its sections), for readers who found the post through an
+// informational search and would otherwise only meet the apartment at the
+// very end. Optional: only set on the posts that bring in the most search
+// traffic (see Search Console, Sept 2026).
+export type BlogInlineCta = { text: string; label: string; href: string };
+
 export type BlogPost = {
   slug: string;
   title: string;
@@ -36,6 +43,7 @@ export type BlogPost = {
   // cross-link to the landing pages they support — older posts simply don't
   // set this field and render exactly as before.
   relatedLinks?: { href: string; label: string }[];
+  inlineCta?: BlogInlineCta;
 };
 
 export const postModified = (post: BlogPost): string => post.updated ?? post.date;
@@ -177,10 +185,16 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'cosa-mangiare-a-livigno-piatti-tipici',
-    title: 'Cosa mangiare a Livigno: i piatti tipici della Valtellina',
+    title: "Cosa mangiare a Livigno: piatti tipici e dove provarli",
     description:
-      "Pizzoccheri, sciatt e bresaola: i piatti tipici da provare durante una vacanza a Livigno, tra tradizione contadina e ingredienti di montagna.",
+      "Pizzoccheri, sciatt e bresaola della Valtellina IGP: cosa mangiare a Livigno, come sono fatti i piatti tipici e dove provarli durante la vacanza.",
     date: '2026-08-03',
+    inlineCta: {
+      text:
+        "Cerchi dove dormire a Livigno? Ironwood è un appartamento di 90 m² per fino a 6 ospiti, a 15 minuti a piedi dal centro.",
+      label: "Scopri l'appartamento",
+      href: "/camere-appartamento-livigno"
+    },
     readingTime: '4 min',
     image: { src: '/images/dettaglio-vini.jpg', alt: 'Cantinetta vini in cucina', w: 1333, h: 2000 },
     intro:
@@ -229,10 +243,16 @@ export const blogPosts: BlogPost[] = [
     // conviene comprare a livigno" 32 — all with only 0-1 clicks each,
     // consistent with a truncated/unappealing snippet rather than low
     // relevance).
-    title: 'Shopping duty-free a Livigno: cosa comprare',
+    title: "Cosa comprare a Livigno: guida allo shopping duty-free",
     description:
-      "Livigno è zona franca doganale: alcolici, profumi, elettronica e tabacco a prezzi scontati. Ecco cosa conviene davvero comprare e i limiti di franchigia.",
+      "Cosa conviene comprare a Livigno? Alcolici, tabacco, profumi e cosmetici in zona franca: cosa costa meno, i limiti di franchigia e dove fare shopping.",
     date: '2026-08-03',
+    inlineCta: {
+      text:
+        "Dormi a 15 minuti a piedi dal centro duty-free: un appartamento di 90 m² per fino a 6 ospiti, con sauna e bagno turco privati.",
+      label: "Scopri l'appartamento",
+      href: "/camere-appartamento-livigno"
+    },
     readingTime: '4 min',
     image: {
       src: '/images/livigno-vallata-inverno-bn.jpg',
@@ -327,10 +347,16 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'livigno-estate-10-esperienze-imperdibili',
-    title: "Cosa fare a Livigno d'estate: 10 esperienze imperdibili",
+    title: "Cosa fare a Livigno in estate: 10 esperienze da non perdere",
     description:
-      "Dalla mountain bike al Lago di Livigno, dallo shopping duty-free alla sauna privata: 10 esperienze da non perdere durante una vacanza estiva a Livigno.",
+      "Mountain bike, trekking, Lago di Livigno, canoa e Carosello 3000: 10 cose da fare a Livigno in estate, con qualche consiglio pratico per organizzarti.",
     date: '2026-08-06',
+    inlineCta: {
+      text:
+        "Dopo una giornata tra bike, lago e sentieri: un appartamento con sauna e bagno turco privati, a 15 minuti a piedi dal centro di Livigno.",
+      label: "Scopri l'appartamento",
+      href: "/camere-appartamento-livigno"
+    },
     readingTime: '6 min',
     image: {
       src: '/images/arnica-fiori-alpini-livigno.jpg',

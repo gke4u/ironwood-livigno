@@ -9,9 +9,10 @@
 // Only a subset of BlogPost is here (no slug/date/image — those stay
 // shared with the Italian original in blog.ts, since it's the same trip,
 // same photo, same publish date, just written in another language).
-import type { BlogSection } from './blog';
+import type { BlogSection, BlogInlineCta } from './blog';
 
 export type BlogTranslation = {
+  inlineCta?: BlogInlineCta;
   // Same meaning as BlogPost.updated, but per translation: a fix made to the
   // Italian text only counts for a translation once it is carried over.
   updated?: string;
@@ -667,9 +668,15 @@ export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocal
   },
   'shopping-duty-free-livigno-cosa-comprare': {
     en: {
-      title: "Duty-Free Shopping in Livigno: What's Worth Buying",
+      title: "What to Buy in Livigno: Duty-Free Shopping Guide",
       description:
-        "Livigno is one of the few duty-free zones in Italy: here's what's genuinely worth buying, and the limits you should know before you go.",
+        "What to buy in Livigno's duty-free zone: spirits, tobacco, perfumes and cosmetics, what's genuinely worth it, the allowance limits, and where to shop.",
+      inlineCta: {
+        text:
+          "Stay a 15-minute walk from the duty-free centre: a 90 m² apartment for up to 6 guests with a private sauna and steam bath.",
+        label: "See the apartment",
+        href: "/camere-appartamento-livigno/en"
+      },
       intro:
         "Livigno is one of the few duty-free zones in Italy: because of its isolated position, it has historically been exempt from certain taxes, including VAT on several products. Today this status draws many visitors every year, looking not just for ski slopes but also for a good round of shopping in the town's pedestrian centre.",
       sections: [
@@ -706,9 +713,15 @@ export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocal
       ]
     },
     de: {
-      title: 'Duty-free-Shopping in Livigno: Was sich wirklich lohnt',
+      title: "Livigno zollfrei: Shopping-Tipps und was sich lohnt",
       description:
-        'Livigno ist eine der wenigen zollfreien Zonen Italiens: Was sich wirklich zu kaufen lohnt und welche Freigrenzen Sie vor der Abreise kennen sollten.',
+        "Livigno zollfrei: Shopping-Tipps zu Spirituosen, Tabak, Parfüm und Kosmetik, was sich wirklich lohnt, die Freigrenzen und wo man am besten einkauft.",
+      inlineCta: {
+        text:
+          "Wohnen Sie 15 Gehminuten vom zollfreien Zentrum entfernt: ein 90-m²-Apartment für bis zu 6 Gäste mit privater Sauna und privatem Dampfbad.",
+        label: "Apartment ansehen",
+        href: "/camere-appartamento-livigno/de"
+      },
       intro:
         'Livigno ist eine der wenigen zollfreien Zonen Italiens: Wegen seiner isolierten Lage war der Ort historisch von bestimmten Steuern befreit, darunter die Mehrwertsteuer auf mehrere Produkte. Dieser Status zieht heute jedes Jahr viele Besucher an, die nicht nur die Skipisten suchen, sondern auch eine ausgiebige Shoppingrunde im Fußgängerzentrum des Ortes.',
       sections: [

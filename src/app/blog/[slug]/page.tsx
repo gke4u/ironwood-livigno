@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { Fragment } from 'react';
 import { notFound } from 'next/navigation';
 import { blogPosts, postModified } from '@/content/blog';
 import { organizationRef } from '@/lib/structuredDataIds';
 import { blogTranslations, translatedBlogLocales } from '@/content/blogTranslations';
-import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
+import { BlogHeader, BlogFooter, BlogWhatsAppCta, InlineApartmentCta } from '@/components/BlogChrome';
 import Pic from '@/components/Pic';
 import { renderInlineLinks } from '@/lib/renderInlineLinks';
 import { buildTitle } from '@/lib/buildTitle';
@@ -152,14 +153,19 @@ export default async function BlogArticle({ params }: { params: Params }) {
             <div className="max-w-3xl space-y-5">
               <p className="text-ink/75 text-base md:text-lg leading-relaxed">{renderInlineLinks(post.intro)}</p>
               {post.sections.map((section, i) => (
-                <div key={i} className="pt-3">
-                  <h2 className="font-display text-xl md:text-2xl text-ink mb-3">{section.heading}</h2>
-                  {section.paragraphs.map((para, j) => (
-                    <p key={j} className="text-ink/75 text-base md:text-lg leading-relaxed mb-4 last:mb-0">
-                      {renderInlineLinks(para)}
-                    </p>
-                  ))}
-                </div>
+                <Fragment key={i}>
+                  <div className="pt-3">
+                    <h2 className="font-display text-xl md:text-2xl text-ink mb-3">{section.heading}</h2>
+                    {section.paragraphs.map((para, j) => (
+                      <p key={j} className="text-ink/75 text-base md:text-lg leading-relaxed mb-4 last:mb-0">
+                        {renderInlineLinks(para)}
+                      </p>
+                    ))}
+                  </div>
+                  {post.inlineCta && i === Math.floor((post.sections.length - 1) / 2) && (
+                    <InlineApartmentCta {...post.inlineCta} />
+                  )}
+                </Fragment>
               ))}
             </div>
 

@@ -47,6 +47,24 @@ export function BlogHeader() {
 // Fixed WhatsApp CTA for pages outside the [locale] tree — same look as
 // StickyWhatsApp.tsx but with hardcoded Italian strings instead of
 // useTranslations, since there's no NextIntlClientProvider out here.
+// Mid-article call to action (see BlogInlineCta in src/content/blog.ts):
+// shown after roughly half of the sections on the posts that bring in the
+// most search traffic, so readers who arrived through an informational
+// query meet the apartment before the end of the article, not only after it.
+export function InlineApartmentCta({ text, label, href }: { text: string; label: string; href: string }) {
+  return (
+    <aside className="my-8 p-6 md:p-7 bg-white rounded-2xl shadow-soft flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <p className="text-ink text-base md:text-lg leading-snug">{text}</p>
+      <Link
+        href={href}
+        className="bg-brick text-mist rounded-full px-6 py-3 font-medium hover:bg-brick/90 transition-colors whitespace-nowrap"
+      >
+        {label}
+      </Link>
+    </aside>
+  );
+}
+
 export function BlogWhatsAppCta() {
   return (
     <a
