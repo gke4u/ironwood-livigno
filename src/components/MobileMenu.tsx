@@ -2,8 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
-import { getSatellitePages } from '@/data/satellite-pages';
-import type { Locale } from '@/i18n/routing';
+import type { SatellitePage } from '@/data/satellite-pages';
 
 // The desktop nav links (Esperienza, Camere, Posizione, Blog, Contatti,
 // Richiedi info) are hidden below the `lg` breakpoint with no fallback,
@@ -13,11 +12,11 @@ import type { Locale } from '@/i18n/routing';
 export default function MobileMenu({
   home,
   contactHref,
-  locale
+  satellitePages
 }: {
   home: string;
   contactHref: string;
-  locale: Locale;
+  satellitePages: SatellitePage[];
 }) {
   const t = useTranslations('nav');
   const [open, setOpen] = useState(false);
@@ -110,7 +109,7 @@ export default function MobileMenu({
             </a>
           ))}
           <p className="px-6 pt-3 pb-1 text-[11px] uppercase tracking-widest text-ink/65">{t('discover')}</p>
-          {getSatellitePages(locale).map((link) => (
+          {satellitePages.map((link) => (
             <a
               key={link.href}
               href={link.href}

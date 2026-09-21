@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import type { Locale } from '@/i18n/routing';
 import { privacyContent } from '@/content/privacy';
 import Nav from '@/components/Nav';
+import { getSatellitePages } from '@/data/satellite-pages';
 import Footer from '@/components/Footer';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
@@ -36,7 +37,7 @@ export default async function PrivacyPage({ params }: { params: Params }) {
   return (
     <main className="bg-mist min-h-screen">
       <div className="pt-32 pb-8 bg-ink">
-        <Nav locale={locale} />
+        <Nav locale={locale} satellitePages={getSatellitePages(locale)} />
       </div>
       <div className="max-w-content mx-auto px-6 md:px-10 py-16 md:py-20">
         <a href={`/${locale}`} className="text-brick text-sm font-medium hover:underline">

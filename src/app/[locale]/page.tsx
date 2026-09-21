@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import type { Locale } from '@/i18n/routing';
 import Nav from '@/components/Nav';
+import { getSatellitePages } from '@/data/satellite-pages';
 import Hero from '@/components/Hero';
 import WeatherSection from '@/components/WeatherSection';
 import Experience from '@/components/Experience';
@@ -38,7 +39,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
       </a>
       <main id="contenuto">
       <StructuredData locale={locale} />
-      <Nav locale={locale} />
+      <Nav locale={locale} satellitePages={getSatellitePages(locale)} />
       <Hero />
       <WeatherSection />
       <Gallery />

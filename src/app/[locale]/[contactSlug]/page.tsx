@@ -3,6 +3,7 @@ import { setRequestLocale, getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
 import { locales, contactSlugs, type Locale } from '@/i18n/routing';
 import Nav from '@/components/Nav';
+import { getSatellitePages } from '@/data/satellite-pages';
 import Footer from '@/components/Footer';
 import Reveal from '@/components/Reveal';
 import RequestForm from '@/components/RequestForm';
@@ -151,7 +152,7 @@ export default async function ContactPage({ params }: { params: Params }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }} />
       <div className="pt-32 pb-16 md:pb-20 bg-ink">
-        <Nav locale={locale} />
+        <Nav locale={locale} satellitePages={getSatellitePages(locale)} />
         <div className="max-w-content mx-auto px-6 md:px-10">
           <p className="text-gold tracking-[0.2em] uppercase text-xs md:text-sm mb-4">{t('eyebrow')}</p>
           <h1 className="font-display text-3xl md:text-5xl text-mist mb-5 leading-tight max-w-2xl">

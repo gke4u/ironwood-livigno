@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { contactSlugs, type Locale } from '@/i18n/routing';
-import { getSatellitePages } from '@/data/satellite-pages';
+import type { SatellitePage } from '@/data/satellite-pages';
 import LangSwitcher from './LangSwitcher';
 import MobileMenu from './MobileMenu';
 import Logo from './Logo';
@@ -19,7 +19,13 @@ const SECTION_IDS = ['esperienza', 'camere', 'posizione', 'prenota'];
 // scrolled past, so text/links stay readable over any background below.
 // `top` reads the --banner-h CSS var (set by LangSuggestBanner.tsx) so the
 // header sits below the language banner instead of underneath it.
-export default function Nav({ locale }: { locale: Locale }) {
+// The satellite-page list is resolved by the (server) page and passed in as
+// a prop instead of calling getSatellitePages() here: that function imports
+// landingPageTranslations (~330 KB of translated page copy for every locale),
+// and this is a client component, so importing it put all of that text into
+// the JS bundle of every page that shows the nav — ~100 KB gzipped of
+// unrelated data on the homepage. Only the 7 resolved links are needed.
+export default function Nav({ locale, satellitePages }: { locale: Locale; satellitePages: SatellitePage[] }) {
   const t = useTranslations('nav');
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState<string | null>(null);
@@ -112,7 +118,7 @@ export default function Nav({ locale }: { locale: Locale }) {
             </button>
             <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 hidden group-hover:block group-focus-within:block">
               <div className="w-56 rounded-xl bg-mist text-ink shadow-soft overflow-hidden py-2">
-                {getSatellitePages(locale).map((p) => (
+                {satellitePages.map((p) => (
                   <a
                     key={p.href}
                     href={p.href}
@@ -140,7 +146,7 @@ export default function Nav({ locale }: { locale: Locale }) {
         </nav>
         <div className="flex items-center gap-3">
           <LangSwitcher current={locale} />
-          <MobileMenu home={home} contactHref={contactHref} locale={locale} />
+          <MobileMenu home={home} contactHref={contactHref} satellitePages={satellitePages} />
         </div>
       </div>
     </header>

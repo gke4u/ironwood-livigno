@@ -24,7 +24,9 @@ const IT_PAGES = [
 // renamed, or removed and only one of the two gets updated.
 export const satelliteSlugs = IT_PAGES.map(({ href }) => href.slice(1));
 
-export function getSatellitePages(locale: Locale): { href: string; label: string }[] {
+export type SatellitePage = { href: string; label: string };
+
+export function getSatellitePages(locale: Locale): SatellitePage[] {
   if (locale === 'it') return IT_PAGES;
 
   return IT_PAGES.map(({ href, label }) => {
