@@ -18,6 +18,20 @@ Inviate via SMTP mailbox.org (login `info@guanafoto.com`, alias mittente `info@i
 
 **Prossimo passo**: aspettare 2-4 settimane per una risposta (stima realistica secondo il documento). Se non arriva risposta entro 3-4 settimane, valutare un follow-up singolo (non un secondo invio identico).
 
+### 2026-09-21 — Follow-up singolo (APT, ATC, Valtellina.it)
+
+Bozze preparate (una per destinatario, in risposta al thread del 1° settembre, tono breve, stesse chiavi del template 5.1: segnalazione nella sezione "dove dormire" per APT, iscrizione/requisiti per ATC, sezione alloggi o modulo di segnalazione per Valtellina.it). Invio a cura di Francesco dalla casella di info@ironwoodlivigno.com, dopo aver verificato che nessuno dei tre avesse già risposto.
+
+**Stato: bozze pronte, invio non ancora confermato.** Da completare qui sotto con la data di invio effettiva e l'esito.
+
+| Destinatario | Email | Data invio | Esito |
+|---|---|---|---|
+| APT Livigno | info@livigno.eu | | |
+| ATC Livigno | info@atclivigno.it | | |
+| Valtellina.it | info@valtellina.it | | |
+
+Dopo questo follow-up non ne servono altri per questi tre enti: passare alle priorità medie (scuole sci e attività locali) e ricontrollare le risposte tra 2-3 settimane.
+
 ## Da fare (secondo il piano)
 
 - Settimana 2-3: scuole sci e attività locali (Scuola Sci Centrale Livigno, Livigno Ski School, Ski Planet Livigno) — priorità media
