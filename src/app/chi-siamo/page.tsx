@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { orgId, websiteId } from '@/lib/structuredDataIds';
 import { landingPages } from '@/content/landingPages';
 import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
 import LandingPageBody from '@/components/LandingPageBody';
@@ -52,13 +53,13 @@ export default function ChiSiamoPage() {
     description: page.metaDescription,
     url,
     inLanguage: 'it',
-    isPartOf: { '@type': 'WebSite', name: 'Ironwood Livigno', url: siteUrl },
-    about: { '@type': 'LodgingBusiness', name: 'Ironwood Livigno', url: `${siteUrl}/it` },
+    isPartOf: { '@type': 'WebSite', '@id': websiteId(siteUrl), name: 'Ironwood Livigno', url: siteUrl },
+    about: { '@type': 'LodgingBusiness', '@id': orgId(siteUrl), name: 'Ironwood Livigno', url: `${siteUrl}/it` },
     mainEntity: {
       '@type': 'Person',
       name: 'Francesco',
       jobTitle: 'Host e proprietario',
-      worksFor: { '@type': 'LodgingBusiness', name: 'Ironwood Livigno', url: `${siteUrl}/it` },
+      worksFor: { '@type': 'LodgingBusiness', '@id': orgId(siteUrl), name: 'Ironwood Livigno', url: `${siteUrl}/it` },
       homeLocation: {
         '@type': 'Place',
         address: { '@type': 'PostalAddress', addressLocality: 'Livigno', addressRegion: 'SO', addressCountry: 'IT' }

@@ -2,6 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import { locales, type Locale } from '@/i18n/routing';
 import { rates, CURRENCY } from '@/data/rates';
 import { galleryImages } from '@/data/gallery-images';
+import { orgId, websiteId, organizationRef } from '@/lib/structuredDataIds';
 
 // Every language the site actually publishes content in (see
 // messages/*.json) — was hardcoded to just ['it', 'en'], understating the
@@ -46,9 +47,14 @@ export default async function StructuredData({ locale }: { locale: Locale }) {
   const lodgingBusiness = {
     '@context': 'https://schema.org',
     '@type': 'LodgingBusiness',
+    // Same @id as the publisher/author Organization on blog posts (see
+    // src/lib/structuredDataIds.ts): LodgingBusiness is a subtype of
+    // Organization, so this is the one node that describes the business.
+    '@id': orgId(siteUrl),
     name: 'Ironwood Livigno',
     description: hero('meta_description'),
     url: `${siteUrl}/${locale}`,
+    logo: organizationRef(siteUrl).logo,
     image: propertyImages,
     telephone: '+39 0342 929285',
     email: 'info@ironwoodlivigno.com',
@@ -175,10 +181,11 @@ export default async function StructuredData({ locale }: { locale: Locale }) {
   const webSite = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': websiteId(siteUrl),
     name: 'Ironwood Livigno',
     url: siteUrl,
     inLanguage: locale,
-    publisher: { '@type': 'Organization', name: 'Ironwood Livigno', url: siteUrl }
+    publisher: { '@id': orgId(siteUrl) }
   };
 
   const faqPage = {

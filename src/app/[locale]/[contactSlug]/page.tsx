@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
+import { orgId, websiteId } from '@/lib/structuredDataIds';
 import { locales, contactSlugs, type Locale } from '@/i18n/routing';
 import Nav from '@/components/Nav';
 import { getSatellitePages } from '@/data/satellite-pages';
@@ -143,8 +144,8 @@ export default async function ContactPage({ params }: { params: Params }) {
     description: t('meta_description'),
     url,
     inLanguage: locale,
-    isPartOf: { '@type': 'WebSite', name: 'Ironwood Livigno', url: siteUrl },
-    about: { '@type': 'LodgingBusiness', name: 'Ironwood Livigno', url: `${siteUrl}/it` }
+    isPartOf: { '@type': 'WebSite', '@id': websiteId(siteUrl), name: 'Ironwood Livigno', url: siteUrl },
+    about: { '@type': 'LodgingBusiness', '@id': orgId(siteUrl), name: 'Ironwood Livigno', url: `${siteUrl}/it` }
   };
 
   return (

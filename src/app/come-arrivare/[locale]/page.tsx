@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { orgId, websiteId } from '@/lib/structuredDataIds';
 import { notFound } from 'next/navigation';
 import { landingPages } from '@/content/landingPages';
 import {
@@ -107,8 +108,8 @@ export default async function TranslatedLandingPage({ params }: { params: Params
     description: translation.metaDescription,
     url,
     inLanguage: data.locale,
-    isPartOf: { '@type': 'WebSite', name: 'Ironwood Livigno', url: siteUrl },
-    about: { '@type': 'LodgingBusiness', name: 'Ironwood Livigno', url: `${siteUrl}/${data.locale}` },
+    isPartOf: { '@type': 'WebSite', '@id': websiteId(siteUrl), name: 'Ironwood Livigno', url: siteUrl },
+    about: { '@type': 'LodgingBusiness', '@id': orgId(siteUrl), name: 'Ironwood Livigno', url: `${siteUrl}/${data.locale}` },
     translationOfWork: { '@type': 'WebPage', url: `${siteUrl}/${SLUG}` }
   };
 

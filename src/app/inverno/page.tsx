@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { orgId, websiteId } from '@/lib/structuredDataIds';
 import { landingPages } from '@/content/landingPages';
 import { buildTitle } from '@/lib/buildTitle';
 import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
@@ -46,8 +47,8 @@ export default function InvernoPage() {
     description: page.metaDescription,
     url,
     inLanguage: 'it',
-    isPartOf: { '@type': 'WebSite', name: 'Ironwood Livigno', url: siteUrl },
-    about: { '@type': 'LodgingBusiness', name: 'Ironwood Livigno', url: `${siteUrl}/it` }
+    isPartOf: { '@type': 'WebSite', '@id': websiteId(siteUrl), name: 'Ironwood Livigno', url: siteUrl },
+    about: { '@type': 'LodgingBusiness', '@id': orgId(siteUrl), name: 'Ironwood Livigno', url: `${siteUrl}/it` }
   };
 
   const faqPageLd = page.faq
