@@ -19,7 +19,13 @@ export type BlogPost = {
   slug: string;
   title: string;
   description: string;
-  date: string; // ISO
+  date: string; // ISO — publication date (datePublished)
+  // Date of the last *substantive* change (facts corrected, sections added or
+  // rewritten) — becomes dateModified and the sitemap <lastmod>. Deliberately
+  // NOT bumped for cosmetic edits (title/description trimming, retargeting an
+  // internal link): Google asks dateModified to reflect significant updates.
+  // Leave unset when the post hasn't changed since publication.
+  updated?: string; // ISO
   readingTime: string;
   image: { src: string; alt: string; w: number; h: number };
   intro: string;
@@ -31,6 +37,8 @@ export type BlogPost = {
   // set this field and render exactly as before.
   relatedLinks?: { href: string; label: string }[];
 };
+
+export const postModified = (post: BlogPost): string => post.updated ?? post.date;
 
 export const blogPosts: BlogPost[] = [
   {
@@ -82,6 +90,7 @@ export const blogPosts: BlogPost[] = [
     description:
       'Cosa sapere sul comprensorio sciistico di Livigno, il versante Carosello 3000 e come organizzare le giornate sulla neve.',
     date: '2026-08-03',
+    updated: '2026-09-01',
     readingTime: '4 min',
     image: { src: '/images/sci-fondo-centro-livigno.jpg', alt: 'Sci di fondo nel centro di Livigno', w: 1600, h: 1382 },
     intro:
@@ -603,6 +612,7 @@ export const blogPosts: BlogPost[] = [
     description:
       'Le differenze tra i due comprensori sciistici di Livigno — piste, atmosfera e a chi conviene ciascuno.',
     date: '2026-08-06',
+    updated: '2026-09-11',
     readingTime: '5 min',
     image: {
       src: '/images/livigno-ghiaccioli-vista-vallata.jpg',
@@ -650,6 +660,7 @@ export const blogPosts: BlogPost[] = [
     description:
       "Cosa fa salire o scendere il prezzo di un soggiorno a Livigno stagione per stagione, e come muoverti per trovare il periodo giusto in base al budget.",
     date: '2026-08-09',
+    updated: '2026-09-11',
     readingTime: '4 min',
     image: { src: '/images/livigno-notte-neve-luci.jpg', alt: 'Livigno di notte, con le luci del paese sulla neve', w: 1400, h: 1594 },
     intro:

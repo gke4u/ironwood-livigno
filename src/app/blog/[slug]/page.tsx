@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { blogPosts } from '@/content/blog';
+import { blogPosts, postModified } from '@/content/blog';
+import { organizationRef } from '@/lib/structuredDataIds';
 import { blogTranslations, translatedBlogLocales } from '@/content/blogTranslations';
 import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
 import Pic from '@/components/Pic';
@@ -63,16 +64,12 @@ export default async function BlogArticle({ params }: { params: Params }) {
     description: post.description,
     image: `${siteUrl}${post.image.src}`,
     datePublished: post.date,
-    dateModified: post.date,
+    dateModified: postModified(post),
     inLanguage: 'it',
     mainEntityOfPage: `${siteUrl}/blog/${post.slug}`,
     articleSection: post.sections.map((s) => s.heading),
-    author: { '@type': 'Organization', name: 'Ironwood Livigno' },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Ironwood Livigno',
-      logo: { '@type': 'ImageObject', url: `${siteUrl}/apple-touch-icon.png` }
-    }
+    author: organizationRef(siteUrl),
+    publisher: organizationRef(siteUrl)
   };
 
   const breadcrumbLd = {

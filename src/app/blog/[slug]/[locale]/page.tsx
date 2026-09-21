@@ -7,6 +7,7 @@ import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome
 import Pic from '@/components/Pic';
 import { renderInlineLinks } from '@/lib/renderInlineLinks';
 import { buildTitle } from '@/lib/buildTitle';
+import { organizationRef } from '@/lib/structuredDataIds';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
 
@@ -111,16 +112,12 @@ export default async function TranslatedBlogArticle({ params }: { params: Params
     description: translation.description,
     image: `${siteUrl}${post.image.src}`,
     datePublished: post.date,
-    dateModified: post.date,
+    dateModified: translation.updated ?? post.date,
     inLanguage: data.locale,
     mainEntityOfPage: `${siteUrl}/blog/${post.slug}/${data.locale}`,
     articleSection: translation.sections.map((s) => s.heading),
-    author: { '@type': 'Organization', name: 'Ironwood Livigno' },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Ironwood Livigno',
-      logo: { '@type': 'ImageObject', url: `${siteUrl}/apple-touch-icon.png` }
-    },
+    author: organizationRef(siteUrl),
+    publisher: organizationRef(siteUrl),
     // Points back at the Italian original this translation is derived
     // from — accurate (it is a translation, not an independent piece) and
     // avoids any appearance of duplicate/unattributed content.

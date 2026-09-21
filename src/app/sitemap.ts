@@ -6,7 +6,7 @@ import { locales, contactSlugs } from '@/i18n/routing';
 // /sitemap.xml" — sitemap.ts compiles to a route handler, and static
 // export needs it explicitly marked static rather than inferring it.
 export const dynamic = 'force-static';
-import { blogPosts } from '@/content/blog';
+import { blogPosts, postModified } from '@/content/blog';
 import { blogTranslations, translatedBlogLocales } from '@/content/blogTranslations';
 import { landingPageTranslations, translatedLandingLocales } from '@/content/landingPageTranslations';
 import { satelliteSlugs } from '@/data/satellite-pages';
@@ -123,7 +123,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // 3. Blog index
   entries.push({
     url: `${siteUrl}/blog`,
-    lastModified: new Date(Math.max(...blogPosts.map((p) => new Date(p.date).getTime()))),
+    lastModified: new Date(Math.max(...blogPosts.map((p) => new Date(postModified(p)).getTime()))),
     changeFrequency: 'monthly',
     priority: 0.6
   });
@@ -140,7 +140,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     entries.push({
       url: itUrl,
-      lastModified: post.date,
+      lastModified: postModified(post),
       changeFrequency: 'monthly',
       priority: 0.6,
       alternates: { languages },
@@ -151,7 +151,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       if (!translations[l]) return;
       entries.push({
         url: `${siteUrl}/blog/${post.slug}/${l}`,
-        lastModified: post.date,
+        lastModified: translations[l]?.updated ?? post.date,
         changeFrequency: 'monthly',
         priority: 0.5,
         alternates: { languages },

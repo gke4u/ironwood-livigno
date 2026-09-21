@@ -12,6 +12,9 @@
 import type { BlogSection } from './blog';
 
 export type BlogTranslation = {
+  // Same meaning as BlogPost.updated, but per translation: a fix made to the
+  // Italian text only counts for a translation once it is carried over.
+  updated?: string;
   title: string;
   description: string;
   intro: string;
@@ -308,6 +311,7 @@ export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocal
   },
   'carosello-3000-vs-mottolino-quale-scegliere': {
     en: {
+      updated: '2026-09-11',
       title: 'Carosello 3000 vs Mottolino: Which Ski Area to Choose',
       description:
         "The differences between Livigno's two ski areas — slopes, atmosphere and who each one suits best — and why where you stay matters more than which side you pick.",
@@ -341,6 +345,7 @@ export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocal
       ]
     },
     de: {
+      updated: '2026-09-11',
       title: 'Carosello 3000 oder Mottolino: Welches Skigebiet wählen',
       description:
         'Die Unterschiede zwischen den beiden Skigebieten von Livigno – Pisten, Atmosphäre und wem welches Gebiet am besten passt.',
