@@ -10,6 +10,7 @@ import { blogPosts } from '@/content/blog';
 import { blogTranslations, translatedBlogLocales } from '@/content/blogTranslations';
 import { landingPageTranslations, translatedLandingLocales } from '@/content/landingPageTranslations';
 import { satelliteSlugs } from '@/data/satellite-pages';
+import { contentLastModified } from '@/lib/lastModified';
 
 // Generated automatically at build time from the site's own content
 // (blogPosts, blogTranslations, routing locales) instead of the old
@@ -82,7 +83,6 @@ const homePriority: Record<string, number> = {
 };
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const now = new Date();
   const entries: MetadataRoute.Sitemap = [];
 
   // 1. Locale homepages
@@ -95,7 +95,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   locales.forEach((locale) => {
     entries.push({
       url: `${siteUrl}/${locale}`,
-      lastModified: now,
+      lastModified: contentLastModified(`messages/${locale}.json`),
       changeFrequency: 'weekly',
       priority: homePriority[locale] ?? 0.7,
       alternates: { languages: homeLanguages },
@@ -113,7 +113,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   locales.forEach((locale) => {
     entries.push({
       url: `${siteUrl}/${locale}/${contactSlugs[locale]}`,
-      lastModified: now,
+      lastModified: contentLastModified(`messages/${locale}.json`),
       changeFrequency: 'monthly',
       priority: 0.6,
       alternates: { languages: contactLanguages }
@@ -123,7 +123,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // 3. Blog index
   entries.push({
     url: `${siteUrl}/blog`,
-    lastModified: now,
+    lastModified: new Date(Math.max(...blogPosts.map((p) => new Date(p.date).getTime()))),
     changeFrequency: 'monthly',
     priority: 0.6
   });
@@ -173,7 +173,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     entries.push({
       url: itUrl,
-      lastModified: now,
+      lastModified: contentLastModified('src/content/landingPages.ts', `src/app/${path}/page.tsx`),
       changeFrequency,
       priority,
       alternates: { languages },
@@ -184,7 +184,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       if (!translations[l]) return;
       entries.push({
         url: `${siteUrl}/${path}/${l}`,
-        lastModified: now,
+        lastModified: contentLastModified('src/content/landingPageTranslations.ts', `src/app/${path}/[locale]/page.tsx`),
         changeFrequency,
         priority: Math.max(priority - 0.1, 0.1),
         alternates: { languages },
