@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { defaultLocale } from '@/i18n/routing';
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
+
 // Real title/description, matching the /it homepage (messages/it.json
 // seo_title/seo_description) — even with the canonical below pointing at
 // /it, Google was observed (GSC Performance, Sept 2026) still ranking this
@@ -23,13 +25,21 @@ export const metadata: Metadata = {
 // crawlers/no-JS visitors (fires with zero delay) and a JS replace() as a
 // fast path for everyone else. Search engines follow meta-refresh-0 exactly
 // like a redirect.
+//
+// The canonical must be an absolute URL: a relative href="/it" is valid
+// HTML but Google's documentation recommends absolute canonicals, since a
+// relative one is resolved against whatever URL the crawler happened to
+// fetch (including http:// or www. variants). The real 301 for "/" lives in
+// public/_redirects (see the note there); this page is the fallback for
+// when that rule isn't applied.
 export default function RootPage() {
   const target = `/${defaultLocale}`;
+  const canonical = `${siteUrl}${target}`;
   return (
     <html lang={defaultLocale}>
       <head>
         <meta httpEquiv="refresh" content={`0; url=${target}`} />
-        <link rel="canonical" href={target} />
+        <link rel="canonical" href={canonical} />
       </head>
       <body>
         <script

@@ -17,6 +17,14 @@
 # old URL's standing to the new destination.
 # Note: static files always win over redirects on Cloudflare, so these
 # only fire for URLs that no longer exist.
+
+# The bare root. Static export can only ship a meta-refresh page at "/"
+# (src/app/page.tsx), which Google treats as a soft redirect and was still
+# surfacing as its own result (see the note in that file). A real 301 lets
+# it consolidate onto /it. If Cloudflare serves the static index.html
+# before evaluating this rule it's simply a no-op and the meta-refresh page
+# keeps working as before — verify after deploy with: curl -I https://ironwoodlivigno.com/
+/ /it 301
 /index.html /it 301
 /appartamento.html /it#camere 301
 /dove-siamo.html /it#posizione 301
