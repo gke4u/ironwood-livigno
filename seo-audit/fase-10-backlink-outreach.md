@@ -38,3 +38,7 @@ Dopo questo follow-up non ne servono altri per questi tre enti: passare alle pri
 - Settimana 3-4: verificare/completare profili Booking/Airbnb/Vrbo e directory (Yably, BluePillow)
 - Dal mese 2: 1-2 blog di viaggio al mese (Viaggi...Alla fine del mondo, Innamorati in Viaggio, Eli Loves Travelling, Travel with the Wind)
 - Agenzie/tour operator (sezione 7 del documento): SkiLivigno Tours e LivignoSkiHolidays.com come primo test
+
+## 2026-09-30 — Priorità media preparata
+
+Email pronte per 5 scuole sci e noleggi di Via Saroch e dintorni, con contatti verificati sui siti ufficiali: vedi `fase-11-outreach-scuole-sci.md`. Da inviare dalla casella info@ironwoodlivigno.com (metà ottobre), meglio dopo una visita di persona.
