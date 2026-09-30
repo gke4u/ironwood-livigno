@@ -26,7 +26,7 @@ export function adminPage(): string {
   button.danger { background:transparent; color:#a33; border:1px solid #e3b5b5; padding:6px 14px; min-height:36px; font-weight:500; }
   button:disabled { opacity:.5; cursor:default; }
   input[type=password] { font:inherit; width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:12px; margin-bottom:12px; }
-  .drop { border:2px dashed var(--line); border-radius:16px; padding:32px 16px; text-align:center; cursor:pointer; transition:.2s; }
+  .drop { display:block; border:2px dashed var(--line); border-radius:16px; padding:32px 16px; text-align:center; cursor:pointer; transition:.2s; }
   .drop.over { border-color:var(--brick); background:#fbf6f2; }
   .drop strong { display:block; margin-bottom:6px; }
   #progress { margin-top:14px; font-size:14px; }
@@ -35,7 +35,7 @@ export function adminPage(): string {
   .ph { background:#fff; border:1px solid var(--line); border-radius:14px; overflow:hidden; display:flex; flex-direction:column; }
   .ph img { width:100%; aspect-ratio:3/2; object-fit:cover; display:block; background:#eee; }
   .ph .meta { padding:10px 12px; font-size:13px; flex:1; display:flex; flex-direction:column; gap:8px; }
-  .badge { display:inline-block; font-size:12px; font-weight:600; padding:3px 9px; border-radius:999px; background:var(--ok); color:#fff; }
+  .badge { align-self:flex-start; display:inline-block; font-size:12px; font-weight:600; padding:3px 9px; border-radius:999px; background:var(--ok); color:#fff; }
   .badge.tomorrow { background:#b08a2e; }
   .muted { color:#6b625b; }
   .error { color:#a33; }

@@ -31,7 +31,7 @@ export default function DailyPhotoDate() {
   return (
     <time
       dateTime={date.iso}
-      className="absolute left-4 bottom-4 md:left-6 md:bottom-6 bg-ink/75 text-mist text-sm md:text-base font-medium rounded-full px-4 py-2 backdrop-blur-sm"
+      className="absolute left-4 top-4 md:left-6 md:top-6 bg-ink/75 text-mist text-sm md:text-base font-medium rounded-full px-4 py-2 backdrop-blur-sm"
     >
       {date.label}
     </time>
