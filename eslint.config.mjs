@@ -12,7 +12,7 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
   {
-    ignores: ['out/**', '.next/**', 'forms-worker/**', 'graphify-out/**', 'seo-audit/**']
+    ignores: ['out/**', '.next/**', 'graphify-out/**', 'seo-audit/**']
   }
 ];
 

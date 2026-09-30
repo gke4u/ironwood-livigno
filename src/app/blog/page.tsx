@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { blogPosts } from '@/content/blog';
+import { blogPosts, postModified } from '@/content/blog';
+import { organizationRef, websiteId } from '@/lib/structuredDataIds';
 import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
 import Pic from '@/components/Pic';
 
@@ -36,10 +37,34 @@ export default function BlogIndex() {
     ]
   };
 
+  // Tells search engines and AI assistants this page is the index of a
+  // blog and which articles belong to it (each linked to its own page).
+  const blogLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    '@id': `${siteUrl}/blog#blog`,
+    name: 'Guida a Livigno',
+    description: metadata.description,
+    url: `${siteUrl}/blog`,
+    inLanguage: 'it',
+    isPartOf: { '@id': websiteId(siteUrl) },
+    publisher: organizationRef(siteUrl),
+    blogPost: blogPosts.map((post) => ({
+      '@type': 'BlogPosting',
+      headline: post.title,
+      description: post.description,
+      url: `${siteUrl}/blog/${post.slug}`,
+      datePublished: post.date,
+      dateModified: postModified(post),
+      image: `${siteUrl}${post.image.src}`
+    }))
+  };
+
   return (
     <html lang="it">
       <body style={{ margin: 0 }}>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogLd) }} />
         <BlogHeader />
         <main className="bg-mist min-h-screen">
           <div className="max-w-content mx-auto px-6 md:px-10 py-16 md:py-24">

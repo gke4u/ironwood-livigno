@@ -150,7 +150,12 @@ export default async function StructuredData({ locale }: { locale: Locale }) {
     // Airbnb, Holidu) — that's where this data legitimately belongs. The
     // on-page testimonials in Reviews.tsx are unaffected; a visible
     // testimonials section is ordinary marketing copy, not schema markup.
+    // The private sauna and steam room are the property's main selling
+    // point but live in the `experience` section, not the amenities grid —
+    // listed first so engines quoting amenities don't miss them.
     amenityFeature: [
+      experience('point_1_title'),
+      experience('point_2_title'),
       amenities('g1_1'),
       amenities('g1_2'),
       amenities('g1_3'),

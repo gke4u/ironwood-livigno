@@ -16,6 +16,9 @@ Allow: /
 User-agent: Claude-User
 Allow: /
 
+User-agent: Claude-SearchBot
+Allow: /
+
 User-agent: anthropic-ai
 Allow: /
 
@@ -44,6 +47,18 @@ User-agent: Amazonbot
 Allow: /
 
 User-agent: cohere-ai
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+User-agent: Meta-ExternalFetcher
 Allow: /
 
 Sitemap: https://ironwoodlivigno.com/sitemap.xml
