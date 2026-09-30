@@ -3,18 +3,24 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 
-// Mobile hamburger menu for BlogHeader (satellite/blog pages, Italian-only,
-// no next-intl provider available out here — see BlogChrome.tsx). Mirrors
-// MobileMenu.tsx (used by the main [locale] Nav) so mobile visitors get the
-// same interaction pattern everywhere on the site, just with the smaller,
-// hardcoded link set these pages actually have.
-const LINKS = [
-  { href: '/it', label: 'Home' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/it/contatti', label: 'Contatti' }
-];
+// Mobile hamburger menu for BlogHeader (satellite/blog pages, no next-intl
+// provider available out here — see BlogChrome.tsx, which passes the
+// already-translated links and labels in). Mirrors MobileMenu.tsx (used by
+// the main [locale] Nav) so mobile visitors get the same interaction
+// pattern everywhere on the site.
+type MenuLink = { href: string; label: string };
 
-export default function BlogMobileMenu() {
+export default function BlogMobileMenu({
+  links,
+  book,
+  openLabel,
+  closeLabel
+}: {
+  links: MenuLink[];
+  book: MenuLink;
+  openLabel: string;
+  closeLabel: string;
+}) {
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -70,7 +76,7 @@ export default function BlogMobileMenu() {
         ref={toggleRef}
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        aria-label={open ? 'Chiudi menu' : 'Apri menu'}
+        aria-label={open ? closeLabel : openLabel}
         className="flex items-center justify-center w-11 h-11 rounded-full bg-ink text-mist border border-cream/70 hover:bg-ink/90 hover:border-cream transition-colors shadow-soft"
       >
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
@@ -80,7 +86,7 @@ export default function BlogMobileMenu() {
 
       {open && (
         <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-mist text-ink shadow-soft overflow-hidden z-50">
-          {LINKS.map((link) => (
+          {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -91,11 +97,11 @@ export default function BlogMobileMenu() {
             </Link>
           ))}
           <Link
-            href="/it#prenota"
+            href={book.href}
             onClick={close}
             className="block px-6 py-4 min-h-[44px] text-sm uppercase tracking-widest font-medium text-brick hover:bg-cream/60 flex items-center"
           >
-            Prenota
+            {book.label}
           </Link>
         </div>
       )}

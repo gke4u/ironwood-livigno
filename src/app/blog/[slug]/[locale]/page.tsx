@@ -23,10 +23,8 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com
 //
 // Small per-locale UI strings for just the bits of chrome that live inside
 // this page template (back link, closing CTA, date/reading-time format).
-// BlogHeader/BlogFooter stay Italian — same shared chrome used by every
-// blog page including the Italian originals (see README on why the blog
-// lives outside the [locale] tree) — only the article body and these few
-// inline strings are translated.
+// BlogHeader/BlogFooter take the article's locale and translate themselves
+// (see BlogChrome.tsx); these few strings cover the rest of the template.
 const UI: Record<TranslatedBlogLocale, { backLink: string; relatedTitle: string; ctaText: string; ctaButton: string; readingSuffix: string; dateLocale: string; ogLocale: string }> = {
   en: {
     backLink: '← All guides',
@@ -45,6 +43,33 @@ const UI: Record<TranslatedBlogLocale, { backLink: string; relatedTitle: string;
     readingSuffix: 'Min. Lesezeit',
     dateLocale: 'de-DE',
     ogLocale: 'de_DE'
+  },
+  pl: {
+    backLink: '← Wszystkie przewodniki',
+    relatedTitle: 'Poznaj Ironwood Livigno',
+    ctaText: 'Gotowy, by zaplanować pobyt w Livigno?',
+    ctaButton: 'Sprawdź dostępność',
+    readingSuffix: 'min czytania',
+    dateLocale: 'pl-PL',
+    ogLocale: 'pl_PL'
+  },
+  nl: {
+    backLink: '← Alle gidsen',
+    relatedTitle: 'Ontdek meer over Ironwood Livigno',
+    ctaText: 'Klaar om je verblijf in Livigno te plannen?',
+    ctaButton: 'Beschikbaarheid bekijken',
+    readingSuffix: 'min leestijd',
+    dateLocale: 'nl-NL',
+    ogLocale: 'nl_NL'
+  },
+  cs: {
+    backLink: '← Všichni průvodci',
+    relatedTitle: 'Objevte Ironwood Livigno',
+    ctaText: 'Chcete si naplánovat pobyt v Livignu?',
+    ctaButton: 'Ověřit dostupnost',
+    readingSuffix: 'min čtení',
+    dateLocale: 'cs-CZ',
+    ogLocale: 'cs_CZ'
   }
 };
 
@@ -145,7 +170,7 @@ export default async function TranslatedBlogArticle({ params }: { params: Params
       <body style={{ margin: 0 }}>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
-        <BlogHeader />
+        <BlogHeader locale={data.locale} />
         <main className="bg-mist min-h-screen">
           <div className="max-w-content mx-auto px-6 md:px-10 py-16 md:py-20">
             <Link href={`/blog/${data.locale}`} className="text-brick text-sm font-medium hover:underline">
@@ -214,8 +239,8 @@ export default async function TranslatedBlogArticle({ params }: { params: Params
             </div>
           </div>
         </main>
-        <BlogWhatsAppCta />
-        <BlogFooter />
+        <BlogWhatsAppCta locale={data.locale} />
+        <BlogFooter locale={data.locale} />
       </body>
     </html>
   );

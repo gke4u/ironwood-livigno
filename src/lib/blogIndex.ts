@@ -2,17 +2,19 @@
 // MobileMenu are client components, and importing the translations file
 // there would ship every translated article in the client bundle.
 
+const BLOG_LOCALES = ['en', 'de', 'pl', 'nl', 'cs'] as const;
+type BlogLocale = (typeof BLOG_LOCALES)[number];
+
 // Which blog translation a site locale should read: en-us shares the
-// British English articles, the other non-Italian locales have none.
-export function blogLocaleFor(locale: string): 'en' | 'de' | null {
-  if (locale === 'de') return 'de';
-  if (locale === 'en' || locale === 'en-us') return 'en';
-  return null;
+// British English articles; da, no, fr, zh and ja have none.
+export function blogLocaleFor(locale: string): BlogLocale | null {
+  if (locale === 'en-us') return 'en';
+  return (BLOG_LOCALES as readonly string[]).includes(locale) ? (locale as BlogLocale) : null;
 }
 
-// The blog index a site locale should link to: /blog (Italian), /blog/de,
-// or /blog/en — also for the locales with no blog translation of their own
-// (nl, da, no, pl, cs, zh, ja), whose readers are far likelier to read
+// The blog index a site locale should link to: /blog (Italian), the
+// locale's own /blog/<locale>, or /blog/en for the locales with no blog
+// translation (da, no, fr, zh, ja), whose readers are far likelier to read
 // English than Italian.
 export function blogIndexHref(locale: string): string {
   if (locale === 'it') return '/blog';

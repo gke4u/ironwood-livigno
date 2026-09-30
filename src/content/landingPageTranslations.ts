@@ -4402,8 +4402,8 @@ const satelliteSlugSet = new Set(landingPages.map((p) => p.slug));
 // Resolves a landingPages.ts href (as written in the Italian original) to
 // its locale-appropriate target:
 // - '/blog' (index) -> the blog index for this locale (src/lib/blogIndex.ts)
-// - '/blog/<slug>' -> '/blog/<slug>/<en|de>' if that article has a
-//   translation this locale reads (just en/de, en-us reading en —
+// - '/blog/<slug>' -> '/blog/<slug>/<blog locale>' if that article has a
+//   translation this locale reads (en, de, pl, nl, cs, en-us reading en —
 //   narrower than translatedLandingLocales), otherwise stays on the
 //   Italian original rather than 404ing on a guessed URL
 // - '/it#<anchor>' -> '/<locale>#<anchor>'

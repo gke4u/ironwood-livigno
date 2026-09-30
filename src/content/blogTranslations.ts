@@ -1,15 +1,17 @@
-// Blog translations into the two largest non-Italian markets for Livigno
-// tourism (en, de). Every Italian post now has both versions: the feature
-// guides live below, the practical guides in blogTranslationsPractical.ts.
-// pl/nl/cs and the other site languages stay Italian-only for now — this
-// file's shape (one entry per slug, one sub-entry per locale) is the exact
-// pattern to extend; no code changes needed, just new dictionary entries.
+// Blog translations: every Italian post exists in en, de, pl, nl and cs.
+// en/de of the feature guides live below, en/de of the practical guides in
+// blogTranslationsPractical.ts, and pl/nl/cs in one file per language.
+// da, no, fr, zh and ja stay without a blog of their own (see
+// src/lib/blogIndex.ts for where those readers are sent).
 //
 // Only a subset of BlogPost is here (no slug/date/image — those stay
 // shared with the Italian original in blog.ts, since it's the same trip,
 // same photo, same publish date, just written in another language).
 import type { BlogSection, BlogInlineCta } from './blog';
 import { practicalBlogTranslations } from './blogTranslationsPractical';
+import { plBlogTranslations } from './blogTranslationsPl';
+import { nlBlogTranslations } from './blogTranslationsNl';
+import { csBlogTranslations } from './blogTranslationsCs';
 
 export type BlogTranslation = {
   inlineCta?: BlogInlineCta;
@@ -24,7 +26,7 @@ export type BlogTranslation = {
   sections: BlogSection[];
 };
 
-export const translatedBlogLocales = ['en', 'de'] as const;
+export const translatedBlogLocales = ['en', 'de', 'pl', 'nl', 'cs'] as const;
 export type TranslatedBlogLocale = (typeof translatedBlogLocales)[number];
 
 const featureBlogTranslations: Record<string, Partial<Record<TranslatedBlogLocale, BlogTranslation>>> = {
@@ -970,8 +972,21 @@ const featureBlogTranslations: Record<string, Partial<Record<TranslatedBlogLocal
   }
 };
 
+// pl, nl and cs each live in one file keyed by slug; folded in here so
+// every consumer keeps reading the same slug -> locale -> translation map.
+const singleLocaleTranslations: [TranslatedBlogLocale, Record<string, BlogTranslation>][] = [
+  ['pl', plBlogTranslations],
+  ['nl', nlBlogTranslations],
+  ['cs', csBlogTranslations]
+];
+
 export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocale, BlogTranslation>>> = {
   ...featureBlogTranslations,
   ...practicalBlogTranslations
 };
+for (const [locale, bySlug] of singleLocaleTranslations) {
+  for (const [slug, translation] of Object.entries(bySlug)) {
+    blogTranslations[slug] = { ...blogTranslations[slug], [locale]: translation };
+  }
+}
 

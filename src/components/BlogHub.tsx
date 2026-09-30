@@ -1,6 +1,6 @@
-// English and German blog index (/blog/en, /blog/de): the translated
+// Translated blog indexes (/blog/en, /blog/de, /blog/pl, /blog/nl, /blog/cs): the translated
 // articles used to be reachable only from the small "Also available in"
-// line on each Italian post, so no English or German page linked to them.
+// line on each Italian post, so no page in those languages linked to them.
 // Rendered by app/blog/[slug]/page.tsx when the slug is a blog locale (the
 // only way to get this URL shape, see the note in [slug]/[locale]/page.tsx).
 import type { Metadata } from 'next';
@@ -9,6 +9,7 @@ import { blogTranslations, translatedBlogLocales, type TranslatedBlogLocale } fr
 import { organizationRef, websiteId } from '@/lib/structuredDataIds';
 import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
 import Pic from '@/components/Pic';
+import { getSatellitePages } from '@/data/satellite-pages';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
 
@@ -23,7 +24,6 @@ const HUB: Record<
     readingSuffix: string;
     homeLabel: string;
     ogLocale: string;
-    topics: { href: string; label: string }[];
     ctaText: string;
     ctaButton: string;
   }
@@ -38,13 +38,6 @@ const HUB: Record<
     readingSuffix: 'min read',
     homeLabel: 'Home',
     ogLocale: 'en_GB',
-    topics: [
-      { href: '/inverno/en', label: 'Winter in Livigno' },
-      { href: '/estate/en', label: 'Summer in Livigno' },
-      { href: '/famiglie/en', label: 'Families' },
-      { href: '/sauna-bagno-turco-privato-livigno/en', label: 'Private sauna' },
-      { href: '/come-arrivare/en', label: 'Getting here' }
-    ],
     ctaText: 'Ready to plan your stay in Livigno?',
     ctaButton: 'Check availability'
   },
@@ -58,21 +51,57 @@ const HUB: Record<
     readingSuffix: 'Min. Lesezeit',
     homeLabel: 'Startseite',
     ogLocale: 'de_DE',
-    topics: [
-      { href: '/inverno/de', label: 'Winter in Livigno' },
-      { href: '/estate/de', label: 'Sommer in Livigno' },
-      { href: '/famiglie/de', label: 'Familien' },
-      { href: '/sauna-bagno-turco-privato-livigno/de', label: 'Private Sauna' },
-      { href: '/come-arrivare/de', label: 'Anreise' }
-    ],
     ctaText: 'Bereit, Ihren Aufenthalt in Livigno zu planen?',
     ctaButton: 'Verfügbarkeit prüfen'
+  },
+  pl: {
+    title: 'Przewodnik po Livigno: narty, lato i praktyczne porady',
+    description:
+      'Praktyczne przewodniki po Livigno od lokalnych gospodarzy: dojazd, narty i ceny karnetów, trekking i rower latem, zakupy bez cła i kiedy rezerwować.',
+    kicker: 'Przewodnik po Livigno',
+    h1: 'Praktyczne porady na urlop w Livigno',
+    lead: 'Przewodniki o dojeździe, nartach, lecie w górach i planowaniu pobytu — napisane przez gospodarzy, którzy przez cały rok goszczą podróżnych w tej dolinie.',
+    readingSuffix: 'min czytania',
+    homeLabel: 'Strona główna',
+    ogLocale: 'pl_PL',
+    ctaText: 'Gotowy, by zaplanować pobyt w Livigno?',
+    ctaButton: 'Sprawdź dostępność'
+  },
+  nl: {
+    title: 'Reisgids Livigno: skiën, zomer en praktische tips',
+    description:
+      'Praktische gidsen over Livigno van lokale gastheren: de reis, skiën en skipasprijzen, wandelen en fietsen in de zomer, belastingvrij winkelen en wanneer boeken.',
+    kicker: 'Reisgids Livigno',
+    h1: 'Praktische tips voor je vakantie in Livigno',
+    lead: 'Gidsen over de reis, skiën, de zomer in de bergen en het plannen van je verblijf — geschreven door gastheren die het hele jaar reizigers in dit dal ontvangen.',
+    readingSuffix: 'min leestijd',
+    homeLabel: 'Home',
+    ogLocale: 'nl_NL',
+    ctaText: 'Klaar om je verblijf in Livigno te plannen?',
+    ctaButton: 'Beschikbaarheid bekijken'
+  },
+  cs: {
+    title: 'Průvodce Livignem: lyžování, léto a praktické tipy',
+    description:
+      'Praktičtí průvodci Livignem od místních hostitelů: cesta, lyžování a ceny skipasů, turistika a kolo v létě, bezcelní nákupy a kdy rezervovat.',
+    kicker: 'Průvodce Livignem',
+    h1: 'Praktické tipy pro vaši dovolenou v Livignu',
+    lead: 'Průvodci o cestě, lyžování, létě na horách a plánování pobytu — napsaní hostiteli, kteří v tomto údolí přijímají cestovatele po celý rok.',
+    readingSuffix: 'min čtení',
+    homeLabel: 'Domů',
+    ogLocale: 'cs_CZ',
+    ctaText: 'Chcete si naplánovat pobyt v Livignu?',
+    ctaButton: 'Ověřit dostupnost'
   }
 };
 
 export function isBlogLocale(slug: string): slug is TranslatedBlogLocale {
   return (translatedBlogLocales as readonly string[]).includes(slug);
 }
+
+// Theme pages shown as chips above the article grid, with the labels their
+// own translations use in the site navigation.
+const TOPIC_PAGES = ['/inverno', '/estate', '/famiglie', '/sauna-bagno-turco-privato-livigno', '/come-arrivare'];
 
 const hubUrl = (locale: TranslatedBlogLocale) => `${siteUrl}/blog/${locale}`;
 
@@ -114,6 +143,7 @@ export function blogHubMetadata(locale: TranslatedBlogLocale): Metadata {
 export function BlogHub({ locale }: { locale: TranslatedBlogLocale }) {
   const hub = HUB[locale];
   const posts = hubPosts(locale);
+  const topics = getSatellitePages(locale).filter((p) => TOPIC_PAGES.some((t) => p.href === t || p.href.startsWith(`${t}/`)));
 
   const breadcrumbLd = {
     '@context': 'https://schema.org',
@@ -151,7 +181,7 @@ export function BlogHub({ locale }: { locale: TranslatedBlogLocale }) {
       <body style={{ margin: 0 }}>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogLd) }} />
-        <BlogHeader />
+        <BlogHeader locale={locale} />
         <main className="bg-mist min-h-screen">
           <div className="max-w-content mx-auto px-6 md:px-10 py-16 md:py-24">
             <p className="text-brick tracking-[0.2em] uppercase text-xs md:text-sm mb-4">{hub.kicker}</p>
@@ -159,7 +189,7 @@ export function BlogHub({ locale }: { locale: TranslatedBlogLocale }) {
             <p className="text-ink/70 text-base md:text-lg max-w-2xl mb-14">{hub.lead}</p>
 
             <div className="flex flex-wrap gap-3 mb-14">
-              {hub.topics.map((p) => (
+              {topics.map((p) => (
                 <a
                   key={p.href}
                   href={p.href}
@@ -208,8 +238,8 @@ export function BlogHub({ locale }: { locale: TranslatedBlogLocale }) {
             </div>
           </div>
         </main>
-        <BlogWhatsAppCta />
-        <BlogFooter />
+        <BlogWhatsAppCta locale={locale} />
+        <BlogFooter locale={locale} />
       </body>
     </html>
   );

@@ -11,7 +11,7 @@ import { renderInlineLinks } from '@/lib/renderInlineLinks';
 import { buildTitle } from '@/lib/buildTitle';
 import { BlogHub, blogHubMetadata, isBlogLocale } from '@/components/BlogHub';
 
-const LANG_LABEL: Record<string, string> = { en: 'English', de: 'Deutsch' };
+const LANG_LABEL: Record<string, string> = { en: 'English', de: 'Deutsch', pl: 'Polski', nl: 'Nederlands', cs: 'Čeština' };
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
 
@@ -139,7 +139,7 @@ export default async function BlogArticle({ params }: { params: Params }) {
                 {availableTranslations.map((l, i) => (
                   <span key={l}>
                     {i > 0 && ' · '}
-                    <a href={`/blog/${post.slug}/${l}`} className="underline underline-offset-2 hover:text-brick">
+                    <a href={`/blog/${post.slug}/${l}`} hrefLang={l} lang={l} className="underline underline-offset-2 hover:text-brick">
                       {LANG_LABEL[l]}
                     </a>
                   </span>

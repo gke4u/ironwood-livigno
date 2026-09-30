@@ -1,18 +1,32 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { blogPosts, postModified } from '@/content/blog';
+import { translatedBlogLocales } from '@/content/blogTranslations';
 import { organizationRef, websiteId } from '@/lib/structuredDataIds';
 import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
 import Pic from '@/components/Pic';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
 
+// Links to the translated blog indexes, each labelled in its own language.
+const HUB_LINKS = [
+  { locale: 'en', label: 'Guides in English' },
+  { locale: 'de', label: 'Reiseführer auf Deutsch' },
+  { locale: 'pl', label: 'Przewodniki po polsku' },
+  { locale: 'nl', label: 'Gidsen in het Nederlands' },
+  { locale: 'cs', label: 'Průvodci v češtině' }
+];
+
 export const metadata: Metadata = {
   title: 'Guida a Livigno — Blog | Ironwood Livigno',
   description: "Guide pratiche su Livigno: come arrivare, sci, mountain bike, trekking e come organizzare al meglio la tua vacanza.",
   alternates: {
     canonical: `${siteUrl}/blog`,
-    languages: { it: `${siteUrl}/blog`, en: `${siteUrl}/blog/en`, de: `${siteUrl}/blog/de`, 'x-default': `${siteUrl}/blog` }
+    languages: {
+      it: `${siteUrl}/blog`,
+      ...Object.fromEntries(translatedBlogLocales.map((l) => [l, `${siteUrl}/blog/${l}`])),
+      'x-default': `${siteUrl}/blog`
+    }
   },
   openGraph: {
     title: 'Guida a Livigno — Blog | Ironwood Livigno',
@@ -81,13 +95,19 @@ export default function BlogIndex() {
               valle tutto l&apos;anno.
             </p>
             <p className="text-ink/65 text-sm mb-14">
-              <Link href="/blog/en" hrefLang="en" lang="en" className="underline underline-offset-2 hover:text-brick">
-                Guides in English
-              </Link>
-              {' · '}
-              <Link href="/blog/de" hrefLang="de" lang="de" className="underline underline-offset-2 hover:text-brick">
-                Reiseführer auf Deutsch
-              </Link>
+              {HUB_LINKS.map((h, i) => (
+                <span key={h.locale}>
+                  {i > 0 && ' · '}
+                  <Link
+                    href={`/blog/${h.locale}`}
+                    hrefLang={h.locale}
+                    lang={h.locale}
+                    className="underline underline-offset-2 hover:text-brick"
+                  >
+                    {h.label}
+                  </Link>
+                </span>
+              ))}
             </p>
 
             <div className="flex flex-wrap gap-3 mb-14">

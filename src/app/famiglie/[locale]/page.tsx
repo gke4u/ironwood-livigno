@@ -133,7 +133,7 @@ export default async function TranslatedLandingPage({ params }: { params: Params
         {faqPageLd && (
           <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageLd) }} />
         )}
-        <BlogHeader />
+        <BlogHeader locale={data.locale} />
         <main className="bg-mist min-h-screen">
           <LandingPageBody
             page={page}
@@ -147,8 +147,8 @@ export default async function TranslatedLandingPage({ params }: { params: Params
             }}
           />
         </main>
-        <BlogWhatsAppCta />
-        <BlogFooter />
+        <BlogWhatsAppCta locale={data.locale} />
+        <BlogFooter locale={data.locale} />
       </body>
     </html>
   );
