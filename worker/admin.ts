@@ -2,7 +2,8 @@
 // build step). Photos are resized and re-encoded in the browser before
 // upload — longest side 1600 px, WebP (JPEG where the browser can't encode
 // WebP, e.g. older Safari) — so a 5 MB phone photo goes up as ~200 KB and
-// the Worker never has to process images itself.
+// the Worker never has to process images itself. The Ironwood logo is
+// drawn into every photo at the same step, so it is part of the file.
 export function adminPage(): string {
   return `<!doctype html>
 <html lang="it">
@@ -61,6 +62,10 @@ export function adminPage(): string {
   .drop strong { display:block; margin-bottom:6px; }
   #progress { margin-top:14px; font-size:14px; }
   #progress div { padding:4px 0; }
+  #progressBar { height:8px; border-radius:999px; background:#eee; overflow:hidden; margin-top:14px; }
+  #progressBar div { height:100%; width:0; background:var(--ok); transition:width .3s; }
+  #progressSummary { font-weight:600; margin-top:8px; }
+  .more { margin-top:16px; background:transparent; color:var(--brick); border:1px solid var(--line); }
   .grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(170px, 1fr)); gap:14px; }
   .ph { background:#fff; border:1px solid var(--line); border-radius:14px; overflow:hidden; display:flex; flex-direction:column; }
   .ph img { width:100%; aspect-ratio:3/2; object-fit:cover; display:block; background:#eee; }
@@ -106,12 +111,15 @@ export function adminPage(): string {
         <span class="muted">oppure trascinale qui</span>
         <input type="file" id="files" accept="image/*" multiple hidden>
       </label>
+      <div id="progressBar" class="hidden"><div></div></div>
+      <p id="progressSummary"></p>
       <div id="progress"></div>
     </section>
 
     <section class="card">
       <h2>Foto in rotazione <span id="count" class="muted"></span></h2>
       <div id="grid" class="grid"></div>
+      <button type="button" id="more" class="more hidden">Mostra altre foto</button>
       <p id="empty" class="hint hidden">Nessuna foto ancora: finché non ne carichi una, sul sito compare una foto di Livigno già presente.</p>
     </section>
 
@@ -175,7 +183,7 @@ async function api(path, options = {}) {
   const res = await fetch('/api/admin/' + path, { credentials: 'same-origin', ...options });
   const data = await res.json().catch(() => ({}));
   if (res.status === 401) { showLogin(); throw new Error(data.error || 'Accesso richiesto'); }
-  if (!res.ok) throw new Error(data.error || ('Errore ' + res.status));
+  if (!res.ok) { const e = new Error(data.error || ('Errore ' + res.status)); e.data = data; throw e; }
   return data;
 }
 
@@ -405,7 +413,18 @@ async function load() {
   $('todayBox').append(img, info);
 
   $('grid').innerHTML = '';
-  photos.forEach((p, i) => {
+  gridState = { photos, data, today, shown: 0 };
+  renderMore();
+}
+
+// With hundreds of photos, thumbnails are added 40 at a time.
+const PAGE = 40;
+let gridState = null;
+function renderMore() {
+  const { photos, data, today } = gridState;
+  const slice = photos.slice(gridState.shown, gridState.shown + PAGE);
+  slice.forEach((p, j) => {
+    const i = gridState.shown + j;
     const el = document.createElement('div');
     el.className = 'ph';
     const when = nextShowing(i, photos.length, today);
@@ -424,7 +443,12 @@ async function load() {
     });
     $('grid').append(el);
   });
+  gridState.shown += slice.length;
+  const left = photos.length - gridState.shown;
+  $('more').classList.toggle('hidden', left <= 0);
+  $('more').textContent = 'Mostra altre ' + Math.min(PAGE, left) + ' (ne restano ' + left + ')';
 }
+$('more').addEventListener('click', renderMore);
 
 // ---- compression in the browser ----
 // createImageBitmap first (fast, applies the EXIF rotation of phone photos);
@@ -443,6 +467,48 @@ async function decode(file) {
   }
 }
 
+// The Ironwood logo (same mark as the site header: roofline icon with the
+// gold dot, "iron" + gold "wood" in Fraunces), bottom-right, sized to the photo.
+const logoFont = new FontFace('Fraunces', 'url(/fonts/fraunces-400.woff2)');
+const logoFontReady = logoFont.load().then((f) => { document.fonts.add(f); }).catch(() => {});
+async function drawLogo(ctx, w, h) {
+  await logoFontReady;
+  const unit = Math.max(w, h) / 1600;
+  const fontSize = Math.round(62 * unit);
+  const iconH = fontSize * 0.95;
+  const iconW = iconH * 120 / 110;
+  const gap = fontSize * 0.32;
+  const margin = 44 * unit;
+  ctx.save();
+  ctx.font = '400 ' + fontSize + 'px Fraunces, Georgia, serif';
+  const ironW = ctx.measureText('iron').width;
+  const woodW = ctx.measureText('wood').width;
+  const x = w - margin - (iconW + gap + ironW + woodW);
+  const baseline = h - margin;
+  ctx.globalAlpha = 0.92;
+  ctx.shadowColor = 'rgba(0,0,0,0.55)';
+  ctx.shadowBlur = 14 * unit;
+  // icon, drawn in its own 120x110 box
+  ctx.save();
+  ctx.translate(x, baseline - iconH * 0.86);
+  ctx.scale(iconH / 110, iconH / 110);
+  ctx.fillStyle = '#C9A059';
+  ctx.beginPath(); ctx.arc(10, 46, 6, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = '#F7F3EC';
+  ctx.lineWidth = 7; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.beginPath();
+  [[24,60],[46,26],[66,50],[94,10],[118,60],[118,96],[20,96],[20,64]].forEach(([px, py], k) => k ? ctx.lineTo(px, py) : ctx.moveTo(px, py));
+  ctx.stroke();
+  ctx.restore();
+  // wordmark
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillStyle = '#F7F3EC';
+  ctx.fillText('iron', x + iconW + gap, baseline);
+  ctx.fillStyle = '#C9A059';
+  ctx.fillText('wood', x + iconW + gap + ironW, baseline);
+  ctx.restore();
+}
+
 async function compress(file) {
   const source = await decode(file);
   const sw = source.naturalWidth || source.width;
@@ -456,6 +522,7 @@ async function compress(file) {
   const ctx = canvas.getContext('2d');
   ctx.imageSmoothingQuality = 'high';
   ctx.drawImage(source, 0, 0, w, h);
+  await drawLogo(ctx, w, h);
   source.close && source.close();
   const toBlob = (type, q) => new Promise((r) => canvas.toBlob(r, type, q));
   let blob = await toBlob('image/webp', 0.75);
@@ -468,25 +535,50 @@ async function handleFiles(fileList) {
   const files = Array.from(fileList).filter((f) => f.type.startsWith('image/') || /\\.(heic|heif)$/i.test(f.name));
   if (!files.length) return;
   const progress = $('progress');
+  const bar = $('progressBar');
+  const summary = $('progressSummary');
   progress.innerHTML = '';
-  for (const file of files) {
-    const line = document.createElement('div');
-    line.textContent = file.name + ': riduzione in corso…';
-    progress.append(line);
+  bar.classList.remove('hidden');
+  let done = 0, failed = 0, savedIn = 0, savedOut = 0, sinceIndex = 0, stopped = false;
+  const update = (i) => {
+    bar.firstElementChild.style.width = Math.round((i / files.length) * 100) + '%';
+    summary.textContent = 'Caricate ' + done + ' di ' + files.length + (failed ? ' · ' + failed + ' non riuscite' : '') +
+      (done ? ' · ' + formatKB(savedIn) + ' → ' + formatKB(savedOut) : '');
+  };
+  const current = document.createElement('div');
+  current.className = 'muted';
+  progress.append(current);
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    current.textContent = (i + 1) + '/' + files.length + ' · ' + file.name + ': riduzione e logo…';
     try {
       const { blob, w, h } = await compress(file);
-      line.textContent = file.name + ': invio (' + formatKB(file.size) + ' → ' + formatKB(blob.size) + ')…';
       const form = new FormData();
       form.append('file', blob, 'foto.' + (blob.type === 'image/webp' ? 'webp' : 'jpg'));
       form.append('w', String(w));
       form.append('h', String(h));
       await api('photos', { method: 'POST', body: form });
-      line.textContent = '✓ ' + file.name + ': caricata (' + formatKB(file.size) + ' → ' + formatKB(blob.size) + ')';
+      done++; savedIn += file.size; savedOut += blob.size; sinceIndex++;
+      if (sinceIndex >= 20) { await api('photos/reindex', { method: 'POST' }).catch(() => {}); sinceIndex = 0; }
     } catch (err) {
+      if (err.data && err.data.limit) {
+        stopped = true;
+        const line = document.createElement('div');
+        line.className = 'warn';
+        line.textContent = err.message + ' Non caricate: ' + (files.length - i) + ' (da "' + file.name + '" in poi).';
+        progress.append(line);
+        break;
+      }
+      failed++;
+      const line = document.createElement('div');
       line.className = 'error';
       line.textContent = '✗ ' + file.name + ': ' + (err.message || 'formato non leggibile');
+      progress.append(line);
     }
+    update(i + 1);
   }
+  current.textContent = stopped ? '' : 'Finito.';
+  await api('photos/reindex', { method: 'POST' }).catch(() => {});
   $('files').value = '';
   await load().catch(() => {});
 }
@@ -497,7 +589,8 @@ const drop = $('drop');
 ['dragleave', 'drop'].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove('over'); }));
 drop.addEventListener('drop', (e) => handleFiles(e.dataTransfer.files));
 
-load().catch(() => {});
+// Also picks up photos from a batch that was interrupted before its last reindex.
+api('photos/reindex', { method: 'POST' }).catch(() => {}).finally(() => load().catch(() => {}));
 </script>
 </body>
 </html>`;

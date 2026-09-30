@@ -318,7 +318,9 @@
     "eyebrow": "Dagens bilde",
     "title": "Livigno, et nytt bilde hver dag",
     "text": "Hver dag et nytt bilde fra leiligheten og Livigno-dalen: kom tilbake i morgen for å se et annet.",
-    "alt": "Dagens bilde fra Ironwood Livigno, ferieleilighet i Livigno"
+    "alt": "Dagens bilde fra Ironwood Livigno, ferieleilighet i Livigno",
+    "enlarge": "Forstørr bildet",
+    "close": "Lukk"
   },
   "offer": {
     "eyebrow": "Spesialtilbud",

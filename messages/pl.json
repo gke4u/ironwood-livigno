@@ -318,7 +318,9 @@
     "eyebrow": "Zdjęcie dnia",
     "title": "Livigno, każdego dnia inne ujęcie",
     "text": "Każdego dnia nowe zdjęcie z apartamentu i doliny Livigno: wróć jutro, by zobaczyć kolejne.",
-    "alt": "Zdjęcie dnia z Ironwood Livigno, apartamentu wakacyjnego w Livigno"
+    "alt": "Zdjęcie dnia z Ironwood Livigno, apartamentu wakacyjnego w Livigno",
+    "enlarge": "Powiększ zdjęcie",
+    "close": "Zamknij"
   },
   "offer": {
     "eyebrow": "Oferta specjalna",

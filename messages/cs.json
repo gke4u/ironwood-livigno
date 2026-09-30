@@ -318,7 +318,9 @@
     "eyebrow": "Fotka dne",
     "title": "Livigno, každý den jiný záběr",
     "text": "Každý den nová fotka z apartmánu a z údolí Livigna: vraťte se zítra a uvidíte další.",
-    "alt": "Fotka dne z Ironwood Livigno, prázdninového apartmánu v Livignu"
+    "alt": "Fotka dne z Ironwood Livigno, prázdninového apartmánu v Livignu",
+    "enlarge": "Zvětšit fotku",
+    "close": "Zavřít"
   },
   "offer": {
     "eyebrow": "Speciální nabídka",

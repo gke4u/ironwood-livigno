@@ -52,7 +52,7 @@ export default {
 
     try {
       if (path === '/foto-del-giorno') return await photoOfTheDay(request, env, ctx);
-      if (path.startsWith('/foto/')) return await photoById(path.slice('/foto/'.length), env);
+      if (path.startsWith('/foto/')) return await photoById(request, path.slice('/foto/'.length), env);
       if (path === '/api/offer') return await offerApi(request, env);
       if (path === '/admin') return html(adminPage());
       if (path.startsWith('/api/admin/')) return await adminApi(request, env, path.slice('/api/admin/'.length));
@@ -99,14 +99,17 @@ async function photoOfTheDay(request: Request, env: Env, ctx: ExecutionContext):
   return res;
 }
 
-async function photoById(id: string, env: Env): Promise<Response> {
+// Single photos by id are only for the admin's thumbnails: visitors see just
+// today's photo, never the ones still to come.
+async function photoById(request: Request, id: string, env: Env): Promise<Response> {
+  if (!env.SESSION_SECRET || !(await isLoggedIn(request, env, await readAuth(env)))) return new Response('Not found', { status: 404 });
   if (!/^[a-z0-9-]{8,40}$/.test(id)) return new Response('Not found', { status: 404 });
   const { value, metadata } = await env.PHOTOS.getWithMetadata<PhotoMeta>(`photo:${id}`, { type: 'arrayBuffer', cacheTtl: 86400 });
   if (!value || !metadata) return new Response('Not found', { status: 404 });
   return new Response(value, {
     headers: {
       'Content-Type': metadata.type,
-      'Cache-Control': 'public, max-age=31536000, immutable',
+      'Cache-Control': 'private, max-age=31536000, immutable',
       'X-Content-Type-Options': 'nosniff',
       'X-Robots-Tag': 'noindex'
     }
@@ -184,6 +187,7 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
     });
   }
   if (route === 'photos' && request.method === 'POST') return upload(request, env);
+  if (route === 'photos/reindex' && request.method === 'POST') return reindex(env);
 
   const del = route.match(/^photos\/([a-z0-9-]{8,40})$/);
   if (del && request.method === 'DELETE') {
@@ -307,11 +311,46 @@ async function upload(request: Request, env: Env): Promise<Response> {
     bytes: bytes.byteLength,
     created: new Date().toISOString()
   };
-  await env.PHOTOS.put(`photo:${meta.id}`, bytes, { metadata: meta });
-  const index = await readIndex(env, 0);
-  index.push(meta);
-  await env.PHOTOS.put(INDEX_KEY, JSON.stringify(index));
+  try {
+    await env.PHOTOS.put(`photo:${meta.id}`, bytes, { metadata: meta });
+  } catch (err) {
+    return kvWriteError(err);
+  }
+  // The rotation list is rebuilt by photos/reindex after a batch of uploads,
+  // not here: one index write per photo would double the KV writes, and the
+  // free plan allows 1,000 a day.
   return json({ ok: true, photo: meta });
+}
+
+// Rebuilds the rotation list from the stored photos (their KV metadata),
+// oldest first. Called by the admin every few uploads and after deletions,
+// so a batch interrupted half-way never leaves photos out of the rotation.
+async function reindex(env: Env): Promise<Response> {
+  const photos: PhotoMeta[] = [];
+  let cursor: string | undefined;
+  do {
+    const page = await env.PHOTOS.list<PhotoMeta>({ prefix: 'photo:', cursor });
+    for (const k of page.keys) if (k.metadata) photos.push(k.metadata);
+    cursor = page.list_complete ? undefined : page.cursor;
+  } while (cursor);
+  photos.sort((a, b) => a.created.localeCompare(b.created));
+  const next = JSON.stringify(photos);
+  if (next !== ((await env.PHOTOS.get(INDEX_KEY)) ?? '[]')) {
+    try {
+      await env.PHOTOS.put(INDEX_KEY, next);
+    } catch (err) {
+      return kvWriteError(err);
+    }
+  }
+  return json({ ok: true, count: photos.length });
+}
+
+function kvWriteError(err: unknown): Response {
+  console.error(err);
+  return json(
+    { error: 'Limite giornaliero di caricamenti di Cloudflare raggiunto (piano gratuito, circa 1.000 al giorno). Le foto già caricate sono salve: riprendi domani con le restanti.', limit: true },
+    429
+  );
 }
 
 // ---------- helpers ----------
