@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 // The photo of the day, shown so it can't be casually saved: it is a CSS
 // background under a transparent layer (no <img> to right-click, drag or
@@ -83,7 +84,10 @@ export default function ProtectedPhoto({ alt, enlargeLabel, closeLabel }: { alt:
         </span>
       </button>
 
-      {open && (
+      {/* Rendered into <body>: the section's reveal animation uses a CSS
+          transform, which would otherwise trap this fixed layer inside the photo box. */}
+      {open &&
+        createPortal(
         <div
           role="dialog"
           aria-modal="true"
@@ -105,8 +109,9 @@ export default function ProtectedPhoto({ alt, enlargeLabel, closeLabel }: { alt:
               <path d="M6 6l12 12M18 6L6 18" />
             </svg>
           </button>
-        </div>
-      )}
+        </div>,
+          document.body
+        )}
     </>
   );
 }
