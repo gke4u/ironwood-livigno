@@ -4403,7 +4403,7 @@ const satelliteSlugSet = new Set(landingPages.map((p) => p.slug));
 // its locale-appropriate target:
 // - '/blog' (index) -> the blog index for this locale (src/lib/blogIndex.ts)
 // - '/blog/<slug>' -> '/blog/<slug>/<blog locale>' if that article has a
-//   translation this locale reads (en, de, pl, nl, cs, en-us reading en —
+//   translation this locale reads (all but zh/ja, en-us reading en —
 //   narrower than translatedLandingLocales), otherwise stays on the
 //   Italian original rather than 404ing on a guessed URL
 // - '/it#<anchor>' -> '/<locale>#<anchor>'

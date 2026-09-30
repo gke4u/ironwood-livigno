@@ -70,6 +70,33 @@ const UI: Record<TranslatedBlogLocale, { backLink: string; relatedTitle: string;
     readingSuffix: 'min čtení',
     dateLocale: 'cs-CZ',
     ogLocale: 'cs_CZ'
+  },
+  fr: {
+    backLink: '← Tous les guides',
+    relatedTitle: 'Découvrez Ironwood Livigno',
+    ctaText: 'Prêt à organiser votre séjour à Livigno ?',
+    ctaButton: 'Vérifier les disponibilités',
+    readingSuffix: 'min de lecture',
+    dateLocale: 'fr-FR',
+    ogLocale: 'fr_FR'
+  },
+  da: {
+    backLink: '← Alle guides',
+    relatedTitle: 'Oplev mere om Ironwood Livigno',
+    ctaText: 'Klar til at planlægge dit ophold i Livigno?',
+    ctaButton: 'Se ledighed',
+    readingSuffix: 'min. læsning',
+    dateLocale: 'da-DK',
+    ogLocale: 'da_DK'
+  },
+  no: {
+    backLink: '← Alle guider',
+    relatedTitle: 'Oppdag mer om Ironwood Livigno',
+    ctaText: 'Klar til å planlegge oppholdet i Livigno?',
+    ctaButton: 'Sjekk ledighet',
+    readingSuffix: 'min lesing',
+    dateLocale: 'nb-NO',
+    ogLocale: 'nb_NO'
   }
 };
 

@@ -11,7 +11,16 @@ import { renderInlineLinks } from '@/lib/renderInlineLinks';
 import { buildTitle } from '@/lib/buildTitle';
 import { BlogHub, blogHubMetadata, isBlogLocale } from '@/components/BlogHub';
 
-const LANG_LABEL: Record<string, string> = { en: 'English', de: 'Deutsch', pl: 'Polski', nl: 'Nederlands', cs: 'Čeština' };
+const LANG_LABEL: Record<string, string> = {
+  en: 'English',
+  de: 'Deutsch',
+  fr: 'Français',
+  pl: 'Polski',
+  nl: 'Nederlands',
+  cs: 'Čeština',
+  da: 'Dansk',
+  no: 'Norsk'
+};
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
 

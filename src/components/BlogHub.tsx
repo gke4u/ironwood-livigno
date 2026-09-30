@@ -1,4 +1,4 @@
-// Translated blog indexes (/blog/en, /blog/de, /blog/pl, /blog/nl, /blog/cs): the translated
+// Translated blog indexes (/blog/<locale> for every blog translation): the translated
 // articles used to be reachable only from the small "Also available in"
 // line on each Italian post, so no page in those languages linked to them.
 // Rendered by app/blog/[slug]/page.tsx when the slug is a blog locale (the
@@ -92,6 +92,45 @@ const HUB: Record<
     ogLocale: 'cs_CZ',
     ctaText: 'Chcete si naplánovat pobyt v Livignu?',
     ctaButton: 'Ověřit dostupnost'
+  },
+  fr: {
+    title: 'Guide de Livigno : ski, été et conseils pratiques',
+    description:
+      'Guides pratiques sur Livigno écrits par des hôtes sur place : comment venir, ski et prix des forfaits, randonnée et VTT en été, shopping détaxé et quand réserver.',
+    kicker: 'Guide de Livigno',
+    h1: 'Conseils pratiques pour vos vacances à Livigno',
+    lead: 'Des guides pour venir, skier, profiter de l’été en montagne et organiser votre séjour — écrits par des hôtes qui accueillent des voyageurs dans cette vallée toute l’année.',
+    readingSuffix: 'min de lecture',
+    homeLabel: 'Accueil',
+    ogLocale: 'fr_FR',
+    ctaText: 'Prêt à organiser votre séjour à Livigno ?',
+    ctaButton: 'Vérifier les disponibilités'
+  },
+  da: {
+    title: 'Rejseguide til Livigno: ski, sommer og praktiske råd',
+    description:
+      'Praktiske guides til Livigno fra lokale værter: rejsen, skiløb og liftkortpriser, vandring og cykling om sommeren, toldfri shopping og hvornår du skal booke.',
+    kicker: 'Rejseguide til Livigno',
+    h1: 'Praktiske råd til din ferie i Livigno',
+    lead: 'Guides om rejsen, skiløb, sommer i bjergene og planlægning af opholdet — skrevet af værter, der tager imod rejsende i denne dal hele året.',
+    readingSuffix: 'min. læsning',
+    homeLabel: 'Forside',
+    ogLocale: 'da_DK',
+    ctaText: 'Klar til at planlægge dit ophold i Livigno?',
+    ctaButton: 'Se ledighed'
+  },
+  no: {
+    title: 'Reiseguide til Livigno: ski, sommer og praktiske tips',
+    description:
+      'Praktiske guider til Livigno fra lokale verter: reisen, skikjøring og heiskortpriser, fotturer og sykling om sommeren, tollfri shopping og når du bør bestille.',
+    kicker: 'Reiseguide til Livigno',
+    h1: 'Praktiske tips til ferien i Livigno',
+    lead: 'Guider om reisen, skikjøring, sommer på fjellet og planlegging av oppholdet — skrevet av verter som tar imot reisende i denne dalen hele året.',
+    readingSuffix: 'min lesing',
+    homeLabel: 'Hjem',
+    ogLocale: 'nb_NO',
+    ctaText: 'Klar til å planlegge oppholdet i Livigno?',
+    ctaButton: 'Sjekk ledighet'
   }
 };
 
