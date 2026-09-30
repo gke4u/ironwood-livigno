@@ -313,5 +313,11 @@
     "whatsapp_cta": "WhatsAppでメッセージを送る",
     "address_label": "住所",
     "form_title": "直接メッセージを送る"
+  },
+  "dailyPhoto": {
+    "eyebrow": "今日の一枚",
+    "title": "リヴィーニョ、毎日ちがう一枚",
+    "text": "アパートメントとリヴィーニョの谷から、毎日新しい写真をお届けします。明日もまた見に来てください。",
+    "alt": "Ironwood Livigno（リヴィーニョの貸別荘）の今日の一枚"
   }
 }

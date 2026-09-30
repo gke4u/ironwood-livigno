@@ -5,6 +5,7 @@ import Nav from '@/components/Nav';
 import { getSatellitePages } from '@/data/satellite-pages';
 import Hero from '@/components/Hero';
 import WeatherSection from '@/components/WeatherSection';
+import DailyPhoto from '@/components/DailyPhoto';
 import Experience from '@/components/Experience';
 import Rooms from '@/components/Rooms';
 import RatesTable from '@/components/RatesTable';
@@ -42,6 +43,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
       <Nav locale={locale} satellitePages={getSatellitePages(locale)} />
       <Hero />
       <WeatherSection />
+      <DailyPhoto />
       <Gallery />
       <VirtualTour />
       <Rooms />

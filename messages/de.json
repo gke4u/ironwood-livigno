@@ -313,5 +313,11 @@
     "whatsapp_cta": "Schreib uns auf WhatsApp",
     "address_label": "Adresse",
     "form_title": "Schreib uns direkt"
+  },
+  "dailyPhoto": {
+    "eyebrow": "Foto des Tages",
+    "title": "Livigno, jeden Tag ein anderes Bild",
+    "text": "Jeden Tag ein neues Foto aus der Ferienwohnung und dem Tal von Livigno: Schauen Sie morgen wieder vorbei.",
+    "alt": "Foto des Tages von Ironwood Livigno, Ferienwohnung in Livigno"
   }
 }

@@ -313,5 +313,11 @@
     "whatsapp_cta": "Skriv til os på WhatsApp",
     "address_label": "Adresse",
     "form_title": "Skriv direkte til os"
+  },
+  "dailyPhoto": {
+    "eyebrow": "Dagens foto",
+    "title": "Livigno, et nyt billede hver dag",
+    "text": "Hver dag et nyt foto fra lejligheden og Livigno-dalen: kig forbi i morgen for at se et andet.",
+    "alt": "Dagens foto fra Ironwood Livigno, ferielejlighed i Livigno"
   }
 }

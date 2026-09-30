@@ -313,5 +313,11 @@
     "whatsapp_cta": "通过 WhatsApp 联系我们",
     "address_label": "地址",
     "form_title": "直接给我们留言"
+  },
+  "dailyPhoto": {
+    "eyebrow": "每日一图",
+    "title": "利维尼奥，每天一张新照片",
+    "text": "每天一张来自公寓和利维尼奥山谷的新照片：明天再来看看下一张。",
+    "alt": "Ironwood Livigno 每日一图，利维尼奥度假公寓"
   }
 }

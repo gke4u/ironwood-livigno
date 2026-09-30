@@ -14,9 +14,19 @@
 	"$schema": "./node_modules/wrangler/config-schema.json",
 	"name": "ironwood-livigno",
 	"compatibility_date": "2026-08-03",
+	// Server-side code for the photo admin and the homepage "photo of the
+	// day" (see worker/index.ts). Only the paths in run_worker_first reach
+	// it; every other request is served from ./out exactly as before,
+	// without invoking the Worker.
+	"main": "./worker/index.ts",
 	"assets": {
 		"directory": "./out",
+		"binding": "ASSETS",
 		"html_handling": "auto-trailing-slash",
-		"not_found_handling": "404-page"
-	}
+		"not_found_handling": "404-page",
+		"run_worker_first": ["/admin", "/admin/*", "/api/admin/*", "/foto-del-giorno", "/foto/*"]
+	},
+	// Uploaded photos. Secrets (set once with `npx wrangler secret put`):
+	// ADMIN_PASSWORD (the /admin login) and SESSION_SECRET (signs the login cookie).
+	"kv_namespaces": [{ "binding": "PHOTOS", "id": "5ebaedb7d16849278ddb91bed172f73d" }]
 }

@@ -313,5 +313,11 @@
     "whatsapp_cta": "Napisz do nas na WhatsApp",
     "address_label": "Adres",
     "form_title": "Napisz do nas bezpośrednio"
+  },
+  "dailyPhoto": {
+    "eyebrow": "Zdjęcie dnia",
+    "title": "Livigno, każdego dnia inne ujęcie",
+    "text": "Każdego dnia nowe zdjęcie z apartamentu i doliny Livigno: wróć jutro, by zobaczyć kolejne.",
+    "alt": "Zdjęcie dnia z Ironwood Livigno, apartamentu wakacyjnego w Livigno"
   }
 }

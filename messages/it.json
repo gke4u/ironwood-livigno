@@ -313,5 +313,11 @@
     "whatsapp_cta": "Scrivici su WhatsApp",
     "address_label": "Indirizzo",
     "form_title": "Scrivici direttamente"
+  },
+  "dailyPhoto": {
+    "eyebrow": "Foto del giorno",
+    "title": "Livigno, ogni giorno uno scatto diverso",
+    "text": "Una foto nuova ogni giorno dall'appartamento e dalla valle di Livigno: torna domani per vederne un'altra.",
+    "alt": "Foto del giorno da Ironwood Livigno, appartamento vacanze a Livigno"
   }
 }
