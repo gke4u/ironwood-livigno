@@ -24,7 +24,19 @@ export interface Env {
 
 type PhotoMeta = { id: string; type: string; w: number; h: number; bytes: number; created: string };
 
+// Login credentials chosen in the admin. Only a PBKDF2 hash of the password
+// is stored. `ver` changes with every change of credentials and is part of
+// every session cookie, so changing them logs out all other devices.
+type AuthRecord = { user: string; salt: string; hash: string; iterations: number; ver: string };
+
 const INDEX_KEY = 'index';
+const AUTH_KEY = 'auth';
+// Until credentials are changed from the admin, the login is this username
+// with the ADMIN_PASSWORD secret. Deleting the `auth` KV key restores it
+// (the recovery path if the chosen password is forgotten).
+const DEFAULT_USER = 'ironwood';
+const PBKDF2_ITERATIONS = 100_000; // the Workers runtime maximum
+const MIN_PASSWORD = 8;
 const MAX_BYTES = 3 * 1024 * 1024;
 const SESSION_COOKIE = 'iw_admin';
 const SESSION_DAYS = 30;
@@ -115,12 +127,16 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
     return json({ ok: true }, 200, { 'Set-Cookie': `${SESSION_COOKIE}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Strict` });
   }
 
-  if (!(await isLoggedIn(request, env))) return json({ error: 'Accesso richiesto' }, 401);
+  const auth = await readAuth(env);
+  if (!(await isLoggedIn(request, env, auth))) return json({ error: 'Accesso richiesto' }, 401);
+
+  if (route === 'credentials' && request.method === 'POST') return changeCredentials(request, env, auth);
 
   if (route === 'photos' && request.method === 'GET') {
     const index = await readIndex(env, 0);
     const today = romeDate();
     return json({
+      user: auth?.user ?? DEFAULT_USER,
       photos: index,
       todayId: index.length ? pickForDate(index, today).id : null,
       tomorrowId: index.length ? pickForDate(index, addDays(today, 1)).id : null
@@ -139,27 +155,94 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
 }
 
 async function login(request: Request, env: Env): Promise<Response> {
-  const body = (await request.json().catch(() => ({}))) as { password?: unknown };
+  const body = (await request.json().catch(() => ({}))) as { user?: unknown; password?: unknown };
+  const user = typeof body.user === 'string' ? body.user.trim() : '';
   const password = typeof body.password === 'string' ? body.password : '';
-  if (!(await safeEqual(password, env.ADMIN_PASSWORD))) {
+  const auth = await readAuth(env);
+  if (!(await checkCredentials(user, password, auth, env))) {
     // Slows down password guessing.
     await new Promise((r) => setTimeout(r, 1500));
-    return json({ error: 'Password errata' }, 401);
+    return json({ error: 'Utente o password errati' }, 401);
   }
-  const expires = Date.now() + SESSION_DAYS * 86400_000;
-  const token = `${expires}.${await sign(String(expires), env.SESSION_SECRET)}`;
-  return json({ ok: true }, 200, {
-    'Set-Cookie': `${SESSION_COOKIE}=${token}; Path=/; Max-Age=${SESSION_DAYS * 86400}; HttpOnly; Secure; SameSite=Strict`
-  });
+  return json({ ok: true }, 200, { 'Set-Cookie': await sessionCookie(env, auth) });
 }
 
-async function isLoggedIn(request: Request, env: Env): Promise<boolean> {
+async function changeCredentials(request: Request, env: Env, auth: AuthRecord | null): Promise<Response> {
+  const body = (await request.json().catch(() => ({}))) as { currentPassword?: unknown; newUser?: unknown; newPassword?: unknown };
+  const currentPassword = typeof body.currentPassword === 'string' ? body.currentPassword : '';
+  const newUser = typeof body.newUser === 'string' ? body.newUser.trim() : '';
+  const newPassword = typeof body.newPassword === 'string' ? body.newPassword : '';
+
+  if (!(await checkCredentials(auth?.user ?? DEFAULT_USER, currentPassword, auth, env))) {
+    await new Promise((r) => setTimeout(r, 1500));
+    return json({ error: 'La password attuale non è corretta' }, 403);
+  }
+  if (!/^[A-Za-z0-9._@-]{3,40}$/.test(newUser)) {
+    return json({ error: 'Nome utente: da 3 a 40 caratteri, solo lettere, numeri e . _ @ -' }, 400);
+  }
+  if (newPassword.length < MIN_PASSWORD || newPassword.length > 128) {
+    return json({ error: `La nuova password deve avere almeno ${MIN_PASSWORD} caratteri` }, 400);
+  }
+
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const record: AuthRecord = {
+    user: newUser,
+    salt: toBase64(salt),
+    hash: await pbkdf2(newPassword, salt, PBKDF2_ITERATIONS),
+    iterations: PBKDF2_ITERATIONS,
+    ver: crypto.randomUUID()
+  };
+  await env.PHOTOS.put(AUTH_KEY, JSON.stringify(record));
+  // New cookie for this device; every other device's cookie no longer matches `ver`.
+  return json({ ok: true, user: newUser }, 200, { 'Set-Cookie': await sessionCookie(env, record) });
+}
+
+async function checkCredentials(user: string, password: string, auth: AuthRecord | null, env: Env): Promise<boolean> {
+  if (!auth) {
+    const userOk = user.toLowerCase() === DEFAULT_USER;
+    const passOk = await safeEqual(password, env.ADMIN_PASSWORD);
+    return userOk && passOk;
+  }
+  const userOk = user.toLowerCase() === auth.user.toLowerCase();
+  const hash = await pbkdf2(password, fromBase64(auth.salt), auth.iterations);
+  const passOk = await safeEqual(hash, auth.hash);
+  return userOk && passOk;
+}
+
+async function readAuth(env: Env): Promise<AuthRecord | null> {
+  const raw = await env.PHOTOS.get(AUTH_KEY);
+  return raw ? (JSON.parse(raw) as AuthRecord) : null;
+}
+
+async function sessionCookie(env: Env, auth: AuthRecord | null): Promise<string> {
+  const expires = String(Date.now() + SESSION_DAYS * 86400_000);
+  const ver = auth?.ver ?? 'initial';
+  const token = `${expires}.${ver}.${await sign(`${expires}.${ver}`, env.SESSION_SECRET)}`;
+  return `${SESSION_COOKIE}=${token}; Path=/; Max-Age=${SESSION_DAYS * 86400}; HttpOnly; Secure; SameSite=Strict`;
+}
+
+async function isLoggedIn(request: Request, env: Env, auth: AuthRecord | null): Promise<boolean> {
   const cookie = request.headers.get('Cookie') ?? '';
   const token = cookie.split(/;\s*/).find((c) => c.startsWith(`${SESSION_COOKIE}=`))?.slice(SESSION_COOKIE.length + 1);
   if (!token) return false;
-  const [expires, mac] = token.split('.');
-  if (!expires || !mac || Number(expires) < Date.now()) return false;
-  return safeEqual(mac, await sign(expires, env.SESSION_SECRET));
+  const [expires, ver, mac] = token.split('.');
+  if (!expires || !ver || !mac || Number(expires) < Date.now()) return false;
+  if (ver !== (auth?.ver ?? 'initial')) return false;
+  return safeEqual(mac, await sign(`${expires}.${ver}`, env.SESSION_SECRET));
+}
+
+async function pbkdf2(password: string, salt: Uint8Array, iterations: number): Promise<string> {
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
+  const bits = await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt, iterations }, key, 256);
+  return toBase64(new Uint8Array(bits));
+}
+
+function toBase64(bytes: Uint8Array): string {
+  return btoa(String.fromCharCode(...bytes));
+}
+
+function fromBase64(b64: string): Uint8Array {
+  return Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
 }
 
 async function upload(request: Request, env: Env): Promise<Response> {

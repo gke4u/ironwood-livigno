@@ -25,7 +25,9 @@ export function adminPage(): string {
   button.secondary { background:transparent; color:var(--mist); border:1px solid rgba(255,255,255,.4); padding:8px 16px; min-height:36px; }
   button.danger { background:transparent; color:#a33; border:1px solid #e3b5b5; padding:6px 14px; min-height:36px; font-weight:500; }
   button:disabled { opacity:.5; cursor:default; }
-  input[type=password] { font:inherit; width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:12px; margin-bottom:12px; }
+  input[type=password], input[type=text] { font:inherit; width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:12px; margin-bottom:12px; }
+  label.field { display:block; font-size:14px; font-weight:600; margin-bottom:6px; }
+  .okmsg { color:var(--ok); }
   .drop { display:block; border:2px dashed var(--line); border-radius:16px; padding:32px 16px; text-align:center; cursor:pointer; transition:.2s; }
   .drop.over { border-color:var(--brick); background:#fbf6f2; }
   .drop strong { display:block; margin-bottom:6px; }
@@ -53,8 +55,9 @@ export function adminPage(): string {
 <main>
   <section id="login" class="card hidden">
     <h2>Accesso</h2>
-    <p class="hint">Inserisci la password dell'area admin.</p>
+    <p class="hint">Inserisci nome utente e password dell'area admin.</p>
     <form id="loginForm">
+      <input type="text" id="user" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="Nome utente" required>
       <input type="password" id="password" autocomplete="current-password" placeholder="Password" required>
       <button type="submit">Entra</button>
       <p id="loginError" class="error"></p>
@@ -83,6 +86,23 @@ export function adminPage(): string {
       <div id="grid" class="grid"></div>
       <p id="empty" class="hint hidden">Nessuna foto ancora: finché non ne carichi una, sul sito compare una foto di Livigno già presente.</p>
     </section>
+
+    <section class="card">
+      <h2>Utente e password</h2>
+      <p class="hint">Qui puoi cambiare il nome utente e la password per entrare. La password deve avere almeno 8 caratteri. Dopo il cambio, gli altri dispositivi collegati dovranno rientrare con i nuovi dati.</p>
+      <form id="credForm" autocomplete="off">
+        <label class="field" for="newUser">Nome utente</label>
+        <input type="text" id="newUser" autocomplete="username" autocapitalize="none" spellcheck="false" required minlength="3" maxlength="40">
+        <label class="field" for="newPassword">Nuova password</label>
+        <input type="password" id="newPassword" autocomplete="new-password" required minlength="8" maxlength="128">
+        <label class="field" for="newPassword2">Ripeti la nuova password</label>
+        <input type="password" id="newPassword2" autocomplete="new-password" required minlength="8" maxlength="128">
+        <label class="field" for="currentPassword">Password attuale (per conferma)</label>
+        <input type="password" id="currentPassword" autocomplete="current-password" required>
+        <button type="submit">Salva</button>
+        <p id="credMsg"></p>
+      </form>
+    </section>
   </div>
 </main>
 
@@ -102,7 +122,7 @@ function showLogin() {
   $('login').classList.remove('hidden');
   $('panel').classList.add('hidden');
   $('logout').classList.add('hidden');
-  $('password').focus();
+  $('user').focus();
 }
 
 function showPanel() {
@@ -117,11 +137,39 @@ $('loginForm').addEventListener('submit', async (e) => {
   const btn = e.target.querySelector('button');
   btn.disabled = true;
   try {
-    await api('login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: $('password').value }) });
+    await api('login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user: $('user').value, password: $('password').value }) });
     $('password').value = '';
     await load();
   } catch (err) {
     $('loginError').textContent = err.message;
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+$('credForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const msg = $('credMsg');
+  msg.className = '';
+  msg.textContent = '';
+  const newPassword = $('newPassword').value;
+  if (newPassword.length < 8) { msg.className = 'error'; msg.textContent = 'La nuova password deve avere almeno 8 caratteri.'; return; }
+  if (newPassword !== $('newPassword2').value) { msg.className = 'error'; msg.textContent = 'Le due nuove password non coincidono.'; return; }
+  const btn = e.target.querySelector('button');
+  btn.disabled = true;
+  try {
+    const res = await api('credentials', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ currentPassword: $('currentPassword').value, newUser: $('newUser').value.trim(), newPassword })
+    });
+    ['newPassword', 'newPassword2', 'currentPassword'].forEach((id) => { $(id).value = ''; });
+    $('newUser').value = res.user;
+    msg.className = 'okmsg';
+    msg.textContent = 'Salvato. D’ora in poi entra con utente "' + res.user + '" e la nuova password.';
+  } catch (err) {
+    msg.className = 'error';
+    msg.textContent = err.message;
   } finally {
     btn.disabled = false;
   }
@@ -150,6 +198,7 @@ function formatKB(bytes) { return Math.round(bytes / 1024) + ' KB'; }
 async function load() {
   const data = await api('photos');
   showPanel();
+  if (document.activeElement !== $('newUser')) $('newUser').value = data.user;
   const photos = data.photos;
   const today = romeToday();
   $('count').textContent = photos.length ? '(' + photos.length + ')' : '';

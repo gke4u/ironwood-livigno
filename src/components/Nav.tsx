@@ -8,6 +8,7 @@ import type { SatellitePage } from '@/data/satellite-pages';
 import LangSwitcher from './LangSwitcher';
 import MobileMenu from './MobileMenu';
 import Logo from './Logo';
+import { useLongPress } from './useLongPress';
 import { blogIndexHref } from '@/lib/blogIndex';
 
 const SECTION_IDS = ['esperienza', 'camere', 'posizione', 'prenota'];
@@ -33,6 +34,11 @@ export default function Nav({ locale, satellitePages }: { locale: Locale; satell
 
   const home = `/${locale}`;
   const contactHref = `/${locale}/${contactSlugs[locale]}`;
+  // Hidden way into the photo admin: hold the logo for 3 seconds.
+  const logoPress = useLongPress(() => {
+    if (navigator.vibrate) navigator.vibrate(40);
+    window.location.href = '/admin';
+  });
 
   useEffect(() => {
     function onScroll() {
@@ -103,7 +109,13 @@ export default function Nav({ locale, satellitePages }: { locale: Locale; satell
           scrolled ? 'py-4' : 'py-6'
         }`}
       >
-        <a href={home} aria-label="Ironwood Livigno — home">
+        <a
+          href={home}
+          aria-label="Ironwood Livigno — home"
+          {...logoPress}
+          draggable={false}
+          className="select-none [-webkit-touch-callout:none]"
+        >
           <Logo className={`text-mist transition-transform duration-300 ${scrolled ? 'scale-90' : ''}`} />
         </a>
         <nav className="hidden lg:flex items-center gap-7 text-mist/90 text-sm uppercase tracking-widest">
