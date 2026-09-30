@@ -35,6 +35,9 @@ export function adminPage(): string {
   .switch .track::after { content:''; position:absolute; top:3px; left:3px; width:24px; height:24px; border-radius:50%; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.25); transition:.2s; }
   .switch input:checked + .track { background:var(--ok); }
   .switch input:checked + .track::after { transform:translateX(22px); }
+  .switch .on { color:var(--ok); }
+  .switch .off { color:#a33; }
+  .warn { color:#8a5a00; background:#fbf1dc; border-radius:12px; padding:10px 12px; }
   .switch input:focus-visible + .track { outline:2px solid var(--brick); outline-offset:2px; }
   .status { border-radius:12px; padding:12px 14px; font-size:14px; margin-bottom:16px; line-height:1.45; }
   .status.live { background:#e7f3ea; color:#1f5a2b; }
@@ -108,7 +111,7 @@ export function adminPage(): string {
       <p class="hint">Inserisci date e prezzo: il pop-up, già pronto e tradotto in tutte le 12 lingue, compare ai visitatori del sito nel periodo che scegli, con i pulsanti per prenotare via WhatsApp o email.</p>
       <div id="offerStatus" class="status off">Nessuna offerta salvata.</div>
       <form id="offerForm" autocomplete="off">
-        <label class="switch"><input type="checkbox" id="offerActive"><span class="track"></span><span>Pop-up attivo</span></label>
+        <label class="switch"><input type="checkbox" id="offerActive" checked><span class="track"></span><span id="offerSwitchText">Pop-up ACCESO</span></label>
         <div class="row2">
           <div><label class="field" for="offerCheckIn">Arrivo</label><input type="date" id="offerCheckIn" required></div>
           <div><label class="field" for="offerCheckOut">Partenza</label><input type="date" id="offerCheckOut" required></div>
@@ -208,6 +211,13 @@ function updateNights() {
 }
 ['offerCheckIn', 'offerCheckOut'].forEach((id) => $(id).addEventListener('change', updateNights));
 
+function updateSwitchText() {
+  const on = $('offerActive').checked;
+  const el = $('offerSwitchText');
+  el.textContent = on ? 'Pop-up ACCESO' : 'Pop-up SPENTO';
+  el.className = on ? 'on' : 'off';
+}
+
 function showOfferStatus(offer, today) {
   const box = $('offerStatus');
   if (!offer) { box.className = 'status off'; box.textContent = 'Nessuna offerta salvata.'; return; }
@@ -219,7 +229,9 @@ function showOfferStatus(offer, today) {
 }
 
 function fillOffer(offer, today) {
-  $('offerActive').checked = offer ? offer.active : false;
+  // A new offer starts switched on: the point of filling it in is to show it.
+  $('offerActive').checked = offer ? offer.active : true;
+  updateSwitchText();
   $('offerCheckIn').value = offer ? offer.checkIn : '';
   $('offerCheckOut').value = offer ? offer.checkOut : '';
   $('offerPrice').value = offer ? offer.price : '';
@@ -258,8 +270,20 @@ $('offerForm').addEventListener('submit', async (e) => {
       })
     });
     fillOffer(data.offer, data.today);
-    msg.className = 'okmsg';
-    msg.textContent = 'Offerta salvata. Sul sito si aggiorna entro un paio di minuti.';
+    const o = data.offer;
+    if (!o.active) {
+      msg.className = 'warn';
+      msg.textContent = 'Offerta salvata, ma il pop-up è SPENTO: sul sito non si vede. Tocca l’interruttore per accenderlo.';
+    } else if (data.today < o.showFrom) {
+      msg.className = 'warn';
+      msg.textContent = 'Offerta salvata: comparirà sul sito dal ' + fmtDate(o.showFrom) + '.';
+    } else if (data.today > o.showUntil) {
+      msg.className = 'warn';
+      msg.textContent = 'Offerta salvata, ma la fine offerta è già passata: sposta la data di fine per mostrarla.';
+    } else {
+      msg.className = 'okmsg';
+      msg.textContent = 'Offerta salvata e visibile sul sito (entro un paio di minuti).';
+    }
   } catch (err) {
     msg.className = 'error';
     msg.textContent = err.message;
@@ -269,7 +293,11 @@ $('offerForm').addEventListener('submit', async (e) => {
 });
 // Switching the pop-up on or off saves right away.
 $('offerActive').addEventListener('change', () => {
-  if ($('offerCheckIn').value && $('offerPrice').value) $('offerForm').requestSubmit();
+  updateSwitchText();
+  if (!$('offerCheckIn').value || !$('offerPrice').value) return;
+  const form = $('offerForm');
+  // requestSubmit is missing on older iPhones (Safari before 16).
+  if (form.requestSubmit) form.requestSubmit(); else form.querySelector('button[type=submit]').click();
 });
 
 $('credForm').addEventListener('submit', async (e) => {
