@@ -319,5 +319,35 @@
     "title": "リヴィーニョ、毎日ちがう一枚",
     "text": "アパートメントとリヴィーニョの谷から、毎日新しい写真をお届けします。明日もまた見に来てください。",
     "alt": "Ironwood Livigno（リヴィーニョの貸別荘）の今日の一枚"
+  },
+  "offer": {
+    "eyebrow": "特別オファー",
+    "title": "リヴィーニョの隠れ家を、特別価格で",
+    "checkInLabel": "チェックイン",
+    "checkOutLabel": "チェックアウト",
+    "nights": {
+      "other": "{n}泊"
+    },
+    "perStay": "滞在全体の料金",
+    "perNight": "1泊あたり",
+    "save": "{pct}%お得",
+    "features": [
+      "プライベートサウナとスチームバス",
+      "リフトまで100m",
+      "最大6名・寝室3室"
+    ],
+    "limited": "アパートメントは1室のみ。予約が入り次第終了します。",
+    "validUntil": "{date}まで有効",
+    "endsIn": "終了まで",
+    "days": "日",
+    "hours": "時間",
+    "minutes": "分",
+    "ctaWhatsapp": "WhatsAppで予約",
+    "ctaEmail": "メールで予約",
+    "close": "閉じる",
+    "pill": "オファー",
+    "waMessage": "こんにちは！Ironwood Livignoの特別オファー（{checkIn}〜{checkOut}、{price}）を予約したいです。まだ空いていますか？",
+    "emailSubject": "特別オファー {checkIn} – {checkOut}",
+    "emailFields": "お名前：\n人数："
   }
 }

@@ -319,5 +319,36 @@
     "title": "Livigno, a different shot every day",
     "text": "A new photo every day from the apartment and the Livigno valley: come back tomorrow to see another one.",
     "alt": "Photo of the day from Ironwood Livigno, vacation rental in Livigno"
+  },
+  "offer": {
+    "eyebrow": "Special offer",
+    "title": "Your Livigno retreat, at a special price",
+    "checkInLabel": "Check-in",
+    "checkOutLabel": "Check-out",
+    "nights": {
+      "one": "{n} night",
+      "other": "{n} nights"
+    },
+    "perStay": "for the whole stay",
+    "perNight": "per night",
+    "save": "Save {pct}%",
+    "features": [
+      "Private sauna and steam room",
+      "330 ft from the ski lifts",
+      "Up to 6 guests · 3 bedrooms"
+    ],
+    "limited": "Just one apartment: once it’s booked, the offer is gone.",
+    "validUntil": "Offer valid through {date}",
+    "endsIn": "Ends in",
+    "days": "d",
+    "hours": "h",
+    "minutes": "min",
+    "ctaWhatsapp": "Book on WhatsApp",
+    "ctaEmail": "Book by email",
+    "close": "Close",
+    "pill": "Offer",
+    "waMessage": "Hi! I’d like to book the Ironwood Livigno special offer from {checkIn} to {checkOut} ({price}). Is it still available?",
+    "emailSubject": "Special offer {checkIn} – {checkOut}",
+    "emailFields": "Name:\nNumber of guests:"
   }
 }

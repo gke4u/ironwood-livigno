@@ -319,5 +319,36 @@
     "title": "Livigno, ogni giorno uno scatto diverso",
     "text": "Una foto nuova ogni giorno dall'appartamento e dalla valle di Livigno: torna domani per vederne un'altra.",
     "alt": "Foto del giorno da Ironwood Livigno, appartamento vacanze a Livigno"
+  },
+  "offer": {
+    "eyebrow": "Offerta speciale",
+    "title": "Il tuo rifugio a Livigno, a un prezzo speciale",
+    "checkInLabel": "Arrivo",
+    "checkOutLabel": "Partenza",
+    "nights": {
+      "one": "{n} notte",
+      "other": "{n} notti"
+    },
+    "perStay": "per tutto il soggiorno",
+    "perNight": "a notte",
+    "save": "Risparmi il {pct}%",
+    "features": [
+      "Sauna e bagno turco privati",
+      "100 m dagli impianti",
+      "Fino a 6 ospiti · 3 camere"
+    ],
+    "limited": "Un solo appartamento: quando è prenotato, l’offerta finisce.",
+    "validUntil": "Offerta valida fino al {date}",
+    "endsIn": "Scade tra",
+    "days": "g",
+    "hours": "h",
+    "minutes": "min",
+    "ctaWhatsapp": "Prenota su WhatsApp",
+    "ctaEmail": "Prenota via email",
+    "close": "Chiudi",
+    "pill": "Offerta",
+    "waMessage": "Ciao! Vorrei prenotare l’offerta speciale di Ironwood Livigno dal {checkIn} al {checkOut} ({price}). È ancora disponibile?",
+    "emailSubject": "Offerta speciale {checkIn} – {checkOut}",
+    "emailFields": "Nome:\nNumero di ospiti:"
   }
 }

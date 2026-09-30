@@ -319,5 +319,36 @@
     "title": "Livigno, jeden Tag ein anderes Bild",
     "text": "Jeden Tag ein neues Foto aus der Ferienwohnung und dem Tal von Livigno: Schauen Sie morgen wieder vorbei.",
     "alt": "Foto des Tages von Ironwood Livigno, Ferienwohnung in Livigno"
+  },
+  "offer": {
+    "eyebrow": "Sonderangebot",
+    "title": "Ihr Rückzugsort in Livigno – zum Sonderpreis",
+    "checkInLabel": "Anreise",
+    "checkOutLabel": "Abreise",
+    "nights": {
+      "one": "{n} Nacht",
+      "other": "{n} Nächte"
+    },
+    "perStay": "für den gesamten Aufenthalt",
+    "perNight": "pro Nacht",
+    "save": "{pct} % sparen",
+    "features": [
+      "Private Sauna und Dampfbad",
+      "100 m zu den Liften",
+      "Bis zu 6 Gäste · 3 Schlafzimmer"
+    ],
+    "limited": "Nur eine Wohnung: Ist sie gebucht, endet das Angebot.",
+    "validUntil": "Angebot gültig bis {date}",
+    "endsIn": "Endet in",
+    "days": "T",
+    "hours": "Std",
+    "minutes": "Min",
+    "ctaWhatsapp": "Per WhatsApp buchen",
+    "ctaEmail": "Per E-Mail buchen",
+    "close": "Schließen",
+    "pill": "Angebot",
+    "waMessage": "Hallo! Ich möchte das Sonderangebot von Ironwood Livigno vom {checkIn} bis {checkOut} ({price}) buchen. Ist es noch verfügbar?",
+    "emailSubject": "Sonderangebot {checkIn} – {checkOut}",
+    "emailFields": "Name:\nAnzahl der Gäste:"
   }
 }

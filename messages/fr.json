@@ -319,5 +319,36 @@
     "title": "Livigno, chaque jour une image différente",
     "text": "Chaque jour une nouvelle photo de l'appartement et de la vallée de Livigno : revenez demain pour en découvrir une autre.",
     "alt": "Photo du jour d'Ironwood Livigno, appartement de vacances à Livigno"
+  },
+  "offer": {
+    "eyebrow": "Offre spéciale",
+    "title": "Votre refuge à Livigno, à un prix spécial",
+    "checkInLabel": "Arrivée",
+    "checkOutLabel": "Départ",
+    "nights": {
+      "one": "{n} nuit",
+      "other": "{n} nuits"
+    },
+    "perStay": "pour tout le séjour",
+    "perNight": "par nuit",
+    "save": "{pct} % d’économie",
+    "features": [
+      "Sauna et hammam privés",
+      "À 100 m des remontées",
+      "Jusqu’à 6 personnes · 3 chambres"
+    ],
+    "limited": "Un seul appartement : une fois réservé, l’offre disparaît.",
+    "validUntil": "Offre valable jusqu’au {date}",
+    "endsIn": "Se termine dans",
+    "days": "j",
+    "hours": "h",
+    "minutes": "min",
+    "ctaWhatsapp": "Réserver sur WhatsApp",
+    "ctaEmail": "Réserver par e-mail",
+    "close": "Fermer",
+    "pill": "Offre",
+    "waMessage": "Bonjour ! Je souhaite réserver l’offre spéciale d’Ironwood Livigno du {checkIn} au {checkOut} ({price}). Est-elle encore disponible ?",
+    "emailSubject": "Offre spéciale {checkIn} – {checkOut}",
+    "emailFields": "Nom :\nNombre de personnes :"
   }
 }

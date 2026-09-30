@@ -7,6 +7,7 @@
 //   /api/admin/*           its JSON API
 //   /foto-del-giorno       today's photo, the same one for everyone all day
 //   /foto/<id>             a single uploaded photo (admin thumbnails)
+//   /api/offer             the special offer to show in the site pop-up, if any
 //
 // Photos are compressed in the browser before upload (see admin.ts), so the
 // Worker only stores and serves bytes. They live in KV: each photo under
@@ -14,6 +15,7 @@
 // in its own key because KV list() is capped at 1,000 calls a day on the free
 // plan, while get() allows 100,000.
 import { adminPage } from './admin';
+import { OFFER_KEY, isLive, parseOffer, publicOffer, type Offer } from './offer';
 
 export interface Env {
   ASSETS: Fetcher;
@@ -51,6 +53,7 @@ export default {
     try {
       if (path === '/foto-del-giorno') return await photoOfTheDay(request, env, ctx);
       if (path.startsWith('/foto/')) return await photoById(path.slice('/foto/'.length), env);
+      if (path === '/api/offer') return await offerApi(request, env);
       if (path === '/admin') return html(adminPage());
       if (path.startsWith('/api/admin/')) return await adminApi(request, env, path.slice('/api/admin/'.length));
     } catch (err) {
@@ -110,6 +113,28 @@ async function photoById(id: string, env: Env): Promise<Response> {
   });
 }
 
+// ---------- offer (public) ----------
+
+async function offerApi(request: Request, env: Env): Promise<Response> {
+  // ?preview=1 from a logged-in admin shows the saved offer even when it is
+  // switched off or outside its dates (the admin's "Anteprima" button).
+  if (new URL(request.url).searchParams.has('preview')) {
+    const offer = await readOffer(env, 0);
+    if (offer && env.SESSION_SECRET && (await isLoggedIn(request, env, await readAuth(env)))) {
+      return json({ offer: publicOffer(offer) });
+    }
+    return json({ offer: null });
+  }
+  const offer = await readOffer(env);
+  const body = offer && isLive(offer, romeDate()) ? { offer: publicOffer(offer) } : { offer: null };
+  return json(body, 200, { 'Cache-Control': 'public, max-age=60' });
+}
+
+async function readOffer(env: Env, cacheTtl = 60): Promise<Offer | null> {
+  const raw = await env.PHOTOS.get(OFFER_KEY, cacheTtl ? { cacheTtl } : undefined);
+  return raw ? (JSON.parse(raw) as Offer) : null;
+}
+
 // ---------- admin API ----------
 
 async function adminApi(request: Request, env: Env, route: string): Promise<Response> {
@@ -131,6 +156,14 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
   if (!(await isLoggedIn(request, env, auth))) return json({ error: 'Accesso richiesto' }, 401);
 
   if (route === 'credentials' && request.method === 'POST') return changeCredentials(request, env, auth);
+
+  if (route === 'offer' && request.method === 'GET') return json({ offer: await readOffer(env, 0), today: romeDate() });
+  if (route === 'offer' && request.method === 'PUT') {
+    const parsed = parseOffer((await request.json().catch(() => ({}))) as Record<string, unknown>);
+    if (typeof parsed === 'string') return json({ error: parsed }, 400);
+    await env.PHOTOS.put(OFFER_KEY, JSON.stringify(parsed));
+    return json({ offer: parsed, today: romeDate() });
+  }
 
   if (route === 'photos' && request.method === 'GET') {
     const index = await readIndex(env, 0);

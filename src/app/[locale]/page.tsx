@@ -43,11 +43,11 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
       <Nav locale={locale} satellitePages={getSatellitePages(locale)} />
       <Hero />
       <WeatherSection />
-      <DailyPhoto />
       <Gallery />
       <VirtualTour />
       <Rooms />
       <BookingSection />
+      <DailyPhoto />
       <RatesTable />
       <Amenities />
       <ExtraServices locale={locale} />

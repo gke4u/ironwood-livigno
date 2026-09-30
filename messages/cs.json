@@ -319,5 +319,38 @@
     "title": "Livigno, každý den jiný záběr",
     "text": "Každý den nová fotka z apartmánu a z údolí Livigna: vraťte se zítra a uvidíte další.",
     "alt": "Fotka dne z Ironwood Livigno, prázdninového apartmánu v Livignu"
+  },
+  "offer": {
+    "eyebrow": "Speciální nabídka",
+    "title": "Vaše útočiště v Livignu za speciální cenu",
+    "checkInLabel": "Příjezd",
+    "checkOutLabel": "Odjezd",
+    "nights": {
+      "one": "{n} noc",
+      "few": "{n} noci",
+      "many": "{n} noci",
+      "other": "{n} nocí"
+    },
+    "perStay": "za celý pobyt",
+    "perNight": "za noc",
+    "save": "Ušetříte {pct} %",
+    "features": [
+      "Soukromá sauna a parní lázeň",
+      "100 m od lanovek",
+      "Až 6 hostů · 3 ložnice"
+    ],
+    "limited": "Jen jeden apartmán: jakmile je rezervován, nabídka končí.",
+    "validUntil": "Nabídka platí do {date}",
+    "endsIn": "Končí za",
+    "days": "d",
+    "hours": "h",
+    "minutes": "min",
+    "ctaWhatsapp": "Rezervovat přes WhatsApp",
+    "ctaEmail": "Rezervovat e-mailem",
+    "close": "Zavřít",
+    "pill": "Nabídka",
+    "waMessage": "Dobrý den! Rád bych si rezervoval speciální nabídku Ironwood Livigno od {checkIn} do {checkOut} ({price}). Je ještě volná?",
+    "emailSubject": "Speciální nabídka {checkIn} – {checkOut}",
+    "emailFields": "Jméno:\nPočet hostů:"
   }
 }

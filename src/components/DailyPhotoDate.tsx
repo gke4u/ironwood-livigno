@@ -11,7 +11,7 @@ const DATE_LOCALE: Record<string, string> = { en: 'en-GB', 'en-us': 'en-US', no:
 // browser because the page is static: the photo behind /foto-del-giorno
 // changes at midnight Italian time, and so does this label. Rendered only
 // after mount, so the prebuilt HTML never shows the build date.
-export default function DailyPhotoDate() {
+export default function DailyPhotoDate({ className = '' }: { className?: string }) {
   const locale = useLocale();
   const [date, setDate] = useState<{ iso: string; label: string } | null>(null);
 
@@ -27,13 +27,11 @@ export default function DailyPhotoDate() {
     setDate({ iso, label });
   }, [locale]);
 
-  if (!date) return null;
+  // Until the date is known, a non-breaking space keeps the line's height so
+  // nothing below it jumps when the date appears.
   return (
-    <time
-      dateTime={date.iso}
-      className="absolute left-4 top-4 md:left-6 md:top-6 bg-ink/75 text-mist text-sm md:text-base font-medium rounded-full px-4 py-2 backdrop-blur-sm"
-    >
-      {date.label}
+    <time dateTime={date?.iso} className={className}>
+      {date ? date.label : ' '}
     </time>
   );
 }

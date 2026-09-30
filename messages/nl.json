@@ -319,5 +319,36 @@
     "title": "Livigno, elke dag een ander beeld",
     "text": "Elke dag een nieuwe foto van het appartement en het dal van Livigno: kom morgen terug voor een andere.",
     "alt": "Foto van de dag van Ironwood Livigno, vakantieappartement in Livigno"
+  },
+  "offer": {
+    "eyebrow": "Speciale aanbieding",
+    "title": "Jouw toevluchtsoord in Livigno, voor een speciale prijs",
+    "checkInLabel": "Aankomst",
+    "checkOutLabel": "Vertrek",
+    "nights": {
+      "one": "{n} nacht",
+      "other": "{n} nachten"
+    },
+    "perStay": "voor het hele verblijf",
+    "perNight": "per nacht",
+    "save": "Bespaar {pct}%",
+    "features": [
+      "Privésauna en stoombad",
+      "100 m van de liften",
+      "Tot 6 gasten · 3 slaapkamers"
+    ],
+    "limited": "Maar één appartement: zodra het geboekt is, is de aanbieding voorbij.",
+    "validUntil": "Aanbieding geldig tot {date}",
+    "endsIn": "Eindigt over",
+    "days": "d",
+    "hours": "u",
+    "minutes": "min",
+    "ctaWhatsapp": "Boek via WhatsApp",
+    "ctaEmail": "Boek via e-mail",
+    "close": "Sluiten",
+    "pill": "Aanbieding",
+    "waMessage": "Hallo! Ik wil graag de speciale aanbieding van Ironwood Livigno boeken van {checkIn} tot {checkOut} ({price}). Is die nog beschikbaar?",
+    "emailSubject": "Speciale aanbieding {checkIn} – {checkOut}",
+    "emailFields": "Naam:\nAantal gasten:"
   }
 }

@@ -319,5 +319,35 @@
     "title": "利维尼奥，每天一张新照片",
     "text": "每天一张来自公寓和利维尼奥山谷的新照片：明天再来看看下一张。",
     "alt": "Ironwood Livigno 每日一图，利维尼奥度假公寓"
+  },
+  "offer": {
+    "eyebrow": "特别优惠",
+    "title": "您在利维尼奥的山间居所，特惠价格",
+    "checkInLabel": "入住",
+    "checkOutLabel": "退房",
+    "nights": {
+      "other": "{n} 晚"
+    },
+    "perStay": "整个住宿",
+    "perNight": "每晚",
+    "save": "立省 {pct}%",
+    "features": [
+      "私人桑拿和蒸汽浴",
+      "距缆车 100 米",
+      "最多 6 位客人 · 3 间卧室"
+    ],
+    "limited": "仅此一套公寓：一经预订，优惠即止。",
+    "validUntil": "优惠有效期至 {date}",
+    "endsIn": "距结束还有",
+    "days": "天",
+    "hours": "小时",
+    "minutes": "分",
+    "ctaWhatsapp": "通过 WhatsApp 预订",
+    "ctaEmail": "通过邮件预订",
+    "close": "关闭",
+    "pill": "优惠",
+    "waMessage": "您好！我想预订 Ironwood Livigno 的特别优惠，{checkIn} 至 {checkOut}（{price}）。现在还可以预订吗？",
+    "emailSubject": "特别优惠 {checkIn} – {checkOut}",
+    "emailFields": "姓名：\n入住人数："
   }
 }

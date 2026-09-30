@@ -319,5 +319,38 @@
     "title": "Livigno, każdego dnia inne ujęcie",
     "text": "Każdego dnia nowe zdjęcie z apartamentu i doliny Livigno: wróć jutro, by zobaczyć kolejne.",
     "alt": "Zdjęcie dnia z Ironwood Livigno, apartamentu wakacyjnego w Livigno"
+  },
+  "offer": {
+    "eyebrow": "Oferta specjalna",
+    "title": "Twoje schronienie w Livigno w specjalnej cenie",
+    "checkInLabel": "Przyjazd",
+    "checkOutLabel": "Wyjazd",
+    "nights": {
+      "one": "{n} noc",
+      "few": "{n} noce",
+      "many": "{n} nocy",
+      "other": "{n} nocy"
+    },
+    "perStay": "za cały pobyt",
+    "perNight": "za noc",
+    "save": "Oszczędzasz {pct}%",
+    "features": [
+      "Prywatna sauna i łaźnia parowa",
+      "100 m od wyciągów",
+      "Do 6 osób · 3 sypialnie"
+    ],
+    "limited": "Tylko jeden apartament: gdy zostanie zarezerwowany, oferta się kończy.",
+    "validUntil": "Oferta ważna do {date}",
+    "endsIn": "Kończy się za",
+    "days": "d",
+    "hours": "godz.",
+    "minutes": "min",
+    "ctaWhatsapp": "Zarezerwuj przez WhatsApp",
+    "ctaEmail": "Zarezerwuj e-mailem",
+    "close": "Zamknij",
+    "pill": "Oferta",
+    "waMessage": "Dzień dobry! Chciałbym zarezerwować ofertę specjalną Ironwood Livigno od {checkIn} do {checkOut} ({price}). Czy jest jeszcze dostępna?",
+    "emailSubject": "Oferta specjalna {checkIn} – {checkOut}",
+    "emailFields": "Imię i nazwisko:\nLiczba osób:"
   }
 }

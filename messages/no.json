@@ -319,5 +319,36 @@
     "title": "Livigno, et nytt bilde hver dag",
     "text": "Hver dag et nytt bilde fra leiligheten og Livigno-dalen: kom tilbake i morgen for å se et annet.",
     "alt": "Dagens bilde fra Ironwood Livigno, ferieleilighet i Livigno"
+  },
+  "offer": {
+    "eyebrow": "Spesialtilbud",
+    "title": "Ditt tilfluktssted i Livigno – til spesialpris",
+    "checkInLabel": "Ankomst",
+    "checkOutLabel": "Avreise",
+    "nights": {
+      "one": "{n} natt",
+      "other": "{n} netter"
+    },
+    "perStay": "for hele oppholdet",
+    "perNight": "per natt",
+    "save": "Spar {pct} %",
+    "features": [
+      "Privat badstue og dampbad",
+      "100 m til heisene",
+      "Opptil 6 gjester · 3 soverom"
+    ],
+    "limited": "Bare én leilighet: når den er booket, er tilbudet borte.",
+    "validUntil": "Tilbudet gjelder til {date}",
+    "endsIn": "Slutter om",
+    "days": "d",
+    "hours": "t",
+    "minutes": "min",
+    "ctaWhatsapp": "Bestill på WhatsApp",
+    "ctaEmail": "Bestill på e-post",
+    "close": "Lukk",
+    "pill": "Tilbud",
+    "waMessage": "Hei! Jeg vil gjerne bestille Ironwood Livignos spesialtilbud fra {checkIn} til {checkOut} ({price}). Er det fortsatt ledig?",
+    "emailSubject": "Spesialtilbud {checkIn} – {checkOut}",
+    "emailFields": "Navn:\nAntall gjester:"
   }
 }
