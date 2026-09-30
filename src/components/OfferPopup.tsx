@@ -7,9 +7,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 // /api/offer, which returns it only while it is switched on and inside its
 // dates — so the static pages never need rebuilding for a new offer.
 //
-// Opens a few seconds into the visit; once closed it stays closed for that
-// offer (localStorage, keyed by the offer id, which changes on every save)
-// and a small "Offer" button above the WhatsApp one lets visitors reopen it.
+// Opens by itself after 5 seconds of the page actually being on screen, on
+// every visit. Closing it only lasts for the rest of that visit
+// (sessionStorage, keyed by the offer id): moving between pages doesn't bring
+// it back each time, but the next visit does. Meanwhile a small "Offer"
+// button above the WhatsApp one lets visitors reopen it.
 // `?anteprima-offerta` in the URL (the admin's preview link) opens it at
 // once and asks the Worker for the saved offer even if it isn't live yet.
 
@@ -50,13 +52,43 @@ type Offer = {
 };
 
 const CLOSED_KEY = 'iw-offer-closed';
-// Measured from when the page started loading, not from when the offer arrived.
+// Seconds of the page being visible, counted from when it started loading.
 const OPEN_AFTER_MS = 5000;
 const WHATSAPP = '390342929285';
 const EMAIL = 'info@ironwoodlivigno.com';
 // Site locale -> the tag Intl formats best with ('no' is Norwegian Bokmål).
 const INTL_LOCALE: Record<string, string> = { en: 'en-GB', 'en-us': 'en-US', no: 'nb-NO' };
 const IMG = '/images/esterno-notte';
+
+// Calls `cb` once the page has been visible for `ms` in total; the countdown
+// pauses while the tab is in the background. Returns a cancel function.
+function afterVisibleFor(ms: number, cb: () => void) {
+  let remaining = ms;
+  let startedAt = 0;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const start = () => {
+    if (timer || remaining <= 0) return;
+    startedAt = performance.now();
+    timer = setTimeout(() => {
+      timer = undefined;
+      remaining = 0;
+      cb();
+    }, remaining);
+  };
+  const pause = () => {
+    if (!timer) return;
+    clearTimeout(timer);
+    timer = undefined;
+    remaining -= performance.now() - startedAt;
+  };
+  const onVisibility = () => (document.visibilityState === 'visible' ? start() : pause());
+  document.addEventListener('visibilitychange', onVisibility);
+  onVisibility();
+  return () => {
+    pause();
+    document.removeEventListener('visibilitychange', onVisibility);
+  };
+}
 
 const fill = (s: string, values: Record<string, string>) => s.replace(/\{(\w+)\}/g, (m, k) => values[k] ?? m);
 
@@ -79,7 +111,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
     setTimeout(() => setOpen(false), 350);
     if (offer && !previewRef.current) {
       try {
-        localStorage.setItem(CLOSED_KEY, offer.id);
+        sessionStorage.setItem(CLOSED_KEY, offer.id);
       } catch {}
     }
   }, [offer]);
@@ -88,7 +120,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
   useEffect(() => {
     const preview = new URLSearchParams(window.location.search).has('anteprima-offerta');
     previewRef.current = preview;
-    let openTimer: ReturnType<typeof setTimeout> | undefined;
+    let cancelOpen: (() => void) | undefined;
     const fetchTimer = setTimeout(async () => {
       try {
         const res = await fetch(preview ? '/api/offer?preview=1' : '/api/offer', { credentials: 'same-origin' });
@@ -98,17 +130,19 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
         setOffer(data.offer);
         let closed = false;
         try {
-          closed = localStorage.getItem(CLOSED_KEY) === data.offer.id;
+          // Earlier versions remembered a closed pop-up for ever; forget that.
+          localStorage.removeItem(CLOSED_KEY);
+          closed = sessionStorage.getItem(CLOSED_KEY) === data.offer.id;
         } catch {}
         if (preview) show();
-        else if (!closed) openTimer = setTimeout(show, Math.max(0, OPEN_AFTER_MS - performance.now()));
+        else if (!closed) cancelOpen = afterVisibleFor(Math.max(0, OPEN_AFTER_MS - performance.now()), show);
       } catch {
         // No offer endpoint (e.g. local `next dev`): nothing to show.
       }
     }, 0);
     return () => {
       clearTimeout(fetchTimer);
-      if (openTimer) clearTimeout(openTimer);
+      cancelOpen?.();
     };
   }, [show]);
 
@@ -209,12 +243,12 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
               </svg>
             </button>
 
-            <div className="relative h-36 min-[400px]:h-44 sm:h-64 md:h-auto md:min-h-[540px] overflow-hidden">
+            <div className="relative aspect-[2/1] min-[400px]:aspect-[16/9] sm:aspect-auto sm:h-72 md:h-auto md:min-h-[540px] overflow-hidden">
               <span className="md:hidden absolute top-2.5 left-1/2 -translate-x-1/2 z-10 h-1.5 w-12 rounded-full bg-mist/60" aria-hidden />
               <picture>
                 <source type="image/avif" srcSet={`${IMG}-768.avif 768w, ${IMG}-1024.avif 1024w, ${IMG}-1440.avif 1440w`} sizes="(min-width: 768px) 460px, 100vw" />
                 <source type="image/webp" srcSet={`${IMG}-768.webp 768w, ${IMG}-1024.webp 1024w, ${IMG}-1440.webp 1440w`} sizes="(min-width: 768px) 460px, 100vw" />
-                <img src={`${IMG}.jpg`} alt="" className="absolute inset-0 w-full h-full object-cover object-center animate-kenburns motion-reduce:animate-none" />
+                <img src={`${IMG}.jpg`} alt="" className="absolute inset-0 w-full h-full object-cover object-[center_58%] md:object-center md:animate-kenburns motion-reduce:animate-none" />
               </picture>
               <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/10 to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-ink/40" aria-hidden />
               {pct > 0 && (
