@@ -45,6 +45,15 @@ export function adminPage(): string {
   .status.off { background:#f1ece6; color:#6b625b; }
   .sub { font-size:13px; color:#6b625b; margin:-6px 0 14px; }
   .actions { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+  .pics { display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-bottom:16px; }
+  @media (max-width: 520px) { .pics { grid-template-columns:repeat(2, 1fr); } }
+  .pic { position:relative; cursor:pointer; border-radius:12px; overflow:hidden; border:3px solid transparent; }
+  .pic input { position:absolute; opacity:0; }
+  .pic img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; }
+  .pic span { position:absolute; left:0; right:0; bottom:0; font-size:11px; color:#fff; padding:14px 6px 5px; background:linear-gradient(transparent, rgba(0,0,0,.7)); }
+  .pic:has(input:checked) { border-color:var(--brick); }
+  .pic:has(input:checked)::after { content:'✓'; position:absolute; top:6px; right:6px; width:24px; height:24px; border-radius:50%; background:var(--brick); color:#fff; font-size:14px; display:flex; align-items:center; justify-content:center; }
+  .pic:has(input:focus-visible) { outline:2px solid var(--brick); outline-offset:2px; }
   a.btn-link { color:var(--brick); font-weight:600; text-decoration:none; padding:10px 4px; }
   .okmsg { color:var(--ok); }
   .drop { display:block; border:2px dashed var(--line); border-radius:16px; padding:32px 16px; text-align:center; cursor:pointer; transition:.2s; }
@@ -129,6 +138,8 @@ export function adminPage(): string {
           <div><label class="field" for="offerUntil">Fine offerta</label><input type="date" id="offerUntil" required></div>
         </div>
         <p class="sub">Il pop-up è visibile dall’inizio alla fine dell’offerta (compresa), se l’interruttore è attivo.</p>
+        <label class="field">Foto del pop-up</label>
+        <div class="pics" id="offerPics"></div>
         <div class="actions">
           <button type="submit">Salva offerta</button>
           <a class="btn-link" href="/it?anteprima-offerta" target="_blank" rel="noopener">Vedi anteprima →</a>
@@ -230,8 +241,26 @@ function showOfferStatus(offer, today) {
 
 let offerBaseId = null;
 
+// Same list and default as OFFER_IMAGES in worker/offer.ts.
+const OFFER_PICS = [
+  ['esterno-giorno', 'La casa di giorno'],
+  ['esterno-notte', 'La casa di notte, con la neve'],
+  ['hero-ironwood', 'Soggiorno con camino'],
+  ['soggiorno', 'Divano e legno'],
+  ['sauna-vista-montagna', 'Sauna con vista'],
+  ['camera1', 'Camera matrimoniale'],
+  ['lago-livigno-panorama', 'Lago di Livigno in autunno'],
+  ['livigno-ghiaccioli-vista-vallata', 'Vallata d’inverno']
+];
+$('offerPics').innerHTML = OFFER_PICS.map(([key, label]) =>
+  '<label class="pic"><input type="radio" name="offerImage" value="' + key + '"><img src="/images/' + key + '-480.webp" alt="" loading="lazy"><span>' + label + '</span></label>'
+).join('');
+function selectedPic() { const r = document.querySelector('input[name=offerImage]:checked'); return r ? r.value : OFFER_PICS[0][0]; }
+
 function fillOffer(offer, today) {
   offerBaseId = offer ? offer.id : null;
+  const pic = (offer && offer.image) || OFFER_PICS[0][0];
+  document.querySelectorAll('input[name=offerImage]').forEach((r) => { r.checked = r.value === pic; });
   // A new offer starts switched on: the point of filling it in is to show it.
   $('offerActive').checked = offer ? offer.active : true;
   updateSwitchText();
@@ -263,6 +292,7 @@ $('offerForm').addEventListener('submit', async (e) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         baseId: offerBaseId,
+        image: selectedPic(),
         active: $('offerActive').checked,
         checkIn: $('offerCheckIn').value,
         checkOut: $('offerCheckOut').value,

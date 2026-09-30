@@ -48,6 +48,7 @@ type Offer = {
   unit: 'stay' | 'night';
   originalPrice: number | null;
   showUntil: string;
+  image?: string;
   endsAt: number;
 };
 
@@ -58,7 +59,10 @@ const WHATSAPP = '390342929285';
 const EMAIL = 'info@ironwoodlivigno.com';
 // Site locale -> the tag Intl formats best with ('no' is Norwegian Bokmål).
 const INTL_LOCALE: Record<string, string> = { en: 'en-GB', 'en-us': 'en-US', no: 'nb-NO' };
-const IMG = '/images/esterno-notte';
+// Photo chosen in the admin (see OFFER_IMAGES in worker/offer.ts). On phones
+// the photo is a wide strip, so some pictures need their focus point moved.
+const DEFAULT_IMAGE = 'esterno-giorno';
+const MOBILE_FOCUS: Record<string, string> = { 'esterno-notte': 'object-[center_58%]', 'esterno-giorno': 'object-[center_45%]' };
 
 // Calls `cb` once the page has been visible for `ms` in total; the countdown
 // pauses while the tab is in the background. Returns a cancel function.
@@ -191,6 +195,8 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
   const waHref = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(waText)}`;
   const mailHref = `mailto:${EMAIL}?subject=${encodeURIComponent(fill(t.emailSubject, values))}&body=${encodeURIComponent(`${waText}\n\n${t.emailFields}`)}`;
 
+  const imageKey = offer.image ?? DEFAULT_IMAGE;
+  const IMG = `/images/${imageKey}`;
   const remaining = offer.endsAt - now;
   const showCountdown = remaining > 0 && remaining < 7 * 86400_000;
   const cd = {
@@ -246,9 +252,9 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
             <div className="relative aspect-[2/1] min-[400px]:aspect-[16/9] sm:aspect-auto sm:h-72 md:h-auto md:min-h-[540px] overflow-hidden">
               <span className="md:hidden absolute top-2.5 left-1/2 -translate-x-1/2 z-10 h-1.5 w-12 rounded-full bg-mist/60" aria-hidden />
               <picture>
-                <source type="image/avif" srcSet={`${IMG}-768.avif 768w, ${IMG}-1024.avif 1024w, ${IMG}-1440.avif 1440w`} sizes="(min-width: 768px) 460px, 100vw" />
-                <source type="image/webp" srcSet={`${IMG}-768.webp 768w, ${IMG}-1024.webp 1024w, ${IMG}-1440.webp 1440w`} sizes="(min-width: 768px) 460px, 100vw" />
-                <img src={`${IMG}.jpg`} alt="" className="absolute inset-0 w-full h-full object-cover object-[center_58%] md:object-center md:animate-kenburns motion-reduce:animate-none" />
+                <source type="image/avif" srcSet={`${IMG}-480.avif 480w, ${IMG}-768.avif 768w, ${IMG}-1024.avif 1024w`} sizes="(min-width: 768px) 460px, 100vw" />
+                <source type="image/webp" srcSet={`${IMG}-480.webp 480w, ${IMG}-768.webp 768w, ${IMG}-1024.webp 1024w`} sizes="(min-width: 768px) 460px, 100vw" />
+                <img src={`${IMG}-1024.webp`} alt="" className={`absolute inset-0 w-full h-full object-cover ${MOBILE_FOCUS[imageKey] ?? 'object-center'} md:object-center md:animate-kenburns motion-reduce:animate-none`} />
               </picture>
               <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/10 to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-ink/40" aria-hidden />
               {pct > 0 && (

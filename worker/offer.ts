@@ -12,11 +12,27 @@ export type Offer = {
   originalPrice: number | null; // full price, shown struck through
   showFrom: string; // YYYY-MM-DD, first day the pop-up appears
   showUntil: string; // YYYY-MM-DD, last day (inclusive)
+  image: string; // one of OFFER_IMAGES
   id: string; // changes on every save, so visitors who closed the old one see the new one
   updated: string;
 };
 
 export const OFFER_KEY = 'offer';
+
+// Photos the admin can pick for the pop-up: files in public/images with
+// -480/-768/-1024 .webp/.avif variants (the pop-up's srcset uses those).
+// Keep in sync with the picker in admin.ts.
+export const OFFER_IMAGES = [
+  'esterno-giorno',
+  'esterno-notte',
+  'hero-ironwood',
+  'soggiorno',
+  'sauna-vista-montagna',
+  'camera1',
+  'lago-livigno-panorama',
+  'livigno-ghiaccioli-vista-vallata'
+];
+export const DEFAULT_OFFER_IMAGE = 'esterno-giorno';
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -51,6 +67,7 @@ export function parseOffer(body: Record<string, unknown>): Offer | string {
     originalPrice: originalPrice === null ? null : Math.round(originalPrice * 100) / 100,
     showFrom,
     showUntil,
+    image: typeof body.image === 'string' && OFFER_IMAGES.includes(body.image) ? body.image : DEFAULT_OFFER_IMAGE,
     id: crypto.randomUUID().slice(0, 8),
     updated: new Date().toISOString()
   };
@@ -81,6 +98,7 @@ export function publicOffer(offer: Offer) {
     unit: offer.unit,
     originalPrice: offer.originalPrice,
     showUntil: offer.showUntil,
+    image: offer.image && OFFER_IMAGES.includes(offer.image) ? offer.image : DEFAULT_OFFER_IMAGE,
     endsAt: romeDayStart(nextDay)
   };
 }
