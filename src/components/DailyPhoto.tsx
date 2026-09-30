@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
 import Reveal from './Reveal';
+import DailyPhotoDate from './DailyPhotoDate';
 
 // "Photo of the day": /foto-del-giorno is served by the Worker (see
 // worker/index.ts), which picks one of the photos uploaded at /admin and
@@ -16,7 +17,7 @@ export default function DailyPhoto() {
           <p className="text-ink/70 text-base md:text-lg leading-relaxed">{t('text')}</p>
         </Reveal>
         <Reveal delay={120}>
-          <figure className="rounded-3xl overflow-hidden shadow-soft aspect-[4/3] md:aspect-[16/9] bg-ink/5">
+          <figure className="relative rounded-3xl overflow-hidden shadow-soft aspect-[4/3] md:aspect-[16/9] bg-ink/5">
             {/* A plain <img>: the URL is dynamic (one photo per day), so there
                 are no pre-built responsive variants for Pic to point at. The
                 Worker already serves it compressed, max 1600 px wide. */}
@@ -30,6 +31,7 @@ export default function DailyPhoto() {
               decoding="async"
               className="w-full h-full object-cover"
             />
+            <DailyPhotoDate />
           </figure>
         </Reveal>
       </div>
