@@ -33,6 +33,18 @@ type WeatherData = {
 
 // Public, key-free API — no cookies, no personal data sent, so (unlike the
 // Google Maps embed in MapEmbed.tsx) this doesn't need consent gating.
+// Only the fields this component reads from the Open-Meteo response.
+type OpenMeteoResponse = {
+  current_weather: { temperature: number; windspeed: number; weathercode: number };
+  daily: {
+    time: string[];
+    weathercode: number[];
+    temperature_2m_max: number[];
+    temperature_2m_min: number[];
+    snowfall_sum: number[];
+  };
+};
+
 const API_URL =
   `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}` +
   `&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min,snowfall_sum` +
@@ -56,7 +68,7 @@ function useWeather(enabled: boolean) {
     fetch(API_URL, { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error('weather fetch failed');
-        return res.json();
+        return res.json() as Promise<OpenMeteoResponse>;
       })
       .then((json) => {
         const daily: DailyForecast[] = json.daily.time.map((date: string, i: number) => ({

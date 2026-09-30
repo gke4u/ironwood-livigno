@@ -274,7 +274,7 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
           company // honeypot, always empty here (the bot branch above already returned)
         })
       });
-      const json = await res.json();
+      const json = (await res.json()) as { ok?: boolean };
       if (json.ok) {
         setStatus('success');
         setName('');

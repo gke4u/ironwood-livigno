@@ -113,19 +113,20 @@ export default async function LocaleLayout({
           connection early so the iframe loads faster once scrolled into
           view, without delaying the page's own critical resources. */}
       <link rel="preconnect" href="https://www.google.com" />
+      {/* Cloudflare Web Analytics posts its beacon here right after load;
+          opening the connection early keeps it off the critical path. */}
+      <link rel="preconnect" href="https://cloudflareinsights.com" />
       <body>
         <NextIntlClientProvider messages={messages}>
           <LangSuggestBanner current={locale as Locale} />
           {children}
           <BackToTop />
         </NextIntlClientProvider>
-        {CF_ANALYTICS_TOKEN !== 'REPLACE_WITH_YOUR_CLOUDFLARE_ANALYTICS_TOKEN' && (
-          <Script
-            src="https://static.cloudflareinsights.com/beacon.min.js"
-            data-cf-beacon={`{"token": "${CF_ANALYTICS_TOKEN}"}`}
-            strategy="afterInteractive"
-          />
-        )}
+        <Script
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={`{"token": "${CF_ANALYTICS_TOKEN}"}`}
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

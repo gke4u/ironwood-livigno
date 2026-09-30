@@ -128,7 +128,9 @@ export default function Gallery() {
                     alt={img.alt}
                     width={img.w}
                     height={img.h}
-                    sizes={img.big ? '(min-width: 768px) 50vw, 100vw' : '(min-width: 768px) 25vw, 50vw'}
+                    // The "big" cell only spans 2 columns from md up; on
+                    // phones it's a plain half-width tile like the others.
+                    sizes={img.big ? '50vw' : '(min-width: 768px) 25vw, 50vw'}
                     className={
                       img.big
                         ? 'w-full h-full object-cover animate-kenburns motion-reduce:animate-none'

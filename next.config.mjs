@@ -27,6 +27,12 @@ const nextConfig = {
   // slow, redundant step without losing type safety.
   typescript: {
     ignoreBuildErrors: true
+  },
+  // The whole stylesheet is ~10 KB (~3 KB compressed): inlining it into
+  // each page's <head> removes the one render-blocking request that
+  // Lighthouse showed delaying the hero text (the mobile LCP element).
+  experimental: {
+    inlineCss: true
   }
 };
 

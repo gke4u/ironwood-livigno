@@ -44,10 +44,10 @@ export default function Hero() {
         <p className="text-mist tracking-[0.2em] uppercase text-xs md:text-sm mb-3 md:mb-5 animate-fadeIn [text-shadow:0_1px_4px_rgba(36,28,21,0.9)]">
           {t('eyebrow')}
         </p>
-        <h1 className="font-display text-mist text-3xl sm:text-4xl md:text-6xl lg:text-7xl leading-[1.1] md:leading-[1.05] max-w-3xl mb-4 md:mb-6 animate-fadeUp">
+        <h1 className="font-display text-mist text-3xl sm:text-4xl md:text-6xl lg:text-7xl leading-[1.1] md:leading-[1.05] max-w-3xl mb-4 md:mb-6 animate-riseIn motion-reduce:animate-none">
           {t('title')}
         </h1>
-        <p className="text-mist/85 text-base md:text-lg max-w-xl mb-8 md:mb-10 animate-fadeUp [animation-delay:150ms]">
+        <p className="text-mist/85 text-base md:text-lg max-w-xl mb-8 md:mb-10 animate-riseIn motion-reduce:animate-none">
           {t('subtitle')}
         </p>
 

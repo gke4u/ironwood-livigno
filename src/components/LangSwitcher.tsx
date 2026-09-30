@@ -37,7 +37,9 @@ export default function LangSwitcher({ current }: { current: Locale }) {
         onClick={() => setOpen((o) => !o)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        aria-label="Cambia lingua / Change language"
+        // Starts with the visible label, so voice-control users can say
+        // what they see (WCAG 2.5.3 "label in name").
+        aria-label={`${localeLabels[current]} — Cambia lingua / Change language`}
         className="flex items-center gap-2 min-h-[44px] text-sm font-medium tracking-wide uppercase bg-ink text-mist border border-cream/70 rounded-full pl-3 pr-3.5 py-2.5 hover:bg-ink/90 hover:border-cream transition-colors shadow-soft"
       >
         <svg

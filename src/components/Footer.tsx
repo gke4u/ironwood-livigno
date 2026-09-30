@@ -85,9 +85,12 @@ export default function Footer({ locale }: { locale: Locale }) {
           </p>
         </div>
 
-        <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs uppercase tracking-widest mb-6">
+        <nav className="flex flex-wrap items-center justify-center gap-x-5 text-xs uppercase tracking-widest mb-6">
+          {/* py-1 brings each link's tap area to the 24px minimum on phones
+              (was flagged by Lighthouse); it replaces the old gap-y-2 so the
+              visual spacing stays the same. */}
           {sectionLinks.map((l) => (
-            <a key={l.href} href={l.href} className="hover:text-mist transition-colors">
+            <a key={l.href} href={l.href} className="inline-block py-1 hover:text-mist transition-colors">
               {l.label}
             </a>
           ))}
@@ -95,14 +98,14 @@ export default function Footer({ locale }: { locale: Locale }) {
 
         <nav
           aria-label={t('language_nav_label')}
-          className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] text-mist/60 mb-6"
+          className="flex flex-wrap items-center justify-center gap-x-3 text-[11px] text-mist/60 mb-6"
         >
           {locales.map((l, i) => (
             <span key={l} className="flex items-center gap-x-3">
               <a
                 href={`/${l}`}
                 aria-current={l === locale ? 'true' : undefined}
-                className={`hover:text-mist transition-colors ${l === locale ? 'text-mist/70 underline underline-offset-4' : ''}`}
+                className={`inline-block py-1 hover:text-mist transition-colors ${l === locale ? 'text-mist/70 underline underline-offset-4' : ''}`}
               >
                 {localeLabels[l]}
               </a>

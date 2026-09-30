@@ -33,6 +33,13 @@ const config: Config = {
           '0%': { opacity: '0', transform: 'translateY(24px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' }
         },
+        // Hero headline/subtitle: slide only, no fade. Text that starts at
+        // opacity 0 isn't counted as painted until the animation actually
+        // runs, which on a busy phone CPU pushed mobile LCP to ~3.6s.
+        riseIn: {
+          '0%': { transform: 'translateY(24px)' },
+          '100%': { transform: 'translateY(0)' }
+        },
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' }
@@ -45,6 +52,7 @@ const config: Config = {
       },
       animation: {
         fadeUp: 'fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        riseIn: 'riseIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards',
         fadeIn: 'fadeIn 0.8s ease forwards',
         kenburns: 'kenburns 22s ease-in-out infinite'
       }
