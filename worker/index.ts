@@ -32,6 +32,10 @@ type PhotoMeta = { id: string; type: string; w: number; h: number; bytes: number
 type AuthRecord = { user: string; salt: string; hash: string; iterations: number; ver: string };
 
 const INDEX_KEY = 'index';
+// Photos deleted in the last few minutes: KV list() can still return them for
+// up to a minute, and reindex must not bring them back into the rotation.
+const DELETED_KEY = 'deleted';
+const TOMBSTONE_MS = 10 * 60_000;
 const AUTH_KEY = 'auth';
 // Until credentials are changed from the admin, the login is this username
 // with the ADMIN_PASSWORD secret. Deleting the `auth` KV key restores it
@@ -72,30 +76,40 @@ async function photoOfTheDay(request: Request, env: Env, ctx: ExecutionContext):
     // Nothing uploaded yet: a short cache, so the first real photo shows up quickly.
     const fallback = await env.ASSETS.fetch(new Request(new URL(FALLBACK_IMAGE, request.url)));
     return new Response(fallback.body, {
-      headers: { 'Content-Type': fallback.headers.get('Content-Type') ?? 'image/jpeg', 'Cache-Control': 'public, max-age=300' }
+      headers: { 'Content-Type': fallback.headers.get('Content-Type') ?? 'image/jpeg', 'Cache-Control': 'public, max-age=300', 'X-Robots-Tag': 'noindex' }
     });
   }
 
-  const meta = pickForDate(index, romeDate());
-  // Edge cache keyed by the chosen photo, not the date: deleting today's
-  // photo switches to the next one right away instead of at midnight.
-  const cacheKey = new Request(`${new URL(request.url).origin}/foto-del-giorno?id=${meta.id}`);
-  const cache = caches.default;
-  const hit = await cache.match(cacheKey);
-  const res = hit
-    ? new Response(hit.body, hit)
-    : await (async () => {
-        const bytes = await env.PHOTOS.get(`photo:${meta.id}`, { type: 'arrayBuffer', cacheTtl: 86400 });
-        if (!bytes) return null;
-        const fresh = new Response(bytes, { headers: { 'Content-Type': meta.type, 'Cache-Control': 'public, max-age=86400' } });
-        ctx.waitUntil(cache.put(cacheKey, fresh.clone()));
-        return fresh;
-      })();
-  if (!res) return new Response('Not found', { status: 404 });
+  // Today's photo, or — if its file is missing for any reason — the next ones
+  // in the rotation, so the homepage section is never left empty.
+  const first = index.indexOf(pickForDate(index, romeDate()));
+  let res: Response | null = null;
+  for (let step = 0; step < Math.min(index.length, 5) && !res; step++) {
+    const meta = index[(first + step) % index.length];
+    // Edge cache keyed by the chosen photo, not the date: deleting today's
+    // photo switches to the next one right away instead of at midnight.
+    const cacheKey = new Request(`${new URL(request.url).origin}/foto-del-giorno?id=${meta.id}`);
+    const cache = caches.default;
+    const hit = await cache.match(cacheKey);
+    if (hit) {
+      res = new Response(hit.body, hit);
+      break;
+    }
+    const bytes = await env.PHOTOS.get(`photo:${meta.id}`, { type: 'arrayBuffer', cacheTtl: 86400 });
+    if (!bytes) continue;
+    res = new Response(bytes, { headers: { 'Content-Type': meta.type, 'Cache-Control': 'public, max-age=86400' } });
+    ctx.waitUntil(cache.put(cacheKey, res.clone()));
+  }
+  if (!res) {
+    const fallback = await env.ASSETS.fetch(new Request(new URL(FALLBACK_IMAGE, request.url)));
+    res = new Response(fallback.body, { headers: { 'Content-Type': fallback.headers.get('Content-Type') ?? 'image/jpeg' } });
+  }
 
   // Browsers keep it until the next midnight in Italy, when the photo changes.
   res.headers.set('Cache-Control', `public, max-age=${secondsToRomeMidnight()}`);
   res.headers.set('X-Content-Type-Options', 'nosniff');
+  // Kept out of image search: the owner doesn't want the photos copied around.
+  res.headers.set('X-Robots-Tag', 'noindex');
   return res;
 }
 
@@ -191,9 +205,16 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
 
   const del = route.match(/^photos\/([a-z0-9-]{8,40})$/);
   if (del && request.method === 'DELETE') {
-    const index = await readIndex(env, 0);
-    await env.PHOTOS.put(INDEX_KEY, JSON.stringify(index.filter((p) => p.id !== del[1])));
-    await env.PHOTOS.delete(`photo:${del[1]}`);
+    try {
+      const index = await readIndex(env, 0);
+      await env.PHOTOS.put(INDEX_KEY, JSON.stringify(index.filter((p) => p.id !== del[1])));
+      const deleted = await readTombstones(env);
+      deleted[del[1]] = Date.now();
+      await env.PHOTOS.put(DELETED_KEY, JSON.stringify(deleted));
+      await env.PHOTOS.delete(`photo:${del[1]}`);
+    } catch (err) {
+      return kvWriteError(err);
+    }
     return json({ ok: true });
   }
   return json({ error: 'Non trovato' }, 404);
@@ -327,10 +348,11 @@ async function upload(request: Request, env: Env): Promise<Response> {
 // so a batch interrupted half-way never leaves photos out of the rotation.
 async function reindex(env: Env): Promise<Response> {
   const photos: PhotoMeta[] = [];
+  const deleted = await readTombstones(env);
   let cursor: string | undefined;
   do {
     const page = await env.PHOTOS.list<PhotoMeta>({ prefix: 'photo:', cursor });
-    for (const k of page.keys) if (k.metadata) photos.push(k.metadata);
+    for (const k of page.keys) if (k.metadata && !deleted[k.metadata.id]) photos.push(k.metadata);
     cursor = page.list_complete ? undefined : page.cursor;
   } while (cursor);
   photos.sort((a, b) => a.created.localeCompare(b.created));
@@ -345,8 +367,20 @@ async function reindex(env: Env): Promise<Response> {
   return json({ ok: true, count: photos.length });
 }
 
+async function readTombstones(env: Env): Promise<Record<string, number>> {
+  const raw = await env.PHOTOS.get(DELETED_KEY);
+  const all = raw ? (JSON.parse(raw) as Record<string, number>) : {};
+  const fresh: Record<string, number> = {};
+  for (const [id, at] of Object.entries(all)) if (Date.now() - at < TOMBSTONE_MS) fresh[id] = at;
+  return fresh;
+}
+
 function kvWriteError(err: unknown): Response {
   console.error(err);
+  // The free plan's daily write cap surfaces as an error mentioning the limit.
+  if (!/limit/i.test(String(err))) {
+    return json({ error: 'Salvataggio non riuscito per un problema temporaneo. Riprova tra qualche istante.' }, 503);
+  }
   return json(
     { error: 'Limite giornaliero di caricamenti di Cloudflare raggiunto (piano gratuito, circa 1.000 al giorno). Le foto già caricate sono salve: riprendi domani con le restanti.', limit: true },
     429
@@ -413,7 +447,7 @@ async function safeEqual(a: string, b: string): Promise<boolean> {
 function json(data: unknown, status = 200, headers: Record<string, string> = {}): Response {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', ...headers }
+    headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex', ...headers }
   });
 }
 

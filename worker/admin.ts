@@ -183,7 +183,7 @@ async function api(path, options = {}) {
   const res = await fetch('/api/admin/' + path, { credentials: 'same-origin', ...options });
   const data = await res.json().catch(() => ({}));
   if (res.status === 401) { showLogin(); throw new Error(data.error || 'Accesso richiesto'); }
-  if (!res.ok) { const e = new Error(data.error || ('Errore ' + res.status)); e.data = data; throw e; }
+  if (!res.ok) { const e = new Error(data.error || ('Errore ' + res.status)); e.data = data; e.status = res.status; throw e; }
   return data;
 }
 
@@ -561,6 +561,14 @@ async function handleFiles(fileList) {
       done++; savedIn += file.size; savedOut += blob.size; sinceIndex++;
       if (sinceIndex >= 20) { await api('photos/reindex', { method: 'POST' }).catch(() => {}); sinceIndex = 0; }
     } catch (err) {
+      if (err.status === 401) {
+        stopped = true;
+        const line = document.createElement('div');
+        line.className = 'warn';
+        line.textContent = 'Accesso scaduto: rientra e ricarica le foto da "' + file.name + '" in poi (' + (files.length - i) + ' rimaste). Quelle già caricate sono salve.';
+        progress.append(line);
+        break;
+      }
       if (err.data && err.data.limit) {
         stopped = true;
         const line = document.createElement('div');
