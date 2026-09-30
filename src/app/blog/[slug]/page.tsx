@@ -19,7 +19,9 @@ const LANG_LABEL: Record<string, string> = {
   nl: 'Nederlands',
   cs: 'Čeština',
   da: 'Dansk',
-  no: 'Norsk'
+  no: 'Norsk',
+  zh: '中文',
+  ja: '日本語'
 };
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';

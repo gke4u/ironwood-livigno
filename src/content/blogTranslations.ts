@@ -1,8 +1,7 @@
-// Blog translations: every Italian post exists in en, de, pl, nl, cs, fr,
-// da and no. en/de of the feature guides live below, en/de of the practical
-// guides in blogTranslationsPractical.ts, and the other languages in one
-// file each. zh and ja stay without a blog of their own (see
-// src/lib/blogIndex.ts for where those readers are sent).
+// Blog translations: every Italian post exists in every other site
+// language (en-us reads en). en/de of the feature guides live below, en/de
+// of the practical guides in blogTranslationsPractical.ts, and each other
+// language in a file of its own.
 //
 // Only a subset of BlogPost is here (no slug/date/image — those stay
 // shared with the Italian original in blog.ts, since it's the same trip,
@@ -15,6 +14,8 @@ import { csBlogTranslations } from './blogTranslationsCs';
 import { frBlogTranslations } from './blogTranslationsFr';
 import { daBlogTranslations } from './blogTranslationsDa';
 import { noBlogTranslations } from './blogTranslationsNo';
+import { zhBlogTranslations } from './blogTranslationsZh';
+import { jaBlogTranslations } from './blogTranslationsJa';
 
 export type BlogTranslation = {
   inlineCta?: BlogInlineCta;
@@ -29,7 +30,7 @@ export type BlogTranslation = {
   sections: BlogSection[];
 };
 
-export const translatedBlogLocales = ['en', 'de', 'pl', 'nl', 'cs', 'fr', 'da', 'no'] as const;
+export const translatedBlogLocales = ['en', 'de', 'pl', 'nl', 'cs', 'fr', 'da', 'no', 'zh', 'ja'] as const;
 export type TranslatedBlogLocale = (typeof translatedBlogLocales)[number];
 
 const featureBlogTranslations: Record<string, Partial<Record<TranslatedBlogLocale, BlogTranslation>>> = {
@@ -975,7 +976,7 @@ const featureBlogTranslations: Record<string, Partial<Record<TranslatedBlogLocal
   }
 };
 
-// pl, nl, cs, fr, da and no each live in one file keyed by slug; folded in here so
+// Every language but en/de lives in one file keyed by slug; folded in here so
 // every consumer keeps reading the same slug -> locale -> translation map.
 const singleLocaleTranslations: [TranslatedBlogLocale, Record<string, BlogTranslation>][] = [
   ['pl', plBlogTranslations],
@@ -983,7 +984,9 @@ const singleLocaleTranslations: [TranslatedBlogLocale, Record<string, BlogTransl
   ['cs', csBlogTranslations],
   ['fr', frBlogTranslations],
   ['da', daBlogTranslations],
-  ['no', noBlogTranslations]
+  ['no', noBlogTranslations],
+  ['zh', zhBlogTranslations],
+  ['ja', jaBlogTranslations]
 ];
 
 export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocale, BlogTranslation>>> = {

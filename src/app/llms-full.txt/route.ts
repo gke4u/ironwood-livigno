@@ -18,7 +18,9 @@ const SECTION_TITLE: Record<'it' | (typeof translatedBlogLocales)[number], strin
   cs: 'Průvodce Livignem (čeština)',
   fr: 'Guide de Livigno (français)',
   da: 'Rejseguide til Livigno (dansk)',
-  no: 'Reiseguide til Livigno (norsk)'
+  no: 'Reiseguide til Livigno (norsk)',
+  zh: '利维尼奥旅游指南（中文）',
+  ja: 'リヴィーニョ旅行ガイド（日本語）'
 };
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
@@ -56,7 +58,7 @@ export function GET() {
     '> Holiday apartment in Livigno (Italy): 90 m², 3 bedrooms, 2 bathrooms, up to 6 guests, private infrared sauna and steam bath, 100 m from the ski lifts, Via Saroch 771, 23041 Livigno (SO). Summary, FAQ and contacts: ' +
       `${siteUrl}/llms.txt`,
     '',
-    'This file contains the complete text of every guide published on ironwoodlivigno.com, in Italian, English, German, French, Polish, Dutch, Czech, Danish and Norwegian.',
+    'This file contains the complete text of every guide published on ironwoodlivigno.com, in Italian, English, German, French, Polish, Dutch, Czech, Danish, Norwegian, Chinese and Japanese.',
     ''
   ];
 

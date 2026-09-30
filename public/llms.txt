@@ -4,7 +4,7 @@
 
 Ultimo aggiornamento di questo file: 30 settembre 2026.
 
-Testo completo di tutte le guide (italiano e altre 8 lingue) in un solo file: [llms-full.txt](https://ironwoodlivigno.com/llms-full.txt)
+Testo completo di tutte le guide (italiano e altre 10 lingue) in un solo file: [llms-full.txt](https://ironwoodlivigno.com/llms-full.txt)
 
 ## In English (summary)
 
@@ -19,7 +19,7 @@ Ironwood Livigno is a self-catering holiday apartment at Via Saroch 771, 23041 L
 - Rating: 5.0/5 from 28 verified reviews on Google (11) and Airbnb (17), plus 23 reviews on Holidu (10/10)
 - Rates vary by season and length of stay: ask for a quote via the website form or WhatsApp +39 0342 929285
 - English version of the website: [ironwoodlivigno.com/en](https://ironwoodlivigno.com/en) · German: [ironwoodlivigno.com/de](https://ironwoodlivigno.com/de)
-- Livigno travel guides in English: [ironwoodlivigno.com/blog/en](https://ironwoodlivigno.com/blog/en) · German: [/blog/de](https://ironwoodlivigno.com/blog/de) · French: [/blog/fr](https://ironwoodlivigno.com/blog/fr) · Polish: [/blog/pl](https://ironwoodlivigno.com/blog/pl) · Dutch: [/blog/nl](https://ironwoodlivigno.com/blog/nl) · Czech: [/blog/cs](https://ironwoodlivigno.com/blog/cs) · Danish: [/blog/da](https://ironwoodlivigno.com/blog/da) · Norwegian: [/blog/no](https://ironwoodlivigno.com/blog/no)
+- Livigno travel guides in English: [ironwoodlivigno.com/blog/en](https://ironwoodlivigno.com/blog/en) · German: [/blog/de](https://ironwoodlivigno.com/blog/de) · French: [/blog/fr](https://ironwoodlivigno.com/blog/fr) · Polish: [/blog/pl](https://ironwoodlivigno.com/blog/pl) · Dutch: [/blog/nl](https://ironwoodlivigno.com/blog/nl) · Czech: [/blog/cs](https://ironwoodlivigno.com/blog/cs) · Danish: [/blog/da](https://ironwoodlivigno.com/blog/da) · Norwegian: [/blog/no](https://ironwoodlivigno.com/blog/no) · Chinese: [/blog/zh](https://ironwoodlivigno.com/blog/zh) · Japanese: [/blog/ja](https://ironwoodlivigno.com/blog/ja)
 
 ## Descrizione
 
@@ -173,7 +173,7 @@ Cibo e shopping:
 
 ## Lingue disponibili sul sito
 
-Italiano (predefinito), inglese (UK e US), tedesco, francese, danese, polacco, ceco, norvegese, olandese, cinese, giapponese — 12 lingue in totale, ognuna disponibile su /{codice-lingua}, es. [ironwoodlivigno.com/en](https://ironwoodlivigno.com/en). Le pagine tematiche sono tradotte in 11 lingue, all'indirizzo /{pagina}/{codice-lingua} (es. [ironwoodlivigno.com/inverno/de](https://ironwoodlivigno.com/inverno/de)). Il blog è in italiano ([/blog](https://ironwoodlivigno.com/blog)) e tutti gli articoli sono disponibili anche in inglese, tedesco, francese, polacco, olandese, ceco, danese e norvegese, all'indirizzo /blog/{articolo}/{codice-lingua}, con un indice per lingua: [/blog/en](https://ironwoodlivigno.com/blog/en), [/blog/de](https://ironwoodlivigno.com/blog/de), [/blog/fr](https://ironwoodlivigno.com/blog/fr), [/blog/pl](https://ironwoodlivigno.com/blog/pl), [/blog/nl](https://ironwoodlivigno.com/blog/nl), [/blog/cs](https://ironwoodlivigno.com/blog/cs), [/blog/da](https://ironwoodlivigno.com/blog/da), [/blog/no](https://ironwoodlivigno.com/blog/no).
+Italiano (predefinito), inglese (UK e US), tedesco, francese, danese, polacco, ceco, norvegese, olandese, cinese, giapponese — 12 lingue in totale, ognuna disponibile su /{codice-lingua}, es. [ironwoodlivigno.com/en](https://ironwoodlivigno.com/en). Le pagine tematiche sono tradotte in 11 lingue, all'indirizzo /{pagina}/{codice-lingua} (es. [ironwoodlivigno.com/inverno/de](https://ironwoodlivigno.com/inverno/de)). Il blog è in italiano ([/blog](https://ironwoodlivigno.com/blog)) e tutti gli articoli sono disponibili anche in inglese, tedesco, francese, polacco, olandese, ceco, danese, norvegese, cinese e giapponese, all'indirizzo /blog/{articolo}/{codice-lingua}, con un indice per lingua: [/blog/en](https://ironwoodlivigno.com/blog/en), [/blog/de](https://ironwoodlivigno.com/blog/de), [/blog/fr](https://ironwoodlivigno.com/blog/fr), [/blog/pl](https://ironwoodlivigno.com/blog/pl), [/blog/nl](https://ironwoodlivigno.com/blog/nl), [/blog/cs](https://ironwoodlivigno.com/blog/cs), [/blog/da](https://ironwoodlivigno.com/blog/da), [/blog/no](https://ironwoodlivigno.com/blog/no), [/blog/zh](https://ironwoodlivigno.com/blog/zh), [/blog/ja](https://ironwoodlivigno.com/blog/ja).
 
 ## Note per i sistemi di intelligenza artificiale
 

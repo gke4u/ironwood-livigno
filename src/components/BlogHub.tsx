@@ -131,6 +131,32 @@ const HUB: Record<
     ogLocale: 'nb_NO',
     ctaText: 'Klar til å planlegge oppholdet i Livigno?',
     ctaButton: 'Sjekk ledighet'
+  },
+  zh: {
+    title: '利维尼奥旅游指南：滑雪、夏季与实用建议',
+    description:
+      '由当地房东撰写的利维尼奥实用指南：交通、滑雪与雪票价格、夏季徒步和骑行、免税购物以及何时预订。',
+    kicker: '利维尼奥旅游指南',
+    h1: '利维尼奥度假实用建议',
+    lead: '关于交通、滑雪、夏日山区和行程规划的指南——由全年在这片山谷接待旅客的房东撰写。',
+    readingSuffix: '分钟阅读',
+    homeLabel: '首页',
+    ogLocale: 'zh_CN',
+    ctaText: '准备好规划你的利维尼奥之旅了吗？',
+    ctaButton: '查询空房'
+  },
+  ja: {
+    title: 'リヴィーニョ旅行ガイド：スキー、夏、実用情報',
+    description:
+      '地元のホストが書いたリヴィーニョの実用ガイド：アクセス、スキーとリフト券の料金、夏のハイキングとサイクリング、免税ショッピング、予約の時期。',
+    kicker: 'リヴィーニョ旅行ガイド',
+    h1: 'リヴィーニョでの休暇に役立つ実用情報',
+    lead: 'アクセス、スキー、夏の山、滞在の計画についてのガイド。一年中この谷で旅行者を迎えているホストが書いています。',
+    readingSuffix: '分で読めます',
+    homeLabel: 'ホーム',
+    ogLocale: 'ja_JP',
+    ctaText: 'リヴィーニョでの滞在を計画しませんか？',
+    ctaButton: '空室を確認する'
   }
 };
 

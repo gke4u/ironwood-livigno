@@ -17,7 +17,9 @@ const HUB_LINKS = [
   { locale: 'cs', label: 'Průvodci v češtině' },
   { locale: 'fr', label: 'Guides en français' },
   { locale: 'da', label: 'Guides på dansk' },
-  { locale: 'no', label: 'Guider på norsk' }
+  { locale: 'no', label: 'Guider på norsk' },
+  { locale: 'zh', label: '中文指南' },
+  { locale: 'ja', label: '日本語ガイド' }
 ];
 
 export const metadata: Metadata = {

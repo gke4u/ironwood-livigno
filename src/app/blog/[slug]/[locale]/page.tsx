@@ -97,6 +97,24 @@ const UI: Record<TranslatedBlogLocale, { backLink: string; relatedTitle: string;
     readingSuffix: 'min lesing',
     dateLocale: 'nb-NO',
     ogLocale: 'nb_NO'
+  },
+  zh: {
+    backLink: '← 全部指南',
+    relatedTitle: '进一步了解 Ironwood Livigno',
+    ctaText: '准备好规划你的利维尼奥之旅了吗？',
+    ctaButton: '查询空房',
+    readingSuffix: '分钟阅读',
+    dateLocale: 'zh-CN',
+    ogLocale: 'zh_CN'
+  },
+  ja: {
+    backLink: '← すべてのガイド',
+    relatedTitle: 'Ironwood Livignoをもっと知る',
+    ctaText: 'リヴィーニョでの滞在を計画しませんか？',
+    ctaButton: '空室を確認する',
+    readingSuffix: '分で読めます',
+    dateLocale: 'ja-JP',
+    ogLocale: 'ja_JP'
   }
 };
 
