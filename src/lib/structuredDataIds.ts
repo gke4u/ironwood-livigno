@@ -22,3 +22,19 @@ export function organizationRef(siteUrl: string) {
     logo: { '@type': 'ImageObject', url: `${siteUrl}/apple-touch-icon.png`, width: 180, height: 180 }
   };
 }
+
+// The town itself, tied to its Wikipedia entries so search engines and AI
+// answer engines connect the business and every guide to the right
+// "Livigno" entity. Used as containedInPlace (the business) and
+// contentLocation (blog posts).
+export const livignoPlace = {
+  '@type': 'Place',
+  name: 'Livigno',
+  address: { '@type': 'PostalAddress', addressLocality: 'Livigno', addressRegion: 'SO', addressCountry: 'IT' },
+  sameAs: ['https://it.wikipedia.org/wiki/Livigno', 'https://en.wikipedia.org/wiki/Livigno']
+};
+
+// Words in an article body, for BlogPosting.wordCount.
+export function countWords(...texts: string[]): number {
+  return texts.join(' ').replace(/\[([^\]]*)\]\([^)]*\)/g, '$1').split(/\s+/).filter(Boolean).length;
+}

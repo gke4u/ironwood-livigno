@@ -8,6 +8,7 @@ import type { SatellitePage } from '@/data/satellite-pages';
 import LangSwitcher from './LangSwitcher';
 import MobileMenu from './MobileMenu';
 import Logo from './Logo';
+import { blogIndexHref } from '@/lib/blogIndex';
 
 const SECTION_IDS = ['esperienza', 'camere', 'posizione', 'prenota'];
 
@@ -130,7 +131,7 @@ export default function Nav({ locale, satellitePages }: { locale: Locale; satell
               </div>
             </div>
           </div>
-          <Link href="/blog" className="hover:text-gold transition-colors">
+          <Link href={blogIndexHref(locale)} className="hover:text-gold transition-colors">
             Blog
           </Link>
           <a href={contactHref} className="hover:text-gold transition-colors">
@@ -146,7 +147,7 @@ export default function Nav({ locale, satellitePages }: { locale: Locale; satell
         </nav>
         <div className="flex items-center gap-3">
           <LangSwitcher current={locale} />
-          <MobileMenu home={home} contactHref={contactHref} satellitePages={satellitePages} />
+          <MobileMenu home={home} contactHref={contactHref} blogHref={blogIndexHref(locale)} satellitePages={satellitePages} />
         </div>
       </div>
     </header>

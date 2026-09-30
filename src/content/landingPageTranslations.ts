@@ -17,7 +17,8 @@
 //   by `localizeLandingLink` below, not stored per-translation. Only the
 //   `label` text is translated (see `relatedLinkLabel` / `internalLinkLabels`).
 import { contactSlugs, type Locale } from '@/i18n/routing';
-import { blogTranslations, translatedBlogLocales } from './blogTranslations';
+import { blogTranslations } from './blogTranslations';
+import { blogIndexHref, blogLocaleFor } from '@/lib/blogIndex';
 import { landingPages } from './landingPages';
 
 export const translatedLandingLocales = ['en', 'en-us', 'de', 'fr', 'da', 'pl', 'cs', 'no', 'nl', 'zh', 'ja'] as const;
@@ -4400,9 +4401,9 @@ const satelliteSlugSet = new Set(landingPages.map((p) => p.slug));
 
 // Resolves a landingPages.ts href (as written in the Italian original) to
 // its locale-appropriate target:
-// - '/blog' (index) stays as-is, it isn't translated as a listing page
-// - '/blog/<slug>' -> '/blog/<slug>/<locale>' if that article has a
-//   translation for this locale (translatedBlogLocales is just en/de —
+// - '/blog' (index) -> the blog index for this locale (src/lib/blogIndex.ts)
+// - '/blog/<slug>' -> '/blog/<slug>/<en|de>' if that article has a
+//   translation this locale reads (just en/de, en-us reading en —
 //   narrower than translatedLandingLocales), otherwise stays on the
 //   Italian original rather than 404ing on a guessed URL
 // - '/it#<anchor>' -> '/<locale>#<anchor>'
@@ -4411,12 +4412,12 @@ const satelliteSlugSet = new Set(landingPages.map((p) => p.slug));
 //   (always resolves once that page's translation exists, since every
 //   satellite page gets every locale in this rollout)
 export function localizeLandingLink(href: string, locale: TranslatedLandingLocale): string {
-  if (href === '/blog') return href;
+  if (href === '/blog') return blogIndexHref(locale);
   if (href.startsWith('/blog/')) {
     const slug = href.slice('/blog/'.length);
-    const isBlogTranslatedLocale = (translatedBlogLocales as readonly string[]).includes(locale);
-    if (isBlogTranslatedLocale && blogTranslations[slug]?.[locale as 'en' | 'de']) {
-      return `${href}/${locale}`;
+    const blogLocale = blogLocaleFor(locale);
+    if (blogLocale && blogTranslations[slug]?.[blogLocale]) {
+      return `${href}/${blogLocale}`;
     }
     return href;
   }

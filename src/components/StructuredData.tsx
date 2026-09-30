@@ -2,7 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import { locales, type Locale } from '@/i18n/routing';
 import { rates, CURRENCY } from '@/data/rates';
 import { galleryImages } from '@/data/gallery-images';
-import { orgId, websiteId, organizationRef } from '@/lib/structuredDataIds';
+import { orgId, websiteId, organizationRef, livignoPlace } from '@/lib/structuredDataIds';
 
 // Every language the site actually publishes content in (see
 // messages/*.json) — was hardcoded to just ['it', 'en'], understating the
@@ -128,6 +128,7 @@ export default async function StructuredData({ locale }: { locale: Locale }) {
       latitude: 46.525061,
       longitude: 10.126967
     },
+    containedInPlace: livignoPlace,
     numberOfRooms: 3,
     petsAllowed: false,
     // Detailed accommodation facts (all from the property description:

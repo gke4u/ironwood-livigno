@@ -120,12 +120,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     });
   });
 
-  // 3. Blog index
-  entries.push({
-    url: `${siteUrl}/blog`,
-    lastModified: new Date(Math.max(...blogPosts.map((p) => new Date(postModified(p)).getTime()))),
-    changeFrequency: 'monthly',
-    priority: 0.6
+  // 3. Blog index: Italian at /blog, English and German at /blog/<locale>
+  const blogIndexModified = new Date(Math.max(...blogPosts.map((p) => new Date(postModified(p)).getTime())));
+  const blogIndexLanguages: Record<string, string> = { it: `${siteUrl}/blog` };
+  translatedBlogLocales.forEach((l) => {
+    blogIndexLanguages[l] = `${siteUrl}/blog/${l}`;
+  });
+  blogIndexLanguages['x-default'] = `${siteUrl}/blog`;
+  [`${siteUrl}/blog`, ...translatedBlogLocales.map((l) => `${siteUrl}/blog/${l}`)].forEach((url) => {
+    entries.push({
+      url,
+      lastModified: blogIndexModified,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+      alternates: { languages: blogIndexLanguages }
+    });
   });
 
   // 4. Blog posts (Italian original + any EN/DE translation pages)

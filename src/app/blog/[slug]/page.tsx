@@ -3,25 +3,29 @@ import Link from 'next/link';
 import { Fragment } from 'react';
 import { notFound } from 'next/navigation';
 import { blogPosts, postModified } from '@/content/blog';
-import { organizationRef } from '@/lib/structuredDataIds';
+import { organizationRef, livignoPlace, countWords } from '@/lib/structuredDataIds';
 import { blogTranslations, translatedBlogLocales } from '@/content/blogTranslations';
 import { BlogHeader, BlogFooter, BlogWhatsAppCta, InlineApartmentCta } from '@/components/BlogChrome';
 import Pic from '@/components/Pic';
 import { renderInlineLinks } from '@/lib/renderInlineLinks';
 import { buildTitle } from '@/lib/buildTitle';
+import { BlogHub, blogHubMetadata, isBlogLocale } from '@/components/BlogHub';
 
 const LANG_LABEL: Record<string, string> = { en: 'English', de: 'Deutsch' };
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
 
 export function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }));
+  // /blog/en and /blog/de (the translated blog indexes) share this dynamic
+  // segment with the Italian articles — see src/components/BlogHub.tsx.
+  return [...blogPosts.map((post) => ({ slug: post.slug })), ...translatedBlogLocales.map((slug) => ({ slug }))];
 }
 
 type Params = Promise<{ slug: string }>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
+  if (isBlogLocale(slug)) return blogHubMetadata(slug);
   const post = blogPosts.find((p) => p.slug === slug);
   if (!post) return {};
 
@@ -53,6 +57,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
 export default async function BlogArticle({ params }: { params: Params }) {
   const { slug } = await params;
+  if (isBlogLocale(slug)) return <BlogHub locale={slug} />;
   const post = blogPosts.find((p) => p.slug === slug);
   if (!post) notFound();
 
@@ -63,12 +68,15 @@ export default async function BlogArticle({ params }: { params: Params }) {
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.description,
-    image: `${siteUrl}${post.image.src}`,
+    image: { '@type': 'ImageObject', url: `${siteUrl}${post.image.src}`, width: post.image.w, height: post.image.h },
     datePublished: post.date,
     dateModified: postModified(post),
     inLanguage: 'it',
     mainEntityOfPage: `${siteUrl}/blog/${post.slug}`,
     articleSection: post.sections.map((s) => s.heading),
+    wordCount: countWords(post.intro, ...post.sections.flatMap((s) => [s.heading, ...s.paragraphs])),
+    contentLocation: livignoPlace,
+    isPartOf: { '@id': `${siteUrl}/blog#blog` },
     author: organizationRef(siteUrl),
     publisher: organizationRef(siteUrl)
   };

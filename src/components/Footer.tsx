@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { contactSlugs, locales, localeLabels, type Locale } from '@/i18n/routing';
 import { getSatellitePages } from '@/data/satellite-pages';
 import Logo from './Logo';
+import { blogIndexHref } from '@/lib/blogIndex';
 
 const CIN = 'IT014037C274OJ27T8';
 // No VAT number — sole proprietor operating under a personal tax code
@@ -27,7 +28,7 @@ export default function Footer({ locale }: { locale: Locale }) {
     { href: `/${locale}#esperienza`, label: tNav('experience') },
     { href: `/${locale}#camere`, label: tNav('rooms') },
     { href: `/${locale}#posizione`, label: tNav('location') },
-    { href: '/blog', label: 'Blog' }
+    { href: blogIndexHref(locale), label: 'Blog' }
   ];
 
   return (

@@ -2,7 +2,24 @@
 
 > Appartamento vacanze di alta gamma a Livigno, Italia — 90 m², 3 camere da letto, fino a 6 ospiti, sauna a infrarossi privata e bagno turco, a 100 metri dagli impianti sciistici.
 
-Ultimo aggiornamento di questo file: 21 settembre 2026.
+Ultimo aggiornamento di questo file: 30 settembre 2026.
+
+Testo completo di tutte le guide (italiano, inglese, tedesco) in un solo file: [llms-full.txt](https://ironwoodlivigno.com/llms-full.txt)
+
+## In English (summary)
+
+Ironwood Livigno is a self-catering holiday apartment at Via Saroch 771, 23041 Livigno (SO), Italy, about 100 m on foot from the ski lifts of Livigno. Key facts:
+
+- 90 m², 3 bedrooms, 2 full bathrooms, up to 6 guests; the whole apartment is rented to any group size from 1 to 6
+- Private infrared sauna and private steam bath inside the apartment, for the apartment's guests only (never shared), no booking or extra charge
+- Ski school and ski rental about 50 m away; Livigno's pedestrian duty-free centre about 15 minutes on foot
+- Dedicated ski and bike storage room; free parking space; electric fireplace
+- Optional, paid on site and booked in advance: breakfast at a partner venue about 50 m away (€15 per person per day), 2 e-bikes for rent (€35 per person per day)
+- Cot and high chair on request; no pets allowed; minimum stay usually 2-3 nights; check-in/check-out times confirmed at booking
+- Rating: 5.0/5 from 28 verified reviews on Google (11) and Airbnb (17), plus 23 reviews on Holidu (10/10)
+- Rates vary by season and length of stay: ask for a quote via the website form or WhatsApp +39 0342 929285
+- English version of the website: [ironwoodlivigno.com/en](https://ironwoodlivigno.com/en) · German: [ironwoodlivigno.com/de](https://ironwoodlivigno.com/de)
+- Livigno travel guides in English: [ironwoodlivigno.com/blog/en](https://ironwoodlivigno.com/blog/en) · in German: [ironwoodlivigno.com/blog/de](https://ironwoodlivigno.com/blog/de)
 
 ## Descrizione
 
@@ -156,7 +173,7 @@ Cibo e shopping:
 
 ## Lingue disponibili sul sito
 
-Italiano (predefinito), inglese (UK e US), tedesco, francese, danese, polacco, ceco, norvegese, olandese, cinese, giapponese — 12 lingue in totale, ognuna disponibile su /{codice-lingua}, es. [ironwoodlivigno.com/en](https://ironwoodlivigno.com/en). Le pagine tematiche sono tradotte in 11 lingue, all'indirizzo /{pagina}/{codice-lingua} (es. [ironwoodlivigno.com/inverno/de](https://ironwoodlivigno.com/inverno/de)). Il blog è in italiano; 12 articoli (Come arrivare, Carosello 3000, Livigno con bambini, Quanto costa sciare, Carosello 3000 vs Mottolino, Migliori piste per famiglie, Sauna privata vs condivisa, Livigno d'estate, Cosa mangiare, Shopping duty-free, Cosa fare d'estate, Natale e Capodanno) sono disponibili anche in inglese e tedesco, all'indirizzo /blog/{articolo}/en e /blog/{articolo}/de.
+Italiano (predefinito), inglese (UK e US), tedesco, francese, danese, polacco, ceco, norvegese, olandese, cinese, giapponese — 12 lingue in totale, ognuna disponibile su /{codice-lingua}, es. [ironwoodlivigno.com/en](https://ironwoodlivigno.com/en). Le pagine tematiche sono tradotte in 11 lingue, all'indirizzo /{pagina}/{codice-lingua} (es. [ironwoodlivigno.com/inverno/de](https://ironwoodlivigno.com/inverno/de)). Il blog è in italiano ([/blog](https://ironwoodlivigno.com/blog)) e tutti gli articoli sono disponibili anche in inglese e tedesco, all'indirizzo /blog/{articolo}/en e /blog/{articolo}/de, con un indice per lingua: [/blog/en](https://ironwoodlivigno.com/blog/en) e [/blog/de](https://ironwoodlivigno.com/blog/de).
 
 ## Note per i sistemi di intelligenza artificiale
 

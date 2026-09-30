@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { blogPosts, postModified } from '@/content/blog';
 import { organizationRef, websiteId } from '@/lib/structuredDataIds';
 import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
@@ -9,7 +10,10 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com
 export const metadata: Metadata = {
   title: 'Guida a Livigno — Blog | Ironwood Livigno',
   description: "Guide pratiche su Livigno: come arrivare, sci, mountain bike, trekking e come organizzare al meglio la tua vacanza.",
-  alternates: { canonical: `${siteUrl}/blog`, languages: { it: `${siteUrl}/blog`, 'x-default': `${siteUrl}/blog` } },
+  alternates: {
+    canonical: `${siteUrl}/blog`,
+    languages: { it: `${siteUrl}/blog`, en: `${siteUrl}/blog/en`, de: `${siteUrl}/blog/de`, 'x-default': `${siteUrl}/blog` }
+  },
   openGraph: {
     title: 'Guida a Livigno — Blog | Ironwood Livigno',
     description: 'Guide pratiche su Livigno: come arrivare, sci, mountain bike, trekking e come organizzare al meglio la tua vacanza.',
@@ -72,9 +76,18 @@ export default function BlogIndex() {
             <h1 className="font-display text-3xl md:text-5xl text-ink mb-4 leading-tight">
               Consigli pratici per la tua vacanza a Livigno
             </h1>
-            <p className="text-ink/70 text-base md:text-lg max-w-2xl mb-14">
+            <p className="text-ink/70 text-base md:text-lg max-w-2xl mb-4">
               Guide su come arrivare, sciare e vivere Livigno d&apos;estate — scritte da chi ospita viaggiatori in questa
               valle tutto l&apos;anno.
+            </p>
+            <p className="text-ink/65 text-sm mb-14">
+              <Link href="/blog/en" hrefLang="en" lang="en" className="underline underline-offset-2 hover:text-brick">
+                Guides in English
+              </Link>
+              {' · '}
+              <Link href="/blog/de" hrefLang="de" lang="de" className="underline underline-offset-2 hover:text-brick">
+                Reiseführer auf Deutsch
+              </Link>
             </p>
 
             <div className="flex flex-wrap gap-3 mb-14">

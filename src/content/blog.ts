@@ -636,7 +636,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'carosello-3000-vs-mottolino-quale-scegliere',
     title: 'Carosello 3000 vs Mottolino: quale scegliere a Livigno',
     description:
-      'Le differenze tra i due comprensori sciistici di Livigno — piste, atmosfera e a chi conviene ciascuno.',
+      'Carosello 3000 o Mottolino? Le differenze tra i due comprensori sciistici di Livigno — piste, snowpark, atmosfera — e a chi conviene ciascuno.',
     date: '2026-08-06',
     updated: '2026-09-11',
     readingTime: '5 min',
@@ -1063,7 +1063,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'da-dove-ammirare-il-tramonto-a-livigno',
     title: 'Da dove ammirare il tramonto a Livigno',
     description:
-      'I punti panoramici più suggestivi per goderti il tramonto sulle montagne di Livigno, in inverno e in estate.',
+      'I punti panoramici più suggestivi per goderti il tramonto sulle montagne di Livigno, dai sentieri in quota alla passeggiata al lago, in inverno e in estate.',
     date: '2026-08-09',
     readingTime: '3 min',
     image: { src: '/images/mucca-alpeggio-livigno.jpg', alt: 'Vista panoramica su un alpeggio a Livigno al tramonto', w: 1119, h: 1200 },

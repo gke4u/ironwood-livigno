@@ -24,7 +24,7 @@ export default function Hero() {
           prefers-reduced-motion set. */}
       <Pic
         src="/images/hero-ironwood.jpg"
-        alt=""
+        alt={t('image_alt')}
         width={1920}
         height={1280}
         sizes="100vw"

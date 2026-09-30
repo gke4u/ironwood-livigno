@@ -12,10 +12,12 @@ import type { SatellitePage } from '@/data/satellite-pages';
 export default function MobileMenu({
   home,
   contactHref,
+  blogHref,
   satellitePages
 }: {
   home: string;
   contactHref: string;
+  blogHref: string;
   satellitePages: SatellitePage[];
 }) {
   const t = useTranslations('nav');
@@ -74,7 +76,7 @@ export default function MobileMenu({
     { href: `${home}#esperienza`, label: t('experience') },
     { href: `${home}#camere`, label: t('rooms') },
     { href: `${home}#posizione`, label: t('location') },
-    { href: '/blog', label: 'Blog' },
+    { href: blogHref, label: 'Blog' },
     { href: contactHref, label: t('contact') }
   ];
 

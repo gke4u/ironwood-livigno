@@ -1,18 +1,20 @@
-// Partial multilingual coverage for the blog: the 3 posts with the
-// broadest international appeal (getting there, skiing, family) translated
-// into the two largest non-Italian markets for Livigno tourism (en, de).
-// The other 3 posts, and the pl/nl/cs languages, stay Italian-only for now
-// — this file's shape (one entry per slug, one sub-entry per locale) is the
-// exact pattern to extend when there's time to translate more; no code
-// changes needed, just new dictionary entries.
+// Blog translations into the two largest non-Italian markets for Livigno
+// tourism (en, de). Every Italian post now has both versions: the feature
+// guides live below, the practical guides in blogTranslationsPractical.ts.
+// pl/nl/cs and the other site languages stay Italian-only for now — this
+// file's shape (one entry per slug, one sub-entry per locale) is the exact
+// pattern to extend; no code changes needed, just new dictionary entries.
 //
 // Only a subset of BlogPost is here (no slug/date/image — those stay
 // shared with the Italian original in blog.ts, since it's the same trip,
 // same photo, same publish date, just written in another language).
 import type { BlogSection, BlogInlineCta } from './blog';
+import { practicalBlogTranslations } from './blogTranslationsPractical';
 
 export type BlogTranslation = {
   inlineCta?: BlogInlineCta;
+  // Same as BlogPost.relatedLinks, pointing at the same-language pages.
+  relatedLinks?: { href: string; label: string }[];
   // Same meaning as BlogPost.updated, but per translation: a fix made to the
   // Italian text only counts for a translation once it is carried over.
   updated?: string;
@@ -25,7 +27,7 @@ export type BlogTranslation = {
 export const translatedBlogLocales = ['en', 'de'] as const;
 export type TranslatedBlogLocale = (typeof translatedBlogLocales)[number];
 
-export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocale, BlogTranslation>>> = {
+const featureBlogTranslations: Record<string, Partial<Record<TranslatedBlogLocale, BlogTranslation>>> = {
   'come-arrivare-a-livigno': {
     en: {
       title: 'How to Get to Livigno: A Practical Guide',
@@ -967,3 +969,9 @@ export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocal
     }
   }
 };
+
+export const blogTranslations: Record<string, Partial<Record<TranslatedBlogLocale, BlogTranslation>>> = {
+  ...featureBlogTranslations,
+  ...practicalBlogTranslations
+};
+

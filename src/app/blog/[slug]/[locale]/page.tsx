@@ -8,7 +8,7 @@ import { BlogHeader, BlogFooter, BlogWhatsAppCta, InlineApartmentCta } from '@/c
 import Pic from '@/components/Pic';
 import { renderInlineLinks } from '@/lib/renderInlineLinks';
 import { buildTitle } from '@/lib/buildTitle';
-import { organizationRef } from '@/lib/structuredDataIds';
+import { organizationRef, livignoPlace, countWords } from '@/lib/structuredDataIds';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
 
@@ -27,9 +27,10 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com
 // blog page including the Italian originals (see README on why the blog
 // lives outside the [locale] tree) — only the article body and these few
 // inline strings are translated.
-const UI: Record<TranslatedBlogLocale, { backLink: string; ctaText: string; ctaButton: string; readingSuffix: string; dateLocale: string; ogLocale: string }> = {
+const UI: Record<TranslatedBlogLocale, { backLink: string; relatedTitle: string; ctaText: string; ctaButton: string; readingSuffix: string; dateLocale: string; ogLocale: string }> = {
   en: {
     backLink: '← All guides',
+    relatedTitle: 'Continue exploring Ironwood Livigno',
     ctaText: 'Ready to plan your stay in Livigno?',
     ctaButton: 'Check availability',
     readingSuffix: 'min read',
@@ -38,6 +39,7 @@ const UI: Record<TranslatedBlogLocale, { backLink: string; ctaText: string; ctaB
   },
   de: {
     backLink: '← Alle Guides',
+    relatedTitle: 'Mehr über Ironwood Livigno',
     ctaText: 'Bereit, Ihren Aufenthalt in Livigno zu planen?',
     ctaButton: 'Verfügbarkeit prüfen',
     readingSuffix: 'Min. Lesezeit',
@@ -111,12 +113,15 @@ export default async function TranslatedBlogArticle({ params }: { params: Params
     '@type': 'BlogPosting',
     headline: translation.title,
     description: translation.description,
-    image: `${siteUrl}${post.image.src}`,
+    image: { '@type': 'ImageObject', url: `${siteUrl}${post.image.src}`, width: post.image.w, height: post.image.h },
     datePublished: post.date,
     dateModified: translation.updated ?? post.date,
     inLanguage: data.locale,
     mainEntityOfPage: `${siteUrl}/blog/${post.slug}/${data.locale}`,
     articleSection: translation.sections.map((s) => s.heading),
+    wordCount: countWords(translation.intro, ...translation.sections.flatMap((s) => [s.heading, ...s.paragraphs])),
+    contentLocation: livignoPlace,
+    isPartOf: { '@id': `${siteUrl}/blog/${data.locale}#blog` },
     author: organizationRef(siteUrl),
     publisher: organizationRef(siteUrl),
     // Points back at the Italian original this translation is derived
@@ -130,7 +135,7 @@ export default async function TranslatedBlogArticle({ params }: { params: Params
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: `${siteUrl}/${data.locale}` },
-      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${siteUrl}/blog` },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${siteUrl}/blog/${data.locale}` },
       { '@type': 'ListItem', position: 3, name: translation.title, item: `${siteUrl}/blog/${post.slug}/${data.locale}` }
     ]
   };
@@ -143,13 +148,13 @@ export default async function TranslatedBlogArticle({ params }: { params: Params
         <BlogHeader />
         <main className="bg-mist min-h-screen">
           <div className="max-w-content mx-auto px-6 md:px-10 py-16 md:py-20">
-            <Link href="/blog" className="text-brick text-sm font-medium hover:underline">
+            <Link href={`/blog/${data.locale}`} className="text-brick text-sm font-medium hover:underline">
               {ui.backLink}
             </Link>
 
             <p className="text-ink/65 text-xs mt-6 mb-3">
               {new Date(post.date).toLocaleDateString(ui.dateLocale, { year: 'numeric', month: 'long', day: 'numeric' })} ·{' '}
-              {post.readingTime} {ui.readingSuffix}
+              {post.readingTime.replace(/\s*min$/, '')} {ui.readingSuffix}
             </p>
             <h1 className="font-display text-3xl md:text-5xl text-ink mb-8 leading-tight max-w-3xl">{translation.title}</h1>
 
@@ -183,7 +188,22 @@ export default async function TranslatedBlogArticle({ params }: { params: Params
               ))}
             </div>
 
-            <div className="max-w-3xl mt-14 p-8 bg-white rounded-3xl shadow-soft flex flex-col sm:flex-row items-center justify-between gap-4">
+            {translation.relatedLinks && translation.relatedLinks.length > 0 && (
+              <div className="max-w-3xl mt-14">
+                <p className="text-ink/65 text-xs uppercase tracking-widest mb-3">{ui.relatedTitle}</p>
+                <ul className="flex flex-wrap gap-x-6 gap-y-2">
+                  {translation.relatedLinks.map((link) => (
+                    <li key={link.href}>
+                      <a href={link.href} className="text-brick text-sm font-medium hover:underline underline-offset-2">
+                        {link.label} →
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <div className="max-w-3xl mt-8 p-8 bg-white rounded-3xl shadow-soft flex flex-col sm:flex-row items-center justify-between gap-4">
               <p className="font-display text-lg text-ink">{ui.ctaText}</p>
               <a
                 href={`/${data.locale}#prenota`}
