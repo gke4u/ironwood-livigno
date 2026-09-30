@@ -50,12 +50,13 @@ type Offer = {
 };
 
 const CLOSED_KEY = 'iw-offer-closed';
-const OPEN_DELAY_MS = 5000;
+// Measured from when the page started loading, not from when the offer arrived.
+const OPEN_AFTER_MS = 5000;
 const WHATSAPP = '390342929285';
 const EMAIL = 'info@ironwoodlivigno.com';
 // Site locale -> the tag Intl formats best with ('no' is Norwegian Bokmål).
 const INTL_LOCALE: Record<string, string> = { en: 'en-GB', 'en-us': 'en-US', no: 'nb-NO' };
-const IMG = '/images/sauna-vista-montagna';
+const IMG = '/images/esterno-notte';
 
 const fill = (s: string, values: Record<string, string>) => s.replace(/\{(\w+)\}/g, (m, k) => values[k] ?? m);
 
@@ -100,11 +101,11 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
           closed = localStorage.getItem(CLOSED_KEY) === data.offer.id;
         } catch {}
         if (preview) show();
-        else if (!closed) openTimer = setTimeout(show, OPEN_DELAY_MS);
+        else if (!closed) openTimer = setTimeout(show, Math.max(0, OPEN_AFTER_MS - performance.now()));
       } catch {
         // No offer endpoint (e.g. local `next dev`): nothing to show.
       }
-    }, preview ? 0 : 1200);
+    }, 0);
     return () => {
       clearTimeout(fetchTimer);
       if (openTimer) clearTimeout(openTimer);
@@ -213,7 +214,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
               <picture>
                 <source type="image/avif" srcSet={`${IMG}-768.avif 768w, ${IMG}-1024.avif 1024w, ${IMG}-1440.avif 1440w`} sizes="(min-width: 768px) 460px, 100vw" />
                 <source type="image/webp" srcSet={`${IMG}-768.webp 768w, ${IMG}-1024.webp 1024w, ${IMG}-1440.webp 1440w`} sizes="(min-width: 768px) 460px, 100vw" />
-                <img src={`${IMG}.jpg`} alt="" className="absolute inset-0 w-full h-full object-cover object-[78%_center] animate-kenburns motion-reduce:animate-none" />
+                <img src={`${IMG}.jpg`} alt="" className="absolute inset-0 w-full h-full object-cover object-center animate-kenburns motion-reduce:animate-none" />
               </picture>
               <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/10 to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-ink/40" aria-hidden />
               {pct > 0 && (

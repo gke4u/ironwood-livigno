@@ -228,7 +228,10 @@ function showOfferStatus(offer, today) {
   else { box.className = 'status live'; box.textContent = '● Visibile ora sul sito fino al ' + fmtDate(offer.showUntil) + ' (' + period + ').'; }
 }
 
+let offerBaseId = null;
+
 function fillOffer(offer, today) {
+  offerBaseId = offer ? offer.id : null;
   // A new offer starts switched on: the point of filling it in is to show it.
   $('offerActive').checked = offer ? offer.active : true;
   updateSwitchText();
@@ -259,6 +262,7 @@ $('offerForm').addEventListener('submit', async (e) => {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        baseId: offerBaseId,
         active: $('offerActive').checked,
         checkIn: $('offerCheckIn').value,
         checkOut: $('offerCheckOut').value,

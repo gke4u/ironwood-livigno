@@ -159,7 +159,15 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
 
   if (route === 'offer' && request.method === 'GET') return json({ offer: await readOffer(env, 0), today: romeDate() });
   if (route === 'offer' && request.method === 'PUT') {
-    const parsed = parseOffer((await request.json().catch(() => ({}))) as Record<string, unknown>);
+    const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
+    // The page sends the id of the offer it was showing: if the stored one
+    // has changed since (saved from another tab or device), refuse instead
+    // of silently overwriting it with stale values.
+    const current = await readOffer(env, 0);
+    if (current && body.baseId !== current.id) {
+      return json({ error: 'L’offerta è stata modificata da un’altra pagina o da un altro dispositivo. Ricarica questa pagina e riprova.' }, 409);
+    }
+    const parsed = parseOffer(body);
     if (typeof parsed === 'string') return json({ error: parsed }, 400);
     await env.PHOTOS.put(OFFER_KEY, JSON.stringify(parsed));
     return json({ offer: parsed, today: romeDate() });
