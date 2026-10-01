@@ -20,10 +20,14 @@
 // (see google.ts).
 //
 // Photos are compressed in the browser before upload (see admin.ts), so the
-// Worker only stores and serves bytes. They live in KV: each photo under
-// `photo:<id>`, plus one `index` key with the ordered list. The list is kept
-// in its own key because KV list() is capped at 1,000 calls a day on the free
-// plan, while get() allows 100,000.
+// Worker only stores and serves bytes. The files live in R2 (FILES): each
+// photo under `photo/<id>` (its PhotoMeta in the custom metadata) and its JPEG
+// copy for Google under `jpg/<id>`. Until 1 October 2026 they were in KV
+// (`photo:<id>`, `jpg:<id>`), whose free plan allows only 1,000 writes a day
+// (one big upload of ~250 photos used half of it). All 243 were copied to R2
+// that day; reads still fall back to the KV copies, which can be deleted later. The small settings (index, layout, offer,
+// seasons, login…) stay in KV: they change rarely. The ordered list is kept in
+// its own `index` key so the public pages never have to list the files.
 import { adminPage } from './admin';
 import { OFFER_KEY, isLive, parseOffer, publicOffer, type Offer } from './offer';
 import * as google from './google';
@@ -36,6 +40,7 @@ export { Stats } from './stats';
 export interface Env {
   ASSETS: Fetcher;
   PHOTOS: KVNamespace;
+  FILES: R2Bucket;
   ADMIN_PASSWORD: string;
   SESSION_SECRET: string;
   // OAuth client of the Google Cloud project approved for the Business
@@ -177,9 +182,9 @@ async function photoOfTheDay(request: Request, env: Env, ctx: ExecutionContext):
       res = new Response(hit.body, hit);
       break;
     }
-    const bytes = await env.PHOTOS.get(`photo:${meta.id}`, { type: 'arrayBuffer', cacheTtl: 86400 });
-    if (!bytes) continue;
-    res = new Response(bytes, { headers: { 'Content-Type': meta.type, 'Cache-Control': 'public, max-age=86400' } });
+    const photo = await readPhoto(env, meta.id);
+    if (!photo) continue;
+    res = new Response(photo.bytes, { headers: { 'Content-Type': photo.type, 'Cache-Control': 'public, max-age=86400' } });
     ctx.waitUntil(cache.put(cacheKey, res.clone()));
   }
   if (!res) {
@@ -200,11 +205,11 @@ async function photoOfTheDay(request: Request, env: Env, ctx: ExecutionContext):
 async function photoById(request: Request, id: string, env: Env): Promise<Response> {
   if (!env.SESSION_SECRET || !(await isLoggedIn(request, env, await readAuth(env)))) return new Response('Not found', { status: 404 });
   if (!/^[a-z0-9-]{8,40}$/.test(id)) return new Response('Not found', { status: 404 });
-  const { value, metadata } = await env.PHOTOS.getWithMetadata<PhotoMeta>(`photo:${id}`, { type: 'arrayBuffer', cacheTtl: 86400 });
-  if (!value || !metadata) return new Response('Not found', { status: 404 });
-  return new Response(value, {
+  const photo = await readPhoto(env, id);
+  if (!photo) return new Response('Not found', { status: 404 });
+  return new Response(photo.bytes, {
     headers: {
-      'Content-Type': metadata.type,
+      'Content-Type': photo.type,
       'Cache-Control': 'private, max-age=31536000, immutable',
       'X-Content-Type-Options': 'nosniff',
       'X-Robots-Tag': 'noindex'
@@ -221,7 +226,7 @@ async function photoForGoogle(request: Request, file: string, env: Env): Promise
   const sig = url.searchParams.get('sig') ?? '';
   if (!/^[a-z0-9-]{8,40}$/.test(id) || !env.SESSION_SECRET || Number(exp) < Date.now()) return new Response('Not found', { status: 404 });
   if (!(await safeEqual(sig, await sign(`gphoto:${id}:${exp}`, env.SESSION_SECRET)))) return new Response('Not found', { status: 404 });
-  const bytes = await env.PHOTOS.get(`jpg:${id}`, { type: 'arrayBuffer' });
+  const bytes = await readJpg(env, id);
   if (!bytes) return new Response('Not found', { status: 404 });
   return new Response(bytes, { headers: { 'Content-Type': 'image/jpeg', 'Cache-Control': 'private, max-age=3600', 'X-Robots-Tag': 'noindex' } });
 }
@@ -247,7 +252,7 @@ async function weeklyGooglePhoto(env: Env, origin: string, force = false): Promi
   for (let step = 0; step < list.length; step++) {
     const p = list[(start + step) % list.length];
     if (state.postedPhotos.includes(p.id)) continue;
-    if (!(await env.PHOTOS.get(`jpg:${p.id}`, { type: 'stream' }))) continue;
+    if (!(await hasJpg(env, p.id))) continue;
     try {
       await google.uploadPhoto(env, state, await signedGooglePhotoUrl(origin, p.id, env));
       state.postedPhotos.push(p.id);
@@ -429,14 +434,14 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
     for (let step = 0; step < list.length; step++) {
       const p = list[(start + step) % list.length];
       if (manual.postedPhotos.includes(p.id)) continue;
-      if (!(await env.PHOTOS.get(`jpg:${p.id}`, { type: 'stream' }))) continue;
+      if (!(await hasJpg(env, p.id))) continue;
       return json({ id: p.id, season: p.season, lastAt: manual.lastAt, sent: manual.postedPhotos.length });
     }
     return json({ error: 'Tutte le foto di questa stagione sono già state pubblicate su Google.' }, 404);
   }
   const manualJpg = route.match(/^google\/manual\/photo\/([a-z0-9-]{8,40})\.jpg$/);
   if (manualJpg && request.method === 'GET') {
-    const bytes = await env.PHOTOS.get(`jpg:${manualJpg[1]}`, { type: 'arrayBuffer' });
+    const bytes = await readJpg(env, manualJpg[1]);
     if (!bytes) return json({ error: 'Foto non trovata' }, 404);
     return new Response(bytes, {
       headers: { 'Content-Type': 'image/jpeg', 'Content-Disposition': `attachment; filename="ironwood-livigno-${romeDate()}.jpg"`, 'Cache-Control': 'private, no-store' }
@@ -539,8 +544,12 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
       const deleted = await readTombstones(env);
       deleted[del[1]] = Date.now();
       await env.PHOTOS.put(DELETED_KEY, JSON.stringify(deleted));
-      await env.PHOTOS.delete(`photo:${del[1]}`);
-      await env.PHOTOS.delete(`jpg:${del[1]}`);
+      await env.FILES.delete([`photo/${del[1]}`, `jpg/${del[1]}`]);
+      // Old copy in KV, if still there (each KV delete counts towards its daily cap: only when needed).
+      if (await env.PHOTOS.get(`photo:${del[1]}`, { type: 'stream' })) {
+        await env.PHOTOS.delete(`photo:${del[1]}`);
+        await env.PHOTOS.delete(`jpg:${del[1]}`);
+      }
     } catch (err) {
       return kvWriteError(err);
     }
@@ -669,29 +678,38 @@ async function upload(request: Request, env: Env): Promise<Response> {
   const jpegBytes = jpeg instanceof File && jpeg.size <= MAX_BYTES ? await jpeg.arrayBuffer() : null;
   if (jpegBytes && sniffImageType(new Uint8Array(jpegBytes)) !== 'image/jpeg') return json({ error: 'Copia JPEG non valida' }, 415);
   try {
-    await env.PHOTOS.put(`photo:${meta.id}`, bytes, { metadata: meta });
-    if (jpegBytes) await env.PHOTOS.put(`jpg:${meta.id}`, jpegBytes);
+    await putPhotoFiles(env, meta, bytes, jpegBytes);
   } catch (err) {
-    return kvWriteError(err);
+    console.error(err);
+    return json({ error: 'Salvataggio non riuscito per un problema temporaneo. Riprova tra qualche istante.' }, 503);
   }
-  // The rotation list is rebuilt by photos/reindex after a batch of uploads,
-  // not here: one index write per photo would double the KV writes, and the
-  // free plan allows 1,000 a day.
+  // The rotation list (a KV key) is rebuilt by photos/reindex after a batch of
+  // uploads, not here: KV's free plan allows 1,000 writes a day.
   return json({ ok: true, photo: meta });
 }
 
-// Rebuilds the rotation list from the stored photos (their KV metadata),
-// oldest first. Called by the admin every few uploads and after deletions,
-// so a batch interrupted half-way never leaves photos out of the rotation.
+// Rebuilds the rotation list from the stored photos (their metadata in R2,
+// plus any old KV photo not copied yet), oldest first. Called by the admin
+// every few uploads and after deletions, so a batch interrupted half-way never
+// leaves photos out of the rotation.
 async function reindex(env: Env): Promise<Response> {
-  const photos: PhotoMeta[] = [];
+  const byId = new Map<string, PhotoMeta>();
   const deleted = await readTombstones(env);
   let cursor: string | undefined;
   do {
+    const page = await env.FILES.list({ prefix: 'photo/', cursor, include: ['customMetadata'] });
+    for (const o of page.objects) {
+      const meta = parseMeta(o.customMetadata?.meta);
+      if (meta && !deleted[meta.id]) byId.set(meta.id, meta);
+    }
+    cursor = page.truncated ? page.cursor : undefined;
+  } while (cursor);
+  do {
     const page = await env.PHOTOS.list<PhotoMeta>({ prefix: 'photo:', cursor });
-    for (const k of page.keys) if (k.metadata && !deleted[k.metadata.id]) photos.push(k.metadata);
+    for (const k of page.keys) if (k.metadata && !deleted[k.metadata.id] && !byId.has(k.metadata.id)) byId.set(k.metadata.id, k.metadata);
     cursor = page.list_complete ? undefined : page.cursor;
   } while (cursor);
+  const photos = [...byId.values()];
   photos.sort((a, b) => a.created.localeCompare(b.created));
   const next = JSON.stringify(photos);
   if (next !== ((await env.PHOTOS.get(INDEX_KEY)) ?? '[]')) {
@@ -712,6 +730,42 @@ async function readTombstones(env: Env): Promise<Record<string, number>> {
   return fresh;
 }
 
+// ---------- photo files (R2, with the old KV copies as fallback) ----------
+
+async function putPhotoFiles(env: Env, meta: PhotoMeta, bytes: ArrayBuffer, jpegBytes: ArrayBuffer | null): Promise<void> {
+  // JPEG first: the photo only counts as uploaded (reindex) once its main file is there.
+  if (jpegBytes) await env.FILES.put(`jpg/${meta.id}`, jpegBytes, { httpMetadata: { contentType: 'image/jpeg' } });
+  await env.FILES.put(`photo/${meta.id}`, bytes, { httpMetadata: { contentType: meta.type }, customMetadata: { meta: JSON.stringify(meta) } });
+}
+
+function parseMeta(raw: string | undefined): PhotoMeta | null {
+  if (!raw) return null;
+  try {
+    const meta = JSON.parse(raw) as PhotoMeta;
+    return typeof meta.id === 'string' && typeof meta.type === 'string' ? meta : null;
+  } catch {
+    return null;
+  }
+}
+
+async function readPhoto(env: Env, id: string): Promise<{ bytes: ArrayBuffer; type: string } | null> {
+  const obj = await env.FILES.get(`photo/${id}`);
+  if (obj) return { bytes: await obj.arrayBuffer(), type: obj.httpMetadata?.contentType ?? 'image/webp' };
+  const { value, metadata } = await env.PHOTOS.getWithMetadata<PhotoMeta>(`photo:${id}`, { type: 'arrayBuffer', cacheTtl: 86400 });
+  return value && metadata ? { bytes: value, type: metadata.type } : null;
+}
+
+async function readJpg(env: Env, id: string): Promise<ArrayBuffer | null> {
+  const obj = await env.FILES.get(`jpg/${id}`);
+  if (obj) return obj.arrayBuffer();
+  return env.PHOTOS.get(`jpg:${id}`, { type: 'arrayBuffer' });
+}
+
+async function hasJpg(env: Env, id: string): Promise<boolean> {
+  if (await env.FILES.head(`jpg/${id}`)) return true;
+  return (await env.PHOTOS.get(`jpg:${id}`, { type: 'stream' })) !== null;
+}
+
 function kvWriteError(err: unknown): Response {
   console.error(err);
   // The free plan's daily write cap surfaces as an error mentioning the limit.
@@ -719,7 +773,7 @@ function kvWriteError(err: unknown): Response {
     return json({ error: 'Salvataggio non riuscito per un problema temporaneo. Riprova tra qualche istante.' }, 503);
   }
   return json(
-    { error: 'Limite giornaliero di caricamenti di Cloudflare raggiunto (piano gratuito: circa 1.000 salvataggi al giorno, cioè circa 450 foto). Le foto già caricate sono salve: riprendi domani con le restanti.', limit: true },
+    { error: 'Limite giornaliero di salvataggi delle impostazioni di Cloudflare raggiunto (piano gratuito: 1.000 al giorno). Le foto già caricate sono salve: riprova domani.', limit: true },
     429
   );
 }

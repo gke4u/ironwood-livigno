@@ -27,11 +27,14 @@
 		"run_worker_first": ["/admin", "/admin/*", "/api/admin/*", "/api/offer", "/foto-del-giorno", "/foto/*", "/foto-google/*", "/recensione", "/api/sezioni", "/api/visita",
 			"/it", "/en", "/de", "/fr", "/da", "/pl", "/cs", "/no", "/nl", "/zh", "/ja", "/en-us"]
 	},
-	// Uploaded photos. Secrets (set once with `npx wrangler secret put`):
+	// Secrets (set once with `npx wrangler secret put`):
 	// ADMIN_PASSWORD (the /admin login) and SESSION_SECRET (signs the login cookie);
 	// GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET once Google approves the Business
 	// Profile API access (until then the Google link stays off, see worker/google.ts).
+	// Small settings (photo list, layout, offer, login…). The photo files are in R2 below.
 	"kv_namespaces": [{ "binding": "PHOTOS", "id": "5ebaedb7d16849278ddb91bed172f73d" }],
+	// Photo files (R2 free plan: 1 million writes a month; KV only 1,000 a day). See worker/index.ts.
+	"r2_buckets": [{ "binding": "FILES", "bucket_name": "ironwood-foto" }],
 	// Visit counter for the admin (worker/stats.ts): one SQLite-backed Durable Object.
 	"durable_objects": { "bindings": [{ "name": "STATS", "class_name": "Stats" }] },
 	"migrations": [{ "tag": "v1", "new_sqlite_classes": ["Stats"] }],
