@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Reveal from './Reveal';
 import Pic from './Pic';
@@ -32,6 +33,31 @@ export default function Gallery() {
   const active = activeIndex !== null ? imagesWithCaptions[activeIndex] : null;
   const { onMouseMove: handleCardMouseMove, onMouseLeave: handleCardMouseLeave } = useTilt();
 
+  // The 10 photos start loading only when the gallery is 300px from the screen.
+  // As plain lazy images the browser fetched them all on page load (the
+  // section starts ~1.5 screens down, inside Chrome's lazy-load distance),
+  // and on a slow phone connection they slowed the hero down. Search
+  // engines still get every photo from the structured data and the
+  // <noscript> fallback.
+  const sectionRef = useRef<HTMLElement>(null);
+  const [near, setNear] = useState(false);
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || near) return;
+    if (!('IntersectionObserver' in window)) {
+      setNear(true);
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        setNear(true);
+        io.disconnect();
+      }
+    }, { rootMargin: '300px 0px' });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [near]);
+
   // The opening (most representative) and closing (whole chalet) shots
   // both live outside the bento grid, each on its own full-width row —
   // `gridImages` is everything in between.
@@ -44,7 +70,7 @@ export default function Gallery() {
   const closingIndex = imagesWithCaptions.length - 1;
 
   return (
-    <section id="galleria" className="bg-mist pt-24 md:pt-32 pb-16 md:pb-20">
+    <section id="galleria" ref={sectionRef} className="bg-mist pt-24 md:pt-32 pb-16 md:pb-20">
       <div className="max-w-content mx-auto px-6 md:px-10">
         <Reveal className="max-w-2xl mb-10">
           <p className="text-brick tracking-[0.2em] uppercase text-xs md:text-sm mb-4">
@@ -77,6 +103,7 @@ export default function Gallery() {
                 width={featureImage.w}
                 height={featureImage.h}
                 sizes="100vw"
+                deferred={!near}
                 className="w-full h-full object-cover animate-kenburns motion-reduce:animate-none"
               />
               <div
@@ -131,6 +158,7 @@ export default function Gallery() {
                     // The "big" cell only spans 2 columns from md up; on
                     // phones it's a plain half-width tile like the others.
                     sizes={img.big ? '50vw' : '(min-width: 768px) 25vw, 50vw'}
+                    deferred={!near}
                     className={
                       img.big
                         ? 'w-full h-full object-cover animate-kenburns motion-reduce:animate-none'
@@ -175,6 +203,7 @@ export default function Gallery() {
                 width={closingImage.w}
                 height={closingImage.h}
                 sizes="100vw"
+                deferred={!near}
                 className="w-full h-full object-cover animate-kenburns motion-reduce:animate-none"
               />
               <div

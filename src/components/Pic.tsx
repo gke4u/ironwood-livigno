@@ -25,6 +25,10 @@ type PicProps = {
   sizes?: string;
   className?: string;
   fetchPriority?: 'high' | 'low' | 'auto';
+  // true = not loaded yet: an empty placeholder that keeps the slot's styling,
+  // with the real picture only for visitors without JavaScript. The parent
+  // flips it to false when the image gets close to the screen (see Gallery).
+  deferred?: boolean;
 };
 
 export default function Pic({
@@ -35,13 +39,25 @@ export default function Pic({
   loading = 'lazy',
   sizes = '(min-width: 1024px) 50vw, 100vw',
   className,
-  fetchPriority
+  fetchPriority,
+  deferred = false
 }: PicProps) {
   const base = src.replace(/\.jpe?g$/i, '');
   const widths = BREAKPOINTS.filter((w) => w <= width);
   if (widths.length === 0) widths.push(width);
 
   const srcSet = (ext: 'avif' | 'webp') => widths.map((w) => `${base}-${w}.${ext} ${w}w`).join(', ');
+
+  if (deferred) {
+    return (
+      <>
+        <span className={`block bg-ink/5 ${className ?? ''}`} aria-hidden />
+        <noscript>
+          <img src={src} alt={alt} width={width} height={height} className={className} />
+        </noscript>
+      </>
+    );
+  }
 
   return (
     <picture>

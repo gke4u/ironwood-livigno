@@ -25,6 +25,7 @@ import FAQ from '@/components/FAQ';
 import StickyWhatsApp from '@/components/StickyWhatsApp';
 import Footer from '@/components/Footer';
 import StructuredData from '@/components/StructuredData';
+import AnchorSettle from '@/components/AnchorSettle';
 
 export default async function Home({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
@@ -61,6 +62,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
       <Reviews />
       <FAQ />
       </div>
+      <AnchorSettle />
       <StickyWhatsApp locale={locale} />
       <Footer locale={locale} />
       </main>

@@ -118,3 +118,47 @@ body {
   animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   animation-delay: 400ms;
 }
+
+/* Homepage speed on phones: every section below the hero (they are all in
+   #sezioni, see src/app/[locale]/page.tsx) is skipped by the browser —
+   no style, layout, paint, and no lazy images or fonts fetched — until it
+   gets close to the screen. Measured on a phone, this was where most of the
+   first-load time went (style/layout of all 14 sections), and the gallery's
+   10 photos were downloaded at once although they sit far below the hero.
+   contain-intrinsic-size is each section's real height (measured
+   2026-10-01, phone and desktop), so the scrollbar doesn't jump; `auto`
+   makes the browser remember the true height once a section has been seen. */
+#sezioni > section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1500px;
+}
+#sezioni > #meteo { contain-intrinsic-size: auto 720px; }
+#sezioni > #galleria { contain-intrinsic-size: auto 1710px; }
+#sezioni > #tour-virtuale { contain-intrinsic-size: auto 610px; }
+#sezioni > #camere { contain-intrinsic-size: auto 1800px; }
+#sezioni > #prenota { contain-intrinsic-size: auto 2510px; }
+#sezioni > #foto-del-giorno { contain-intrinsic-size: auto 740px; }
+#sezioni > #tariffe { contain-intrinsic-size: auto 1250px; }
+#sezioni > #servizi { contain-intrinsic-size: auto 1370px; }
+#sezioni > #servizi-extra { contain-intrinsic-size: auto 1630px; }
+#sezioni > #posizione { contain-intrinsic-size: auto 820px; }
+#sezioni > #estate { contain-intrinsic-size: auto 1670px; }
+#sezioni > #esperienza { contain-intrinsic-size: auto 1450px; }
+#sezioni > #recensioni { contain-intrinsic-size: auto 2120px; }
+#sezioni > #faq { contain-intrinsic-size: auto 1750px; }
+@media (min-width: 1024px) {
+  #sezioni > #meteo { contain-intrinsic-size: auto 660px; }
+  #sezioni > #galleria { contain-intrinsic-size: auto 2410px; }
+  #sezioni > #tour-virtuale { contain-intrinsic-size: auto 1090px; }
+  #sezioni > #camere { contain-intrinsic-size: auto 950px; }
+  #sezioni > #prenota { contain-intrinsic-size: auto 1740px; }
+  #sezioni > #foto-del-giorno { contain-intrinsic-size: auto 670px; }
+  #sezioni > #tariffe { contain-intrinsic-size: auto 760px; }
+  #sezioni > #servizi { contain-intrinsic-size: auto 750px; }
+  #sezioni > #servizi-extra { contain-intrinsic-size: auto 1190px; }
+  #sezioni > #posizione { contain-intrinsic-size: auto 690px; }
+  #sezioni > #estate { contain-intrinsic-size: auto 1500px; }
+  #sezioni > #esperienza { contain-intrinsic-size: auto 970px; }
+  #sezioni > #recensioni { contain-intrinsic-size: auto 1120px; }
+  #sezioni > #faq { contain-intrinsic-size: auto 1590px; }
+}

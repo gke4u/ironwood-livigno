@@ -129,7 +129,7 @@ export default async function LocaleLayout({
         <Script
           src="https://static.cloudflareinsights.com/beacon.min.js"
           data-cf-beacon={`{"token": "${CF_ANALYTICS_TOKEN}"}`}
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
       </body>
     </html>
