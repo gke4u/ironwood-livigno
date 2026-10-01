@@ -78,6 +78,14 @@ export function adminPage(): string {
   .check:has(input:disabled) { opacity:.55; cursor:default; }
   a.btn { display:inline-block; background:var(--brick); color:#fff; text-decoration:none; font-weight:600; padding:12px 18px; border-radius:12px; }
   .log { list-style:none; padding:0; margin:0; font-size:13px; }
+  .panel { border:1px solid var(--line); border-radius:14px; padding:14px; margin-top:14px; background:#fffdf9; }
+  .panel ol { padding-left:20px; margin:0; }
+  .panel li { margin-bottom:14px; line-height:1.45; }
+  .copyrow { display:flex; gap:8px; align-items:flex-start; margin-top:6px; }
+  .copyrow textarea, .copyrow input { flex:1; font:inherit; font-size:14px; padding:8px 10px; border:1px solid var(--line); border-radius:10px; margin:0; }
+  .copyrow button { flex:none; padding:8px 14px; font-size:13px; font-weight:600; background:#fff; color:var(--brick); border:1px solid var(--brick); opacity:1; }
+  .panel img { max-width:260px; width:100%; border-radius:10px; display:block; margin-top:6px; }
+  .field-label { font-size:12px; color:#6b625b; margin-top:8px; display:block; }
   .log li { padding:6px 0; border-bottom:1px solid var(--line); }
   .log .ko { color:#a33; }
   .ph select.season { font-size:13px; padding:6px 8px; margin:0; border-radius:10px; }
@@ -182,7 +190,13 @@ export function adminPage(): string {
 
     <section class="card" id="google">
       <h2>Google Business Profile</h2>
-      <p class="hint">Collega il profilo Google di Ironwood Livigno: le offerte che salvi qui possono uscire anche su Google come post “Offerta”, e ogni lunedì mattina il sito pubblica sul profilo una foto della stagione giusta (mai la stessa due volte).</p>
+      <p class="hint">Porta su Google le offerte e una foto a settimana. Il sito prepara tutto (testo già scritto per la stagione, foto in JPG, il formato che Google accetta): tu copi, incolli e premi Pubblica.</p>
+      <div class="actions">
+        <button type="button" id="prepOffer">Prepara post dell’offerta</button>
+        <button type="button" id="prepPhoto">Prepara foto della settimana</button>
+      </div>
+      <p id="manualLast" class="sub"></p>
+      <div id="manualPanel" class="panel hidden"></div>
       <div id="googleStatus" class="status off">Caricamento…</div>
       <div id="googleConnected" class="hidden">
         <label class="switch"><input type="checkbox" id="googleWeekly"><span class="track"></span><span>Foto della settimana su Google (ogni lunedì)</span></label>
@@ -395,9 +409,11 @@ async function loadGoogle() {
   $('googleConnected').classList.toggle('hidden', !g.connected);
   $('offerGoogle').disabled = !g.connected;
   if (!g.connected) $('offerGoogle').checked = false;
+  $('offerGoogleRow').classList.toggle('hidden', !g.configured);
+  refreshManualLast();
   if (!g.configured) {
-    box.className = 'status wait';
-    box.textContent = 'In attesa dell’approvazione di Google: il collegamento si attiva appena Google abilita l’accesso.';
+    box.className = 'status off';
+    box.textContent = 'Google non concede la pubblicazione automatica a una singola struttura: usa i due pulsanti qui sopra, ci vuole meno di un minuto.';
   } else if (!g.connected) {
     box.className = 'status off';
     box.textContent = 'Non collegato. Premi “Collega a Google” ed entra con l’account proprietario del profilo.';
@@ -429,6 +445,100 @@ $('googleDisconnect').addEventListener('click', async () => {
   try { await api('google/disconnect', { method: 'POST' }); await loadGoogle(); }
   catch (err) { alert(err.message); }
 });
+// ---- manual publishing helpers ----
+async function copyText(text, btn) {
+  try { await navigator.clipboard.writeText(text); }
+  catch (e) {
+    const t = document.createElement('textarea'); t.value = text; document.body.append(t); t.select();
+    document.execCommand('copy'); t.remove();
+  }
+  const old = btn.textContent; btn.textContent = 'Copiato ✓'; setTimeout(() => { btn.textContent = old; }, 1800);
+}
+function copyField(label, value, multiline) {
+  const wrap = document.createElement('div');
+  const l = document.createElement('span'); l.className = 'field-label'; l.textContent = label;
+  const row = document.createElement('div'); row.className = 'copyrow';
+  const f = document.createElement(multiline ? 'textarea' : 'input');
+  f.value = value; f.readOnly = true; if (multiline) f.rows = 6;
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'secondary'; b.textContent = 'Copia';
+  b.addEventListener('click', () => copyText(value, b));
+  row.append(f, b); wrap.append(l, row);
+  return wrap;
+}
+function step(html) { const li = document.createElement('li'); li.innerHTML = html; return li; }
+const GBP_URL = 'https://business.google.com/locations';
+function itDate(d) { return d.slice(8, 10) + '/' + d.slice(5, 7) + '/' + d.slice(0, 4); }
+
+$('prepOffer').addEventListener('click', async (e) => {
+  const panel = $('manualPanel');
+  e.target.disabled = true;
+  try {
+    const o = await api('google/manual/offer');
+    panel.innerHTML = '<strong>Post dell’offerta per Google</strong>';
+    const ol = document.createElement('ol');
+    ol.append(step('Apri <a href="' + GBP_URL + '" target="_blank" rel="noopener">Google Business</a>; accanto a <b>Ironwood Livigno</b> clicca l’icona <b>Crea post</b>, poi scegli <b>Offerta</b>.'));
+    const s2 = step('Copia e incolla ogni campo nella casella con lo stesso nome:');
+    s2.append(copyField('Titolo dell’offerta', o.title), copyField('Data di inizio', itDate(o.start)), copyField('Data di fine', itDate(o.end)),
+      copyField('Descrizione', o.text, true), copyField('Link per riscattare l’offerta (Altri dettagli)', o.link), copyField('Termini e condizioni', o.terms));
+    ol.append(s2);
+    ol.append(step('Aggiungi la foto: <a href="' + o.image + '" download="ironwood-livigno-offerta.jpg">scarica la foto dell’offerta</a> e caricala nel post.<br><img src="' + o.image + '" alt="">'));
+    ol.append(step('Premi <b>Pubblica</b>. Google controlla il post e di solito lo mostra entro poche ore.'));
+    panel.append(ol);
+    panel.classList.remove('hidden');
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (err) {
+    panel.innerHTML = '<p class="warn">' + err.message + '</p>';
+    panel.classList.remove('hidden');
+  } finally {
+    e.target.disabled = false;
+  }
+});
+
+$('prepPhoto').addEventListener('click', async (e) => {
+  const panel = $('manualPanel');
+  e.target.disabled = true;
+  try {
+    const ph = await api('google/manual/photo');
+    const url = '/api/admin/google/manual/photo/' + ph.id + '.jpg';
+    panel.innerHTML = '<strong>Foto della settimana per Google</strong>';
+    const ol = document.createElement('ol');
+    ol.append(step('<a href="' + url + '" download>Scarica la foto (JPG)</a> — scelta tra quelle della stagione, mai pubblicata prima.<br><img src="/foto/' + ph.id + '" alt="">'));
+    ol.append(step('Apri <a href="' + GBP_URL + '" target="_blank" rel="noopener">Google Business</a>; accanto a <b>Ironwood Livigno</b> clicca l’icona <b>Aggiungi foto</b> e carica la foto scaricata.'));
+    const done = step('');
+    const b = document.createElement('button'); b.type = 'button'; b.textContent = 'Fatto, l’ho pubblicata';
+    b.addEventListener('click', async () => {
+      b.disabled = true;
+      try {
+        await api('google/manual/photo-done', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: ph.id }) });
+        done.innerHTML = '<span class="okmsg">Segnata come pubblicata: la prossima settimana il sito ti proporrà un’altra foto.</span>';
+        refreshManualLast();
+      } catch (err) { b.disabled = false; alert(err.message); }
+    });
+    done.append(b);
+    ol.append(done);
+    panel.append(ol);
+    panel.classList.remove('hidden');
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (err) {
+    panel.innerHTML = '<p class="warn">' + err.message + '</p>';
+    panel.classList.remove('hidden');
+  } finally {
+    e.target.disabled = false;
+  }
+});
+
+// Reminder: how long since the last photo went on Google.
+async function refreshManualLast() {
+  const el = $('manualLast');
+  try {
+    const ph = await api('google/manual/photo');
+    if (!ph.lastAt) { el.className = 'sub'; el.textContent = 'Nessuna foto ancora pubblicata su Google da qui.'; return; }
+    const days = Math.floor((Date.now() - Date.parse(ph.lastAt)) / 86400000);
+    el.className = days >= 7 ? 'warn' : 'sub';
+    el.textContent = 'Ultima foto su Google: ' + new Date(ph.lastAt).toLocaleDateString('it-IT', { day: 'numeric', month: 'long' }) +
+      (days >= 7 ? ' — è ora della foto della settimana!' : ' (' + ph.sent + ' in tutto)');
+  } catch (err) { el.textContent = ''; }
+}
 // Message from the return trip of "Collega a Google".
 (function () {
   const m = new URLSearchParams(location.search).get('google');

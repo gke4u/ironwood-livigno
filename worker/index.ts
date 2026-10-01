@@ -246,6 +246,14 @@ function isSkiStay(checkIn: string, checkOut: string): boolean {
   return false;
 }
 
+// Photos the owner already put on Google by hand (see google/manual/*).
+const MANUAL_KEY = 'google-manual';
+type ManualState = { postedPhotos: string[]; lastAt: string | null };
+async function readManual(env: Env): Promise<ManualState> {
+  const raw = await env.PHOTOS.get(MANUAL_KEY);
+  return raw ? (JSON.parse(raw) as ManualState) : { postedPhotos: [], lastAt: null };
+}
+
 // ---------- offer (public) ----------
 
 async function offerApi(request: Request, env: Env): Promise<Response> {
@@ -333,6 +341,60 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
   if (route === 'google/photo-now' && request.method === 'POST') {
     return json({ message: await weeklyGooglePhoto(env, new URL(request.url).origin, true) });
   }
+  // Manual publishing (Google didn't grant API access): the admin gets the
+  // post ready to paste and the photo as JPEG; the owner publishes by hand.
+  if (route === 'google/manual/offer' && request.method === 'GET') {
+    const offer = await readOffer(env, 0);
+    const today = romeDate();
+    if (!offer || !offer.active || offer.showUntil < today) return json({ error: 'Nessuna offerta attiva da pubblicare: salvane una qui sotto.' }, 404);
+    // Always the public site: the link ends up on Google.
+    const body = google.offerPostBody({ ...offer, skiStay: isSkiStay(offer.checkIn, offer.checkOut) }, SITE_ORIGIN);
+    return json({
+      title: body.event.title,
+      start: offer.showFrom,
+      end: offer.showUntil,
+      text: body.summary,
+      link: body.offer.redeemOnlineUrl,
+      terms: body.offer.termsConditions,
+      image: `/images/${offer.image}.jpg`
+    });
+  }
+  if (route === 'google/manual/photo' && request.method === 'GET') {
+    const manual = await readManual(env);
+    const today = romeDate();
+    const list = inSeason(await readIndex(env, 0), today);
+    if (!list.length) return json({ error: 'Nessuna foto caricata.' }, 404);
+    const start = list.indexOf(pickForDate(list, today));
+    for (let step = 0; step < list.length; step++) {
+      const p = list[(start + step) % list.length];
+      if (manual.postedPhotos.includes(p.id)) continue;
+      if (!(await env.PHOTOS.get(`jpg:${p.id}`, { type: 'stream' }))) continue;
+      return json({ id: p.id, season: p.season, lastAt: manual.lastAt, sent: manual.postedPhotos.length });
+    }
+    return json({ error: 'Tutte le foto di questa stagione sono già state pubblicate su Google.' }, 404);
+  }
+  const manualJpg = route.match(/^google\/manual\/photo\/([a-z0-9-]{8,40})\.jpg$/);
+  if (manualJpg && request.method === 'GET') {
+    const bytes = await env.PHOTOS.get(`jpg:${manualJpg[1]}`, { type: 'arrayBuffer' });
+    if (!bytes) return json({ error: 'Foto non trovata' }, 404);
+    return new Response(bytes, {
+      headers: { 'Content-Type': 'image/jpeg', 'Content-Disposition': `attachment; filename="ironwood-livigno-${romeDate()}.jpg"`, 'Cache-Control': 'private, no-store' }
+    });
+  }
+  if (route === 'google/manual/photo-done' && request.method === 'POST') {
+    const body = (await request.json().catch(() => ({}))) as { id?: unknown };
+    if (typeof body.id !== 'string' || !/^[a-z0-9-]{8,40}$/.test(body.id)) return json({ error: 'Foto non valida' }, 400);
+    const manual = await readManual(env);
+    if (!manual.postedPhotos.includes(body.id)) manual.postedPhotos.push(body.id);
+    manual.lastAt = new Date().toISOString();
+    try {
+      await env.PHOTOS.put(MANUAL_KEY, JSON.stringify(manual));
+    } catch (err) {
+      return kvWriteError(err);
+    }
+    return json({ ok: true });
+  }
+
   if (route === 'google/disconnect' && request.method === 'POST') {
     await env.PHOTOS.delete(google.GOOGLE_KEY);
     return json({ ok: true });
