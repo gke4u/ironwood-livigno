@@ -864,21 +864,14 @@ function renderMore() {
     const sel = el.querySelector('select');
     sel.value = p.season;
     sel.className = 'season ' + p.season;
-    sel.addEventListener('change', async () => {
-      const previous = p.season;
-      sel.disabled = true;
-      try {
-        await api('photos/' + p.id + '/season', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ season: sel.value }) });
-        p.season = sel.value;
-        sel.className = 'season ' + p.season;
-        gridState.when = schedule(photos, today);
-        refreshWhen();
-      } catch (err) {
-        sel.value = previous;
-        alert(err.message);
-      } finally {
-        sel.disabled = false;
-      }
+    sel.addEventListener('change', () => {
+      // Updated here at once, then saved in turn: each save sends the whole,
+      // latest map, so quick changes to several photos can't undo each other.
+      p.season = sel.value;
+      sel.className = 'season ' + p.season;
+      gridState.when = schedule(photos, today);
+      refreshWhen();
+      saveSeasons(photos);
     });
     el.querySelector('button').addEventListener('click', async () => {
       if (!confirm('Eliminare questa foto dalla rotazione?')) return;
@@ -894,6 +887,21 @@ function renderMore() {
   $('more').textContent = 'Mostra altre ' + Math.min(PAGE, left) + ' (ne restano ' + left + ')';
 }
 $('more').addEventListener('click', renderMore);
+
+// Season changes are saved one after the other, each with the current map.
+let seasonQueue = Promise.resolve();
+function saveSeasons(photos) {
+  seasonQueue = seasonQueue.then(async () => {
+    const seasons = {};
+    photos.forEach((x) => { seasons[x.id] = x.season; });
+    try {
+      await api('photos/seasons', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ seasons }) });
+    } catch (err) {
+      alert('Stagione non salvata: ' + err.message + ' — la pagina si ricarica con i dati salvati.');
+      await load().catch(() => {});
+    }
+  });
+}
 
 // "Oggi" / "Domani" / next date on the site, recomputed when a season changes.
 function refreshWhen() {

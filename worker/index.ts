@@ -129,7 +129,13 @@ const SITE_ORIGIN = 'https://ironwoodlivigno.com';
 // The static homepage, plus the section order from the admin as CSS. Any
 // problem with the saved order serves the page exactly as built.
 async function homePage(request: Request, env: Env): Promise<Response> {
-  const res = await env.ASSETS.fetch(request);
+  // Without the browser's If-None-Match/If-Modified-Since: the static file
+  // doesn't change when the section order does, so a 304 from it would keep
+  // a returning visitor on the old order (or old hidden sections).
+  const headers = new Headers(request.headers);
+  headers.delete('If-None-Match');
+  headers.delete('If-Modified-Since');
+  const res = await env.ASSETS.fetch(new Request(request, { headers }));
   if (!res.ok || !(res.headers.get('Content-Type') ?? '').includes('text/html')) return res;
   try {
     const raw = await env.PHOTOS.get(LAYOUT_KEY, { cacheTtl: 60 });
@@ -506,13 +512,18 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
   if (route === 'photos' && request.method === 'POST') return upload(request, env);
   if (route === 'photos/reindex' && request.method === 'POST') return reindex(env);
 
-  const seasonRoute = route.match(/^photos\/([a-z0-9-]{8,40})\/season$/);
-  if (seasonRoute && request.method === 'PUT') {
-    const body = (await request.json().catch(() => ({}))) as { season?: unknown };
-    if (!SEASONS.includes(body.season as Season)) return json({ error: 'Stagione non valida' }, 400);
+  // The admin sends the season of every photo it lists, not just the one
+  // changed: rebuilding the map from a fresh KV read could miss a change made
+  // a second earlier (KV reads can lag behind writes), and quick changes to
+  // several photos would undo each other.
+  if (route === 'photos/seasons' && request.method === 'PUT') {
+    const body = (await request.json().catch(() => ({}))) as { seasons?: unknown };
+    if (!body.seasons || typeof body.seasons !== 'object') return json({ error: 'Stagioni non valide' }, 400);
+    const map: Record<string, Season> = {};
+    for (const [id, season] of Object.entries(body.seasons as Record<string, unknown>)) {
+      if (/^[a-z0-9-]{8,40}$/.test(id) && SEASONS.includes(season as Season)) map[id] = season as Season;
+    }
     try {
-      const map = await readSeasons(env, 0);
-      map[seasonRoute[1]] = body.season as Season;
       await env.PHOTOS.put(SEASONS_KEY, JSON.stringify(map));
     } catch (err) {
       return kvWriteError(err);

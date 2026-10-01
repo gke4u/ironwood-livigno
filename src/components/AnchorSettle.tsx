@@ -10,7 +10,8 @@ import { useEffect } from 'react';
 // it would without the optimisation (its scroll-margin below the menu bar).
 function settle(id: string) {
   const el = document.getElementById(id);
-  if (!el || !el.closest('#sezioni')) return;
+  // A section hidden from the admin has no box: nothing to align to.
+  if (!el || !el.closest('#sezioni') || el.getClientRects().length === 0) return;
   let tries = 0;
   const fix = () => {
     const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;

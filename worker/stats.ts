@@ -92,12 +92,13 @@ export function sourceName(refHost: string | null, siteHost: string): string {
   if (/airbnb\./.test(h)) return 'Airbnb';
   if (/booking\.com$/.test(h)) return 'Booking.com';
   if (/holidu\./.test(h)) return 'Holidu';
-  return h.slice(0, 60);
+  // Anything else as its host name, if it looks like one (the beacon is public).
+  return /^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(h) && h.length <= 60 ? h : 'Altro';
 }
 
 // The page that was viewed: path of the same-origin Referer, without query or hash.
 export function pagePath(referer: string | null, origin: string): string {
   if (!referer || !referer.startsWith(origin)) return '(sconosciuta)';
   const path = new URL(referer).pathname.replace(/\/+$/, '') || '/';
-  return path.slice(0, 120);
+  return /^\/[a-z0-9/_-]{0,119}$/i.test(path) ? path : '(sconosciuta)';
 }
