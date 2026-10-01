@@ -341,6 +341,7 @@
       "100 m od lanovek",
       "Až 6 hostů · 3 ložnice"
     ],
+    "featureOffSeason": "15 minut pěšky do centra Livigna",
     "limited": "Jen jeden apartmán: jakmile je rezervován, nabídka končí.",
     "validUntil": "Nabídka platí do {date}",
     "endsIn": "Končí za",

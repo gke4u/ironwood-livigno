@@ -60,7 +60,7 @@ Link: `https://ironwoodlivigno.com/blog/quanto-costa-sciare-a-livigno-guida-prez
 Foto: la sauna con vista montagna.
 
 ```
-Dopo l'ultima discesa, nessuna fila per la spa: a Ironwood Livigno sauna a infrarossi e bagno turco sono dentro l'appartamento, solo per voi, senza orari né prenotazioni. È il dettaglio che i nostri ospiti citano di più nelle recensioni.
+Novembre a Livigno: giornate fresche, prime nevicate in quota e la valle tutta per voi. Dopo una camminata, nessuna fila per la spa: a Ironwood Livigno sauna a infrarossi e bagno turco sono dentro l'appartamento, solo per voi, senza orari né prenotazioni. È il dettaglio che i nostri ospiti citano di più nelle recensioni.
 ```
 Link: `https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno?utm_source=google&utm_medium=gbp&utm_campaign=post-sauna`
 

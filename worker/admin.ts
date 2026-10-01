@@ -73,6 +73,14 @@ export function adminPage(): string {
   .badge { align-self:flex-start; display:inline-block; font-size:12px; font-weight:600; padding:3px 9px; border-radius:999px; background:var(--ok); color:#fff; }
   .badge.tomorrow { background:#b08a2e; }
   .muted { color:#6b625b; }
+  .ph select.season { font-size:13px; padding:6px 8px; margin:0; border-radius:10px; }
+  .ph select.season.neve { background:#e8f0fa; }
+  .ph select.season.verde { background:#e7f3ea; }
+  .season-pick { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+  .season-pick label { flex:1 1 150px; border:2px solid var(--line); border-radius:12px; padding:10px 12px; cursor:pointer; font-size:14px; line-height:1.35; }
+  .season-pick input { margin-right:6px; }
+  .season-pick label:has(input:checked) { border-color:var(--brick); background:#fbf6f2; }
+  .season-pick small { display:block; color:#6b625b; font-size:12px; margin-top:2px; }
   .error { color:#a33; }
   .hidden { display:none !important; }
   .today { display:grid; grid-template-columns: 1fr; gap:16px; align-items:center; }
@@ -106,6 +114,13 @@ export function adminPage(): string {
     <section class="card">
       <h2>Aggiungi foto</h2>
       <p class="hint">Scegli una o più foto, anche direttamente dal telefono. Vengono ridotte e alleggerite automaticamente prima dell'invio (lato lungo 1600 px, circa 150–300 KB). Ogni giorno a mezzanotte la foto sul sito cambia, seguendo l'ordine di caricamento, e ricomincia dalla prima dopo l'ultima.</p>
+      <p class="hint"><strong>1. Di che stagione sono le foto che carichi?</strong> Le foto con la neve compaiono solo da dicembre ad aprile, quando gli impianti sono aperti; quelle senza neve da maggio a novembre. Puoi cambiarla dopo, foto per foto, qui sotto.</p>
+      <div class="season-pick" id="seasonPick">
+        <label><input type="radio" name="uploadSeason" value="neve">❄️ Con neve<small>dicembre – aprile</small></label>
+        <label><input type="radio" name="uploadSeason" value="verde">🌿 Senza neve<small>maggio – novembre</small></label>
+        <label><input type="radio" name="uploadSeason" value="sempre">🏠 Tutto l'anno<small>interni, dettagli, foto senza stagione</small></label>
+      </div>
+      <p class="hint"><strong>2. Scegli le foto</strong></p>
       <label class="drop" id="drop">
         <strong>Tocca per scegliere le foto</strong>
         <span class="muted">oppure trascinale qui</span>
@@ -375,16 +390,33 @@ $('logout').addEventListener('click', async () => {
   showLogin();
 });
 
-// ---- rotation dates (same rule as the Worker: day number modulo count) ----
+// ---- seasons and rotation dates (same rules as the Worker) ----
+// Snow photos only while the lifts are open (December to April), photos
+// without snow the rest of the year, all-year ones always. Each day the
+// photos in season take turns: day number modulo their count.
+const LIFT_MONTHS = [12, 1, 2, 3, 4];
+const SEASON_LABELS = { neve: '❄️ Con neve (dic–apr)', verde: '🌿 Senza neve (mag–nov)', sempre: '🏠 Tutto l’anno' };
+function inSeasonList(photos, date) {
+  const now = LIFT_MONTHS.includes(Number(date.slice(5, 7))) ? 'neve' : 'verde';
+  const fit = photos.filter((p) => p.season === 'sempre' || p.season === now);
+  return fit.length ? fit : photos;
+}
+// First day (within two years) each photo is on the site.
+function schedule(photos, today) {
+  const first = {};
+  const d0 = dayNumber(today);
+  for (let k = 0; k < 730 && photos.length; k++) {
+    const day = d0 + k;
+    const list = inSeasonList(photos, new Date(day * 86400000).toISOString().slice(0, 10));
+    const p = list[day % list.length];
+    if (!(p.id in first)) first[p.id] = new Date(day * 86400000);
+  }
+  return first;
+}
 function romeToday() {
   return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Rome' }).format(new Date());
 }
 function dayNumber(date) { return Math.floor(Date.parse(date + 'T00:00:00Z') / 86400000); }
-function nextShowing(i, n, today) {
-  const d = dayNumber(today);
-  const offset = ((i - (d % n)) % n + n) % n;
-  return new Date((d + offset) * 86400000);
-}
 function formatDay(date) {
   return date.toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' });
 }
@@ -413,7 +445,7 @@ async function load() {
   $('todayBox').append(img, info);
 
   $('grid').innerHTML = '';
-  gridState = { photos, data, today, shown: 0 };
+  gridState = { photos, data, today, shown: 0, when: schedule(photos, today) };
   renderMore();
 }
 
@@ -423,19 +455,36 @@ let gridState = null;
 function renderMore() {
   const { photos, data, today } = gridState;
   const slice = photos.slice(gridState.shown, gridState.shown + PAGE);
-  slice.forEach((p, j) => {
-    const i = gridState.shown + j;
+  slice.forEach((p) => {
     const el = document.createElement('div');
     el.className = 'ph';
-    const when = nextShowing(i, photos.length, today);
-    const badge = p.id === data.todayId ? '<span class="badge">Oggi</span>'
-      : p.id === data.tomorrowId ? '<span class="badge tomorrow">Domani</span>'
-      : '<span class="muted">Sul sito: ' + formatDay(when) + '</span>';
     el.innerHTML = '<img loading="lazy" alt="">' +
-      '<div class="meta">' + badge +
+      '<div class="meta"><span class="when"></span>' +
+      '<select class="season" aria-label="Stagione della foto">' +
+      Object.keys(SEASON_LABELS).map((k) => '<option value="' + k + '">' + SEASON_LABELS[k] + '</option>').join('') + '</select>' +
       '<span class="muted">' + p.w + '×' + p.h + ' · ' + formatKB(p.bytes) + '</span>' +
       '<button class="danger">Elimina</button></div>';
+    el.dataset.id = p.id;
     el.querySelector('img').src = '/foto/' + p.id;
+    const sel = el.querySelector('select');
+    sel.value = p.season;
+    sel.className = 'season ' + p.season;
+    sel.addEventListener('change', async () => {
+      const previous = p.season;
+      sel.disabled = true;
+      try {
+        await api('photos/' + p.id + '/season', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ season: sel.value }) });
+        p.season = sel.value;
+        sel.className = 'season ' + p.season;
+        gridState.when = schedule(photos, today);
+        refreshWhen();
+      } catch (err) {
+        sel.value = previous;
+        alert(err.message);
+      } finally {
+        sel.disabled = false;
+      }
+    });
     el.querySelector('button').addEventListener('click', async () => {
       if (!confirm('Eliminare questa foto dalla rotazione?')) return;
       try { await api('photos/' + p.id, { method: 'DELETE' }); await load(); }
@@ -444,11 +493,25 @@ function renderMore() {
     $('grid').append(el);
   });
   gridState.shown += slice.length;
+  refreshWhen();
   const left = photos.length - gridState.shown;
   $('more').classList.toggle('hidden', left <= 0);
   $('more').textContent = 'Mostra altre ' + Math.min(PAGE, left) + ' (ne restano ' + left + ')';
 }
 $('more').addEventListener('click', renderMore);
+
+// "Oggi" / "Domani" / next date on the site, recomputed when a season changes.
+function refreshWhen() {
+  const { today, when } = gridState;
+  const tomorrow = new Date((dayNumber(today) + 1) * 86400000).getTime();
+  document.querySelectorAll('#grid .ph').forEach((el) => {
+    const d = when[el.dataset.id];
+    const box = el.querySelector('.when');
+    if (d && d.getTime() === dayNumber(today) * 86400000) box.innerHTML = '<span class="badge">Oggi</span>';
+    else if (d && d.getTime() === tomorrow) box.innerHTML = '<span class="badge tomorrow">Domani</span>';
+    else box.innerHTML = '<span class="muted">' + (d ? 'Sul sito: ' + formatDay(d) : 'Fuori stagione') + '</span>';
+  });
+}
 
 // ---- compression in the browser ----
 // createImageBitmap first (fast, applies the EXIF rotation of phone photos);
@@ -534,6 +597,15 @@ async function compress(file) {
 async function handleFiles(fileList) {
   const files = Array.from(fileList).filter((f) => f.type.startsWith('image/') || /\\.(heic|heif)$/i.test(f.name));
   if (!files.length) return;
+  const picked = document.querySelector('input[name=uploadSeason]:checked');
+  if (!picked) {
+    $('files').value = '';
+    $('progressSummary').textContent = '';
+    $('progress').innerHTML = '<div class="warn">Prima scegli la stagione delle foto (punto 1), poi selezionale di nuovo.</div>';
+    $('seasonPick').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  const season = picked.value;
   const progress = $('progress');
   const bar = $('progressBar');
   const summary = $('progressSummary');
@@ -557,6 +629,7 @@ async function handleFiles(fileList) {
       form.append('file', blob, 'foto.' + (blob.type === 'image/webp' ? 'webp' : 'jpg'));
       form.append('w', String(w));
       form.append('h', String(h));
+      form.append('season', season);
       await api('photos', { method: 'POST', body: form });
       done++; savedIn += file.size; savedOut += blob.size; sinceIndex++;
       if (sinceIndex >= 20) { await api('photos/reindex', { method: 'POST' }).catch(() => {}); sinceIndex = 0; }

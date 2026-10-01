@@ -25,6 +25,7 @@ export type OfferStrings = {
   perNight: string;
   save: string;
   features: string[];
+  featureOffSeason: string;
   limited: string;
   validUntil: string;
   endsIn: string;
@@ -57,11 +58,23 @@ const CLOSED_KEY = 'iw-offer-closed';
 const OPEN_AFTER_MS = 5000;
 const WHATSAPP = '390342929285';
 const EMAIL = 'info@ironwoodlivigno.com';
+// Same @id as the LodgingBusiness in StructuredData.tsx (src/lib/structuredDataIds.ts).
+const SITE_URL = 'https://ironwoodlivigno.com';
 // Site locale -> the tag Intl formats best with ('no' is Norwegian Bokmål).
 const INTL_LOCALE: Record<string, string> = { en: 'en-GB', 'en-us': 'en-US', no: 'nb-NO' };
 // Photo chosen in the admin (see OFFER_IMAGES in worker/offer.ts). On phones
 // the photo is a wide strip, so some pictures need their focus point moved.
 const DEFAULT_IMAGE = 'esterno-giorno';
+// Months the lifts are open (late November/early December to the start of
+// May): same as LIFT_MONTHS in worker/index.ts. A stay with no night in them
+// doesn't advertise the lifts (features[1]) but the walk to the centre.
+const LIFT_MONTHS = [12, 1, 2, 3, 4];
+function isSkiStay(checkIn: string, checkOut: string) {
+  for (let t = Date.parse(checkIn); t < Date.parse(checkOut); t += 86400_000) {
+    if (LIFT_MONTHS.includes(new Date(t).getUTCMonth() + 1)) return true;
+  }
+  return false;
+}
 const MOBILE_FOCUS: Record<string, string> = { 'esterno-notte': 'object-[center_58%]', 'esterno-giorno': 'object-[center_45%]' };
 
 // Calls `cb` once the page has been visible for `ms` in total; the countdown
@@ -167,6 +180,36 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
     };
   }, [open, hide]);
 
+  // The live offer as JSON-LD, so search engines that render the page see it
+  // too (the static HTML can't carry it: it changes from the admin without a
+  // rebuild). Not in preview, where the offer may not be public yet.
+  useEffect(() => {
+    if (!offer || previewRef.current) return;
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Offer',
+      name: `${t.eyebrow}: ${offer.checkIn} – ${offer.checkOut}`,
+      url: window.location.href.split(/[?#]/)[0],
+      price: offer.price,
+      priceCurrency: 'EUR',
+      priceValidUntil: offer.showUntil,
+      availabilityStarts: offer.checkIn,
+      availabilityEnds: offer.checkOut,
+      availability: 'https://schema.org/LimitedAvailability',
+      ...(offer.unit === 'night'
+        ? { priceSpecification: { '@type': 'UnitPriceSpecification', price: offer.price, priceCurrency: 'EUR', unitCode: 'DAY' } }
+        : {}),
+      offeredBy: { '@id': `${SITE_URL}/#organization` },
+      image: `${SITE_URL}/images/${offer.image ?? DEFAULT_IMAGE}-1024.webp`
+    });
+    document.head.appendChild(script);
+    return () => {
+      script.remove();
+    };
+  }, [offer, t.eyebrow]);
+
   // After closing, keyboard focus moves to the reopen button (rendered only once the dialog is gone).
   const wasOpen = useRef(false);
   useEffect(() => {
@@ -188,6 +231,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
   const nightsLabel = fill(t.nights[pluralKey] ?? t.nights.other, { n: String(nightsCount) });
   const pct = offer.originalPrice ? Math.round(((offer.originalPrice - offer.price) / offer.originalPrice) * 100) : 0;
   const unitLabel = offer.unit === 'night' ? t.perNight : t.perStay;
+  const features = isSkiStay(offer.checkIn, offer.checkOut) ? t.features : t.features.map((f, i) => (i === 1 ? t.featureOffSeason : f));
   const priceText = `${money(offer.price)}${offer.unit === 'night' ? ` ${t.perNight}` : ''}`;
 
   const values = { checkIn: longDate(offer.checkIn), checkOut: longDate(offer.checkOut), price: priceText };
@@ -233,7 +277,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
             role="dialog"
             aria-modal="true"
             aria-labelledby="offer-title"
-            className={`relative w-full md:max-w-4xl md:mx-6 max-h-[92vh] md:max-h-[94vh] overflow-y-auto overscroll-contain bg-ink text-mist rounded-t-[2rem] md:rounded-[2rem] shadow-[0_40px_120px_-20px_rgba(0,0,0,0.6)] md:grid md:grid-cols-[1.05fr_1fr] transition-all duration-500 ease-out motion-reduce:transition-none ${
+            className={`relative w-full md:max-w-4xl md:mx-6 max-h-[92vh] md:max-h-[94vh] overflow-y-auto overscroll-contain bg-[#3D3026] text-mist rounded-t-[2rem] md:rounded-[2rem] shadow-[0_40px_120px_-20px_rgba(0,0,0,0.6)] md:grid md:grid-cols-[1.05fr_1fr] transition-all duration-500 ease-out motion-reduce:transition-none ${
               shown ? 'translate-y-0 opacity-100 md:scale-100' : 'translate-y-full md:translate-y-6 opacity-0 md:scale-95'
             }`}
           >
@@ -256,7 +300,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
                 <source type="image/webp" srcSet={`${IMG}-480.webp 480w, ${IMG}-768.webp 768w, ${IMG}-1024.webp 1024w`} sizes="(min-width: 768px) 460px, 100vw" />
                 <img src={`${IMG}-1024.webp`} alt="" className={`absolute inset-0 w-full h-full object-cover ${MOBILE_FOCUS[imageKey] ?? 'object-center'} md:object-center md:animate-kenburns motion-reduce:animate-none`} />
               </picture>
-              <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/10 to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-ink/40" aria-hidden />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#3D3026] via-[#3D3026]/10 to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-[#3D3026]/40" aria-hidden />
               {pct > 0 && (
                 <span className="absolute left-5 top-5 md:left-6 md:top-6 z-10 rounded-full bg-brick text-mist px-4 py-2 text-sm md:text-base font-semibold shadow-soft tabular-nums">
                   −{pct}%
@@ -304,7 +348,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
               </p>
 
               <ul className="mt-5 md:mt-4 space-y-2 text-sm text-mist/85">
-                {t.features.map((f) => (
+                {features.map((f) => (
                   <li key={f} className="flex items-center gap-2.5">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-gold flex-none" aria-hidden>
                       <path d="M5 12.5l4.5 4.5L19 7" />
@@ -335,7 +379,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
 
               <p className="mt-4 text-xs text-mist/55">{t.limited}</p>
 
-              <div className="sticky bottom-0 -mx-6 sm:-mx-8 md:mx-0 mt-4 px-6 sm:px-8 md:px-0 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0_-12px_24px_-12px_rgba(0,0,0,0.6)] md:shadow-none md:pb-0 bg-ink md:bg-transparent md:static">
+              <div className="sticky bottom-0 -mx-6 sm:-mx-8 md:mx-0 mt-4 px-6 sm:px-8 md:px-0 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0_-12px_24px_-12px_rgba(0,0,0,0.6)] md:shadow-none md:pb-0 bg-[#3D3026] md:bg-transparent md:static">
                 <div className="grid gap-2.5 sm:grid-cols-2 md:grid-cols-1">
                   <a
                     href={waHref}

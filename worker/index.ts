@@ -24,7 +24,19 @@ export interface Env {
   SESSION_SECRET: string;
 }
 
-type PhotoMeta = { id: string; type: string; w: number; h: number; bytes: number; created: string };
+type PhotoMeta = { id: string; type: string; w: number; h: number; bytes: number; created: string; season?: Season };
+
+// When a photo may appear: 'neve' (snow, ski) only while the lifts are open,
+// 'verde' (no snow) only the rest of the year, 'sempre' (interiors etc.) all
+// year. Chosen in the admin at upload and changeable later; later changes go
+// in the SEASONS_KEY map, so the photo itself never has to be rewritten.
+type Season = 'neve' | 'verde' | 'sempre';
+const SEASONS: Season[] = ['neve', 'verde', 'sempre'];
+// Livigno's lifts run roughly from late November/early December to the start
+// of May: snow photos are shown December to April. Same months as
+// LIFT_MONTHS in admin.ts and src/components/OfferPopup.tsx.
+const LIFT_MONTHS = [12, 1, 2, 3, 4];
+const SEASONS_KEY = 'seasons';
 
 // Login credentials chosen in the admin. Only a PBKDF2 hash of the password
 // is stored. `ver` changes with every change of credentials and is part of
@@ -71,7 +83,7 @@ export default {
 // ---------- public ----------
 
 async function photoOfTheDay(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-  const index = await readIndex(env);
+  const index = inSeason(await readIndex(env), romeDate());
   if (index.length === 0) {
     // Nothing uploaded yet: a short cache, so the first real photo shows up quickly.
     const fallback = await env.ASSETS.fetch(new Request(new URL(FALLBACK_IMAGE, request.url)));
@@ -196,12 +208,26 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
     return json({
       user: auth?.user ?? DEFAULT_USER,
       photos: index,
-      todayId: index.length ? pickForDate(index, today).id : null,
-      tomorrowId: index.length ? pickForDate(index, addDays(today, 1)).id : null
+      todayId: index.length ? pickForDate(inSeason(index, today), today).id : null,
+      tomorrowId: index.length ? pickForDate(inSeason(index, addDays(today, 1)), addDays(today, 1)).id : null
     });
   }
   if (route === 'photos' && request.method === 'POST') return upload(request, env);
   if (route === 'photos/reindex' && request.method === 'POST') return reindex(env);
+
+  const seasonRoute = route.match(/^photos\/([a-z0-9-]{8,40})\/season$/);
+  if (seasonRoute && request.method === 'PUT') {
+    const body = (await request.json().catch(() => ({}))) as { season?: unknown };
+    if (!SEASONS.includes(body.season as Season)) return json({ error: 'Stagione non valida' }, 400);
+    try {
+      const map = await readSeasons(env, 0);
+      map[seasonRoute[1]] = body.season as Season;
+      await env.PHOTOS.put(SEASONS_KEY, JSON.stringify(map));
+    } catch (err) {
+      return kvWriteError(err);
+    }
+    return json({ ok: true });
+  }
 
   const del = route.match(/^photos\/([a-z0-9-]{8,40})$/);
   if (del && request.method === 'DELETE') {
@@ -323,6 +349,8 @@ async function upload(request: Request, env: Env): Promise<Response> {
   const bytes = await file.arrayBuffer();
   const type = sniffImageType(new Uint8Array(bytes));
   if (!type) return json({ error: 'Formato non supportato (solo JPEG o WebP)' }, 415);
+  const season = form.get('season');
+  if (!SEASONS.includes(season as Season)) return json({ error: 'Scegli la stagione delle foto' }, 400);
 
   const meta: PhotoMeta = {
     id: crypto.randomUUID().replace(/-/g, '').slice(0, 20),
@@ -330,7 +358,8 @@ async function upload(request: Request, env: Env): Promise<Response> {
     w: Math.round(w),
     h: Math.round(h),
     bytes: bytes.byteLength,
-    created: new Date().toISOString()
+    created: new Date().toISOString(),
+    season: season as Season
   };
   try {
     await env.PHOTOS.put(`photo:${meta.id}`, bytes, { metadata: meta });
@@ -389,14 +418,31 @@ function kvWriteError(err: unknown): Response {
 
 // ---------- helpers ----------
 
+// The rotation list, each photo with its current season (a later change from
+// the admin wins over the one chosen at upload; photos from before seasons
+// existed count as all-year until one is set).
 async function readIndex(env: Env, cacheTtl = 60): Promise<PhotoMeta[]> {
   // cacheTtl 0 = always fresh (admin); the public route tolerates a minute of lag.
-  const raw = await env.PHOTOS.get(INDEX_KEY, cacheTtl ? { cacheTtl } : undefined);
-  return raw ? (JSON.parse(raw) as PhotoMeta[]) : [];
+  const [raw, seasons] = await Promise.all([env.PHOTOS.get(INDEX_KEY, cacheTtl ? { cacheTtl } : undefined), readSeasons(env, cacheTtl)]);
+  const index = raw ? (JSON.parse(raw) as PhotoMeta[]) : [];
+  return index.map((p) => ({ ...p, season: seasons[p.id] ?? p.season ?? 'sempre' }));
 }
 
-// Photos take turns in upload order, one per day, restarting from the first
-// after the last. Deterministic from the date alone: no cron job needed.
+async function readSeasons(env: Env, cacheTtl = 60): Promise<Record<string, Season>> {
+  const raw = await env.PHOTOS.get(SEASONS_KEY, cacheTtl ? { cacheTtl } : undefined);
+  return raw ? (JSON.parse(raw) as Record<string, Season>) : {};
+}
+
+// The photos that fit the season of `date`. If none do (e.g. only snow
+// photos uploaded, in summer), all of them, so the section is never empty.
+function inSeason(index: PhotoMeta[], date: string): PhotoMeta[] {
+  const now: Season = LIFT_MONTHS.includes(Number(date.slice(5, 7))) ? 'neve' : 'verde';
+  const fit = index.filter((p) => p.season === 'sempre' || p.season === now);
+  return fit.length ? fit : index;
+}
+
+// The photos in season take turns in upload order, one per day, restarting
+// from the first after the last. Deterministic from the date alone: no cron job needed.
 function pickForDate(index: PhotoMeta[], date: string): PhotoMeta {
   const day = Math.floor(Date.parse(`${date}T00:00:00Z`) / 86400_000);
   return index[day % index.length];
