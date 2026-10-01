@@ -73,6 +73,13 @@ export function adminPage(): string {
   .badge { align-self:flex-start; display:inline-block; font-size:12px; font-weight:600; padding:3px 9px; border-radius:999px; background:var(--ok); color:#fff; }
   .badge.tomorrow { background:#b08a2e; }
   .muted { color:#6b625b; }
+  .check { display:flex; gap:10px; align-items:center; margin:0 0 6px; font-weight:600; cursor:pointer; }
+  .check input { width:20px; height:20px; margin:0; }
+  .check:has(input:disabled) { opacity:.55; cursor:default; }
+  a.btn { display:inline-block; background:var(--brick); color:#fff; text-decoration:none; font-weight:600; padding:12px 18px; border-radius:12px; }
+  .log { list-style:none; padding:0; margin:0; font-size:13px; }
+  .log li { padding:6px 0; border-bottom:1px solid var(--line); }
+  .log .ko { color:#a33; }
   .ph select.season { font-size:13px; padding:6px 8px; margin:0; border-radius:10px; }
   .ph select.season.neve { background:#e8f0fa; }
   .ph select.season.verde { background:#e7f3ea; }
@@ -163,12 +170,31 @@ export function adminPage(): string {
         <p class="sub">Il pop-up è visibile dall’inizio alla fine dell’offerta (compresa), se l’interruttore è attivo.</p>
         <label class="field">Foto del pop-up</label>
         <div class="pics" id="offerPics"></div>
+        <label class="check" id="offerGoogleRow"><input type="checkbox" id="offerGoogle"> Pubblica anche su Google come post “Offerta”</label>
+        <p class="sub" id="offerGoogleHint"></p>
         <div class="actions">
           <button type="submit">Salva offerta</button>
           <a class="btn-link" href="/it?anteprima-offerta" target="_blank" rel="noopener">Vedi anteprima →</a>
         </div>
         <p id="offerMsg"></p>
       </form>
+    </section>
+
+    <section class="card" id="google">
+      <h2>Google Business Profile</h2>
+      <p class="hint">Collega il profilo Google di Ironwood Livigno: le offerte che salvi qui possono uscire anche su Google come post “Offerta”, e ogni lunedì mattina il sito pubblica sul profilo una foto della stagione giusta (mai la stessa due volte).</p>
+      <div id="googleStatus" class="status off">Caricamento…</div>
+      <div id="googleConnected" class="hidden">
+        <label class="switch"><input type="checkbox" id="googleWeekly"><span class="track"></span><span>Foto della settimana su Google (ogni lunedì)</span></label>
+        <div class="actions">
+          <button type="button" id="googlePhotoNow" class="secondary">Pubblica ora una foto</button>
+          <button type="button" id="googleDisconnect" class="secondary">Scollega</button>
+        </div>
+        <p id="googleMsg"></p>
+        <h3 class="sub">Ultime attività</h3>
+        <ul id="googleLog" class="log"></ul>
+      </div>
+      <div class="actions"><a id="googleConnect" class="btn hidden" href="/api/admin/google/connect">Collega a Google</a></div>
     </section>
 
     <section class="card">
@@ -294,6 +320,7 @@ function fillOffer(offer, today) {
   $('offerOriginal').value = offer && offer.originalPrice ? offer.originalPrice : '';
   $('offerFrom').value = offer ? offer.showFrom : today;
   $('offerUntil').value = offer ? offer.showUntil : addDaysISO(today, 14);
+  $('offerGoogle').checked = Boolean(offer && offer.google);
   updateNights();
   showOfferStatus(offer, today);
 }
@@ -323,11 +350,14 @@ $('offerForm').addEventListener('submit', async (e) => {
         unit: $('offerUnit').value,
         originalPrice: $('offerOriginal').value,
         showFrom: $('offerFrom').value,
-        showUntil: $('offerUntil').value
+        showUntil: $('offerUntil').value,
+        google: $('offerGoogle').checked
       })
     });
     fillOffer(data.offer, data.today);
     const o = data.offer;
+    $('offerGoogleHint').textContent = data.googleMessage || '';
+    if (data.googleMessage) loadGoogle().catch(() => {});
     if (!o.active) {
       msg.className = 'warn';
       msg.textContent = 'Offerta salvata, ma il pop-up è SPENTO: sul sito non si vede. Tocca l’interruttore per accenderlo.';
@@ -356,6 +386,56 @@ $('offerActive').addEventListener('change', () => {
   // requestSubmit is missing on older iPhones (Safari before 16).
   if (form.requestSubmit) form.requestSubmit(); else form.querySelector('button[type=submit]').click();
 });
+
+// ---- Google Business Profile ----
+async function loadGoogle() {
+  const g = await api('google');
+  const box = $('googleStatus');
+  $('googleConnect').classList.toggle('hidden', !g.configured || g.connected);
+  $('googleConnected').classList.toggle('hidden', !g.connected);
+  $('offerGoogle').disabled = !g.connected;
+  if (!g.connected) $('offerGoogle').checked = false;
+  if (!g.configured) {
+    box.className = 'status wait';
+    box.textContent = 'In attesa dell’approvazione di Google: il collegamento si attiva appena Google abilita l’accesso.';
+  } else if (!g.connected) {
+    box.className = 'status off';
+    box.textContent = 'Non collegato. Premi “Collega a Google” ed entra con l’account proprietario del profilo.';
+  } else {
+    box.className = 'status live';
+    box.textContent = '● Collegato a “' + g.title + '” · foto inviate finora: ' + g.sentPhotos;
+    $('googleWeekly').checked = g.weekly;
+  }
+  $('googleLog').innerHTML = '';
+  g.log.forEach((l) => {
+    const li = document.createElement('li');
+    li.className = l.ok ? '' : 'ko';
+    li.textContent = new Date(l.at).toLocaleString('it-IT', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) + ' · ' + l.text;
+    $('googleLog').append(li);
+  });
+}
+$('googleWeekly').addEventListener('change', async () => {
+  try { await api('google', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ weekly: $('googleWeekly').checked }) }); await loadGoogle(); }
+  catch (err) { alert(err.message); }
+});
+$('googlePhotoNow').addEventListener('click', async (e) => {
+  e.target.disabled = true;
+  try { const r = await api('google/photo-now', { method: 'POST' }); $('googleMsg').textContent = r.message; await loadGoogle(); }
+  catch (err) { $('googleMsg').textContent = err.message; }
+  finally { e.target.disabled = false; }
+});
+$('googleDisconnect').addEventListener('click', async () => {
+  if (!confirm('Scollegare il profilo Google? Offerte e foto non verranno più pubblicate su Google.')) return;
+  try { await api('google/disconnect', { method: 'POST' }); await loadGoogle(); }
+  catch (err) { alert(err.message); }
+});
+// Message from the return trip of "Collega a Google".
+(function () {
+  const m = new URLSearchParams(location.search).get('google');
+  if (!m) return;
+  $('googleMsg').textContent = m;
+  history.replaceState(null, '', '/admin#google');
+})();
 
 $('credForm').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -426,7 +506,7 @@ async function load() {
   const data = await api('photos');
   showPanel();
   // Once per page load: reloading after every photo change would wipe unsaved edits.
-  if (!window.offerLoaded) { window.offerLoaded = true; loadOffer().catch(() => {}); }
+  if (!window.offerLoaded) { window.offerLoaded = true; loadGoogle().catch(() => {}).finally(() => loadOffer().catch(() => {})); }
   if (document.activeElement !== $('newUser')) $('newUser').value = data.user;
   const photos = data.photos;
   const today = romeToday();
@@ -589,9 +669,11 @@ async function compress(file) {
   source.close && source.close();
   const toBlob = (type, q) => new Promise((r) => canvas.toBlob(r, type, q));
   let blob = await toBlob('image/webp', 0.75);
+  // A JPEG copy too: Google Business Profile doesn't accept WebP.
+  const jpeg = await toBlob('image/jpeg', 0.82);
   // Browsers that can't encode WebP silently return PNG instead.
-  if (!blob || blob.type !== 'image/webp') blob = await toBlob('image/jpeg', 0.78);
-  return { blob, w, h };
+  if (!blob || blob.type !== 'image/webp') blob = jpeg;
+  return { blob, jpeg, w, h };
 }
 
 async function handleFiles(fileList) {
@@ -624,12 +706,13 @@ async function handleFiles(fileList) {
     const file = files[i];
     current.textContent = (i + 1) + '/' + files.length + ' · ' + file.name + ': riduzione e logo…';
     try {
-      const { blob, w, h } = await compress(file);
+      const { blob, jpeg, w, h } = await compress(file);
       const form = new FormData();
       form.append('file', blob, 'foto.' + (blob.type === 'image/webp' ? 'webp' : 'jpg'));
       form.append('w', String(w));
       form.append('h', String(h));
       form.append('season', season);
+      if (jpeg) form.append('jpeg', jpeg, 'foto.jpg');
       await api('photos', { method: 'POST', body: form });
       done++; savedIn += file.size; savedOut += blob.size; sinceIndex++;
       if (sinceIndex >= 20) { await api('photos/reindex', { method: 'POST' }).catch(() => {}); sinceIndex = 0; }

@@ -15,6 +15,8 @@ export type Offer = {
   image: string; // one of OFFER_IMAGES
   id: string; // changes on every save, so visitors who closed the old one see the new one
   updated: string;
+  google?: boolean; // also publish it as an Offer post on the Google profile
+  googlePost?: string; // resource name of that post, to remove it when the offer changes
 };
 
 export const OFFER_KEY = 'offer';
@@ -69,7 +71,8 @@ export function parseOffer(body: Record<string, unknown>): Offer | string {
     showUntil,
     image: typeof body.image === 'string' && OFFER_IMAGES.includes(body.image) ? body.image : DEFAULT_OFFER_IMAGE,
     id: crypto.randomUUID().slice(0, 8),
-    updated: new Date().toISOString()
+    updated: new Date().toISOString(),
+    google: body.google === true
   };
 }
 

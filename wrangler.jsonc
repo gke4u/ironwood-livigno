@@ -24,9 +24,13 @@
 		"binding": "ASSETS",
 		"html_handling": "auto-trailing-slash",
 		"not_found_handling": "404-page",
-		"run_worker_first": ["/admin", "/admin/*", "/api/admin/*", "/api/offer", "/foto-del-giorno", "/foto/*"]
+		"run_worker_first": ["/admin", "/admin/*", "/api/admin/*", "/api/offer", "/foto-del-giorno", "/foto/*", "/foto-google/*"]
 	},
 	// Uploaded photos. Secrets (set once with `npx wrangler secret put`):
-	// ADMIN_PASSWORD (the /admin login) and SESSION_SECRET (signs the login cookie).
-	"kv_namespaces": [{ "binding": "PHOTOS", "id": "5ebaedb7d16849278ddb91bed172f73d" }]
+	// ADMIN_PASSWORD (the /admin login) and SESSION_SECRET (signs the login cookie);
+	// GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET once Google approves the Business
+	// Profile API access (until then the Google link stays off, see worker/google.ts).
+	"kv_namespaces": [{ "binding": "PHOTOS", "id": "5ebaedb7d16849278ddb91bed172f73d" }],
+	// Mondays 07:00 UTC (8 or 9 in Italy): the weekly photo for Google.
+	"triggers": { "crons": ["0 7 * * 1"] }
 }

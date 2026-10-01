@@ -8,6 +8,12 @@
 //   /foto-del-giorno       today's photo, the same one for everyone all day
 //   /foto/<id>             a single uploaded photo (admin thumbnails)
 //   /api/offer             the special offer to show in the site pop-up, if any
+//   /foto-google/<id>.jpg  a photo as JPEG, only with a short-lived signature
+//                          (Google fetches the weekly photo from here)
+//
+// A cron trigger (wrangler.jsonc) runs every Monday morning and sends one
+// photo to the Google Business Profile, if the admin connected it
+// (see google.ts).
 //
 // Photos are compressed in the browser before upload (see admin.ts), so the
 // Worker only stores and serves bytes. They live in KV: each photo under
@@ -16,12 +22,17 @@
 // plan, while get() allows 100,000.
 import { adminPage } from './admin';
 import { OFFER_KEY, isLive, parseOffer, publicOffer, type Offer } from './offer';
+import * as google from './google';
 
 export interface Env {
   ASSETS: Fetcher;
   PHOTOS: KVNamespace;
   ADMIN_PASSWORD: string;
   SESSION_SECRET: string;
+  // OAuth client of the Google Cloud project approved for the Business
+  // Profile APIs. Until both are set the Google link stays switched off.
+  GOOGLE_CLIENT_ID?: string;
+  GOOGLE_CLIENT_SECRET?: string;
 }
 
 type PhotoMeta = { id: string; type: string; w: number; h: number; bytes: number; created: string; season?: Season };
@@ -69,6 +80,7 @@ export default {
     try {
       if (path === '/foto-del-giorno') return await photoOfTheDay(request, env, ctx);
       if (path.startsWith('/foto/')) return await photoById(request, path.slice('/foto/'.length), env);
+      if (path.startsWith('/foto-google/')) return await photoForGoogle(request, path.slice('/foto-google/'.length), env);
       if (path === '/api/offer') return await offerApi(request, env);
       if (path === '/admin') return html(adminPage());
       if (path.startsWith('/api/admin/')) return await adminApi(request, env, path.slice('/api/admin/'.length));
@@ -77,8 +89,16 @@ export default {
       return json({ error: 'Errore interno' }, 500);
     }
     return env.ASSETS.fetch(request);
+  },
+
+  // Monday morning: one photo of the season to the Google profile.
+  async scheduled(_event, env, ctx) {
+    ctx.waitUntil(weeklyGooglePhoto(env, SITE_ORIGIN).catch((err) => console.error(err)));
   }
 } satisfies ExportedHandler<Env>;
+
+// Where Google fetches photos from (the cron has no request to take it from).
+const SITE_ORIGIN = 'https://ironwoodlivigno.com';
 
 // ---------- public ----------
 
@@ -142,6 +162,90 @@ async function photoById(request: Request, id: string, env: Env): Promise<Respon
   });
 }
 
+// JPEG copies (`jpg:<id>`, Google doesn't take WebP) are reachable only with
+// a signature that expires after a day, so the photos still to come stay private.
+async function photoForGoogle(request: Request, file: string, env: Env): Promise<Response> {
+  const id = file.replace(/\.jpg$/, '');
+  const url = new URL(request.url);
+  const exp = url.searchParams.get('exp') ?? '';
+  const sig = url.searchParams.get('sig') ?? '';
+  if (!/^[a-z0-9-]{8,40}$/.test(id) || !env.SESSION_SECRET || Number(exp) < Date.now()) return new Response('Not found', { status: 404 });
+  if (!(await safeEqual(sig, await sign(`gphoto:${id}:${exp}`, env.SESSION_SECRET)))) return new Response('Not found', { status: 404 });
+  const bytes = await env.PHOTOS.get(`jpg:${id}`, { type: 'arrayBuffer' });
+  if (!bytes) return new Response('Not found', { status: 404 });
+  return new Response(bytes, { headers: { 'Content-Type': 'image/jpeg', 'Cache-Control': 'private, max-age=3600', 'X-Robots-Tag': 'noindex' } });
+}
+
+async function signedGooglePhotoUrl(origin: string, id: string, env: Env): Promise<string> {
+  const exp = String(Date.now() + 86400_000);
+  return `${origin}/foto-google/${id}.jpg?exp=${exp}&sig=${await sign(`gphoto:${id}:${exp}`, env.SESSION_SECRET)}`;
+}
+
+// The photo of the season due today, or the next in the rotation, that was
+// never sent to Google and has a JPEG copy.
+async function weeklyGooglePhoto(env: Env, origin: string, force = false): Promise<string> {
+  if (!google.isConfigured(env)) return 'Collegamento Google non ancora attivo';
+  const state = await google.readGoogle(env);
+  if (!state) return 'Google non collegato';
+  if (!state.weekly && !force) return 'Foto settimanale spenta';
+  const today = romeDate();
+  const list = inSeason(await readIndex(env, 0), today);
+  if (!list.length) return 'Nessuna foto';
+  const start = list.indexOf(pickForDate(list, today));
+  let text = 'Tutte le foto di stagione sono già state inviate a Google';
+  let ok = true;
+  for (let step = 0; step < list.length; step++) {
+    const p = list[(start + step) % list.length];
+    if (state.postedPhotos.includes(p.id)) continue;
+    if (!(await env.PHOTOS.get(`jpg:${p.id}`, { type: 'stream' }))) continue;
+    try {
+      await google.uploadPhoto(env, state, await signedGooglePhotoUrl(origin, p.id, env));
+      state.postedPhotos.push(p.id);
+      text = 'Foto della settimana pubblicata su Google';
+    } catch (err) {
+      text = 'Foto della settimana non pubblicata: ' + (err as Error).message;
+      ok = false;
+    }
+    break;
+  }
+  google.addLog(state, text, ok);
+  await google.writeGoogle(env, state);
+  return text;
+}
+
+// Keeps the Offer post on Google in step with the saved offer: the old post
+// goes, a new one is created while the offer is on and "also on Google" is ticked.
+async function syncGoogleOffer(env: Env, offer: Offer, previous: Offer | null, origin: string): Promise<string | null> {
+  if (!google.isConfigured(env)) return null;
+  const state = await google.readGoogle(env);
+  if (!state) return offer.google ? 'Google non è collegato: l’offerta è solo sul sito.' : null;
+  let message: string | null = null;
+  try {
+    if (previous?.googlePost) await google.deletePost(env, state, previous.googlePost);
+    if (offer.google && offer.active && offer.showUntil >= romeDate()) {
+      offer.googlePost = await google.createOfferPost(env, state, { ...offer, skiStay: isSkiStay(offer.checkIn, offer.checkOut) }, origin);
+      message = 'Pubblicata anche su Google (Google la controlla prima di mostrarla).';
+      google.addLog(state, `Offerta ${offer.checkIn} – ${offer.checkOut} pubblicata`, true);
+    } else if (previous?.googlePost) {
+      message = 'Post dell’offerta tolto da Google.';
+      google.addLog(state, 'Post dell’offerta precedente tolto', true);
+    }
+  } catch (err) {
+    message = 'Su Google non è riuscita: ' + (err as Error).message;
+    google.addLog(state, message, false);
+  }
+  await google.writeGoogle(env, state);
+  return message;
+}
+
+// Same months as LIFT_MONTHS above: does the stay have a night in the ski season?
+function isSkiStay(checkIn: string, checkOut: string): boolean {
+  for (let t = Date.parse(checkIn); t < Date.parse(checkOut); t += 86400_000) {
+    if (LIFT_MONTHS.includes(new Date(t).getUTCMonth() + 1)) return true;
+  }
+  return false;
+}
+
 // ---------- offer (public) ----------
 
 async function offerApi(request: Request, env: Env): Promise<Response> {
@@ -181,8 +285,58 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
     return json({ ok: true }, 200, { 'Set-Cookie': `${SESSION_COOKIE}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Strict` });
   }
 
+  // Google sends the browser back here without the (SameSite=Strict) login
+  // cookie: the signed state from authUrl proves the round trip started in the admin.
+  if (route === 'google/callback' && request.method === 'GET') {
+    const url = new URL(request.url);
+    const back = (msg: string) => Response.redirect(`${url.origin}/admin?google=${encodeURIComponent(msg)}#google`, 302);
+    if (!google.isConfigured(env)) return back('Collegamento Google non ancora configurato');
+    const ok = await google.checkState(url.searchParams.get('state') ?? '', (v) => sign(v, env.SESSION_SECRET), safeEqual);
+    if (!ok) return back('Richiesta scaduta: premi di nuovo “Collega a Google”');
+    const code = url.searchParams.get('code');
+    if (!code) return back('Collegamento annullato');
+    try {
+      const state = await google.connect(env, url.origin, code);
+      return back(`Collegato al profilo “${state.title}”`);
+    } catch (err) {
+      return back((err as Error).message);
+    }
+  }
+
   const auth = await readAuth(env);
   if (!(await isLoggedIn(request, env, auth))) return json({ error: 'Accesso richiesto' }, 401);
+
+  if (route === 'google/connect' && request.method === 'GET') {
+    if (!google.isConfigured(env)) return json({ error: 'Collegamento Google non ancora configurato' }, 503);
+    return Response.redirect(await google.authUrl(env, new URL(request.url).origin, (v) => sign(v, env.SESSION_SECRET)), 302);
+  }
+  if (route === 'google' && request.method === 'GET') {
+    const state = await google.readGoogle(env);
+    return json({
+      configured: google.isConfigured(env),
+      connected: Boolean(state),
+      title: state?.title ?? null,
+      weekly: state?.weekly ?? true,
+      sentPhotos: state?.postedPhotos.length ?? 0,
+      log: state?.log ?? []
+    });
+  }
+  if (route === 'google' && request.method === 'PUT') {
+    const state = await google.readGoogle(env);
+    if (!state) return json({ error: 'Google non collegato' }, 400);
+    const body = (await request.json().catch(() => ({}))) as { weekly?: unknown };
+    state.weekly = body.weekly === true;
+    google.addLog(state, state.weekly ? 'Foto settimanale accesa' : 'Foto settimanale spenta', true);
+    await google.writeGoogle(env, state);
+    return json({ ok: true });
+  }
+  if (route === 'google/photo-now' && request.method === 'POST') {
+    return json({ message: await weeklyGooglePhoto(env, new URL(request.url).origin, true) });
+  }
+  if (route === 'google/disconnect' && request.method === 'POST') {
+    await env.PHOTOS.delete(google.GOOGLE_KEY);
+    return json({ ok: true });
+  }
 
   if (route === 'credentials' && request.method === 'POST') return changeCredentials(request, env, auth);
 
@@ -198,8 +352,9 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
     }
     const parsed = parseOffer(body);
     if (typeof parsed === 'string') return json({ error: parsed }, 400);
+    const googleMessage = await syncGoogleOffer(env, parsed, current, new URL(request.url).origin);
     await env.PHOTOS.put(OFFER_KEY, JSON.stringify(parsed));
-    return json({ offer: parsed, today: romeDate() });
+    return json({ offer: parsed, today: romeDate(), googleMessage });
   }
 
   if (route === 'photos' && request.method === 'GET') {
@@ -238,6 +393,7 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
       deleted[del[1]] = Date.now();
       await env.PHOTOS.put(DELETED_KEY, JSON.stringify(deleted));
       await env.PHOTOS.delete(`photo:${del[1]}`);
+      await env.PHOTOS.delete(`jpg:${del[1]}`);
     } catch (err) {
       return kvWriteError(err);
     }
@@ -361,8 +517,13 @@ async function upload(request: Request, env: Env): Promise<Response> {
     created: new Date().toISOString(),
     season: season as Season
   };
+  // JPEG copy for Google (made by the admin page next to the WebP).
+  const jpeg = form.get('jpeg');
+  const jpegBytes = jpeg instanceof File && jpeg.size <= MAX_BYTES ? await jpeg.arrayBuffer() : null;
+  if (jpegBytes && sniffImageType(new Uint8Array(jpegBytes)) !== 'image/jpeg') return json({ error: 'Copia JPEG non valida' }, 415);
   try {
     await env.PHOTOS.put(`photo:${meta.id}`, bytes, { metadata: meta });
+    if (jpegBytes) await env.PHOTOS.put(`jpg:${meta.id}`, jpegBytes);
   } catch (err) {
     return kvWriteError(err);
   }
@@ -411,7 +572,7 @@ function kvWriteError(err: unknown): Response {
     return json({ error: 'Salvataggio non riuscito per un problema temporaneo. Riprova tra qualche istante.' }, 503);
   }
   return json(
-    { error: 'Limite giornaliero di caricamenti di Cloudflare raggiunto (piano gratuito, circa 1.000 al giorno). Le foto già caricate sono salve: riprendi domani con le restanti.', limit: true },
+    { error: 'Limite giornaliero di caricamenti di Cloudflare raggiunto (piano gratuito: circa 1.000 salvataggi al giorno, cioè circa 450 foto). Le foto già caricate sono salve: riprendi domani con le restanti.', limit: true },
     429
   );
 }
