@@ -324,11 +324,14 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
             onClick={hide}
             aria-hidden
           />
+          {/* Height in dvh (the part of the screen really visible): on phones 92vh is
+              measured without the browser's address bar, so the top of the pop-up —
+              the photo with the discount badge — ended up hidden under it. */}
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="offer-title"
-            className={`relative w-full md:max-w-4xl md:mx-6 max-h-[92vh] md:max-h-[94vh] overflow-y-auto overscroll-contain bg-[#3D3026] text-mist rounded-t-[2rem] md:rounded-[2rem] shadow-[0_40px_120px_-20px_rgba(0,0,0,0.6)] md:grid md:grid-cols-[1.05fr_1fr] transition-all duration-500 ease-out motion-reduce:transition-none ${
+            className={`relative w-full md:max-w-4xl md:mx-6 max-h-[92vh] supports-[height:100dvh]:max-h-[92dvh] md:max-h-[94vh] md:supports-[height:100dvh]:max-h-[94dvh] overflow-y-auto overscroll-contain bg-[#3D3026] text-mist rounded-t-[2rem] md:rounded-[2rem] shadow-[0_40px_120px_-20px_rgba(0,0,0,0.6)] md:grid md:grid-cols-[1.05fr_1fr] transition-all duration-500 ease-out motion-reduce:transition-none ${
               shown ? 'translate-y-0 opacity-100 md:scale-100' : 'translate-y-full md:translate-y-6 opacity-0 md:scale-95'
             }`}
           >
