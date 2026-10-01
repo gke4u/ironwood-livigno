@@ -91,6 +91,19 @@ const OFFER_IMAGE_WIDTH: Record<string, number> = {
   'lago-livigno-panorama': 1080,
   'livigno-ghiaccioli-vista-vallata': 1400
 };
+// Height/width of each photo, for its box on phones: the whole photo, not a
+// wide strip (the 2:1 strip cut the top and bottom off). Tall photos are
+// shown 4:3 so they don't fill the whole screen.
+const OFFER_IMAGE_RATIO: Record<string, number> = {
+  'esterno-giorno': 787 / 1181,
+  'esterno-notte': 1440 / 1920,
+  'hero-ironwood': 1280 / 1920,
+  soggiorno: 1280 / 1920,
+  'sauna-vista-montagna': 1333 / 2000,
+  camera1: 1269 / 1905,
+  'lago-livigno-panorama': 720 / 1080,
+  'livigno-ghiaccioli-vista-vallata': 3 / 4
+};
 const SIZES = [480, 768, 1024, 1440, 1920];
 function offerSrcSet(img: string, original: number, format: 'avif' | 'webp') {
   const list = SIZES.filter((w) => w <= original).map((w) => `${img}-${w}.${format} ${w}w`);
@@ -278,6 +291,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
   const imageKey = offer.image ?? DEFAULT_IMAGE;
   const IMG = `/images/${imageKey}`;
   const imgWidth = OFFER_IMAGE_WIDTH[imageKey] ?? 1024;
+  const phoneAspect = `1 / ${OFFER_IMAGE_RATIO[imageKey] ?? 2 / 3}`;
   const remaining = offer.endsAt - now;
   const showCountdown = remaining > 0 && remaining < 7 * 86400_000;
   const cd = {
@@ -330,7 +344,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
               </svg>
             </button>
 
-            <div className="relative aspect-[2/1] min-[400px]:aspect-[16/9] sm:aspect-auto sm:h-72 md:h-auto md:min-h-[540px] overflow-hidden">
+            <div className="relative aspect-[var(--ar)] md:aspect-auto md:min-h-[540px] overflow-hidden" style={{ '--ar': phoneAspect } as React.CSSProperties}>
               <span className="md:hidden absolute top-2.5 left-1/2 -translate-x-1/2 z-10 h-1.5 w-12 rounded-full bg-mist/60" aria-hidden />
               <picture>
                 {/* AVIF only while it reaches the size a computer needs: otherwise the browser would
@@ -340,7 +354,8 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
                 {/* No slow zoom here (unlike the homepage photos): it enlarged the photo by a further 12%. */}
                 <img src={`${IMG}-1024.webp`} alt="" className={`absolute inset-0 w-full h-full object-cover ${MOBILE_FOCUS[imageKey] ?? 'object-center'} md:object-center`} />
               </picture>
-              <div className="absolute inset-0 bg-gradient-to-t from-[#3D3026] via-[#3D3026]/10 to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-[#3D3026]/40" aria-hidden />
+              {/* Phones: only a thin fade at the bottom edge into the text, so the photo stays visible. */}
+              <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-[#3D3026] to-transparent md:inset-0 md:h-auto md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-[#3D3026]/40" aria-hidden />
               {pct > 0 && (
                 <span className="absolute left-5 top-5 md:left-6 md:top-6 z-10 rounded-full bg-brick text-mist px-4 py-2 text-sm md:text-base font-semibold shadow-soft tabular-nums">
                   −{pct}%
