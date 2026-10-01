@@ -24,7 +24,8 @@
 		"binding": "ASSETS",
 		"html_handling": "auto-trailing-slash",
 		"not_found_handling": "404-page",
-		"run_worker_first": ["/admin", "/admin/*", "/api/admin/*", "/api/offer", "/foto-del-giorno", "/foto/*", "/foto-google/*"]
+		"run_worker_first": ["/admin", "/admin/*", "/api/admin/*", "/api/offer", "/foto-del-giorno", "/foto/*", "/foto-google/*", "/recensione",
+			"/it", "/en", "/de", "/fr", "/da", "/pl", "/cs", "/no", "/nl", "/zh", "/ja", "/en-us"]
 	},
 	// Uploaded photos. Secrets (set once with `npx wrangler secret put`):
 	// ADMIN_PASSWORD (the /admin login) and SESSION_SECRET (signs the login cookie);

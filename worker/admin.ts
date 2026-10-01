@@ -24,6 +24,8 @@ export function adminPage(): string {
   p.hint { color:#6b625b; font-size:14px; margin:0 0 16px; line-height:1.5; }
   button, .btn { font:inherit; border:0; border-radius:999px; padding:12px 22px; cursor:pointer; background:var(--brick); color:#fff; font-weight:600; min-height:44px; }
   button.secondary { background:transparent; color:var(--mist); border:1px solid rgba(255,255,255,.4); padding:8px 16px; min-height:36px; }
+  /* The header's style above is for the dark bar; inside the page cards it needs dark text. */
+  main button.secondary { background:#fff; color:var(--brick); border:1px solid var(--line); }
   button.danger { background:transparent; color:#a33; border:1px solid #e3b5b5; padding:6px 14px; min-height:36px; font-weight:500; }
   button:disabled { opacity:.5; cursor:default; }
   input[type=password], input[type=text] { font:inherit; width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:12px; margin-bottom:12px; }
@@ -78,6 +80,13 @@ export function adminPage(): string {
   .check:has(input:disabled) { opacity:.55; cursor:default; }
   a.btn { display:inline-block; background:var(--brick); color:#fff; text-decoration:none; font-weight:600; padding:12px 18px; border-radius:12px; }
   .log { list-style:none; padding:0; margin:0; font-size:13px; }
+  .sections { list-style:none; padding:0; margin:0 0 14px; counter-reset:sec; }
+  .sections li { display:flex; align-items:center; gap:10px; padding:8px 10px; border:1px solid var(--line); border-radius:12px; margin-bottom:6px; background:#fff; counter-increment:sec; }
+  .sections li::before { content:counter(sec); width:24px; text-align:right; color:#6b625b; font-size:13px; }
+  .sections li span { flex:1; font-weight:600; }
+  .sections li button { padding:6px 12px; font-size:16px; line-height:1; background:#fff; color:var(--brick); border:1px solid var(--line); }
+  .sections li button:disabled { opacity:.3; }
+  .sections li.moved { background:#fbf6f2; }
   .panel { border:1px solid var(--line); border-radius:14px; padding:14px; margin-top:14px; background:#fffdf9; }
   .panel ol { padding-left:20px; margin:0; }
   .panel li { margin-bottom:14px; line-height:1.45; }
@@ -186,6 +195,24 @@ export function adminPage(): string {
         </div>
         <p id="offerMsg"></p>
       </form>
+    </section>
+
+    <section class="card" id="ordine">
+      <h2>Ordine delle sezioni in home</h2>
+      <p class="hint">Sposta le sezioni con le frecce e premi “Salva ordine”: la home cambia in tutte le lingue entro un paio di minuti. La foto grande in cima resta sempre la prima.</p>
+      <ol id="sectionList" class="sections"></ol>
+      <div class="actions">
+        <button type="button" id="saveOrder">Salva ordine</button>
+        <button type="button" id="resetOrder" class="secondary">Ripristina l’ordine originale</button>
+        <a class="btn-link" href="/it" target="_blank" rel="noopener">Vedi la home →</a>
+      </div>
+      <p id="orderMsg"></p>
+    </section>
+
+    <section class="card" id="recensioni">
+      <h2>Chiedi una recensione</h2>
+      <p class="hint">Più recensioni su Google = più visibilità su Google Maps. Quando un ospite parte, mandagli il messaggio qui sotto su WhatsApp: il link porta dritto alla pagina “Scrivi una recensione” di Ironwood Livigno.</p>
+      <div id="reviewBox"></div>
     </section>
 
     <section class="card" id="google">
@@ -411,6 +438,7 @@ async function loadGoogle() {
   if (!g.connected) $('offerGoogle').checked = false;
   $('offerGoogleRow').classList.toggle('hidden', !g.configured);
   refreshManualLast();
+  if (!layout) loadLayout().catch(() => {});
   if (!g.configured) {
     box.className = 'status off';
     box.textContent = 'Google non concede la pubblicazione automatica a una singola struttura: usa i due pulsanti qui sopra, ci vuole meno di un minuto.';
@@ -445,6 +473,79 @@ $('googleDisconnect').addEventListener('click', async () => {
   try { await api('google/disconnect', { method: 'POST' }); await loadGoogle(); }
   catch (err) { alert(err.message); }
 });
+// ---- homepage section order ----
+let layout = null;
+function renderSections() {
+  const ol = $('sectionList');
+  ol.innerHTML = '';
+  const label = (id) => layout.sections.find((s) => s.id === id).label;
+  layout.order.forEach((id, i) => {
+    const li = document.createElement('li');
+    if (layout.sections[i].id !== id) li.className = 'moved';
+    li.innerHTML = '<span></span><button type="button" aria-label="Sposta su">↑</button><button type="button" aria-label="Sposta giù">↓</button>';
+    li.querySelector('span').textContent = label(id);
+    const [up, down] = li.querySelectorAll('button');
+    up.disabled = i === 0;
+    down.disabled = i === layout.order.length - 1;
+    up.addEventListener('click', () => move(i, -1));
+    down.addEventListener('click', () => move(i, 1));
+    ol.append(li);
+  });
+}
+function move(i, dir) {
+  const o = layout.order;
+  [o[i], o[i + dir]] = [o[i + dir], o[i]];
+  $('orderMsg').className = 'warn';
+  $('orderMsg').textContent = 'Ricorda di premere “Salva ordine”.';
+  renderSections();
+  const btn = $('sectionList').children[i + dir].querySelectorAll('button')[dir < 0 ? 0 : 1];
+  if (!btn.disabled) btn.focus();
+}
+async function loadLayout() {
+  layout = await api('layout');
+  renderSections();
+}
+async function saveLayout(order, okText) {
+  const msg = $('orderMsg');
+  try {
+    const r = await api('layout', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ order }) });
+    layout.order = r.order;
+    renderSections();
+    msg.className = 'okmsg';
+    msg.textContent = okText;
+  } catch (err) {
+    msg.className = 'error';
+    msg.textContent = err.message;
+  }
+}
+$('saveOrder').addEventListener('click', () => saveLayout(layout.order, 'Ordine salvato: la home si aggiorna entro un paio di minuti.'));
+$('resetOrder').addEventListener('click', () => {
+  if (!confirm('Rimettere le sezioni nell’ordine originale?')) return;
+  saveLayout(layout.sections.map((s) => s.id), 'Ordine originale ripristinato.');
+});
+
+// ---- review request ----
+const REVIEW_LINK = 'https://ironwoodlivigno.com/recensione';
+const REVIEW_MSGS = [
+  ['Italiano', 'Ciao! Grazie di cuore per aver soggiornato a Ironwood Livigno 🙏 Se vi siete trovati bene, ci aiutereste tantissimo con una recensione su Google: bastano 30 secondi 👉 ' + REVIEW_LINK + ' A presto a Livigno! Francesco'],
+  ['English', 'Hi! Thank you so much for staying with us at Ironwood Livigno 🙏 If you enjoyed your stay, a Google review would help us a lot – it only takes 30 seconds 👉 ' + REVIEW_LINK + ' Hope to welcome you back to Livigno soon! Francesco'],
+  ['Deutsch', 'Hallo! Vielen Dank, dass Sie bei uns im Ironwood Livigno zu Gast waren 🙏 Wenn es Ihnen gefallen hat, würde uns eine Google-Bewertung sehr helfen – es dauert nur 30 Sekunden 👉 ' + REVIEW_LINK + ' Wir freuen uns, Sie bald wieder in Livigno zu begrüßen! Francesco']
+];
+(function () {
+  const box = $('reviewBox');
+  box.append(copyField('Link breve per le recensioni', REVIEW_LINK));
+  REVIEW_MSGS.forEach(([lang, text]) => {
+    box.append(copyField('Messaggio in ' + lang, text, true));
+    const a = document.createElement('a');
+    a.className = 'btn-link';
+    a.href = 'https://wa.me/?text=' + encodeURIComponent(text);
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.textContent = 'Apri in WhatsApp (' + lang + ') →';
+    box.append(a);
+  });
+})();
+
 // ---- manual publishing helpers ----
 async function copyText(text, btn) {
   try { await navigator.clipboard.writeText(text); }

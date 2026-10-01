@@ -8,6 +8,8 @@
 //   /foto-del-giorno       today's photo, the same one for everyone all day
 //   /foto/<id>             a single uploaded photo (admin thumbnails)
 //   /api/offer             the special offer to show in the site pop-up, if any
+//   /it, /en, …            the homepages, to apply the section order chosen in the admin
+//   /recensione            short link to the "write a review" page on Google
 //   /foto-google/<id>.jpg  a photo as JPEG, only with a short-lived signature
 //                          (Google fetches the weekly photo from here)
 //
@@ -23,6 +25,7 @@
 import { adminPage } from './admin';
 import { OFFER_KEY, isLive, parseOffer, publicOffer, type Offer } from './offer';
 import * as google from './google';
+import { HOME_PATHS, LAYOUT_KEY, SECTIONS, isDefault, normalizeOrder, orderCss } from './layout';
 
 export interface Env {
   ASSETS: Fetcher;
@@ -69,6 +72,9 @@ const MIN_PASSWORD = 8;
 const MAX_BYTES = 3 * 1024 * 1024;
 const SESSION_COOKIE = 'iw_admin';
 const SESSION_DAYS = 30;
+// Google's "write a review" link for the Ironwood Livigno profile (from the
+// profile's "Ottieni altre recensioni" box), behind the short /recensione.
+const REVIEW_URL = 'https://g.page/r/CZk9VLvq1xaQEBM/review';
 // Shown when no photo has been uploaded yet, so the homepage section is never empty.
 const FALLBACK_IMAGE = '/images/livigno-skilift-vallata-nebbia.jpg';
 
@@ -78,6 +84,8 @@ export default {
     const path = url.pathname.replace(/\/+$/, '') || '/';
 
     try {
+      if (HOME_PATHS.includes(path)) return await homePage(request, env);
+      if (path === '/recensione') return Response.redirect(REVIEW_URL, 302);
       if (path === '/foto-del-giorno') return await photoOfTheDay(request, env, ctx);
       if (path.startsWith('/foto/')) return await photoById(request, path.slice('/foto/'.length), env);
       if (path.startsWith('/foto-google/')) return await photoForGoogle(request, path.slice('/foto-google/'.length), env);
@@ -101,6 +109,26 @@ export default {
 const SITE_ORIGIN = 'https://ironwoodlivigno.com';
 
 // ---------- public ----------
+
+// The static homepage, plus the section order from the admin as CSS. Any
+// problem with the saved order serves the page exactly as built.
+async function homePage(request: Request, env: Env): Promise<Response> {
+  const res = await env.ASSETS.fetch(request);
+  if (!res.ok || !(res.headers.get('Content-Type') ?? '').includes('text/html')) return res;
+  try {
+    const raw = await env.PHOTOS.get(LAYOUT_KEY, { cacheTtl: 60 });
+    if (!raw) return res;
+    const order = normalizeOrder(JSON.parse(raw));
+    if (isDefault(order)) return res;
+    const css = orderCss(order);
+    return new HTMLRewriter()
+      .on('head', { element: (el) => { el.append(`<style id="iw-ordine">${css}</style>`, { html: true }); } })
+      .transform(res);
+  } catch (err) {
+    console.error(err);
+    return res;
+  }
+}
 
 async function photoOfTheDay(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
   const index = inSeason(await readIndex(env), romeDate());
@@ -401,6 +429,22 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
   }
 
   if (route === 'credentials' && request.method === 'POST') return changeCredentials(request, env, auth);
+
+  if (route === 'layout' && request.method === 'GET') {
+    const raw = await env.PHOTOS.get(LAYOUT_KEY);
+    return json({ sections: SECTIONS, order: normalizeOrder(raw ? JSON.parse(raw) : null) });
+  }
+  if (route === 'layout' && request.method === 'PUT') {
+    const body = (await request.json().catch(() => ({}))) as { order?: unknown };
+    const order = normalizeOrder(body.order);
+    try {
+      if (isDefault(order)) await env.PHOTOS.delete(LAYOUT_KEY);
+      else await env.PHOTOS.put(LAYOUT_KEY, JSON.stringify(order));
+    } catch (err) {
+      return kvWriteError(err);
+    }
+    return json({ ok: true, order });
+  }
 
   if (route === 'offer' && request.method === 'GET') return json({ offer: await readOffer(env, 0), today: romeDate() });
   if (route === 'offer' && request.method === 'PUT') {

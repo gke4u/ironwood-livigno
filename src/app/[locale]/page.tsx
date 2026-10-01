@@ -42,6 +42,10 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
       <StructuredData locale={locale} />
       <Nav locale={locale} satellitePages={getSatellitePages(locale)} />
       <Hero />
+      {/* The sections below can be reordered from the admin: the Worker adds
+          CSS `order` values for their ids (worker/layout.ts), so this has to
+          stay a flex column whose direct children are the <section>s. */}
+      <div id="sezioni" className="flex flex-col">
       <WeatherSection />
       <Gallery />
       <VirtualTour />
@@ -56,6 +60,7 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
       <Experience locale={locale} />
       <Reviews />
       <FAQ />
+      </div>
       <StickyWhatsApp locale={locale} />
       <Footer locale={locale} />
       </main>
