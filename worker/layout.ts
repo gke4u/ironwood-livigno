@@ -1,9 +1,9 @@
-// Order of the homepage sections, chosen in the admin. The static pages keep
+// Order of the homepage sections, and which are hidden, chosen in the admin. The static pages keep
 // their built order; for the homepages (HOME_PATHS, routed to the Worker in
 // wrangler.jsonc) the Worker adds a small <style> with CSS `order` values for
 // the sections inside <div id="sezioni"> (a flex column, see
-// src/app/[locale]/page.tsx). No rebuild, and nothing moves after the page
-// has painted.
+// src/app/[locale]/page.tsx), and `display:none` for hidden ones. No
+// rebuild, and nothing moves after the page has painted.
 
 export const LAYOUT_KEY = 'layout';
 
@@ -37,10 +37,23 @@ export function normalizeOrder(order: unknown): string[] {
   return [...unique, ...known.filter((id) => !unique.includes(id))];
 }
 
-export function isDefault(order: string[]): boolean {
-  return order.every((id, i) => id === SECTIONS[i].id);
+export type Layout = { order: string[]; hidden: string[] };
+
+// Accepts what is stored in KV or sent by the admin; an older value was just the order array.
+export function parseLayout(value: unknown): Layout {
+  const v = (Array.isArray(value) ? { order: value } : value ?? {}) as { order?: unknown; hidden?: unknown };
+  const known = SECTIONS.map((s) => s.id);
+  const hidden = Array.isArray(v.hidden) ? [...new Set(v.hidden.filter((id): id is string => typeof id === 'string' && known.includes(id)))] : [];
+  return { order: normalizeOrder(v.order), hidden };
 }
 
-export function orderCss(order: string[]): string {
-  return order.map((id, i) => `#sezioni>#${id}{order:${i}}`).join('');
+export function isDefault(layout: Layout): boolean {
+  return layout.hidden.length === 0 && layout.order.every((id, i) => id === SECTIONS[i].id);
+}
+
+export function layoutCss(layout: Layout): string {
+  return (
+    layout.order.map((id, i) => `#sezioni>#${id}{order:${i}}`).join('') +
+    layout.hidden.map((id) => `#sezioni>#${id}{display:none}`).join('')
+  );
 }

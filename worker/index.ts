@@ -8,7 +8,7 @@
 //   /foto-del-giorno       today's photo, the same one for everyone all day
 //   /foto/<id>             a single uploaded photo (admin thumbnails)
 //   /api/offer             the special offer to show in the site pop-up, if any
-//   /it, /en, …            the homepages, to apply the section order chosen in the admin
+//   /it, /en, …            the homepages, to apply the section order (and hidden sections) chosen in the admin
 //   /recensione            short link to the "write a review" page on Google
 //   /foto-google/<id>.jpg  a photo as JPEG, only with a short-lived signature
 //                          (Google fetches the weekly photo from here)
@@ -25,7 +25,7 @@
 import { adminPage } from './admin';
 import { OFFER_KEY, isLive, parseOffer, publicOffer, type Offer } from './offer';
 import * as google from './google';
-import { HOME_PATHS, LAYOUT_KEY, SECTIONS, isDefault, normalizeOrder, orderCss } from './layout';
+import { HOME_PATHS, LAYOUT_KEY, SECTIONS, isDefault, layoutCss, parseLayout } from './layout';
 
 export interface Env {
   ASSETS: Fetcher;
@@ -118,9 +118,9 @@ async function homePage(request: Request, env: Env): Promise<Response> {
   try {
     const raw = await env.PHOTOS.get(LAYOUT_KEY, { cacheTtl: 60 });
     if (!raw) return res;
-    const order = normalizeOrder(JSON.parse(raw));
-    if (isDefault(order)) return res;
-    const css = orderCss(order);
+    const layout = parseLayout(JSON.parse(raw));
+    if (isDefault(layout)) return res;
+    const css = layoutCss(layout);
     return new HTMLRewriter()
       .on('head', { element: (el) => { el.append(`<style id="iw-ordine">${css}</style>`, { html: true }); } })
       .transform(res);
@@ -432,18 +432,17 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
 
   if (route === 'layout' && request.method === 'GET') {
     const raw = await env.PHOTOS.get(LAYOUT_KEY);
-    return json({ sections: SECTIONS, order: normalizeOrder(raw ? JSON.parse(raw) : null) });
+    return json({ sections: SECTIONS, ...parseLayout(raw ? JSON.parse(raw) : null) });
   }
   if (route === 'layout' && request.method === 'PUT') {
-    const body = (await request.json().catch(() => ({}))) as { order?: unknown };
-    const order = normalizeOrder(body.order);
+    const layout = parseLayout(await request.json().catch(() => ({})));
     try {
-      if (isDefault(order)) await env.PHOTOS.delete(LAYOUT_KEY);
-      else await env.PHOTOS.put(LAYOUT_KEY, JSON.stringify(order));
+      if (isDefault(layout)) await env.PHOTOS.delete(LAYOUT_KEY);
+      else await env.PHOTOS.put(LAYOUT_KEY, JSON.stringify(layout));
     } catch (err) {
       return kvWriteError(err);
     }
-    return json({ ok: true, order });
+    return json({ ok: true, ...layout });
   }
 
   if (route === 'offer' && request.method === 'GET') return json({ offer: await readOffer(env, 0), today: romeDate() });

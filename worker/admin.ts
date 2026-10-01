@@ -87,6 +87,10 @@ export function adminPage(): string {
   .sections li button { padding:6px 12px; font-size:16px; line-height:1; background:#fff; color:var(--brick); border:1px solid var(--line); }
   .sections li button:disabled { opacity:.3; }
   .sections li.moved { background:#fbf6f2; }
+  .sections li.off span { color:#a39a92; text-decoration:line-through; }
+  .sections li.off { background:#f4f1ed; }
+  .vis { display:flex; align-items:center; gap:6px; font-size:12px; color:#6b625b; cursor:pointer; margin-right:6px; white-space:nowrap; }
+  .vis input { width:18px; height:18px; margin:0; }
   .panel { border:1px solid var(--line); border-radius:14px; padding:14px; margin-top:14px; background:#fffdf9; }
   .panel ol { padding-left:20px; margin:0; }
   .panel li { margin-bottom:14px; line-height:1.45; }
@@ -198,12 +202,12 @@ export function adminPage(): string {
     </section>
 
     <section class="card" id="ordine">
-      <h2>Ordine delle sezioni in home</h2>
-      <p class="hint">Sposta le sezioni con le frecce e premi “Salva ordine”: la home cambia in tutte le lingue entro un paio di minuti. La foto grande in cima resta sempre la prima.</p>
+      <h2>Sezioni della home</h2>
+      <p class="hint">Sposta le sezioni con le frecce e nascondi quelle che non vuoi con l’interruttore, poi premi “Salva”: la home cambia in tutte le lingue entro un paio di minuti. Una sezione nascosta non è cancellata: la riaccendi quando vuoi. La foto grande in cima resta sempre la prima.</p>
       <ol id="sectionList" class="sections"></ol>
       <div class="actions">
-        <button type="button" id="saveOrder">Salva ordine</button>
-        <button type="button" id="resetOrder" class="secondary">Ripristina l’ordine originale</button>
+        <button type="button" id="saveOrder">Salva</button>
+        <button type="button" id="resetOrder" class="secondary">Ripristina tutto com’era</button>
         <a class="btn-link" href="/it" target="_blank" rel="noopener">Vedi la home →</a>
       </div>
       <p id="orderMsg"></p>
@@ -482,8 +486,16 @@ function renderSections() {
   layout.order.forEach((id, i) => {
     const li = document.createElement('li');
     if (layout.sections[i].id !== id) li.className = 'moved';
-    li.innerHTML = '<span></span><button type="button" aria-label="Sposta su">↑</button><button type="button" aria-label="Sposta giù">↓</button>';
+    const shown = !layout.hidden.includes(id);
+    if (!shown) li.className = 'off';
+    li.innerHTML = '<span></span><label class="vis"><input type="checkbox"><em></em></label>' +
+      '<button type="button" aria-label="Sposta su">↑</button><button type="button" aria-label="Sposta giù">↓</button>';
     li.querySelector('span').textContent = label(id);
+    const box = li.querySelector('.vis input');
+    box.checked = shown;
+    box.setAttribute('aria-label', 'Mostra ' + label(id));
+    li.querySelector('.vis em').textContent = shown ? 'Visibile' : 'Nascosta';
+    box.addEventListener('change', () => toggleHidden(id, box));
     const [up, down] = li.querySelectorAll('button');
     up.disabled = i === 0;
     down.disabled = i === layout.order.length - 1;
@@ -492,11 +504,26 @@ function renderSections() {
     ol.append(li);
   });
 }
+// Sections that menus and buttons elsewhere on the site link to.
+const LINKED = {
+  prenota: 'il pulsante “Richiedi disponibilità” in alto e nel menu porta a questa sezione: nascondendola, chi lo preme non trova il modulo per prenotare.',
+  esperienza: 'una voce del menu in alto e del piè di pagina porta qui: nascondendola, quel link non porta più da nessuna parte.',
+  camere: 'una voce del menu in alto e del piè di pagina porta qui: nascondendola, quel link non porta più da nessuna parte.',
+  posizione: 'una voce del menu in alto e del piè di pagina porta qui: nascondendola, quel link non porta più da nessuna parte.',
+  'servizi-extra': 'il link “Colazione ed e-bike” di altre pagine porta qui.'
+};
+function toggleHidden(id, box) {
+  if (!box.checked && LINKED[id] && !confirm('Attenzione: ' + LINKED[id] + ' Nasconderla lo stesso?')) { box.checked = true; return; }
+  layout.hidden = box.checked ? layout.hidden.filter((h) => h !== id) : layout.hidden.concat(id);
+  $('orderMsg').className = 'warn';
+  $('orderMsg').textContent = 'Ricorda di premere “Salva”.';
+  renderSections();
+}
 function move(i, dir) {
   const o = layout.order;
   [o[i], o[i + dir]] = [o[i + dir], o[i]];
   $('orderMsg').className = 'warn';
-  $('orderMsg').textContent = 'Ricorda di premere “Salva ordine”.';
+  $('orderMsg').textContent = 'Ricorda di premere “Salva”.';
   renderSections();
   const btn = $('sectionList').children[i + dir].querySelectorAll('button')[dir < 0 ? 0 : 1];
   if (!btn.disabled) btn.focus();
@@ -505,11 +532,12 @@ async function loadLayout() {
   layout = await api('layout');
   renderSections();
 }
-async function saveLayout(order, okText) {
+async function saveLayout(order, hidden, okText) {
   const msg = $('orderMsg');
   try {
-    const r = await api('layout', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ order }) });
+    const r = await api('layout', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ order, hidden }) });
     layout.order = r.order;
+    layout.hidden = r.hidden;
     renderSections();
     msg.className = 'okmsg';
     msg.textContent = okText;
@@ -518,10 +546,13 @@ async function saveLayout(order, okText) {
     msg.textContent = err.message;
   }
 }
-$('saveOrder').addEventListener('click', () => saveLayout(layout.order, 'Ordine salvato: la home si aggiorna entro un paio di minuti.'));
+$('saveOrder').addEventListener('click', () => {
+  const n = layout.hidden.length;
+  saveLayout(layout.order, layout.hidden, 'Salvato: la home si aggiorna entro un paio di minuti' + (n ? ' (' + n + (n === 1 ? ' sezione nascosta).' : ' sezioni nascoste).') : '.'));
+});
 $('resetOrder').addEventListener('click', () => {
-  if (!confirm('Rimettere le sezioni nell’ordine originale?')) return;
-  saveLayout(layout.sections.map((s) => s.id), 'Ordine originale ripristinato.');
+  if (!confirm('Rimettere tutte le sezioni nell’ordine originale e tutte visibili?')) return;
+  saveLayout(layout.sections.map((s) => s.id), [], 'Ripristinato: ordine originale, tutte le sezioni visibili.');
 });
 
 // ---- review request ----
