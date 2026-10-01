@@ -29,6 +29,9 @@ type PicProps = {
   // with the real picture only for visitors without JavaScript. The parent
   // flips it to false when the image gets close to the screen (see Gallery).
   deferred?: boolean;
+  // true = also offer the original file (<name>.webp, e.g. 2000px wide) when
+  // it is larger than the biggest generated size: for the full-screen lightbox.
+  withOriginal?: boolean;
 };
 
 export default function Pic({
@@ -40,13 +43,19 @@ export default function Pic({
   sizes = '(min-width: 1024px) 50vw, 100vw',
   className,
   fetchPriority,
-  deferred = false
+  deferred = false,
+  withOriginal = false
 }: PicProps) {
   const base = src.replace(/\.jpe?g$/i, '');
   const widths = BREAKPOINTS.filter((w) => w <= width);
   if (widths.length === 0) widths.push(width);
 
-  const srcSet = (ext: 'avif' | 'webp') => widths.map((w) => `${base}-${w}.${ext} ${w}w`).join(', ');
+  const srcSet = (ext: 'avif' | 'webp') => {
+    const list = widths.map((w) => `${base}-${w}.${ext} ${w}w`);
+    // The original exists only as WebP/JPG (no AVIF), and only adds something when larger than the last size.
+    if (withOriginal && ext === 'webp' && width > widths[widths.length - 1]) list.push(`${base}.webp ${width}w`);
+    return list.join(', ');
+  };
 
   if (deferred) {
     return (
@@ -61,7 +70,9 @@ export default function Pic({
 
   return (
     <picture>
-      <source srcSet={srcSet('avif')} sizes={sizes} type="image/avif" />
+      {/* With the original on offer, no AVIF: the browser would take the first matching
+          source and stop at its largest size, never reaching the bigger original. */}
+      {!(withOriginal && width > widths[widths.length - 1]) && <source srcSet={srcSet('avif')} sizes={sizes} type="image/avif" />}
       <source srcSet={srcSet('webp')} sizes={sizes} type="image/webp" />
       <img
         src={src}
