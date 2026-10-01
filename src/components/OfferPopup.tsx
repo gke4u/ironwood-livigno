@@ -76,6 +76,28 @@ function isSkiStay(checkIn: string, checkOut: string) {
   return false;
 }
 const MOBILE_FOCUS: Record<string, string> = { 'esterno-notte': 'object-[center_58%]', 'esterno-giorno': 'object-[center_45%]' };
+// Width in pixels of each offer photo's original (public/images/<name>.webp).
+// The srcset offers every generated size up to it (scripts/generate-responsive-
+// images.mjs makes 480…1920 when the original is that wide) plus the original
+// itself: on a computer the photo fills a tall box (cropped from ~1100px wide, or
+// ~2200 real pixels on a sharp screen), so stopping at 1024 made it blurry.
+const OFFER_IMAGE_WIDTH: Record<string, number> = {
+  'esterno-giorno': 1181,
+  'esterno-notte': 1920,
+  'hero-ironwood': 1920,
+  soggiorno: 1920,
+  'sauna-vista-montagna': 2000,
+  camera1: 1905,
+  'lago-livigno-panorama': 1080,
+  'livigno-ghiaccioli-vista-vallata': 1400
+};
+const SIZES = [480, 768, 1024, 1440, 1920];
+function offerSrcSet(img: string, original: number, format: 'avif' | 'webp') {
+  const list = SIZES.filter((w) => w <= original).map((w) => `${img}-${w}.${format} ${w}w`);
+  // The original only exists as WebP (and JPG).
+  if (format === 'webp' && !SIZES.includes(original)) list.push(`${img}.webp ${original}w`);
+  return list.join(', ');
+}
 
 // Calls `cb` once the page has been visible for `ms` in total; the countdown
 // pauses while the tab is in the background. Returns a cancel function.
@@ -255,6 +277,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
 
   const imageKey = offer.image ?? DEFAULT_IMAGE;
   const IMG = `/images/${imageKey}`;
+  const imgWidth = OFFER_IMAGE_WIDTH[imageKey] ?? 1024;
   const remaining = offer.endsAt - now;
   const showCountdown = remaining > 0 && remaining < 7 * 86400_000;
   const cd = {
@@ -310,9 +333,12 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
             <div className="relative aspect-[2/1] min-[400px]:aspect-[16/9] sm:aspect-auto sm:h-72 md:h-auto md:min-h-[540px] overflow-hidden">
               <span className="md:hidden absolute top-2.5 left-1/2 -translate-x-1/2 z-10 h-1.5 w-12 rounded-full bg-mist/60" aria-hidden />
               <picture>
-                <source type="image/avif" srcSet={`${IMG}-480.avif 480w, ${IMG}-768.avif 768w, ${IMG}-1024.avif 1024w`} sizes="(min-width: 768px) 460px, 100vw" />
-                <source type="image/webp" srcSet={`${IMG}-480.webp 480w, ${IMG}-768.webp 768w, ${IMG}-1024.webp 1024w`} sizes="(min-width: 768px) 460px, 100vw" />
-                <img src={`${IMG}-1024.webp`} alt="" className={`absolute inset-0 w-full h-full object-cover ${MOBILE_FOCUS[imageKey] ?? 'object-center'} md:object-center md:animate-kenburns motion-reduce:animate-none`} />
+                {/* AVIF only while it reaches the size a computer needs: otherwise the browser would
+                    take a small AVIF over the large WebP and stretch it. */}
+                {imgWidth >= 1920 && <source type="image/avif" srcSet={offerSrcSet(IMG, imgWidth, 'avif')} sizes="(min-width: 768px) 1100px, 100vw" />}
+                <source type="image/webp" srcSet={offerSrcSet(IMG, imgWidth, 'webp')} sizes="(min-width: 768px) 1100px, 100vw" />
+                {/* No slow zoom here (unlike the homepage photos): it enlarged the photo by a further 12%. */}
+                <img src={`${IMG}-1024.webp`} alt="" className={`absolute inset-0 w-full h-full object-cover ${MOBILE_FOCUS[imageKey] ?? 'object-center'} md:object-center`} />
               </picture>
               <div className="absolute inset-0 bg-gradient-to-t from-[#3D3026] via-[#3D3026]/10 to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-[#3D3026]/40" aria-hidden />
               {pct > 0 && (

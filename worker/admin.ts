@@ -355,13 +355,13 @@ let offerBaseId = null;
 
 // Same list and default as OFFER_IMAGES in worker/offer.ts.
 const OFFER_PICS = [
-  ['esterno-giorno', 'La casa di giorno'],
+  ['esterno-giorno', 'La casa di giorno (foto piccola: sul computer meno nitida)'],
   ['esterno-notte', 'La casa di notte, con la neve'],
   ['hero-ironwood', 'Soggiorno con camino'],
   ['soggiorno', 'Divano e legno'],
   ['sauna-vista-montagna', 'Sauna con vista'],
   ['camera1', 'Camera matrimoniale'],
-  ['lago-livigno-panorama', 'Lago di Livigno in autunno'],
+  ['lago-livigno-panorama', 'Lago di Livigno in autunno (foto piccola: sul computer meno nitida)'],
   ['livigno-ghiaccioli-vista-vallata', 'Vallata d’inverno']
 ];
 $('offerPics').innerHTML = OFFER_PICS.map(([key, label]) =>
