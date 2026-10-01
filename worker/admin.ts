@@ -80,6 +80,19 @@ export function adminPage(): string {
   .check:has(input:disabled) { opacity:.55; cursor:default; }
   a.btn { display:inline-block; background:var(--brick); color:#fff; text-decoration:none; font-weight:600; padding:12px 18px; border-radius:12px; }
   .log { list-style:none; padding:0; margin:0; font-size:13px; }
+  .kpis { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-bottom:16px; }
+  .kpi { background:#fbf6f2; border-radius:12px; padding:12px; text-align:center; }
+  .kpi b { display:block; font-size:28px; line-height:1.1; }
+  .kpi span { font-size:12px; color:#6b625b; }
+  .bars { display:flex; align-items:flex-end; gap:3px; height:110px; padding:6px 0; border-bottom:1px solid var(--line); }
+  .bars div { flex:1; background:var(--brick); border-radius:3px 3px 0 0; min-height:2px; opacity:.85; }
+  .bars div.we { opacity:.55; }
+  .bars-x { display:flex; justify-content:space-between; font-size:11px; color:#6b625b; margin:4px 0 16px; }
+  .tops { display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:14px; }
+  .tops h3 { font-size:13px; margin:0 0 6px; color:#6b625b; font-weight:600; }
+  .tops ol { list-style:none; margin:0; padding:0; font-size:13px; }
+  .tops li { display:flex; justify-content:space-between; gap:8px; padding:4px 0; border-bottom:1px solid var(--line); }
+  .tops li span:first-child { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .sections { list-style:none; padding:0; margin:0 0 14px; counter-reset:sec; }
   .sections li { display:flex; align-items:center; gap:10px; padding:8px 10px; border:1px solid var(--line); border-radius:12px; margin-bottom:6px; background:#fff; counter-increment:sec; }
   .sections li::before { content:counter(sec); width:24px; text-align:right; color:#6b625b; font-size:13px; }
@@ -201,9 +214,14 @@ export function adminPage(): string {
       </form>
     </section>
 
+    <section class="card" id="visite">
+      <h2>Visite al sito</h2>
+      <div id="statsBox"><p class="hint">Caricamento…</p></div>
+    </section>
+
     <section class="card" id="ordine">
       <h2>Sezioni della home</h2>
-      <p class="hint">Sposta le sezioni con le frecce e nascondi quelle che non vuoi con l’interruttore, poi premi “Salva”: la home cambia in tutte le lingue entro un paio di minuti. Una sezione nascosta non è cancellata: la riaccendi quando vuoi. La foto grande in cima resta sempre la prima.</p>
+      <p class="hint">Sposta le sezioni con le frecce e nascondi quelle che non vuoi con l’interruttore, poi premi “Salva”: la home cambia in tutte le lingue entro un paio di minuti. Una sezione nascosta non è cancellata: la riaccendi quando vuoi. Con lei spariscono anche le voci del menu e i pulsanti che portano lì. La foto grande in cima resta sempre la prima.</p>
       <ol id="sectionList" class="sections"></ol>
       <div class="actions">
         <button type="button" id="saveOrder">Salva</button>
@@ -443,6 +461,7 @@ async function loadGoogle() {
   $('offerGoogleRow').classList.toggle('hidden', !g.configured);
   refreshManualLast();
   if (!layout) loadLayout().catch(() => {});
+  loadStats().catch((err) => { $('statsBox').innerHTML = '<p class="warn"></p>'; $('statsBox').firstChild.textContent = 'Visite non disponibili: ' + err.message; });
   if (!g.configured) {
     box.className = 'status off';
     box.textContent = 'Google non concede la pubblicazione automatica a una singola struttura: usa i due pulsanti qui sopra, ci vuole meno di un minuto.';
@@ -477,6 +496,62 @@ $('googleDisconnect').addEventListener('click', async () => {
   try { await api('google/disconnect', { method: 'POST' }); await loadGoogle(); }
   catch (err) { alert(err.message); }
 });
+// ---- visits ----
+const regionName = (() => { try { return new Intl.DisplayNames(['it'], { type: 'region' }); } catch (e) { return null; } })();
+function flag(cc) { return /^[A-Z]{2}$/.test(cc) ? String.fromCodePoint(...[...cc].map((c) => 127397 + c.charCodeAt(0))) : '🌍'; }
+function countryLabel(cc) { if (cc === 'XX') return '🌍 Sconosciuto'; let n = cc; try { n = regionName ? regionName.of(cc) : cc; } catch (e) {} return flag(cc) + ' ' + n; }
+function pageLabel(p) {
+  if (p === '(sconosciuta)') return 'Pagina sconosciuta';
+  const m = p.match(new RegExp('^/(it|en|de|fr|da|pl|cs|no|nl|zh|ja|en-us)$'));
+  if (m) return 'Home (' + m[1].toUpperCase() + ')';
+  return p;
+}
+function topList(title, rows, label) {
+  const box = document.createElement('div');
+  const h = document.createElement('h3'); h.textContent = title;
+  const ol = document.createElement('ol');
+  if (!rows.length) { const li = document.createElement('li'); li.textContent = 'Ancora nessun dato'; ol.append(li); }
+  rows.forEach((r) => {
+    const li = document.createElement('li');
+    const a = document.createElement('span'); a.textContent = label(r.key); a.title = r.key;
+    const b = document.createElement('span'); b.textContent = r.views;
+    li.append(a, b); ol.append(li);
+  });
+  box.append(h, ol);
+  return box;
+}
+async function loadStats() {
+  const s = await api('stats');
+  const box = $('statsBox');
+  box.innerHTML = '';
+  const kpis = document.createElement('div'); kpis.className = 'kpis';
+  [['Oggi', s.today], ['Ultimi 7 giorni', s.week], ['Ultimi 30 giorni', s.month]].forEach(([l, v]) => {
+    const k = document.createElement('div'); k.className = 'kpi';
+    k.innerHTML = '<b></b><span></span>'; k.querySelector('b').textContent = v; k.querySelector('span').textContent = l + ' (pagine viste)';
+    kpis.append(k);
+  });
+  const max = Math.max(1, ...s.days.map((d) => d.views));
+  const bars = document.createElement('div'); bars.className = 'bars';
+  s.days.forEach((d) => {
+    const bar = document.createElement('div');
+    const dow = new Date(d.day + 'T00:00:00Z').getUTCDay();
+    if (dow === 0 || dow === 6) bar.className = 'we';
+    bar.style.height = Math.round((d.views / max) * 100) + '%';
+    bar.title = new Date(d.day + 'T00:00:00Z').toLocaleDateString('it-IT', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' }) + ': ' + d.views;
+    bars.append(bar);
+  });
+  const x = document.createElement('div'); x.className = 'bars-x';
+  const fmt = (d) => new Date(d + 'T00:00:00Z').toLocaleDateString('it-IT', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+  x.innerHTML = '<span></span><span>oggi</span>'; x.firstChild.textContent = fmt(s.days[0].day);
+  const tops = document.createElement('div'); tops.className = 'tops';
+  tops.append(topList('Da quali paesi (30 giorni)', s.countries, countryLabel), topList('Pagine più viste', s.pages, pageLabel), topList('Da dove arrivano', s.sources, (k) => k));
+  const note = document.createElement('p'); note.className = 'sub';
+  note.style.marginTop = '14px';
+  note.textContent = (s.since ? 'Conteggio attivo dal ' + fmt(s.since) + '. ' : 'Il conteggio parte con la prossima visita. ') +
+    'Conta le pagine aperte da persone vere (non i robot); nessun dato personale, niente cookie. Passa il dito o il mouse su una barra per vedere il giorno.';
+  box.append(kpis, bars, x, tops, note);
+}
+
 // ---- homepage section order ----
 let layout = null;
 function renderSections() {
@@ -505,12 +580,10 @@ function renderSections() {
   });
 }
 // Sections that menus and buttons elsewhere on the site link to.
+// Links to a hidden section disappear by themselves on the pages with the site
+// menu; the booking form is the one whose loss matters, so it still asks.
 const LINKED = {
-  prenota: 'il pulsante “Richiedi disponibilità” in alto e nel menu porta a questa sezione: nascondendola, chi lo preme non trova il modulo per prenotare.',
-  esperienza: 'una voce del menu in alto e del piè di pagina porta qui: nascondendola, quel link non porta più da nessuna parte.',
-  camere: 'una voce del menu in alto e del piè di pagina porta qui: nascondendola, quel link non porta più da nessuna parte.',
-  posizione: 'una voce del menu in alto e del piè di pagina porta qui: nascondendola, quel link non porta più da nessuna parte.',
-  'servizi-extra': 'il link “Colazione ed e-bike” di altre pagine porta qui.'
+  prenota: 'è il modulo per prenotare. Nascondendola spariscono anche i pulsanti “Richiedi disponibilità” della home e del menu, ma quelli negli articoli del blog e nelle pagine tematiche continuerebbero a portare alla home senza modulo.'
 };
 function toggleHidden(id, box) {
   if (!box.checked && LINKED[id] && !confirm('Attenzione: ' + LINKED[id] + ' Nasconderla lo stesso?')) { box.checked = true; return; }

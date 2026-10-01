@@ -133,6 +133,20 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
     }
   }, [offer]);
 
+  // Counts this page view for the admin's visit stats (worker/stats.ts): a
+  // POST beacon, never cached, so every page opened counts. `r` is only the
+  // host the visitor came from (e.g. www.google.com); nothing personal is sent.
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).has('anteprima-offerta')) return;
+    let ref = '';
+    try {
+      ref = document.referrer ? new URL(document.referrer).hostname : '';
+    } catch {}
+    try {
+      navigator.sendBeacon(`/api/visita${ref ? `?r=${encodeURIComponent(ref)}` : ''}`);
+    } catch {}
+  }, []);
+
   // Fetch after the page has settled, then open after a short delay.
   useEffect(() => {
     const preview = new URLSearchParams(window.location.search).has('anteprima-offerta');

@@ -10,6 +10,8 @@
 //   /api/offer             the special offer to show in the site pop-up, if any
 //   /it, /en, …            the homepages, to apply the section order (and hidden sections) chosen in the admin
 //   /recensione            short link to the "write a review" page on Google
+//   /api/sezioni           the homepage sections hidden in the admin (to hide links to them)
+//   /api/visita            page-view beacon for the admin's visit stats (worker/stats.ts)
 //   /foto-google/<id>.jpg  a photo as JPEG, only with a short-lived signature
 //                          (Google fetches the weekly photo from here)
 //
@@ -26,6 +28,10 @@ import { adminPage } from './admin';
 import { OFFER_KEY, isLive, parseOffer, publicOffer, type Offer } from './offer';
 import * as google from './google';
 import { HOME_PATHS, LAYOUT_KEY, SECTIONS, isDefault, layoutCss, parseLayout } from './layout';
+import { pagePath, sourceName, type Stats } from './stats';
+
+// The Durable Object class must be exported by the Worker's main module.
+export { Stats } from './stats';
 
 export interface Env {
   ASSETS: Fetcher;
@@ -36,6 +42,8 @@ export interface Env {
   // Profile APIs. Until both are set the Google link stays switched off.
   GOOGLE_CLIENT_ID?: string;
   GOOGLE_CLIENT_SECRET?: string;
+  // Visit counter for the admin (worker/stats.ts).
+  STATS: DurableObjectNamespace<Stats>;
 }
 
 type PhotoMeta = { id: string; type: string; w: number; h: number; bytes: number; created: string; season?: Season };
@@ -86,10 +94,18 @@ export default {
     try {
       if (HOME_PATHS.includes(path)) return await homePage(request, env);
       if (path === '/recensione') return Response.redirect(REVIEW_URL, 302);
+      if (path === '/api/sezioni') {
+        const raw = await env.PHOTOS.get(LAYOUT_KEY, { cacheTtl: 60 });
+        return json({ hidden: parseLayout(raw ? JSON.parse(raw) : null).hidden }, 200, { 'Cache-Control': 'public, max-age=60' });
+      }
       if (path === '/foto-del-giorno') return await photoOfTheDay(request, env, ctx);
       if (path.startsWith('/foto/')) return await photoById(request, path.slice('/foto/'.length), env);
       if (path.startsWith('/foto-google/')) return await photoForGoogle(request, path.slice('/foto-google/'.length), env);
       if (path === '/api/offer') return await offerApi(request, env);
+      if (path === '/api/visita' && request.method === 'POST') {
+        ctx.waitUntil(countVisit(request, env).catch((err) => console.error(err)));
+        return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
+      }
       if (path === '/admin') return html(adminPage());
       if (path.startsWith('/api/admin/')) return await adminApi(request, env, path.slice('/api/admin/'.length));
     } catch (err) {
@@ -299,6 +315,17 @@ async function offerApi(request: Request, env: Env): Promise<Response> {
   return json(body, 200, { 'Cache-Control': 'public, max-age=60' });
 }
 
+async function countVisit(request: Request, env: Env): Promise<void> {
+  const url = new URL(request.url);
+  const country = (request.cf?.country as string | undefined) ?? 'XX';
+  await env.STATS.getByName('site').hit({
+    day: romeDate(),
+    path: pagePath(request.headers.get('Referer'), url.origin),
+    country: /^[A-Z]{2}$/.test(country) ? country : 'XX',
+    source: sourceName(url.searchParams.get('r'), url.hostname)
+  });
+}
+
 async function readOffer(env: Env, cacheTtl = 60): Promise<Offer | null> {
   const raw = await env.PHOTOS.get(OFFER_KEY, cacheTtl ? { cacheTtl } : undefined);
   return raw ? (JSON.parse(raw) as Offer) : null;
@@ -429,6 +456,10 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
   }
 
   if (route === 'credentials' && request.method === 'POST') return changeCredentials(request, env, auth);
+
+  if (route === 'stats' && request.method === 'GET') {
+    return json(await env.STATS.getByName('site').summary(romeDate()));
+  }
 
   if (route === 'layout' && request.method === 'GET') {
     const raw = await env.PHOTOS.get(LAYOUT_KEY);

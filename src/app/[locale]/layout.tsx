@@ -6,6 +6,7 @@ import { locales, type Locale } from '@/i18n/routing';
 import LangSuggestBanner from '@/components/LangSuggestBanner';
 import BackToTop from '@/components/BackToTop';
 import OfferPopupServer from '@/components/OfferPopupServer';
+import HiddenSectionLinks from '@/components/HiddenSectionLinks';
 
 // Cloudflare Web Analytics: cookieless, GDPR-friendly page-view tracking.
 // Site token from the "ironwoodlivigno.com" Web Analytics site already
@@ -123,6 +124,7 @@ export default async function LocaleLayout({
           {children}
           <BackToTop />
           <OfferPopupServer locale={locale} />
+          <HiddenSectionLinks />
         </NextIntlClientProvider>
         <Script
           src="https://static.cloudflareinsights.com/beacon.min.js"

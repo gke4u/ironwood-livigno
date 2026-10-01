@@ -24,7 +24,7 @@
 		"binding": "ASSETS",
 		"html_handling": "auto-trailing-slash",
 		"not_found_handling": "404-page",
-		"run_worker_first": ["/admin", "/admin/*", "/api/admin/*", "/api/offer", "/foto-del-giorno", "/foto/*", "/foto-google/*", "/recensione",
+		"run_worker_first": ["/admin", "/admin/*", "/api/admin/*", "/api/offer", "/foto-del-giorno", "/foto/*", "/foto-google/*", "/recensione", "/api/sezioni", "/api/visita",
 			"/it", "/en", "/de", "/fr", "/da", "/pl", "/cs", "/no", "/nl", "/zh", "/ja", "/en-us"]
 	},
 	// Uploaded photos. Secrets (set once with `npx wrangler secret put`):
@@ -32,6 +32,9 @@
 	// GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET once Google approves the Business
 	// Profile API access (until then the Google link stays off, see worker/google.ts).
 	"kv_namespaces": [{ "binding": "PHOTOS", "id": "5ebaedb7d16849278ddb91bed172f73d" }],
+	// Visit counter for the admin (worker/stats.ts): one SQLite-backed Durable Object.
+	"durable_objects": { "bindings": [{ "name": "STATS", "class_name": "Stats" }] },
+	"migrations": [{ "tag": "v1", "new_sqlite_classes": ["Stats"] }],
 	// Mondays 07:00 UTC (8 or 9 in Italy): the weekly photo for Google.
 	"triggers": { "crons": ["0 7 * * 1"] }
 }

@@ -54,6 +54,15 @@ export function isDefault(layout: Layout): boolean {
 export function layoutCss(layout: Layout): string {
   return (
     layout.order.map((id, i) => `#sezioni>#${id}{order:${i}}`).join('') +
-    layout.hidden.map((id) => `#sezioni>#${id}{display:none}`).join('')
+    layout.hidden.map((id) => `#sezioni>#${id}{display:none}`).join('') +
+    hiddenLinksCss(layout.hidden)
   );
+}
+
+// Links and buttons that lead to a hidden section (menus, footer, the
+// homepage buttons) disappear with it. Also used on the other pages with the
+// site menu (contact, privacy) through /api/sezioni, see
+// src/components/HiddenSectionLinks.tsx.
+export function hiddenLinksCss(hidden: string[]): string {
+  return hidden.map((id) => `a[href$="#${id}"]{display:none!important}`).join('');
 }
