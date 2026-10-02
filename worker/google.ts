@@ -184,6 +184,11 @@ export type OfferForPost = {
 
 const fmtDay = (d: string) => new Date(`${d}T00:00:00Z`).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', timeZone: 'UTC' });
 const fmtEuro = (v: number) => `${Number.isInteger(v) ? v : v.toFixed(2).replace('.', ',')} €`;
+// "al 12", but "all’8" / "all’11" (Italian elides before a vowel sound).
+const al = (d: string) => (['8', '11'].includes(String(Number(d.slice(8, 10)))) ? 'all’' : 'al ') + fmtDay(d);
+// "9–11 ottobre", or "30 ottobre – 1 novembre" across two months.
+const fmtRange = (s: { checkIn: string; checkOut: string }) =>
+  s.checkIn.slice(0, 7) === s.checkOut.slice(0, 7) ? `${Number(s.checkIn.slice(8, 10))}–${fmtDay(s.checkOut)}` : `${fmtDay(s.checkIn)} – ${fmtDay(s.checkOut)}`;
 const gdate = (d: string) => ({ year: Number(d.slice(0, 4)), month: Number(d.slice(5, 7)), day: Number(d.slice(8, 10)) });
 
 // Text of the post (Italian, like the profile). The lifts are mentioned only
@@ -195,8 +200,8 @@ export function offerPostBody(o: OfferForPost, siteOrigin: string) {
   const where = o.skiStay ? '100 m dagli impianti' : '15 minuti a piedi dal centro';
   const stays = o.stays && o.stays.length > 1 ? o.stays : null;
   const when = stays
-    ? `soggiorno a scelta ${stays.map((s) => `dal ${fmtDay(s.checkIn)} al ${fmtDay(s.checkOut)}`).join(' oppure ')}`
-    : `soggiorno dal ${fmtDay(o.checkIn)} al ${fmtDay(o.checkOut)}`;
+    ? `soggiorno a scelta ${stays.map(fmtRange).join(' oppure ')}`
+    : `soggiorno dal ${fmtDay(o.checkIn)} ${al(o.checkOut)}`;
   const summary =
     `Offerta speciale a Ironwood Livigno: ${when} ` +
     `(${nights} ${nights === 1 ? 'notte' : 'notti'}) a ${price}${was}. ` +
