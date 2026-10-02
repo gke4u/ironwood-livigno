@@ -122,9 +122,9 @@ R: Sì, l'appartamento include un posto auto gratuito.
 **D: Accettate animali domestici?**
 R: No, l'appartamento non accetta animali domestici.
 
-## Descrizione attività (aggiornata 2 ottobre 2026)
+## Descrizione attività — CAMPO NON DISPONIBILE
 
-Copia e incolla nel campo "Descrizione" del profilo (Modifica profilo → Informazioni → Descrizione). Sono 625 caratteri, il limite di Google è 750. Niente link e niente numero di telefono: Google li vieta nella descrizione.
+Per questo profilo (struttura ricettiva) Google non mostra più il campo "Descrizione": la descrizione la genera Google. Il testo qui sotto resta solo come riferimento (e per Airbnb/Holidu o altri portali); su Google Business le informazioni passano dai **post**, dalle **foto** e dagli **attributi**.
 
 ```
 Ironwood Livigno è un appartamento vacanze di 90 m² in Via Saroch 767, a Livigno, a 100 metri a piedi dallo skilift San Rocco, collegato sci ai piedi al Carosello 3000. Tre camere da letto e due bagni completi per un massimo di 6 ospiti, con sauna a infrarossi e bagno turco privati, mai condivisi con altri ospiti. Fermata dell'autobus a 40 metri, market di fronte e due supermercati entro 100 metri. Parcheggio gratuito e deposito per sci e bici. Su richiesta: colazione in una struttura convenzionata a 50 metri, e-bike a noleggio, culla e seggiolone. Aperto tutto l'anno, gestito direttamente dalla famiglia proprietaria.
