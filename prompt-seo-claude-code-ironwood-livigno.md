@@ -20,7 +20,7 @@ Lavora con rigore da consulente pagato per un audit enterprise: ogni modifica va
 
 **Sito**: ironwoodlivigno.com — sito vetrina + form di richiesta disponibilità (no pagamento online) per un appartamento vacanze a Livigno (SO), Italia.
 
-**Prodotto**: Appartamento di 90 m², 3 camere, 2 bagni, sauna a infrarossi e bagno turco privati (mai condivisi), fino a 6 ospiti. A 100 m dagli impianti di risalita, 50 m da scuola sci/noleggio, 15 minuti a piedi dal centro. Via Saroch 771, Livigno. Rating 5.0 su Google e Airbnb (28 recensioni). Target: famiglie e gruppi, sia in inverno (sci) sia in estate (trekking, mountain bike, Lago di Livigno, alpeggi).
+**Prodotto**: Appartamento di 90 m², 3 camere, 2 bagni, sauna a infrarossi e bagno turco privati (mai condivisi), fino a 6 ospiti. A 100 m dagli impianti di risalita, 50 m da scuola sci/noleggio, 15 minuti a piedi dal centro. Via Saroch 767, Livigno. Rating 5.0 su Google e Airbnb (28 recensioni). Target: famiglie e gruppi, sia in inverno (sci) sia in estate (trekking, mountain bike, Lago di Livigno, alpeggi).
 
 **Struttura attuale nota del sito**:
 - Homepage multilingua su `/it`, `/en`, `/en-us`, `/de`, `/fr`, `/da`, `/pl`, `/cs`, `/no`, `/nl`, `/zh`, `/ja`
