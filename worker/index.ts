@@ -278,7 +278,7 @@ async function syncGoogleOffer(env: Env, offer: Offer, previous: Offer | null, o
   try {
     if (previous?.googlePost) await google.deletePost(env, state, previous.googlePost);
     if (offer.google && offer.active && offer.showUntil >= romeDate()) {
-      offer.googlePost = await google.createOfferPost(env, state, { ...offer, skiStay: isSkiStay(offer.checkIn, offer.checkOut) }, origin);
+      offer.googlePost = await google.createOfferPost(env, state, offerForPost(offer), origin);
       message = 'Pubblicata anche su Google (Google la controlla prima di mostrarla).';
       google.addLog(state, `Offerta ${offer.checkIn} – ${offer.checkOut} pubblicata`, true);
     } else if (previous?.googlePost) {
@@ -291,6 +291,13 @@ async function syncGoogleOffer(env: Env, offer: Offer, previous: Offer | null, o
   }
   await google.writeGoogle(env, state);
   return message;
+}
+
+// The saved offer as the Google post needs it: the periods still to come and
+// whether any of them is in the ski season.
+function offerForPost(offer: Offer) {
+  const { stays } = publicOffer(offer, romeDate());
+  return { ...offer, stays, checkIn: stays[0].checkIn, checkOut: stays[0].checkOut, skiStay: stays.some((s) => isSkiStay(s.checkIn, s.checkOut)) };
 }
 
 // Same months as LIFT_MONTHS above: does the stay have a night in the ski season?
@@ -317,12 +324,13 @@ async function offerApi(request: Request, env: Env): Promise<Response> {
   if (new URL(request.url).searchParams.has('preview')) {
     const offer = await readOffer(env, 0);
     if (offer && env.SESSION_SECRET && (await isLoggedIn(request, env, await readAuth(env)))) {
-      return json({ offer: publicOffer(offer) });
+      return json({ offer: publicOffer(offer, romeDate()) });
     }
     return json({ offer: null });
   }
   const offer = await readOffer(env);
-  const body = offer && isLive(offer, romeDate()) ? { offer: publicOffer(offer) } : { offer: null };
+  const today = romeDate();
+  const body = offer && isLive(offer, today) ? { offer: publicOffer(offer, today) } : { offer: null };
   return json(body, 200, { 'Cache-Control': 'public, max-age=60' });
 }
 
@@ -414,7 +422,7 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
     const today = romeDate();
     if (!offer || !offer.active || offer.showUntil < today) return json({ error: 'Nessuna offerta attiva da pubblicare: salvane una qui sotto.' }, 404);
     // Always the public site: the link ends up on Google.
-    const body = google.offerPostBody({ ...offer, skiStay: isSkiStay(offer.checkIn, offer.checkOut) }, SITE_ORIGIN);
+    const body = google.offerPostBody(offerForPost(offer), SITE_ORIGIN);
     return json({
       title: body.event.title,
       start: offer.showFrom,

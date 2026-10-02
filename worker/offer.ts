@@ -7,6 +7,7 @@ export type Offer = {
   active: boolean;
   checkIn: string; // YYYY-MM-DD, first night of the stay
   checkOut: string; // YYYY-MM-DD, departure day
+  extraStays?: Stay[]; // more periods at the same price (e.g. the next weekends), visitors pick one
   price: number; // euro
   unit: 'stay' | 'night';
   originalPrice: number | null; // full price, shown struck through
@@ -18,6 +19,9 @@ export type Offer = {
   google?: boolean; // also publish it as an Offer post on the Google profile
   googlePost?: string; // resource name of that post, to remove it when the offer changes
 };
+
+export type Stay = { checkIn: string; checkOut: string };
+export const MAX_EXTRA_STAYS = 3;
 
 export const OFFER_KEY = 'offer';
 
@@ -50,6 +54,17 @@ export function parseOffer(body: Record<string, unknown>): Offer | string {
   if (!isDate(showFrom) || !isDate(showUntil)) return 'Inserisci inizio e fine dell’offerta';
   if (showUntil < showFrom) return 'La fine dell’offerta deve essere uguale o successiva all’inizio';
 
+  const extraStays: Stay[] = [];
+  if (Array.isArray(body.extraStays)) {
+    for (const raw of body.extraStays.slice(0, MAX_EXTRA_STAYS)) {
+      const st = (raw ?? {}) as Record<string, unknown>;
+      if (!st.checkIn && !st.checkOut) continue; // row left empty
+      if (!isDate(st.checkIn) || !isDate(st.checkOut)) return 'Inserisci arrivo e partenza anche per gli altri periodi (o lasciali vuoti)';
+      if (st.checkOut <= st.checkIn) return 'In un altro periodo la partenza è prima dell’arrivo';
+      extraStays.push({ checkIn: st.checkIn, checkOut: st.checkOut });
+    }
+  }
+
   const price = Number(body.price);
   if (!Number.isFinite(price) || price <= 0 || price > 100000) return 'Inserisci un prezzo valido';
   const unit = body.unit === 'night' ? 'night' : 'stay';
@@ -64,6 +79,7 @@ export function parseOffer(body: Record<string, unknown>): Offer | string {
     active: body.active === true,
     checkIn,
     checkOut,
+    ...(extraStays.length ? { extraStays } : {}),
     price: Math.round(price * 100) / 100,
     unit,
     originalPrice: originalPrice === null ? null : Math.round(originalPrice * 100) / 100,
@@ -90,13 +106,24 @@ export function isLive(offer: Offer, today: string): boolean {
   return offer.active && offer.showFrom <= today && today <= offer.showUntil;
 }
 
+// Every period of the offer, by date.
+export function allStays(offer: Offer): Stay[] {
+  return [{ checkIn: offer.checkIn, checkOut: offer.checkOut }, ...(offer.extraStays ?? [])].sort((a, b) => a.checkIn.localeCompare(b.checkIn));
+}
+
 // What the public site receives: no admin-only fields, plus when the offer ends.
-export function publicOffer(offer: Offer) {
+// Periods whose arrival day is past are left out (the first weekend drops off
+// on its Saturday), unless that would leave none.
+export function publicOffer(offer: Offer, today?: string) {
+  const all = allStays(offer);
+  const upcoming = today ? all.filter((s) => s.checkIn >= today) : all;
+  const stays = upcoming.length ? upcoming : all;
   const nextDay = new Date(Date.parse(`${offer.showUntil}T00:00:00Z`) + 86400_000).toISOString().slice(0, 10);
   return {
     id: offer.id,
-    checkIn: offer.checkIn,
-    checkOut: offer.checkOut,
+    checkIn: stays[0].checkIn,
+    checkOut: stays[0].checkOut,
+    stays,
     price: offer.price,
     unit: offer.unit,
     originalPrice: offer.originalPrice,

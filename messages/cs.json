@@ -327,6 +327,7 @@
     "title": "Vaše útočiště v Livignu za speciální cenu",
     "checkInLabel": "Příjezd",
     "checkOutLabel": "Odjezd",
+    "chooseDates": "Vyberte si termín",
     "nights": {
       "one": "{n} noc",
       "few": "{n} noci",

@@ -172,6 +172,7 @@ function v4Parent(state: GoogleState): string {
 export type OfferForPost = {
   checkIn: string;
   checkOut: string;
+  stays?: { checkIn: string; checkOut: string }[]; // all periods, when there is more than one
   price: number;
   unit: 'stay' | 'night';
   originalPrice: number | null;
@@ -192,8 +193,12 @@ export function offerPostBody(o: OfferForPost, siteOrigin: string) {
   const price = fmtEuro(o.price) + (o.unit === 'night' ? ' a notte' : '');
   const was = o.originalPrice ? ` invece di ${fmtEuro(o.originalPrice)} (-${Math.round(((o.originalPrice - o.price) / o.originalPrice) * 100)}%)` : '';
   const where = o.skiStay ? '100 m dagli impianti' : '15 minuti a piedi dal centro';
+  const stays = o.stays && o.stays.length > 1 ? o.stays : null;
+  const when = stays
+    ? `soggiorno a scelta ${stays.map((s) => `dal ${fmtDay(s.checkIn)} al ${fmtDay(s.checkOut)}`).join(' oppure ')}`
+    : `soggiorno dal ${fmtDay(o.checkIn)} al ${fmtDay(o.checkOut)}`;
   const summary =
-    `Offerta speciale a Ironwood Livigno: soggiorno dal ${fmtDay(o.checkIn)} al ${fmtDay(o.checkOut)} ` +
+    `Offerta speciale a Ironwood Livigno: ${when} ` +
     `(${nights} ${nights === 1 ? 'notte' : 'notti'}) a ${price}${was}. ` +
     `Sauna e bagno turco privati, fino a 6 ospiti in 3 camere, ${where}. ` +
     `Una sola casa: quando è prenotata, l’offerta finisce. Scrivici su WhatsApp al 0342 929285.`;

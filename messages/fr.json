@@ -327,6 +327,7 @@
     "title": "Votre refuge à Livigno, à un prix spécial",
     "checkInLabel": "Arrivée",
     "checkOutLabel": "Départ",
+    "chooseDates": "Choisissez vos dates",
     "nights": {
       "one": "{n} nuit",
       "other": "{n} nuits"

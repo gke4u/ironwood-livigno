@@ -327,6 +327,7 @@
     "title": "Dit refugium i Livigno – til en særpris",
     "checkInLabel": "Ankomst",
     "checkOutLabel": "Afrejse",
+    "chooseDates": "Vælg dine datoer",
     "nights": {
       "one": "{n} nat",
       "other": "{n} nætter"

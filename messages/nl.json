@@ -327,6 +327,7 @@
     "title": "Jouw toevluchtsoord in Livigno, voor een speciale prijs",
     "checkInLabel": "Aankomst",
     "checkOutLabel": "Vertrek",
+    "chooseDates": "Kies uw data",
     "nights": {
       "one": "{n} nacht",
       "other": "{n} nachten"

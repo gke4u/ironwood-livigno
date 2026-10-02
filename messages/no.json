@@ -327,6 +327,7 @@
     "title": "Ditt tilfluktssted i Livigno – til spesialpris",
     "checkInLabel": "Ankomst",
     "checkOutLabel": "Avreise",
+    "chooseDates": "Velg datoer",
     "nights": {
       "one": "{n} natt",
       "other": "{n} netter"

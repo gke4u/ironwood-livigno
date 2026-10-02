@@ -327,6 +327,7 @@
     "title": "Il tuo rifugio a Livigno, a un prezzo speciale",
     "checkInLabel": "Arrivo",
     "checkOutLabel": "Partenza",
+    "chooseDates": "Scegli le date",
     "nights": {
       "one": "{n} notte",
       "other": "{n} notti"

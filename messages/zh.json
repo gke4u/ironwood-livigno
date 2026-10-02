@@ -327,6 +327,7 @@
     "title": "您在利维尼奥的山间居所，特惠价格",
     "checkInLabel": "入住",
     "checkOutLabel": "退房",
+    "chooseDates": "选择入住日期",
     "nights": {
       "other": "{n} 晚"
     },

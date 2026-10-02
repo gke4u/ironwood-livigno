@@ -327,6 +327,7 @@
     "title": "Your Livigno retreat, at a special price",
     "checkInLabel": "Check-in",
     "checkOutLabel": "Check-out",
+    "chooseDates": "Choose your dates",
     "nights": {
       "one": "{n} night",
       "other": "{n} nights"

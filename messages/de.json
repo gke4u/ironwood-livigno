@@ -327,6 +327,7 @@
     "title": "Ihr Rückzugsort in Livigno – zum Sonderpreis",
     "checkInLabel": "Anreise",
     "checkOutLabel": "Abreise",
+    "chooseDates": "Wählen Sie Ihre Reisedaten",
     "nights": {
       "one": "{n} Nacht",
       "other": "{n} Nächte"

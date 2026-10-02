@@ -20,6 +20,7 @@ export type OfferStrings = {
   title: string;
   checkInLabel: string;
   checkOutLabel: string;
+  chooseDates: string;
   nights: Partial<Record<Intl.LDMLPluralRule, string>> & { other: string };
   perStay: string;
   perNight: string;
@@ -41,10 +42,15 @@ export type OfferStrings = {
   emailFields: string;
 };
 
+type Stay = { checkIn: string; checkOut: string };
+
 type Offer = {
   id: string;
   checkIn: string;
   checkOut: string;
+  // Every period still to come, when the owner offers more than one at the
+  // same price (e.g. the next two weekends): the visitor picks one.
+  stays?: Stay[];
   price: number;
   unit: 'stay' | 'night';
   originalPrice: number | null;
@@ -149,6 +155,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
   const [open, setOpen] = useState(false);
   const [shown, setShown] = useState(false);
   const [now, setNow] = useState(() => Date.now());
+  const [picked, setPicked] = useState(0);
   const previewRef = useRef(false);
   const closeRef = useRef<HTMLButtonElement>(null);
   const pillRef = useRef<HTMLButtonElement>(null);
@@ -194,6 +201,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
         const data = (await res.json()) as { offer: Offer | null };
         if (!data.offer) return;
         setOffer(data.offer);
+        setPicked(0);
         let closed = false;
         try {
           // Earlier versions remembered a closed pop-up for ever; forget that.
@@ -236,23 +244,24 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
     if (!offer || previewRef.current) return;
     const script = document.createElement('script');
     script.type = 'application/ld+json';
-    script.text = JSON.stringify({
+    const offers = (offer.stays?.length ? offer.stays : [offer]).map((s) => ({
       '@context': 'https://schema.org',
       '@type': 'Offer',
-      name: `${t.eyebrow}: ${offer.checkIn} – ${offer.checkOut}`,
+      name: `${t.eyebrow}: ${s.checkIn} – ${s.checkOut}`,
       url: window.location.href.split(/[?#]/)[0],
       price: offer.price,
       priceCurrency: 'EUR',
       priceValidUntil: offer.showUntil,
-      availabilityStarts: offer.checkIn,
-      availabilityEnds: offer.checkOut,
+      availabilityStarts: s.checkIn,
+      availabilityEnds: s.checkOut,
       availability: 'https://schema.org/LimitedAvailability',
       ...(offer.unit === 'night'
         ? { priceSpecification: { '@type': 'UnitPriceSpecification', price: offer.price, priceCurrency: 'EUR', unitCode: 'DAY' } }
         : {}),
       offeredBy: { '@id': `${SITE_URL}/#organization` },
       image: `${SITE_URL}/images/${offer.image ?? DEFAULT_IMAGE}-1024.webp`
-    });
+    }));
+    script.text = JSON.stringify(offers.length === 1 ? offers[0] : offers);
     document.head.appendChild(script);
     return () => {
       script.remove();
@@ -271,19 +280,42 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
   const intl = INTL_LOCALE[locale] ?? locale;
   const day = (d: string, opts: Intl.DateTimeFormatOptions) =>
     new Intl.DateTimeFormat(intl, { ...opts, timeZone: 'UTC' }).format(new Date(`${d}T00:00:00Z`));
+  // "9–11 ott", "ven – dom": a stay's dates written the way each language shortens a range
+  // (without the leading zero some browsers add to the day: "09–11 ott").
+  const dayRange = (s: Stay, opts: Intl.DateTimeFormatOptions) =>
+    new Intl.DateTimeFormat(intl, { ...opts, timeZone: 'UTC' })
+      .formatRange(new Date(`${s.checkIn}T00:00:00Z`), new Date(`${s.checkOut}T00:00:00Z`))
+      .replace(/(^|\D)0(\d)/g, '$1$2');
   const longDate = (d: string) => day(d, { day: 'numeric', month: 'long', year: 'numeric' });
   const money = (v: number) =>
     new Intl.NumberFormat(intl, { style: 'currency', currency: 'EUR', maximumFractionDigits: Number.isInteger(v) ? 0 : 2 }).format(v);
 
-  const nightsCount = Math.round((Date.parse(offer.checkOut) - Date.parse(offer.checkIn)) / 86400_000);
-  const pluralKey = new Intl.PluralRules(intl).select(nightsCount);
-  const nightsLabel = fill(t.nights[pluralKey] ?? t.nights.other, { n: String(nightsCount) });
+  const stays: Stay[] = offer.stays?.length ? offer.stays : [{ checkIn: offer.checkIn, checkOut: offer.checkOut }];
+  const stay = stays[picked] ?? stays[0];
+  const nightsOf = (s: Stay) => {
+    const n = Math.round((Date.parse(s.checkOut) - Date.parse(s.checkIn)) / 86400_000);
+    return fill(t.nights[new Intl.PluralRules(intl).select(n)] ?? t.nights.other, { n: String(n) });
+  };
+  const nightsLabel = nightsOf(stay);
   const pct = offer.originalPrice ? Math.round(((offer.originalPrice - offer.price) / offer.originalPrice) * 100) : 0;
   const unitLabel = offer.unit === 'night' ? t.perNight : t.perStay;
-  const features = isSkiStay(offer.checkIn, offer.checkOut) ? t.features : t.features.map((f, i) => (i === 1 ? t.featureOffSeason : f));
+  const features = isSkiStay(stay.checkIn, stay.checkOut) ? t.features : t.features.map((f, i) => (i === 1 ? t.featureOffSeason : f));
   const priceText = `${money(offer.price)}${offer.unit === 'night' ? ` ${t.perNight}` : ''}`;
 
-  const values = { checkIn: longDate(offer.checkIn), checkOut: longDate(offer.checkOut), price: priceText };
+  const priceBlock = (
+    <>
+      <div className="flex items-end flex-wrap gap-x-4 gap-y-1">
+        <span className="font-display text-5xl md:text-6xl leading-none tabular-nums">{money(offer.price)}</span>
+        {offer.originalPrice && <span className="text-xl text-mist/45 line-through tabular-nums mb-1">{money(offer.originalPrice)}</span>}
+      </div>
+      <p className="mt-2 text-sm text-mist/70">
+        {unitLabel}
+        {pct > 0 && <span className="text-gold font-semibold"> · {fill(t.save, { pct: String(pct) })}</span>}
+      </p>
+    </>
+  );
+
+  const values = { checkIn: longDate(stay.checkIn), checkOut: longDate(stay.checkOut), price: priceText };
   const waText = fill(t.waMessage, values);
   const waHref = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(waText)}`;
   const mailHref = `mailto:${EMAIL}?subject=${encodeURIComponent(fill(t.emailSubject, values))}&body=${encodeURIComponent(`${waText}\n\n${t.emailFields}`)}`;
@@ -377,33 +409,58 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
                 {t.title}
               </h2>
 
-              <div className="mt-4 md:mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-2xl bg-mist/[0.06] ring-1 ring-mist/10 p-4">
-                <div>
-                  <p className="text-[11px] uppercase tracking-widest text-mist/55">{t.checkInLabel}</p>
-                  <p className="mt-1 font-medium leading-snug">{day(offer.checkIn, { weekday: 'short', day: 'numeric', month: 'short' })}</p>
-                </div>
-                <span className="flex items-center gap-1.5 rounded-full bg-gold/15 text-gold px-3 py-1.5 text-xs font-semibold whitespace-nowrap">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                    <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
-                  </svg>
-                  {nightsLabel}
-                </span>
-                <div className="text-right">
-                  <p className="text-[11px] uppercase tracking-widest text-mist/55">{t.checkOutLabel}</p>
-                  <p className="mt-1 font-medium leading-snug">{day(offer.checkOut, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</p>
-                </div>
-              </div>
+              {/* Phones: the price straight under the title, so it shows above the booking buttons without scrolling. */}
+              <div className="md:hidden mt-3">{priceBlock}</div>
 
-              <div className="mt-4 md:mt-5 flex items-end flex-wrap gap-x-4 gap-y-1">
-                <span className="font-display text-5xl md:text-6xl leading-none tabular-nums">{money(offer.price)}</span>
-                {offer.originalPrice && (
-                  <span className="text-xl text-mist/45 line-through tabular-nums mb-1">{money(offer.originalPrice)}</span>
-                )}
-              </div>
-              <p className="mt-2 text-sm text-mist/70">
-                {unitLabel}
-                {pct > 0 && <span className="text-gold font-semibold"> · {fill(t.save, { pct: String(pct) })}</span>}
-              </p>
+              {stays.length > 1 ? (
+                <fieldset className="mt-5">
+                  <legend className="text-[11px] uppercase tracking-widest text-mist/55">{t.chooseDates}</legend>
+                  {/* Phones: side by side and compact, so the price stays above the booking buttons. */}
+                  <div className="mt-2 grid grid-cols-2 md:grid-cols-1 gap-2">
+                    {stays.map((s, i) => (
+                      <label
+                        key={s.checkIn}
+                        className={`flex flex-col md:flex-row md:items-center gap-0.5 md:gap-3 rounded-2xl px-3 py-2.5 md:px-4 md:py-3 cursor-pointer transition ring-1 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-gold ${
+                          i === picked ? 'bg-gold/15 ring-gold/70' : 'bg-mist/[0.06] ring-mist/10 hover:bg-mist/10'
+                        }`}
+                      >
+                        <input type="radio" name="offer-stay" className="sr-only" checked={i === picked} onChange={() => setPicked(i)} />
+                        <span
+                          className={`hidden md:block flex-none h-4 w-4 rounded-full ring-2 ${i === picked ? 'ring-gold bg-gold shadow-[inset_0_0_0_3px_#3D3026]' : 'ring-mist/40'}`}
+                          aria-hidden
+                        />
+                        <span className="md:hidden font-medium leading-snug">{dayRange(s, { day: 'numeric', month: 'short' })}</span>
+                        <span className="hidden md:inline font-medium leading-snug">
+                          {day(s.checkIn, { weekday: 'short', day: 'numeric', month: 'short' })} → {day(s.checkOut, { weekday: 'short', day: 'numeric', month: 'short' })}
+                        </span>
+                        <span className="md:ml-auto text-xs text-gold font-semibold whitespace-nowrap">
+                          <span className="md:hidden">{dayRange(s, { weekday: 'short' })} · </span>
+                          {nightsOf(s)}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+              ) : (
+                <div className="mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-2xl bg-mist/[0.06] ring-1 ring-mist/10 p-4">
+                  <div>
+                    <p className="text-[11px] uppercase tracking-widest text-mist/55">{t.checkInLabel}</p>
+                    <p className="mt-1 font-medium leading-snug">{day(stay.checkIn, { weekday: 'short', day: 'numeric', month: 'short' })}</p>
+                  </div>
+                  <span className="flex items-center gap-1.5 rounded-full bg-gold/15 text-gold px-3 py-1.5 text-xs font-semibold whitespace-nowrap">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+                    </svg>
+                    {nightsLabel}
+                  </span>
+                  <div className="text-right">
+                    <p className="text-[11px] uppercase tracking-widest text-mist/55">{t.checkOutLabel}</p>
+                    <p className="mt-1 font-medium leading-snug">{day(stay.checkOut, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                  </div>
+                </div>
+              )}
+
+              <div className="hidden md:block mt-5">{priceBlock}</div>
 
               <ul className="mt-5 md:mt-4 space-y-2 text-sm text-mist/85">
                 {features.map((f) => (

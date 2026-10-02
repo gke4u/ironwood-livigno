@@ -327,6 +327,7 @@
     "title": "リヴィーニョの隠れ家を、特別価格で",
     "checkInLabel": "チェックイン",
     "checkOutLabel": "チェックアウト",
+    "chooseDates": "日程をお選びください",
     "nights": {
       "other": "{n}泊"
     },

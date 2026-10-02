@@ -190,6 +190,13 @@ export function adminPage(): string {
           <div><label class="field" for="offerCheckOut">Partenza</label><input type="date" id="offerCheckOut" required></div>
         </div>
         <p id="offerNights" class="sub"></p>
+        <details id="offerMore">
+          <summary class="field">Altri periodi allo stesso prezzo (facoltativi)</summary>
+          <p class="sub" style="margin-top:6px">Es. i due weekend successivi: nel pop-up il cliente sceglie il periodo che preferisce. I periodi già iniziati spariscono da soli dal sito.</p>
+          <div class="row2"><div><label class="field" for="offerIn1">Arrivo</label><input type="date" id="offerIn1"></div><div><label class="field" for="offerOut1">Partenza</label><input type="date" id="offerOut1"></div></div>
+          <div class="row2"><div><label class="field" for="offerIn2">Arrivo</label><input type="date" id="offerIn2"></div><div><label class="field" for="offerOut2">Partenza</label><input type="date" id="offerOut2"></div></div>
+          <div class="row2"><div><label class="field" for="offerIn3">Arrivo</label><input type="date" id="offerIn3"></div><div><label class="field" for="offerOut3">Partenza</label><input type="date" id="offerOut3"></div></div>
+        </details>
         <div class="row2">
           <div><label class="field" for="offerPrice">Prezzo offerta (€)</label><input type="number" id="offerPrice" min="1" step="1" inputmode="numeric" required></div>
           <div><label class="field" for="offerUnit">Il prezzo è</label>
@@ -344,7 +351,8 @@ function updateSwitchText() {
 function showOfferStatus(offer, today) {
   const box = $('offerStatus');
   if (!offer) { box.className = 'status off'; box.textContent = 'Nessuna offerta salvata.'; return; }
-  const period = 'soggiorno dal ' + fmtDate(offer.checkIn) + ' al ' + fmtDate(offer.checkOut) + ', ' + offer.price + ' €' + (offer.unit === 'night' ? ' a notte' : '');
+  const stays = [offer].concat(offer.extraStays || []);
+  const period = (stays.length > 1 ? 'soggiorni ' : 'soggiorno ') + stays.map((s) => 'dal ' + fmtDate(s.checkIn) + ' al ' + fmtDate(s.checkOut)).join(' oppure ') + ', ' + offer.price + ' €' + (offer.unit === 'night' ? ' a notte' : '');
   if (!offer.active) { box.className = 'status off'; box.textContent = 'Pop-up spento (' + period + ').'; }
   else if (today < offer.showFrom) { box.className = 'status wait'; box.textContent = 'Programmato: il pop-up comparirà dal ' + fmtDate(offer.showFrom) + ' (' + period + ').'; }
   else if (today > offer.showUntil) { box.className = 'status off'; box.textContent = 'Offerta scaduta il ' + fmtDate(offer.showUntil) + ': il pop-up non si vede più.'; }
@@ -378,6 +386,12 @@ function fillOffer(offer, today) {
   updateSwitchText();
   $('offerCheckIn').value = offer ? offer.checkIn : '';
   $('offerCheckOut').value = offer ? offer.checkOut : '';
+  const extra = (offer && offer.extraStays) || [];
+  [1, 2, 3].forEach((i) => {
+    $('offerIn' + i).value = extra[i - 1] ? extra[i - 1].checkIn : '';
+    $('offerOut' + i).value = extra[i - 1] ? extra[i - 1].checkOut : '';
+  });
+  $('offerMore').open = extra.length > 0;
   $('offerPrice').value = offer ? offer.price : '';
   $('offerUnit').value = offer ? offer.unit : 'stay';
   $('offerOriginal').value = offer && offer.originalPrice ? offer.originalPrice : '';
@@ -409,6 +423,7 @@ $('offerForm').addEventListener('submit', async (e) => {
         active: $('offerActive').checked,
         checkIn: $('offerCheckIn').value,
         checkOut: $('offerCheckOut').value,
+        extraStays: [1, 2, 3].map((i) => ({ checkIn: $('offerIn' + i).value, checkOut: $('offerOut' + i).value })),
         price: $('offerPrice').value,
         unit: $('offerUnit').value,
         originalPrice: $('offerOriginal').value,

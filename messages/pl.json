@@ -327,6 +327,7 @@
     "title": "Twoje schronienie w Livigno w specjalnej cenie",
     "checkInLabel": "Przyjazd",
     "checkOutLabel": "Wyjazd",
+    "chooseDates": "Wybierz termin",
     "nights": {
       "one": "{n} noc",
       "few": "{n} noce",
