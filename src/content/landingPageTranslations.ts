@@ -4429,3 +4429,12 @@ export function localizeLandingLink(href: string, locale: TranslatedLandingLocal
   }
   return href;
 }
+
+/** Mappa hreflang completa (it + x-default + traduzioni esistenti) per una landing page. */
+export function landingLanguages(slug: string, siteUrl: string): Record<string, string> {
+  const languages: Record<string, string> = { it: `${siteUrl}/${slug}`, 'x-default': `${siteUrl}/${slug}` };
+  translatedLandingLocales.forEach((l) => {
+    if (landingPageTranslations[slug]?.[l]) languages[l] = `${siteUrl}/${slug}/${l}`;
+  });
+  return languages;
+}

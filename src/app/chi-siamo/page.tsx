@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { orgId, websiteId } from '@/lib/structuredDataIds';
 import { landingPages } from '@/content/landingPages';
+import { landingLanguages } from '@/content/landingPageTranslations';
 import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
 import LandingPageBody from '@/components/LandingPageBody';
 
@@ -11,7 +12,7 @@ const url = `${siteUrl}/${page.slug}`;
 export const metadata: Metadata = {
   title: page.metaTitle,
   description: page.metaDescription,
-  alternates: { canonical: url, languages: { it: url, 'x-default': url } },
+  alternates: { canonical: url, languages: landingLanguages(page.slug, siteUrl) },
   openGraph: {
     title: page.metaTitle,
     description: page.metaDescription,
