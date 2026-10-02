@@ -12,7 +12,7 @@
 | Coordinates | 46.525061, 10.126967 (owner's Google Maps pin) |
 | National ID | CIN IT014037C274OJ27T8 |
 
-On the site the NAP is identical on every page (footer of all 361 URLs, contact pages in 12 languages, JSON-LD). **2026-10-02:** the owner confirmed the street number is **767**; the site had 771 everywhere (footer, contact, JSON-LD, privacy, llms files, 12 languages) and was corrected the same day. Check that Google Business Profile, Airbnb and Holidu also show 767.
+On the site the NAP is identical on every page (footer of all 361 URLs, contact pages in 12 languages, JSON-LD). **2026-10-02:** the owner confirmed the street number is **767**; the site had 771 everywhere (footer, contact, JSON-LD, privacy, llms files, 12 languages) and was corrected the same day. Google Business Profile already shows 767 (owner, 2026-10-02); still to check: Airbnb and Holidu.
 
 ## Consistency across the web (evidence: web searches 2026-10-02)
 
