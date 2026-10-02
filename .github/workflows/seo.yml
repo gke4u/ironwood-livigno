@@ -1,0 +1,30 @@
+# SEO CI: build the static site and run the SEO/GEO test suite on every push
+# and pull request. The same checks run locally before every `npm run deploy`
+# (the predeploy script): any P0/P1 problem (broken canonical/hreflang/links,
+# invalid JSON-LD, missing H1/title, fact conflicts) or GEO regression fails.
+name: SEO tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  seo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint --if-present
+        continue-on-error: true
+      - run: npm run build
+      - run: npm run test:seo
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: seo-report
+          path: seo-engineering/.last-run/

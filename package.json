@@ -8,6 +8,9 @@
     "build": "next build",
     "lint": "next lint",
     "indexnow": "node scripts/indexnow.mjs",
+    "test:seo": "node scripts/seo/audit.mjs --report=seo-engineering/.last-run && node scripts/seo/geo-questions.mjs seo-engineering/.last-run --strict",
+    "audit:live": "node scripts/seo/audit.mjs --live --report=seo-engineering/live",
+    "predeploy": "npm run test:seo",
     "deploy": "wrangler deploy"
   },
   "dependencies": {
@@ -26,6 +29,7 @@
     "autoprefixer": "^10.4.19",
     "eslint": "^9.39.5",
     "eslint-config-next": "^15.5.26",
+    "node-html-parser": "^7.1.0",
     "postcss": "^8.4.40",
     "sharp": "^0.35.3",
     "tailwindcss": "^3.4.7",

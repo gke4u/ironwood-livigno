@@ -11,3 +11,7 @@ cloudflare-env.d.ts
 worker-configuration.d.ts
 graphify-out
 tsconfig.tsbuildinfo
+
+# SEO test output (regenerated on every deploy)
+seo-engineering/.last-run/
+seo-engineering/*/pages.json
