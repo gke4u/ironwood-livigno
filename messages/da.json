@@ -81,6 +81,19 @@
     "room3_text": "Dobbeltseng med topper for maksimal komfort — lejlighedens hovedsoveværelse.",
     "bathrooms_note": "2 fulde badeværelser til fælles brug"
   },
+  "glance": {
+    "title": "Ironwood Livigno kort fortalt",
+    "area": "Størrelse",
+    "guests": "Gæster",
+    "rooms": "Soveværelser og badeværelser",
+    "wellness": "Wellness",
+    "ski": "Ski",
+    "centre": "Centrum",
+    "address": "Adresse",
+    "booking": "Booking",
+    "value_area": "90 m², hele lejligheden",
+    "value_booking": "Direkte forespørgsel til ejerne (formular, WhatsApp eller e-mail), uden kommission"
+  },
   "amenities": {
     "eyebrow": "Alt inkluderet",
     "title": "Al komfort i din ferielejlighed i Livigno, uden bekymringer",

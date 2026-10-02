@@ -81,6 +81,19 @@
     "room3_text": "Double bed with a topper for maximum comfort — the apartment's main bedroom.",
     "bathrooms_note": "2 full bathrooms shared across the bedrooms"
   },
+  "glance": {
+    "title": "Ironwood Livigno at a glance",
+    "area": "Size",
+    "guests": "Guests",
+    "rooms": "Bedrooms and bathrooms",
+    "wellness": "Wellness",
+    "ski": "Skiing",
+    "centre": "Town centre",
+    "address": "Address",
+    "booking": "Booking",
+    "value_area": "90 m², the whole apartment",
+    "value_booking": "Direct request to the owners (form, WhatsApp or email), no commission"
+  },
   "amenities": {
     "eyebrow": "All included",
     "title": "Every comfort of a holiday home in Livigno, without a care",

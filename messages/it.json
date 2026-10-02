@@ -81,6 +81,19 @@
     "room3_text": "Letto matrimoniale con topper per il massimo comfort — la camera principale dell'appartamento.",
     "bathrooms_note": "2 bagni completi condivisi tra le camere"
   },
+  "glance": {
+    "title": "Ironwood Livigno in breve",
+    "area": "Superficie",
+    "guests": "Ospiti",
+    "rooms": "Camere e bagni",
+    "wellness": "Benessere",
+    "ski": "Sci",
+    "centre": "Centro",
+    "address": "Indirizzo",
+    "booking": "Prenotazione",
+    "value_area": "90 m², appartamento intero",
+    "value_booking": "Richiesta diretta ai proprietari (modulo, WhatsApp o email), senza commissioni"
+  },
   "amenities": {
     "eyebrow": "Tutto incluso",
     "title": "Ogni comfort della tua casa vacanze a Livigno, senza pensieri",

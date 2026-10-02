@@ -7,7 +7,9 @@ import PhotoLightbox from './PhotoLightbox';
 import { usePhotoLightbox } from './usePhotoLightbox';
 import { useTilt, TILT_TRANSITION } from './useTilt';
 
-export default function Rooms() {
+// `children`: the server-rendered "at a glance" facts (PropertyFacts), shown
+// under the bathrooms note without adding them to this client bundle.
+export default function Rooms({ children }: { children?: React.ReactNode }) {
   const t = useTranslations('rooms');
   // Reuses the main Gallery's close/prev/next labels, same as ExtraServices
   // — a lightbox that behaves identically shouldn't need its own copy of
@@ -116,6 +118,7 @@ export default function Rooms() {
         <Reveal delay={360}>
           <p className="mt-8 text-ink/65 text-sm tracking-wide">{t('bathrooms_note')}</p>
         </Reveal>
+        {children}
       </div>
 
       {active && (

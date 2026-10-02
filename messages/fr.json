@@ -81,6 +81,19 @@
     "room3_text": "Lit double avec topper pour un confort maximal — la chambre principale de l'appartement.",
     "bathrooms_note": "2 salles de bain complètes, communes aux chambres"
   },
+  "glance": {
+    "title": "Ironwood Livigno en bref",
+    "area": "Surface",
+    "guests": "Voyageurs",
+    "rooms": "Chambres et salles de bains",
+    "wellness": "Bien-être",
+    "ski": "Ski",
+    "centre": "Centre-ville",
+    "address": "Adresse",
+    "booking": "Réservation",
+    "value_area": "90 m², l'appartement entier",
+    "value_booking": "Demande directe aux propriétaires (formulaire, WhatsApp ou e-mail), sans commission"
+  },
   "amenities": {
     "eyebrow": "Tout inclus",
     "title": "Tout le confort de votre location de vacances à Livigno, sans souci",

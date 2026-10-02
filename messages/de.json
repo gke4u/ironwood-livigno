@@ -81,6 +81,19 @@
     "room3_text": "Doppelbett mit Topper für maximalen Komfort — das Hauptschlafzimmer der Wohnung.",
     "bathrooms_note": "2 vollständige Badezimmer für alle Gäste der Wohnung"
   },
+  "glance": {
+    "title": "Ironwood Livigno auf einen Blick",
+    "area": "Größe",
+    "guests": "Gäste",
+    "rooms": "Schlafzimmer und Bäder",
+    "wellness": "Wellness",
+    "ski": "Skifahren",
+    "centre": "Ortszentrum",
+    "address": "Adresse",
+    "booking": "Buchung",
+    "value_area": "90 m², die ganze Wohnung",
+    "value_booking": "Direkte Anfrage bei den Eigentümern (Formular, WhatsApp oder E-Mail), ohne Provision"
+  },
   "amenities": {
     "eyebrow": "Alles inklusive",
     "title": "Aller Komfort Ihrer Ferienwohnung in Livigno, ganz ohne Sorgen",

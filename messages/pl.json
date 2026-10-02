@@ -81,6 +81,19 @@
     "room3_text": "Łóżko małżeńskie z topperem dla maksymalnego komfortu — główna sypialnia apartamentu.",
     "bathrooms_note": "2 pełne łazienki wspólne dla wszystkich sypialni"
   },
+  "glance": {
+    "title": "Ironwood Livigno w skrócie",
+    "area": "Powierzchnia",
+    "guests": "Goście",
+    "rooms": "Sypialnie i łazienki",
+    "wellness": "Strefa relaksu",
+    "ski": "Narty",
+    "centre": "Centrum",
+    "address": "Adres",
+    "booking": "Rezerwacja",
+    "value_area": "90 m², cały apartament",
+    "value_booking": "Bezpośrednie zapytanie do właścicieli (formularz, WhatsApp lub e-mail), bez prowizji"
+  },
   "amenities": {
     "eyebrow": "Wszystko wliczone",
     "title": "Każdy komfort twojego domu wakacyjnego w Livigno, bez zmartwień",

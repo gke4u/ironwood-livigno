@@ -81,6 +81,19 @@
     "room3_text": "配有加铺床垫的双人床，带来极致舒适——公寓的主卧室。",
     "bathrooms_note": "2间完整浴室，供各卧室共用"
   },
+  "glance": {
+    "title": "Ironwood Livigno 概览",
+    "area": "面积",
+    "guests": "入住人数",
+    "rooms": "卧室与浴室",
+    "wellness": "康体设施",
+    "ski": "滑雪",
+    "centre": "市中心",
+    "address": "地址",
+    "booking": "预订",
+    "value_area": "90平方米，整套公寓",
+    "value_booking": "直接向房东咨询（表格、WhatsApp 或电子邮件），无佣金"
+  },
   "amenities": {
     "eyebrow": "一应俱全",
     "title": "利维尼奥度假公寓的全部舒适配置，无需操心",

@@ -81,6 +81,19 @@
     "room3_text": "トッパー付きダブルベッドで最大限の寝心地を実現した、アパートメントのメイン寝室。",
     "bathrooms_note": "各寝室で共有する2室の完全なバスルーム"
   },
+  "glance": {
+    "title": "Ironwood Livigno の概要",
+    "area": "広さ",
+    "guests": "宿泊人数",
+    "rooms": "寝室・バスルーム",
+    "wellness": "ウェルネス",
+    "ski": "スキー",
+    "centre": "町の中心部",
+    "address": "住所",
+    "booking": "ご予約",
+    "value_area": "90㎡、アパートメント一棟まるごと",
+    "value_booking": "オーナーへ直接お問い合わせ（フォーム、WhatsApp、メール）、手数料なし"
+  },
   "amenities": {
     "eyebrow": "すべて込み",
     "title": "リヴィーニョのヴァケーションアパートメントで、何の心配もなくお過ごしいただける快適設備",

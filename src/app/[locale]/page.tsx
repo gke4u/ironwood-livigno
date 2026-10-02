@@ -8,6 +8,7 @@ import WeatherSection from '@/components/WeatherSection';
 import DailyPhoto from '@/components/DailyPhoto';
 import Experience from '@/components/Experience';
 import Rooms from '@/components/Rooms';
+import PropertyFacts from '@/components/PropertyFacts';
 import RatesTable from '@/components/RatesTable';
 import Amenities from '@/components/Amenities';
 import ExtraServices from '@/components/ExtraServices';
@@ -50,7 +51,9 @@ export default async function Home({ params }: { params: Promise<{ locale: Local
       <WeatherSection />
       <Gallery />
       <VirtualTour />
-      <Rooms />
+      <Rooms>
+        <PropertyFacts locale={locale} />
+      </Rooms>
       <BookingSection />
       <DailyPhoto />
       <RatesTable />

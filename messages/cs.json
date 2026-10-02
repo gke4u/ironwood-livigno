@@ -81,6 +81,19 @@
     "room3_text": "Manželská postel s topperem pro maximální komfort — hlavní ložnice apartmánu.",
     "bathrooms_note": "2 plné koupelny sdílené mezi ložnicemi"
   },
+  "glance": {
+    "title": "Ironwood Livigno v kostce",
+    "area": "Rozloha",
+    "guests": "Hosté",
+    "rooms": "Ložnice a koupelny",
+    "wellness": "Wellness",
+    "ski": "Lyžování",
+    "centre": "Centrum",
+    "address": "Adresa",
+    "booking": "Rezervace",
+    "value_area": "90 m², celý apartmán",
+    "value_booking": "Přímá poptávka u majitelů (formulář, WhatsApp nebo e-mail), bez provize"
+  },
   "amenities": {
     "eyebrow": "Vše v ceně",
     "title": "Veškeré pohodlí vašeho apartmánu v Livignu, bez starostí",

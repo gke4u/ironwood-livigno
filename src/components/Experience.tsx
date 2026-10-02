@@ -75,11 +75,12 @@ export default async function Experience({ locale }: { locale: Locale }) {
               still useful here since the hero is long scrolled past by the
               time someone reaches this section). */}
           <Reveal delay={360}>
-            <div className="flex flex-wrap gap-x-8 gap-y-3 border-t border-ink/10 mt-8 pt-6 text-sm text-ink/60">
-              <span>{th('stat_sleeps')}</span>
-              <span>{th('stat_rooms')}</span>
-              <span>{th('stat_distance')}</span>
-            </div>
+            {/* A real list: each fact is its own item for screen readers, search engines and AI. */}
+            <ul className="flex flex-wrap gap-x-8 gap-y-3 border-t border-ink/10 mt-8 pt-6 text-sm text-ink/60">
+              <li>{th('stat_sleeps')}</li>
+              <li>{th('stat_rooms')}</li>
+              <li>{th('stat_distance')}</li>
+            </ul>
           </Reveal>
         </div>
       </div>
