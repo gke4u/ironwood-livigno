@@ -3,6 +3,7 @@ import { locales, type Locale } from '@/i18n/routing';
 import { rates, CURRENCY } from '@/data/rates';
 import { galleryImages } from '@/data/gallery-images';
 import { orgId, websiteId, organizationRef, livignoPlace } from '@/lib/structuredDataIds';
+import { propertyFacts as F } from '@/data/propertyFacts';
 
 // Every language the site actually publishes content in (see
 // messages/*.json) — was hardcoded to just ['it', 'en'], understating the
@@ -46,18 +47,25 @@ export default async function StructuredData({ locale }: { locale: Locale }) {
 
   const lodgingBusiness = {
     '@context': 'https://schema.org',
-    '@type': 'LodgingBusiness',
+    // VacationRental (a schema.org subtype of LodgingBusiness) is what the
+    // property is: one whole apartment rented for short stays. Kept together
+    // with LodgingBusiness so every consumer that only knows the broader type
+    // still reads it. Every value below comes from property-facts.json.
+    '@type': ['LodgingBusiness', 'VacationRental'],
     // Same @id as the publisher/author Organization on blog posts (see
     // src/lib/structuredDataIds.ts): LodgingBusiness is a subtype of
     // Organization, so this is the one node that describes the business.
     '@id': orgId(siteUrl),
-    name: 'Ironwood Livigno',
+    name: F.property.official_name,
+    // The national short-term rental code (CIN), printed in every page footer:
+    // the one identifier that tells this "Ironwood" apart from any other.
+    identifier: { '@type': 'PropertyValue', propertyID: 'CIN', value: F.property.identifier.cin },
     description: hero('meta_description'),
     url: `${siteUrl}/${locale}`,
     logo: organizationRef(siteUrl).logo,
     image: propertyImages,
-    telephone: '+39 0342 929285',
-    email: 'info@ironwoodlivigno.com',
+    telephone: F.contacts.phone,
+    email: F.contacts.email,
     priceRange: '€€€',
     // Only seasons with a real, confirmed price (src/data/rates.ts) turn
     // into an `Offer` here — a season still marked TODO (null price) is
@@ -105,42 +113,53 @@ export default async function StructuredData({ locale }: { locale: Locale }) {
     // Real, verified listing/review profiles for this property, found via
     // search and cross-checked against the property description (90 m²,
     // 3 bedrooms, private sauna, fireplace, wine fridge — all match).
-    sameAs: [
-      'https://www.holiduhost.com/d/54247934',
-      'https://www.airbnb.com/rooms/1001347662140918475',
-      'https://instagram.com/ironwood_livigno'
-    ],
+    sameAs: F.property.same_as,
     // Links directly to the exact pin (see geo coordinates below), provided
     // by the property owner from Google Maps.
-    hasMap: 'https://www.google.com/maps?q=46.525061,10.126967',
+    hasMap: F.location.maps_url,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'Via Saroch 771',
-      addressLocality: 'Livigno',
+      streetAddress: F.location.street_address,
+      addressLocality: F.location.locality,
       addressRegion: 'SO',
-      postalCode: '23041',
-      addressCountry: 'IT'
+      postalCode: F.location.postal_code,
+      addressCountry: F.location.country
     },
     // Exact coordinates provided directly by the property owner from Google
     // Maps Street View, pinned on the building itself (Via Saroch 771).
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: 46.525061,
-      longitude: 10.126967
+      latitude: F.location.latitude,
+      longitude: F.location.longitude
     },
+    latitude: F.location.latitude,
+    longitude: F.location.longitude,
     containedInPlace: livignoPlace,
-    numberOfRooms: 3,
-    petsAllowed: false,
+    numberOfRooms: F.bedrooms.count,
+    petsAllowed: F.amenities.pets_allowed,
     // Detailed accommodation facts (all from the property description:
     // 90 m², 3 bedrooms, 2 bathrooms, sleeps 6). Machine-readable numbers
     // that search engines and AI answer engines can quote directly.
     containsPlace: {
       '@type': 'Accommodation',
-      name: 'Ironwood Livigno — appartamento',
-      occupancy: { '@type': 'QuantitativeValue', maxValue: 6, unitCode: 'C62' },
-      numberOfBedrooms: 3,
-      numberOfBathroomsTotal: 2,
-      floorSize: { '@type': 'QuantitativeValue', value: 90, unitCode: 'MTK' }
+      // The whole apartment is rented, never single rooms.
+      additionalType: 'EntirePlace',
+      name: `${F.property.official_name} — ${rooms('title')}`,
+      occupancy: { '@type': 'QuantitativeValue', minValue: F.capacity.min_guests, maxValue: F.capacity.max_guests, unitCode: 'C62' },
+      numberOfBedrooms: F.bedrooms.count,
+      numberOfBathroomsTotal: F.bathrooms.count,
+      floorSize: { '@type': 'QuantitativeValue', value: F.property.floor_area_m2, unitCode: 'MTK' },
+      // Beds as the rooms section lists them: one double bed (main bedroom)
+      // and four single beds (two rooms with two singles each, joinable).
+      bed: [
+        { '@type': 'BedDetails', numberOfBeds: 1, typeOfBed: 'Double' },
+        { '@type': 'BedDetails', numberOfBeds: 4, typeOfBed: 'Single' }
+      ],
+      amenityFeature: [experience('point_1_title'), experience('point_2_title')].map((name) => ({
+        '@type': 'LocationFeatureSpecification',
+        name,
+        value: true
+      }))
     },
     knowsLanguage: knownLanguages,
     // No `review`/`aggregateRating` here on purpose: Google's structured
