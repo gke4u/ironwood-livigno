@@ -6,9 +6,49 @@
    (font-display / font-body). The family names on the right are the ones
    registered by the Fontsource @font-face imports in src/app/layout.tsx
    (self-hosted .woff2, no Google Fonts request). */
+/* Metric-matched fallbacks (same method as next/font, metrics from
+   @capsizecss/metrics): until the .woff2 arrives the text is drawn with a
+   local font scaled to Poppins/Fraunces' width and line height, so the swap
+   no longer re-wraps headings and pushes the page down. Lighthouse measured
+   CLS 0.12–0.19 on mobile from that reflow (hero CTA on /en, the photo under
+   "Disponibile anche in" on blog posts). Arial/Times on desktop, Roboto/Noto
+   Serif on Android. */
+@font-face {
+  font-family: 'Poppins Fallback';
+  src: local('Arial'), local('ArialMT');
+  size-adjust: 112.16%;
+  ascent-override: 93.62%;
+  descent-override: 31.21%;
+  line-gap-override: 8.92%;
+}
+@font-face {
+  font-family: 'Poppins Fallback Android';
+  src: local('Roboto'), local('Roboto-Regular');
+  size-adjust: 112.4%;
+  ascent-override: 93.41%;
+  descent-override: 31.14%;
+  line-gap-override: 8.9%;
+}
+@font-face {
+  font-family: 'Fraunces Fallback';
+  src: local('Times New Roman'), local('TimesNewRomanPSMT');
+  size-adjust: 115.45%;
+  ascent-override: 84.71%;
+  descent-override: 22.09%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Fraunces Fallback Android';
+  src: local('Noto Serif'), local('NotoSerif-Regular');
+  size-adjust: 97.51%;
+  ascent-override: 100.3%;
+  descent-override: 26.15%;
+  line-gap-override: 0%;
+}
+
 :root {
-  --font-fraunces: 'Fraunces', Georgia, 'Times New Roman', serif;
-  --font-poppins: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-fraunces: 'Fraunces', 'Fraunces Fallback', 'Fraunces Fallback Android', Georgia, 'Times New Roman', serif;
+  --font-poppins: 'Poppins', 'Poppins Fallback', 'Poppins Fallback Android', system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
 html {
@@ -135,7 +175,7 @@ body {
 #sezioni > #meteo { contain-intrinsic-size: auto 720px; }
 #sezioni > #galleria { contain-intrinsic-size: auto 1710px; }
 #sezioni > #tour-virtuale { contain-intrinsic-size: auto 610px; }
-#sezioni > #camere { contain-intrinsic-size: auto 1800px; }
+#sezioni > #camere { contain-intrinsic-size: auto 2550px; } /* +"in breve" facts block, re-measured 2026-10-02 */
 #sezioni > #prenota { contain-intrinsic-size: auto 2510px; }
 #sezioni > #foto-del-giorno { contain-intrinsic-size: auto 740px; }
 #sezioni > #tariffe { contain-intrinsic-size: auto 1250px; }
@@ -150,7 +190,7 @@ body {
   #sezioni > #meteo { contain-intrinsic-size: auto 660px; }
   #sezioni > #galleria { contain-intrinsic-size: auto 2410px; }
   #sezioni > #tour-virtuale { contain-intrinsic-size: auto 1090px; }
-  #sezioni > #camere { contain-intrinsic-size: auto 950px; }
+  #sezioni > #camere { contain-intrinsic-size: auto 1470px; }
   #sezioni > #prenota { contain-intrinsic-size: auto 1740px; }
   #sezioni > #foto-del-giorno { contain-intrinsic-size: auto 670px; }
   #sezioni > #tariffe { contain-intrinsic-size: auto 760px; }
