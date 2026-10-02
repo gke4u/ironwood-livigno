@@ -59,7 +59,11 @@ export default async function StructuredData({ locale }: { locale: Locale }) {
     name: F.property.official_name,
     // The national short-term rental code (CIN), printed in every page footer:
     // the one identifier that tells this "Ironwood" apart from any other.
-    identifier: { '@type': 'PropertyValue', propertyID: 'CIN', value: F.property.identifier.cin },
+    identifier: [
+      { '@type': 'PropertyValue', propertyID: 'CIN', value: F.property.identifier.cin },
+      // Code of the property in the Lombardy regional database (CIN certificate).
+      { '@type': 'PropertyValue', propertyID: 'Codice identificativo regionale (Lombardia)', value: F.property.identifier.regional_code }
+    ],
     description: hero('meta_description'),
     url: `${siteUrl}/${locale}`,
     logo: organizationRef(siteUrl).logo,

@@ -23,7 +23,8 @@
     "source": "hero, rooms, chi-siamo page",
     "identifier": {
       "cin": "IT014037C274OJ27T8",
-      "note": "Codice Identificativo Nazionale for short-term rentals, published in the footer"
+      "regional_code": "014037-CNI-01104",
+      "note": "From the Ministry of Tourism CIN certificate (prot. 0115214/24 of 06/09/2024): CIN and the structure's code in the Lombardy regional database. CIN is printed in every footer."
     },
     "same_as": [
       "https://www.google.com/maps?cid=08261644844997455473",
@@ -31,7 +32,14 @@
       "https://www.holiduhost.com/d/54247934",
       "https://instagram.com/ironwood_livigno"
     ],
-    "same_as_note": "Google Business Profile (CID, same link as the reviews section), Airbnb, Holidu, Instagram"
+    "same_as_note": "Google Business Profile (CID, same link as the reviews section), Airbnb, Holidu, Instagram",
+    "official_classification": {
+      "macrocategory": "C — Alloggi privati in affitto in forma non imprenditoriale",
+      "category": "C2 — Altri alloggi privati",
+      "subcategory": "C202 — Unità immobiliari di civile abitazione ubicate in immobili esistenti",
+      "star_rating": null,
+      "note": "Private non-entrepreneurial rental: no official star rating. Never publish stars."
+    }
   },
   "location": {
     "street_address": "Via Saroch 767",
@@ -134,13 +142,15 @@
       "810": "My Wine",
       "822": "Amazing 24",
       "note": "other businesses on Via Saroch named on the site; the property itself is 767"
-    }
+    },
+    "address_official_source": "CIN certificate: VIA SAROCH 767 (certificate shows the old postcode 23030; the current Livigno postcode is 23041)"
   },
   "capacity": {
     "max_guests": 6,
     "min_guests": 1,
     "whole_apartment_any_group_size": true,
-    "source": "hero stat_sleeps, FAQ q14"
+    "source": "hero stat_sleeps, FAQ q14",
+    "official_beds": 6
   },
   "bedrooms": {
     "count": 3,
