@@ -15,8 +15,9 @@ Settembre a Livigno: la conca si veste dei colori dell'autunno prima della neve.
 ### Post 2 — pubblica tra 1-2 settimane (richiamo sauna/benessere, sempre attuale)
 
 ```
-Sauna a infrarossi e bagno turco privati, mai condivisi con altri ospiti: a Ironwood Livigno sono disponibili in ogni momento, senza prenotazione. Il modo migliore per chiudere una giornata a Livigno, in qualsiasi stagione. Info e disponibilità su WhatsApp: 0342 929285.
+Sauna a infrarossi e bagno turco privati, mai condivisi con altri ospiti: a Ironwood Livigno sono disponibili in ogni momento, senza prenotazione. Il modo migliore per chiudere una giornata a Livigno, in qualsiasi stagione. Info e disponibilità: scrivici su WhatsApp dal link qui sotto.
 ```
+Link: `https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno?utm_source=google&utm_medium=gbp&utm_campaign=post-sauna-2`
 
 ### Post 3 — pubblica a fine settembre/inizio ottobre (apertura stagione sci, urgenza prenotazione)
 
@@ -69,7 +70,7 @@ Link: `https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno?utm_source=
 Pubblicalo quando gli impianti annunciano la data ufficiale di apertura, e scrivila nel testo.
 
 ```
-Si torna sugli sci! Gli impianti di Livigno riaprono il [DATA UFFICIALE]. Ironwood Livigno è a 100 metri dalle piste: parcheggi l'auto e per tutta la vacanza ti muovi a piedi. Ultime date disponibili per dicembre: scrivici su WhatsApp al 0342 929285.
+Si torna sugli sci! Gli impianti di Livigno riaprono il [DATA UFFICIALE]. Ironwood Livigno è a 100 metri dalle piste: parcheggi l'auto e per tutta la vacanza ti muovi a piedi. Ultime date disponibili per dicembre: scrivici su WhatsApp dal link qui sotto.
 ```
 Link: `https://ironwoodlivigno.com/inverno?utm_source=google&utm_medium=gbp&utm_campaign=post-apertura`
 
@@ -87,7 +88,7 @@ Link: `https://ironwoodlivigno.com/blog/natale-capodanno-a-livigno?utm_source=go
 Google mostra il post nella lingua in cui lo scrivi. Se vuoi raggiungere anche i turisti stranieri, ogni tanto puoi pubblicarne uno in inglese:
 
 ```
-A private sauna and steam bath inside your apartment, 100 m from Livigno's ski lifts. Ironwood Livigno sleeps up to 6 in 3 bedrooms, with free parking and a ski room. Plan your winter: message us on WhatsApp +39 0342 929285.
+A private sauna and steam bath inside your apartment, 100 m from Livigno's ski lifts. Ironwood Livigno sleeps up to 6 in 3 bedrooms, with free parking and a ski room. Plan your winter: message us on WhatsApp via the link below.
 ```
 Link: `https://ironwoodlivigno.com/en?utm_source=google&utm_medium=gbp&utm_campaign=post-en`
 
