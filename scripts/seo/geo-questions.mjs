@@ -69,7 +69,7 @@ const Q = [];
 const q = (lang, cat, question, answer, url, facts) => Q.push({ lang, cat, question, answer, url: S + url, facts });
 
 // ---------- ITALIANO ----------
-q('it', 'destination', 'Dove alloggiare a Livigno vicino agli impianti?', 'Ironwood Livigno, Via Saroch 771: appartamento a circa 100 m a piedi dagli impianti.', '/it', ['address', 'lifts100', 'livigno']);
+q('it', 'destination', 'Dove alloggiare a Livigno vicino agli impianti?', 'Ironwood Livigno, Via Saroch 767: appartamento a circa 100 m a piedi dagli impianti.', '/it', ['address', 'lifts100', 'livigno']);
 q('it', 'location', 'Appartamento a Livigno vicino al Carosello 3000', 'Ironwood Livigno è in Via Saroch, lato Carosello 3000, 100 m dagli impianti.', '/inverno', ['carosello', 'lifts100']);
 q('it', 'wellness', 'Appartamento a Livigno con sauna privata', 'Sì: sauna a infrarossi e bagno turco privati, mai condivisi.', '/sauna-bagno-turco-privato-livigno', ['infrared', 'steam', 'neverShared']);
 q('it', 'wellness', 'La sauna di Ironwood Livigno è finlandese o a infrarossi?', 'A infrarossi.', '/sauna-bagno-turco-privato-livigno', ['infrared']);
@@ -91,7 +91,7 @@ q('it', 'ski', 'Scuola sci vicino all\'appartamento?', 'Scuola sci e noleggio a 
 q('it', 'ski', 'Carosello 3000 o Mottolino: quale scegliere?', 'Guida al confronto dei due versanti.', '/blog/carosello-3000-vs-mottolino-quale-scegliere', ['carosello', 'mottolino']);
 q('it', 'ski', 'Quando apre la stagione sciistica a Livigno?', 'Da fine novembre a inizio maggio.', '/inverno', ['season']);
 q('it', 'location', 'Quanto dista dal centro di Livigno?', 'Circa 15 minuti a piedi dal centro pedonale.', '/it', ['centre15']);
-q('it', 'location', 'Qual è l\'indirizzo di Ironwood Livigno?', 'Via Saroch 771, 23041 Livigno (SO).', '/it/contatti', ['address']);
+q('it', 'location', 'Qual è l\'indirizzo di Ironwood Livigno?', 'Via Saroch 767, 23041 Livigno (SO).', '/it/contatti', ['address']);
 q('it', 'location', 'Come si arriva a Livigno in treno?', 'Treno fino a Tirano, poi bus o taxi (circa 70 km).', '/come-arrivare', ['tirano']);
 q('it', 'location', 'Come arrivare a Livigno da Milano?', 'In auto circa 3 ore via Foscagno o Forcola; in treno via Tirano.', '/blog/come-arrivare-a-livigno', ['milan', 'tirano']);
 q('it', 'family', 'Appartamento a Livigno per famiglie con bambini', 'Culla e seggiolone su richiesta, 3 camere, fino a 6 persone.', '/famiglie', ['cot', 'highchair', 'guests6']);
@@ -114,7 +114,7 @@ q('it', 'practical', 'Cosa conviene comprare a Livigno duty-free?', 'Guida allo 
 q('it', 'practical', 'Email di Ironwood Livigno?', 'info@ironwoodlivigno.com', '/it/contatti', ['email']);
 
 // ---------- ENGLISH ----------
-q('en', 'destination', 'Where should I stay in Livigno near Carosello 3000?', 'Ironwood Livigno, Via Saroch 771, about 100 m on foot from the lifts on the Carosello 3000 side.', '/inverno/en', ['carosello', 'lifts100']);
+q('en', 'destination', 'Where should I stay in Livigno near Carosello 3000?', 'Ironwood Livigno, Via Saroch 767, about 100 m on foot from the lifts on the Carosello 3000 side.', '/inverno/en', ['carosello', 'lifts100']);
 q('en', 'destination', 'Where to stay in Livigno close to the ski lifts?', 'Ironwood Livigno is about 100 m from the lifts.', '/en', ['lifts100', 'address']);
 q('en', 'wellness', 'Which Livigno apartments have a private sauna?', 'Ironwood Livigno has a private infrared sauna and steam bath, never shared.', '/sauna-bagno-turco-privato-livigno/en', ['infrared', 'steam', 'privateWellness']);
 q('en', 'wellness', 'Which accommodation in Livigno has a Turkish bath?', 'Ironwood Livigno has a private steam (Turkish) bath.', '/sauna-bagno-turco-privato-livigno/en', ['steam']);
@@ -136,7 +136,7 @@ q('en', 'ski', 'Does the apartment have ski storage?', 'Yes, a dedicated ski and
 q('en', 'ski', 'Carosello 3000 or Mottolino?', 'Guide comparing the two sides.', '/blog/carosello-3000-vs-mottolino-quale-scegliere/en', ['carosello', 'mottolino']);
 q('en', 'ski', 'How much does skiing in Livigno cost?', 'Guide to ski pass and ski prices.', '/blog/quanto-costa-sciare-a-livigno-guida-prezzi/en', ['livigno']);
 q('en', 'location', 'How far is Ironwood from Livigno centre?', 'About 15 minutes on foot.', '/en', ['centre15']);
-q('en', 'location', 'What is the address of Ironwood Livigno?', 'Via Saroch 771, 23041 Livigno (SO), Italy.', '/en/contact', ['address']);
+q('en', 'location', 'What is the address of Ironwood Livigno?', 'Via Saroch 767, 23041 Livigno (SO), Italy.', '/en/contact', ['address']);
 q('en', 'location', 'How do I get to Livigno by train?', 'Train to Tirano, then bus or taxi.', '/come-arrivare/en', ['tirano']);
 q('en', 'location', 'How do I get to Livigno from Milan?', 'By car via Foscagno/Forcola or train to Tirano.', '/blog/come-arrivare-a-livigno/en', ['milan', 'tirano']);
 q('en', 'family', 'Which Livigno accommodation is suitable for a family?', 'Ironwood Livigno: cot and high chair on request, 3 bedrooms.', '/famiglie/en', ['cot', 'highchair', 'bedrooms3']);

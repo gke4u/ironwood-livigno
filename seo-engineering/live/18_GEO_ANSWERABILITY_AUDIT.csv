@@ -1,5 +1,5 @@
 lang,category,question,expected_answer,source_url,page_found,evidence_present,evidence_missing,answerability_score
-it,destination,Dove alloggiare a Livigno vicino agli impianti?,"Ironwood Livigno, Via Saroch 771: appartamento a circa 100 m a piedi dagli impianti.",https://ironwoodlivigno.com/it,yes,address lifts100 livigno,,1.00
+it,destination,Dove alloggiare a Livigno vicino agli impianti?,"Ironwood Livigno, Via Saroch 767: appartamento a circa 100 m a piedi dagli impianti.",https://ironwoodlivigno.com/it,yes,address lifts100 livigno,,1.00
 it,location,Appartamento a Livigno vicino al Carosello 3000,"Ironwood Livigno è in Via Saroch, lato Carosello 3000, 100 m dagli impianti.",https://ironwoodlivigno.com/inverno,yes,carosello lifts100,,1.00
 it,wellness,Appartamento a Livigno con sauna privata,"Sì: sauna a infrarossi e bagno turco privati, mai condivisi.",https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno,yes,infrared steam neverShared,,1.00
 it,wellness,La sauna di Ironwood Livigno è finlandese o a infrarossi?,A infrarossi.,https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno,yes,infrared,,1.00
@@ -21,7 +21,7 @@ it,ski,Scuola sci vicino all'appartamento?,Scuola sci e noleggio a circa 50 m.,h
 it,ski,Carosello 3000 o Mottolino: quale scegliere?,Guida al confronto dei due versanti.,https://ironwoodlivigno.com/blog/carosello-3000-vs-mottolino-quale-scegliere,yes,carosello mottolino,,1.00
 it,ski,Quando apre la stagione sciistica a Livigno?,Da fine novembre a inizio maggio.,https://ironwoodlivigno.com/inverno,yes,season,,1.00
 it,location,Quanto dista dal centro di Livigno?,Circa 15 minuti a piedi dal centro pedonale.,https://ironwoodlivigno.com/it,yes,centre15,,1.00
-it,location,Qual è l'indirizzo di Ironwood Livigno?,"Via Saroch 771, 23041 Livigno (SO).",https://ironwoodlivigno.com/it/contatti,yes,address,,1.00
+it,location,Qual è l'indirizzo di Ironwood Livigno?,"Via Saroch 767, 23041 Livigno (SO).",https://ironwoodlivigno.com/it/contatti,yes,address,,1.00
 it,location,Come si arriva a Livigno in treno?,"Treno fino a Tirano, poi bus o taxi (circa 70 km).",https://ironwoodlivigno.com/come-arrivare,yes,tirano,,1.00
 it,location,Come arrivare a Livigno da Milano?,In auto circa 3 ore via Foscagno o Forcola; in treno via Tirano.,https://ironwoodlivigno.com/blog/come-arrivare-a-livigno,yes,milan tirano,,1.00
 it,family,Appartamento a Livigno per famiglie con bambini,"Culla e seggiolone su richiesta, 3 camere, fino a 6 persone.",https://ironwoodlivigno.com/famiglie,yes,cot highchair guests6,,1.00
@@ -42,7 +42,7 @@ it,practical,Si può fare colazione?,"Sì, in struttura convenzionata a 50 m, 15
 it,practical,Chi gestisce Ironwood Livigno?,"Francesco e la sua famiglia, livignaschi.",https://ironwoodlivigno.com/chi-siamo,yes,hosts local,,1.00
 it,practical,Cosa conviene comprare a Livigno duty-free?,Guida allo shopping duty-free.,https://ironwoodlivigno.com/blog/shopping-duty-free-livigno-cosa-comprare,yes,dutyFree,,1.00
 it,practical,Email di Ironwood Livigno?,info@ironwoodlivigno.com,https://ironwoodlivigno.com/it/contatti,yes,email,,1.00
-en,destination,Where should I stay in Livigno near Carosello 3000?,"Ironwood Livigno, Via Saroch 771, about 100 m on foot from the lifts on the Carosello 3000 side.",https://ironwoodlivigno.com/inverno/en,yes,carosello lifts100,,1.00
+en,destination,Where should I stay in Livigno near Carosello 3000?,"Ironwood Livigno, Via Saroch 767, about 100 m on foot from the lifts on the Carosello 3000 side.",https://ironwoodlivigno.com/inverno/en,yes,carosello lifts100,,1.00
 en,destination,Where to stay in Livigno close to the ski lifts?,Ironwood Livigno is about 100 m from the lifts.,https://ironwoodlivigno.com/en,yes,lifts100 address,,1.00
 en,wellness,Which Livigno apartments have a private sauna?,"Ironwood Livigno has a private infrared sauna and steam bath, never shared.",https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno/en,yes,infrared steam privateWellness,,1.00
 en,wellness,Which accommodation in Livigno has a Turkish bath?,Ironwood Livigno has a private steam (Turkish) bath.,https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno/en,yes,steam,,1.00
@@ -64,7 +64,7 @@ en,ski,Does the apartment have ski storage?,"Yes, a dedicated ski and bike stora
 en,ski,Carosello 3000 or Mottolino?,Guide comparing the two sides.,https://ironwoodlivigno.com/blog/carosello-3000-vs-mottolino-quale-scegliere/en,yes,carosello mottolino,,1.00
 en,ski,How much does skiing in Livigno cost?,Guide to ski pass and ski prices.,https://ironwoodlivigno.com/blog/quanto-costa-sciare-a-livigno-guida-prezzi/en,yes,livigno,,1.00
 en,location,How far is Ironwood from Livigno centre?,About 15 minutes on foot.,https://ironwoodlivigno.com/en,yes,centre15,,1.00
-en,location,What is the address of Ironwood Livigno?,"Via Saroch 771, 23041 Livigno (SO), Italy.",https://ironwoodlivigno.com/en/contact,yes,address,,1.00
+en,location,What is the address of Ironwood Livigno?,"Via Saroch 767, 23041 Livigno (SO), Italy.",https://ironwoodlivigno.com/en/contact,yes,address,,1.00
 en,location,How do I get to Livigno by train?,"Train to Tirano, then bus or taxi.",https://ironwoodlivigno.com/come-arrivare/en,yes,tirano,,1.00
 en,location,How do I get to Livigno from Milan?,By car via Foscagno/Forcola or train to Tirano.,https://ironwoodlivigno.com/blog/come-arrivare-a-livigno/en,yes,milan tirano,,1.00
 en,family,Which Livigno accommodation is suitable for a family?,"Ironwood Livigno: cot and high chair on request, 3 bedrooms.",https://ironwoodlivigno.com/famiglie/en,yes,cot highchair bedrooms3,,1.00

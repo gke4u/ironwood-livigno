@@ -13,7 +13,7 @@ Phase 1 (technical foundation), Phase 2 (international: hreflang and x-default),
 | 4 Content | Add confirmed local facts (grocery 20 m, supermarkets 80 m, name of nearest lift) | Claude after owner confirmation | owner |
 | 4 Content | Publish seasonal "from" prices → `rates.ts` → Offer JSON-LD | Claude | owner prices |
 | 4 Content | Native-speaker review: de, pl, cs, da, no, nl, zh, ja (use `localization-glossary.json`) | translators | budget |
-| 6 Authority / local | Correct livigno.eu listing (name, Via Saroch **771**, website link) | owner | — |
+| 6 Authority / local | livigno.eu listing: name "Ironwood Livigno" + website link (address 767 already correct) | owner | — |
 | 6 Authority / local | Fix Holidu title/description ("Ironwood Livigno", "about 100 m on foot", no "direct access to slopes") — syndicates to Expedia | owner | — |
 | 6 Authority / local | Ski-school outreach emails (mid-October), Google Business posts | owner | — |
 | 7 Performance | LCP experiments (critical CSS inline / font strategy), ≥5 runs before/after | Claude | — |

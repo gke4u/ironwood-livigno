@@ -55,7 +55,7 @@ export function GET() {
   const parts: string[] = [
     '# Ironwood Livigno — full guide text',
     '',
-    '> Holiday apartment in Livigno (Italy): 90 m², 3 bedrooms, 2 bathrooms, up to 6 guests, private infrared sauna and steam bath, 100 m from the ski lifts, Via Saroch 771, 23041 Livigno (SO). Summary, FAQ and contacts: ' +
+    '> Holiday apartment in Livigno (Italy): 90 m², 3 bedrooms, 2 bathrooms, up to 6 guests, private infrared sauna and steam bath, 100 m from the ski lifts, Via Saroch 767, 23041 Livigno (SO). Summary, FAQ and contacts: ' +
       `${siteUrl}/llms.txt`,
     '',
     'This file contains the complete text of every guide published on ironwoodlivigno.com, in Italian, English, German, French, Polish, Dutch, Czech, Danish, Norwegian, Chinese and Japanese.',

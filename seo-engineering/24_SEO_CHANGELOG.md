@@ -19,3 +19,7 @@ Format (spec 132): ID · date · URL · file · change · reason · expected eff
 | SEO-013 | 2026-10-02 | — | `property-facts.json` | Google Business Profile CID added to `sameAs` | Link existed in Reviews.tsx but not in JSON-LD (spec 29) | Stronger local entity link | None | audit | ✅ |
 
 Earlier work (before this specification) is recorded in git history and in the memory notes: hreflang matrix, sitemap generator, llms-full.txt, blog in 11 languages, contact pages, image pipeline, content-visibility.
+
+| ID | Date | URL(s) | File(s) | Change | Reason (evidence) | Expected effect | Risk | Test | Result |
+|---|---|---|---|---|---|---|---|---|---|
+| SEO-014 | 2026-10-02 | all 361 URLs, llms.txt, llms-full.txt | `messages/*.json`, `Footer.tsx`, `BlogChrome.tsx`, `StructuredData.tsx`, `privacy.ts`, `landingPages.ts`, `landingPageTranslations.ts`, `public/llms.txt`, `property-facts.json` | Street number **771 → 767** everywhere (12 languages, JSON-LD, privacy, AI files) | Owner: "Ironwood Livigno è in via Saroch 767" (livigno.eu already showed 767) | Correct NAP, consistent with the official tourism portal | None | grep: no "Saroch 771" left; audit | ✅ |

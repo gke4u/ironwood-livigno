@@ -148,7 +148,7 @@ export async function BlogFooter({ locale = 'it' }: { locale?: Locale }) {
           </div>
         </div>
         <p className="text-center text-xs text-mist/60 mb-2">
-          Ironwood Livigno — Via Saroch 771, 23041 Livigno (SO), Italia · CIN IT014037C274OJ27T8 · CF GNUFNC74D07E621H
+          Ironwood Livigno — Via Saroch 767, 23041 Livigno (SO), Italia · CIN IT014037C274OJ27T8 · CF GNUFNC74D07E621H
         </p>
         <p className="text-center text-xs text-mist/60">
           © {new Date().getFullYear()} Ironwood Livigno — {t('copyright')}

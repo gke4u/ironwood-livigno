@@ -26,7 +26,10 @@ const rules = [
   ['floor_area_m2', facts.property.floor_area_m2, [`${N}\\s?m²(?! (?:di|of) (?:spa|wellness))`]],
   ['lift_distance_m', facts.location.distances.ski_lifts.value, [
     `${N}\\s?(?:m|metri|meters?|metres?) (?:a piedi )?(?:dagli|from the|von den|des|fra|od|od|van de|from) (?:impianti|piste|(?:ski )?lifts?|Lift|Skilift|remontées|lifterne|liften|heisene|wyciąg|lanov|vlek)`,
-    `${N}\\s?(?:m|Meter) (?:zu den|zum|bis zu den) (?:Lift|Skilift)`, `${N}\\s?(?:m|metrů|metrów|meter|mètres) (?:od|fra|des|van) `]]
+    `${N}\\s?(?:m|Meter) (?:zu den|zum|bis zu den) (?:Lift|Skilift)`, `${N}\\s?(?:m|metrů|metrów|meter|mètres) (?:od|fra|des|van) `]],
+  // Street number (767, confirmed by the owner 2026-10-02; the site said 771 before).
+  // "Via Saroch, 100 m dagli impianti" is a distance, not a number: skip "N m".
+  ['street_number', Number(facts.location.street_address.match(/\d+/)[0]), [`Saroch,? ${N}\\b(?!\\s?(?:m\\b|met|Met|mèt|米|メートル))`, `萨罗赫街${N}号`]]
 ];
 
 const negation = /\b(non|not|nicht|kein|pas|ikke|nie|není|niet|ingen)\b|不是|ではない|ではありません/i;

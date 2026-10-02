@@ -34,7 +34,7 @@
     "same_as_note": "Google Business Profile (CID, same link as the reviews section), Airbnb, Holidu, Instagram"
   },
   "location": {
-    "street_address": "Via Saroch 771",
+    "street_address": "Via Saroch 767",
     "postal_code": "23041",
     "locality": "Livigno",
     "region": "SO (Sondrio), Lombardy",
@@ -78,7 +78,8 @@
       }
     },
     "ski_access_claim": "Walking distance to the lifts (about 100 m). NOT ski-in/ski-out: never describe it as ski-in, ski-out or ski-to-door.",
-    "source": "location section, FAQ q2/q13, llms.txt"
+    "source": "location section, FAQ q2/q13, llms.txt",
+    "address_note": "Street number 767 confirmed by the owner on 2026-10-02 (the site said 771 until then)"
   },
   "capacity": {
     "max_guests": 6,

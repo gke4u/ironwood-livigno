@@ -244,7 +244,7 @@ export const landingPages: LandingPage[] = [
     title: 'Come raggiungere Ironwood Livigno: indirizzo, parcheggio e ultimi chilometri',
     metaTitle: 'Come arrivare a Ironwood Livigno | Indirizzo e parcheggio',
     metaDescription:
-      'Indirizzo, parcheggio gratuito e distanza dagli impianti: la guida pratica per arrivare a Ironwood Livigno, via Saroch 771, senza sorprese.',
+      'Indirizzo, parcheggio gratuito e distanza dagli impianti: la guida pratica per arrivare a Ironwood Livigno, via Saroch 767, senza sorprese.',
     eyebrow: 'Come arrivare',
     intro:
       'Se hai già deciso di soggiornare da Ironwood Livigno, questa pagina raccoglie le informazioni pratiche sull\'ultimo tratto del viaggio: dove si trova esattamente l\'appartamento, come raggiungerlo dal Passo di Foscagno o da Tirano, e cosa sapere su parcheggio e arrivo. Per la guida completa su treno, auto e aereo da Milano, trovi tutti i dettagli nel nostro articolo dedicato, linkato in fondo a questa pagina.',
@@ -258,7 +258,7 @@ export const landingPages: LandingPage[] = [
       {
         heading: 'Indirizzo e posizione esatta',
         body: [
-          "Ironwood Livigno si trova in Via Saroch 771, 23041 Livigno (SO), a circa 100 metri a piedi dagli impianti di risalita e a 50 metri da scuola sci e noleggio attrezzatura. È una posizione strategica ma tranquilla, a circa 15 minuti a piedi dal centro del paese — comoda per raggiungere piste, negozi e ristoranti senza muovere l'auto una volta arrivati.",
+          "Ironwood Livigno si trova in Via Saroch 767, 23041 Livigno (SO), a circa 100 metri a piedi dagli impianti di risalita e a 50 metri da scuola sci e noleggio attrezzatura. È una posizione strategica ma tranquilla, a circa 15 minuti a piedi dal centro del paese — comoda per raggiungere piste, negozi e ristoranti senza muovere l'auto una volta arrivati.",
           "Le coordinate GPS esatte sono 46.525061, 10.126967: utili da inserire nel navigatore, soprattutto negli ultimi chilometri di montagna dove la copertura di rete può essere meno affidabile."
         ]
       },
@@ -278,7 +278,7 @@ export const landingPages: LandingPage[] = [
       }
     ],
     highlights: [
-      'Via Saroch 771, Livigno (SO) — 100 m dagli impianti di risalita',
+      'Via Saroch 767, Livigno (SO) — 100 m dagli impianti di risalita',
       'Posto auto gratuito incluso',
       'Coordinate GPS: 46.525061, 10.126967',
       'Check-in flessibile, confermato via WhatsApp'
@@ -292,7 +292,7 @@ export const landingPages: LandingPage[] = [
     faq: [
       {
         q: "Qual è l'indirizzo esatto di Ironwood Livigno?",
-        a: 'Via Saroch 771, 23041 Livigno (SO) — coordinate GPS 46.525061, 10.126967.'
+        a: 'Via Saroch 767, 23041 Livigno (SO) — coordinate GPS 46.525061, 10.126967.'
       },
       {
         q: "C'è un parcheggio incluso?",

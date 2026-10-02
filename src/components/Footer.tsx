@@ -11,7 +11,7 @@ const TAX_CODE = 'GNUFNC74D07E621H';
 const EMAIL = 'info@ironwoodlivigno.com';
 const PHONE_DISPLAY = '+39 0342 929285';
 const PHONE_TEL = '+390342929285';
-const FULL_ADDRESS = 'Via Saroch 771, 23041 Livigno (SO), Italia';
+const FULL_ADDRESS = 'Via Saroch 767, 23041 Livigno (SO), Italia';
 
 export default function Footer({ locale }: { locale: Locale }) {
   const t = useTranslations('footer');

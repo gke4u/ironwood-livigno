@@ -6,7 +6,7 @@ import Reveal from './Reveal';
 import WeatherIcon, { categoryForCode, type WeatherCategory } from './WeatherIcon';
 
 // Same coordinates as the map in LocationSection/MapEmbed.tsx (Via Saroch
-// 771, Livigno), so "current weather" always matches "where the map points."
+// 767, Livigno), so "current weather" always matches "where the map points."
 const LAT = 46.525061;
 const LON = 10.126967;
 

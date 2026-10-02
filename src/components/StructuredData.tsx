@@ -126,7 +126,7 @@ export default async function StructuredData({ locale }: { locale: Locale }) {
       addressCountry: F.location.country
     },
     // Exact coordinates provided directly by the property owner from Google
-    // Maps Street View, pinned on the building itself (Via Saroch 771).
+    // Maps Street View, pinned on the building itself (Via Saroch 767).
     geo: {
       '@type': 'GeoCoordinates',
       latitude: F.location.latitude,

@@ -29,4 +29,4 @@
 
 **On the site: yes.** Each of those languages has a homepage with an "at a glance" block (size, 1–6 guests, 3 bedrooms · 2 bathrooms, private infrared sauna and steam bath, 100 m from the lifts, address, direct booking), a dedicated sauna page, a rooms page, FAQ, and JSON-LD (VacationRental with occupancy, bedrooms, bathrooms, CIN, coordinates). The 150-question test set is fully answerable from the expected URLs.
 
-**Off the site: not yet.** Search results for these queries are dominated by OTAs; the official tourism portal shows a different street number and name variant; one OTA overstates ski access. These need the owner (19_LOCAL_SEO_AUDIT.md). This work does not and cannot promise rankings or AI citations.
+**Off the site: not yet.** Search results for these queries are dominated by OTAs; the official tourism portal uses the name variant "Appartamenti Iron Wood"; one OTA overstates ski access. These need the owner (19_LOCAL_SEO_AUDIT.md). This work does not and cannot promise rankings or AI citations.

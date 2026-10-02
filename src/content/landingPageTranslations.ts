@@ -1584,7 +1584,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       title: 'How to reach Ironwood Livigno: address, parking, and the final stretch',
       metaTitle: 'How to Get to Ironwood Livigno | Address and Parking',
       metaDescription:
-        'Address, free parking and distance from the lifts: the practical guide to reaching Ironwood Livigno, Via Saroch 771, with no surprises.',
+        'Address, free parking and distance from the lifts: the practical guide to reaching Ironwood Livigno, Via Saroch 767, with no surprises.',
       eyebrow: 'Getting here',
       intro:
         "If you've already decided to stay at Ironwood Livigno, this page covers the practical details of the final stretch of the journey: exactly where the apartment is, how to reach it from the Foscagno Pass or from Tirano, and what to know about parking and arrival. For the full guide on getting to Livigno by train, car or plane from Milan, see our dedicated article linked at the bottom of this page.",
@@ -1592,7 +1592,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: 'Address and exact location',
           body: [
-            "Ironwood Livigno is at Via Saroch 771, 23041 Livigno (SO), about a 100-metre walk from the ski lifts and 50 metres from the ski school and equipment rental. It's a spot that's convenient but quiet, about a 15-minute walk from the town centre — handy for reaching slopes, shops and restaurants on foot once you've arrived.",
+            "Ironwood Livigno is at Via Saroch 767, 23041 Livigno (SO), about a 100-metre walk from the ski lifts and 50 metres from the ski school and equipment rental. It's a spot that's convenient but quiet, about a 15-minute walk from the town centre — handy for reaching slopes, shops and restaurants on foot once you've arrived.",
             "The exact GPS coordinates are 46.525061, 10.126967: worth entering into your sat nav, especially for the final mountain kilometres where mobile signal can be less reliable."
           ]
         },
@@ -1612,7 +1612,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         }
       ],
       highlights: [
-        'Via Saroch 771, Livigno (SO) — 100 m from the ski lifts',
+        'Via Saroch 767, Livigno (SO) — 100 m from the ski lifts',
         'Free parking space included',
         'GPS coordinates: 46.525061, 10.126967',
         'Flexible check-in, confirmed via WhatsApp'
@@ -1622,7 +1622,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       navLabel: 'Getting here',
       relatedLinkLabel: 'Read the full guide: train, car or plane from Milan',
       faq: [
-        { q: 'What is the exact address of Ironwood Livigno?', a: 'Via Saroch 771, 23041 Livigno (SO) — GPS coordinates 46.525061, 10.126967.' },
+        { q: 'What is the exact address of Ironwood Livigno?', a: 'Via Saroch 767, 23041 Livigno (SO) — GPS coordinates 46.525061, 10.126967.' },
         { q: 'Is parking included?', a: 'Yes, the apartment includes a free parking space.' },
         { q: 'How do you reach Livigno by car or train?', a: 'By car from Milan, take the SS38 to the Foscagno Pass (from Switzerland, take the Forcola di Livigno instead); by train, get off at Tirano and continue with a scheduled bus, changing at Bormio.' }
       ]
@@ -1631,7 +1631,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       title: 'How to reach Ironwood Livigno, Italy: address, parking, and the final stretch',
       metaTitle: 'How to Get to Ironwood Livigno, Italy | Address and Parking',
       metaDescription:
-        'Address, free parking and distance from the lifts: the practical guide to reaching Ironwood Livigno, Via Saroch 771, Italy, with no surprises.',
+        'Address, free parking and distance from the lifts: the practical guide to reaching Ironwood Livigno, Via Saroch 767, Italy, with no surprises.',
       eyebrow: 'Getting here',
       intro:
         "If you've already decided to stay at Ironwood Livigno, this page covers the practical details of the final stretch of the trip: exactly where the apartment is, how to reach it from the Foscagno Pass or from Tirano, and what to know about parking and arrival. For the full guide on getting to Livigno by train, car or plane from Milan, see our dedicated article linked at the bottom of this page.",
@@ -1639,7 +1639,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: 'Address and exact location',
           body: [
-            "Ironwood Livigno is at Via Saroch 771, 23041 Livigno (SO), Italy, about a 100-meter walk from the ski lifts and 50 meters from the ski school and equipment rental. It's a spot that's convenient but quiet, about a 15-minute walk from the town center — handy for reaching slopes, shops and restaurants on foot once you've arrived.",
+            "Ironwood Livigno is at Via Saroch 767, 23041 Livigno (SO), Italy, about a 100-meter walk from the ski lifts and 50 meters from the ski school and equipment rental. It's a spot that's convenient but quiet, about a 15-minute walk from the town center — handy for reaching slopes, shops and restaurants on foot once you've arrived.",
             "The exact GPS coordinates are 46.525061, 10.126967: worth entering into your GPS, especially for the final mountain miles where mobile signal can be less reliable."
           ]
         },
@@ -1659,7 +1659,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         }
       ],
       highlights: [
-        'Via Saroch 771, Livigno (SO), Italy — 100 m from the ski lifts',
+        'Via Saroch 767, Livigno (SO), Italy — 100 m from the ski lifts',
         'Free parking space included',
         'GPS coordinates: 46.525061, 10.126967',
         'Flexible check-in, confirmed via WhatsApp'
@@ -1669,7 +1669,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       navLabel: 'Getting here',
       relatedLinkLabel: 'Read the full guide: train, car or plane from Milan',
       faq: [
-        { q: 'What is the exact address of Ironwood Livigno, Italy?', a: 'Via Saroch 771, 23041 Livigno (SO), Italy — GPS coordinates 46.525061, 10.126967.' },
+        { q: 'What is the exact address of Ironwood Livigno, Italy?', a: 'Via Saroch 767, 23041 Livigno (SO), Italy — GPS coordinates 46.525061, 10.126967.' },
         { q: 'Is parking included?', a: 'Yes, the apartment includes a free parking space.' },
         { q: 'How do you get to Livigno by car or train?', a: 'By car from Milan, take the SS38 to the Foscagno Pass (from Switzerland, take the Forcola di Livigno instead); by train, get off at Tirano and continue with a scheduled bus, changing at Bormio.' }
       ]
@@ -1678,7 +1678,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       title: 'So erreichen Sie Ironwood Livigno: Adresse, Parkplatz und die letzten Kilometer',
       metaTitle: 'Anreise zu Ironwood Livigno | Adresse und Parkplatz',
       metaDescription:
-        'Adresse, kostenloser Parkplatz und Entfernung zu den Liften: der praktische Guide zur Anreise nach Ironwood Livigno, Via Saroch 771, ganz ohne Überraschungen.',
+        'Adresse, kostenloser Parkplatz und Entfernung zu den Liften: der praktische Guide zur Anreise nach Ironwood Livigno, Via Saroch 767, ganz ohne Überraschungen.',
       eyebrow: 'Anreise',
       intro:
         'Wenn Sie sich bereits für einen Aufenthalt bei Ironwood Livigno entschieden haben, finden Sie auf dieser Seite die praktischen Informationen zum letzten Streckenabschnitt: wo genau die Wohnung liegt, wie Sie sie vom Passo di Foscagno oder von Tirano aus erreichen, und was Sie zu Parkplatz und Ankunft wissen sollten. Den vollständigen Guide zu Zug, Auto oder Flugzeug ab Mailand finden Sie in unserem verlinkten Artikel am Ende dieser Seite.',
@@ -1686,7 +1686,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: 'Adresse und genaue Lage',
           body: [
-            'Ironwood Livigno liegt in der Via Saroch 771, 23041 Livigno (SO), etwa 100 Meter zu Fuß von den Skiliften und 50 Meter von Skischule und Ausrüstungsverleih entfernt. Es ist eine praktische, aber ruhige Lage, etwa 15 Gehminuten vom Ortszentrum entfernt — ideal, um nach der Ankunft Pisten, Geschäfte und Restaurants zu Fuß zu erreichen.',
+            'Ironwood Livigno liegt in der Via Saroch 767, 23041 Livigno (SO), etwa 100 Meter zu Fuß von den Skiliften und 50 Meter von Skischule und Ausrüstungsverleih entfernt. Es ist eine praktische, aber ruhige Lage, etwa 15 Gehminuten vom Ortszentrum entfernt — ideal, um nach der Ankunft Pisten, Geschäfte und Restaurants zu Fuß zu erreichen.',
             'Die genauen GPS-Koordinaten sind 46.525061, 10.126967: nützlich für die Eingabe ins Navigationsgerät, besonders auf den letzten Bergkilometern, wo der Mobilfunkempfang weniger zuverlässig sein kann.'
           ]
         },
@@ -1706,7 +1706,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         }
       ],
       highlights: [
-        'Via Saroch 771, Livigno (SO) — 100 m von den Skiliften',
+        'Via Saroch 767, Livigno (SO) — 100 m von den Skiliften',
         'Kostenloser Parkplatz inklusive',
         'GPS-Koordinaten: 46.525061, 10.126967',
         'Flexibler Check-in, per WhatsApp bestätigt'
@@ -1716,7 +1716,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       navLabel: 'Anreise',
       relatedLinkLabel: 'Lesen Sie den vollständigen Guide: Zug, Auto oder Flugzeug ab Mailand',
       faq: [
-        { q: 'Wie lautet die genaue Adresse von Ironwood Livigno?', a: 'Via Saroch 771, 23041 Livigno (SO) — GPS-Koordinaten 46.525061, 10.126967.' },
+        { q: 'Wie lautet die genaue Adresse von Ironwood Livigno?', a: 'Via Saroch 767, 23041 Livigno (SO) — GPS-Koordinaten 46.525061, 10.126967.' },
         { q: 'Ist ein Parkplatz inklusive?', a: 'Ja, zur Wohnung gehört ein kostenloser Parkplatz.' },
         { q: 'Wie erreicht man Livigno mit dem Auto oder mit dem Zug?', a: 'Mit dem Auto von Mailand aus über die SS38 zum Passo di Foscagno (aus der Schweiz stattdessen über die Forcola di Livigno); mit dem Zug bis Tirano und weiter mit dem Linienbus, Umstieg in Bormio.' }
       ]
@@ -1725,7 +1725,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       title: 'Comment rejoindre Ironwood Livigno : adresse, parking et derniers kilomètres',
       metaTitle: 'Comment venir à Ironwood Livigno | Adresse et parking',
       metaDescription:
-        'Adresse, parking gratuit et distance des remontées : le guide pratique pour rejoindre Ironwood Livigno, via Saroch 771, sans surprises.',
+        'Adresse, parking gratuit et distance des remontées : le guide pratique pour rejoindre Ironwood Livigno, via Saroch 767, sans surprises.',
       eyebrow: "Comment venir",
       intro:
         "Si vous avez déjà décidé de séjourner chez Ironwood Livigno, cette page rassemble les informations pratiques sur le dernier tronçon du trajet : où se trouve exactement l'appartement, comment y accéder depuis le col de Foscagno ou depuis Tirano, et ce qu'il faut savoir sur le parking et l'arrivée. Pour le guide complet sur le train, la voiture ou l'avion depuis Milan, retrouvez tous les détails dans notre article dédié, en lien en bas de cette page.",
@@ -1733,7 +1733,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: 'Adresse et emplacement exact',
           body: [
-            "Ironwood Livigno se trouve via Saroch 771, 23041 Livigno (SO), à environ 100 mètres à pied des remontées mécaniques et à 50 mètres de l'école de ski et de la location de matériel. C'est un emplacement pratique mais tranquille, à environ 15 minutes à pied du centre du village — pratique pour rejoindre à pied pistes, commerces et restaurants une fois sur place.",
+            "Ironwood Livigno se trouve via Saroch 767, 23041 Livigno (SO), à environ 100 mètres à pied des remontées mécaniques et à 50 mètres de l'école de ski et de la location de matériel. C'est un emplacement pratique mais tranquille, à environ 15 minutes à pied du centre du village — pratique pour rejoindre à pied pistes, commerces et restaurants une fois sur place.",
             "Les coordonnées GPS exactes sont 46.525061, 10.126967 : utiles à saisir dans le GPS, surtout sur les derniers kilomètres en montagne où la couverture réseau peut être moins fiable."
           ]
         },
@@ -1753,7 +1753,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         }
       ],
       highlights: [
-        'Via Saroch 771, Livigno (SO) — à 100 m des remontées mécaniques',
+        'Via Saroch 767, Livigno (SO) — à 100 m des remontées mécaniques',
         'Place de parking gratuite incluse',
         'Coordonnées GPS : 46.525061, 10.126967',
         'Check-in flexible, confirmé via WhatsApp'
@@ -1763,7 +1763,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       navLabel: 'Comment venir',
       relatedLinkLabel: 'Lisez le guide complet : train, voiture ou avion depuis Milan',
       faq: [
-        { q: "Quelle est l'adresse exacte d'Ironwood Livigno ?", a: 'Via Saroch 771, 23041 Livigno (SO) — coordonnées GPS 46.525061, 10.126967.' },
+        { q: "Quelle est l'adresse exacte d'Ironwood Livigno ?", a: 'Via Saroch 767, 23041 Livigno (SO) — coordonnées GPS 46.525061, 10.126967.' },
         { q: 'Le parking est-il inclus ?', a: 'Oui, l\'appartement inclut une place de parking gratuite.' },
         { q: 'Comment rejoindre Livigno en voiture ou en train ?', a: 'En voiture depuis Milan, prenez la SS38 jusqu\'au col de Foscagno (depuis la Suisse, passez plutôt par la Forcola di Livigno) ; en train, descendez à Tirano puis continuez en bus de ligne, avec correspondance à Bormio.' }
       ]
@@ -1771,7 +1771,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     da: {
       title: 'Sådan kommer du til Ironwood Livigno: adresse, parkering og de sidste kilometer',
       metaTitle: 'Sådan kommer du til Ironwood Livigno | Adresse og parkering',
-      metaDescription: 'Adresse, gratis parkering og afstand til liftene: den praktiske guide til at komme til Ironwood Livigno, Via Saroch 771, uden overraskelser.',
+      metaDescription: 'Adresse, gratis parkering og afstand til liftene: den praktiske guide til at komme til Ironwood Livigno, Via Saroch 767, uden overraskelser.',
       eyebrow: 'Sådan kommer du hertil',
       intro:
         'Har du allerede besluttet dig for at bo hos Ironwood Livigno, samler denne side de praktiske oplysninger om den sidste del af rejsen: hvor lejligheden præcis ligger, hvordan du når frem fra Foscagno-passet eller fra Tirano, og hvad du skal vide om parkering og ankomst. For den fulde guide til tog, bil eller fly fra Milano finder du alle detaljer i vores dedikerede artikel, linket nederst på denne side.',
@@ -1779,7 +1779,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: 'Adresse og præcis beliggenhed',
           body: [
-            'Ironwood Livigno ligger på Via Saroch 771, 23041 Livigno (SO), cirka 100 meter til fods fra skiliftene og 50 meter fra skiskole og udstyrsudlejning. Det er en beliggenhed, der er praktisk, men rolig, cirka 15 minutters gang fra byens centrum — nem adgang til pister, butikker og restauranter til fods, når du først er ankommet.',
+            'Ironwood Livigno ligger på Via Saroch 767, 23041 Livigno (SO), cirka 100 meter til fods fra skiliftene og 50 meter fra skiskole og udstyrsudlejning. Det er en beliggenhed, der er praktisk, men rolig, cirka 15 minutters gang fra byens centrum — nem adgang til pister, butikker og restauranter til fods, når du først er ankommet.',
             'De præcise GPS-koordinater er 46.525061, 10.126967: nyttige at indtaste i navigationssystemet, især på de sidste bjergkilometer, hvor mobildækningen kan være mindre pålidelig.'
           ]
         },
@@ -1799,7 +1799,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         }
       ],
       highlights: [
-        'Via Saroch 771, Livigno (SO) — 100 m fra skiliftene',
+        'Via Saroch 767, Livigno (SO) — 100 m fra skiliftene',
         'Gratis parkeringsplads inkluderet',
         'GPS-koordinater: 46.525061, 10.126967',
         'Fleksibel check-in, bekræftet via WhatsApp'
@@ -1809,7 +1809,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       navLabel: 'Sådan kommer du hertil',
       relatedLinkLabel: 'Læs den fulde guide: tog, bil eller fly fra Milano',
       faq: [
-        { q: 'Hvad er den præcise adresse på Ironwood Livigno?', a: 'Via Saroch 771, 23041 Livigno (SO) — GPS-koordinater 46.525061, 10.126967.' },
+        { q: 'Hvad er den præcise adresse på Ironwood Livigno?', a: 'Via Saroch 767, 23041 Livigno (SO) — GPS-koordinater 46.525061, 10.126967.' },
         { q: 'Er parkering inkluderet?', a: 'Ja, lejligheden inkluderer en gratis parkeringsplads.' },
         { q: 'Hvordan kommer man til Livigno med bil eller tog?', a: 'Med bil fra Milano ad SS38 til Foscagno-passet (fra Schweiz tages i stedet Forcola di Livigno); med tog til Tirano og videre med rutebus, med skift i Bormio.' }
       ]
@@ -1817,7 +1817,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     pl: {
       title: 'Jak dojechać do Ironwood Livigno: adres, parking i ostatnie kilometry',
       metaTitle: 'Jak dojechać do Ironwood Livigno | Adres i parking',
-      metaDescription: 'Adres, bezpłatny parking i odległość od wyciągów: praktyczny przewodnik dojazdu do Ironwood Livigno, via Saroch 771, bez niespodzianek.',
+      metaDescription: 'Adres, bezpłatny parking i odległość od wyciągów: praktyczny przewodnik dojazdu do Ironwood Livigno, via Saroch 767, bez niespodzianek.',
       eyebrow: 'Jak dojechać',
       intro:
         'Jeśli już zdecydowałeś się na pobyt w Ironwood Livigno, na tej stronie znajdziesz praktyczne informacje o ostatnim odcinku podróży: gdzie dokładnie znajduje się apartament, jak do niego dotrzeć z Przełęczy Foscagno lub z Tirano, oraz co warto wiedzieć o parkingu i przyjeździe. Pełny przewodnik dotyczący pociągu, samochodu i samolotu z Mediolanu znajdziesz w naszym dedykowanym artykule, do którego link znajduje się na dole tej strony.',
@@ -1825,7 +1825,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: 'Adres i dokładna lokalizacja',
           body: [
-            'Ironwood Livigno znajduje się przy via Saroch 771, 23041 Livigno (SO), około 100 metrów pieszo od wyciągów narciarskich i 50 metrów od szkółki narciarskiej i wypożyczalni sprzętu. To lokalizacja dogodna, ale spokojna, około 15 minut spacerem od centrum miasteczka — wygodna do dotarcia pieszo do stoków, sklepów i restauracji po przyjeździe.',
+            'Ironwood Livigno znajduje się przy via Saroch 767, 23041 Livigno (SO), około 100 metrów pieszo od wyciągów narciarskich i 50 metrów od szkółki narciarskiej i wypożyczalni sprzętu. To lokalizacja dogodna, ale spokojna, około 15 minut spacerem od centrum miasteczka — wygodna do dotarcia pieszo do stoków, sklepów i restauracji po przyjeździe.',
             'Dokładne współrzędne GPS to 46.525061, 10.126967: warto wpisać je do nawigacji, zwłaszcza na ostatnich górskich kilometrach, gdzie zasięg sieci może być mniej pewny.'
           ]
         },
@@ -1845,7 +1845,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         }
       ],
       highlights: [
-        'Via Saroch 771, Livigno (SO) — 100 m od wyciągów narciarskich',
+        'Via Saroch 767, Livigno (SO) — 100 m od wyciągów narciarskich',
         'Bezpłatne miejsce parkingowe w cenie',
         'Współrzędne GPS: 46.525061, 10.126967',
         'Elastyczne zameldowanie, potwierdzane przez WhatsApp'
@@ -1855,7 +1855,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       navLabel: 'Jak dojechać',
       relatedLinkLabel: 'Przeczytaj pełny przewodnik: pociąg, samochód lub samolot z Mediolanu',
       faq: [
-        { q: 'Jaki jest dokładny adres Ironwood Livigno?', a: 'Via Saroch 771, 23041 Livigno (SO) — współrzędne GPS 46.525061, 10.126967.' },
+        { q: 'Jaki jest dokładny adres Ironwood Livigno?', a: 'Via Saroch 767, 23041 Livigno (SO) — współrzędne GPS 46.525061, 10.126967.' },
         { q: 'Czy parking jest wliczony w cenę?', a: 'Tak, apartament obejmuje bezpłatne miejsce parkingowe.' },
         { q: 'Jak dojechać do Livigno samochodem lub pociągiem?', a: 'Samochodem z Mediolanu przez SS38 do Przełęczy Foscagno (ze Szwajcarii przez przełęcz Forcola di Livigno); pociągiem do Tirano, a następnie autobusem rejsowym z przesiadką w Bormio.' }
       ]
@@ -1863,7 +1863,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     cs: {
       title: 'Jak se dostat do Ironwood Livigno: adresa, parkování a poslední kilometry',
       metaTitle: 'Jak se dostat do Ironwood Livigno | Adresa a parkování',
-      metaDescription: 'Adresa, bezplatné parkování a vzdálenost od vleků: praktický průvodce cestou do Ironwood Livigno, Via Saroch 771, bez překvapení.',
+      metaDescription: 'Adresa, bezplatné parkování a vzdálenost od vleků: praktický průvodce cestou do Ironwood Livigno, Via Saroch 767, bez překvapení.',
       eyebrow: 'Jak se k nám dostat',
       intro:
         'Pokud jste se již rozhodli pro pobyt v Ironwood Livigno, tato stránka shromažďuje praktické informace o posledním úseku cesty: kde přesně se apartmán nachází, jak se k němu dostat z průsmyku Foscagno nebo z Tirana, a co je třeba vědět o parkování a příjezdu. Kompletního průvodce vlakem, autem nebo letadlem z Milána najdete v našem samostatném článku, na který odkazujeme na konci této stránky.',
@@ -1871,7 +1871,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: 'Adresa a přesná poloha',
           body: [
-            'Ironwood Livigno se nachází na adrese Via Saroch 771, 23041 Livigno (SO), přibližně 100 metrů pěšky od lyžařských vleků a 50 metrů od lyžařské školy a půjčovny vybavení. Jde o strategickou, ale klidnou polohu, přibližně 15 minut chůze od centra městečka — pohodlný pěší dosah na sjezdovky, do obchodů a restaurací po příjezdu.',
+            'Ironwood Livigno se nachází na adrese Via Saroch 767, 23041 Livigno (SO), přibližně 100 metrů pěšky od lyžařských vleků a 50 metrů od lyžařské školy a půjčovny vybavení. Jde o strategickou, ale klidnou polohu, přibližně 15 minut chůze od centra městečka — pohodlný pěší dosah na sjezdovky, do obchodů a restaurací po příjezdu.',
             'Přesné GPS souřadnice jsou 46.525061, 10.126967: užitečné zadat do navigace, zejména na posledních horských kilometrech, kde může být pokrytí sítě méně spolehlivé.'
           ]
         },
@@ -1891,7 +1891,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         }
       ],
       highlights: [
-        'Via Saroch 771, Livigno (SO) — 100 m od lyžařských vleků',
+        'Via Saroch 767, Livigno (SO) — 100 m od lyžařských vleků',
         'Bezplatné parkovací místo v ceně',
         'GPS souřadnice: 46.525061, 10.126967',
         'Flexibilní check-in, potvrzený přes WhatsApp'
@@ -1901,7 +1901,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       navLabel: 'Jak se k nám dostat',
       relatedLinkLabel: 'Přečtěte si kompletního průvodce: vlak, auto nebo letadlo z Milána',
       faq: [
-        { q: 'Jaká je přesná adresa Ironwood Livigno?', a: 'Via Saroch 771, 23041 Livigno (SO) — GPS souřadnice 46.525061, 10.126967.' },
+        { q: 'Jaká je přesná adresa Ironwood Livigno?', a: 'Via Saroch 767, 23041 Livigno (SO) — GPS souřadnice 46.525061, 10.126967.' },
         { q: 'Je parkování součástí pobytu?', a: 'Ano, apartmán zahrnuje bezplatné parkovací místo.' },
         { q: 'Jak se dostat do Livigna autem nebo vlakem?', a: 'Autem z Milána po silnici SS38 k průsmyku Foscagno (ze Švýcarska přes Forcolu di Livigno); vlakem do Tirana a dále linkovým autobusem s přestupem v Bormiu.' }
       ]
@@ -1909,7 +1909,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     no: {
       title: 'Slik kommer du til Ironwood Livigno: adresse, parkering og de siste kilometerne',
       metaTitle: 'Slik kommer du til Ironwood Livigno | Adresse og parkering',
-      metaDescription: 'Adresse, gratis parkering og avstand til heisene: den praktiske guiden til å komme til Ironwood Livigno, Via Saroch 771, uten overraskelser.',
+      metaDescription: 'Adresse, gratis parkering og avstand til heisene: den praktiske guiden til å komme til Ironwood Livigno, Via Saroch 767, uten overraskelser.',
       eyebrow: 'Slik kommer du hit',
       intro:
         'Har du allerede bestemt deg for å bo hos Ironwood Livigno, samler denne siden praktisk informasjon om den siste delen av reisen: nøyaktig hvor leiligheten ligger, hvordan du kommer dit fra Foscagno-passet eller fra Tirano, og hva du bør vite om parkering og ankomst. For den fullstendige guiden til tog, bil eller fly fra Milano finner du alle detaljer i vår egen artikkel, lenket nederst på denne siden.',
@@ -1917,7 +1917,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: 'Adresse og nøyaktig beliggenhet',
           body: [
-            'Ironwood Livigno ligger på Via Saroch 771, 23041 Livigno (SO), omtrent 100 meter til fots fra skiheisene og 50 meter fra skiskole og utstyrsutleie. Det er en beliggenhet som er praktisk, men rolig, omtrent 15 minutters gange fra sentrum av byen — nær nok til å nå bakker, butikker og restauranter til fots når du først har ankommet.',
+            'Ironwood Livigno ligger på Via Saroch 767, 23041 Livigno (SO), omtrent 100 meter til fots fra skiheisene og 50 meter fra skiskole og utstyrsutleie. Det er en beliggenhet som er praktisk, men rolig, omtrent 15 minutters gange fra sentrum av byen — nær nok til å nå bakker, butikker og restauranter til fots når du først har ankommet.',
             'De nøyaktige GPS-koordinatene er 46.525061, 10.126967: nyttige å taste inn i navigasjonen, spesielt på de siste fjellkilometerne der mobildekningen kan være mindre pålitelig.'
           ]
         },
@@ -1937,7 +1937,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         }
       ],
       highlights: [
-        'Via Saroch 771, Livigno (SO) — 100 m fra skiheisene',
+        'Via Saroch 767, Livigno (SO) — 100 m fra skiheisene',
         'Gratis parkeringsplass inkludert',
         'GPS-koordinater: 46.525061, 10.126967',
         'Fleksibel innsjekking, bekreftet via WhatsApp'
@@ -1947,7 +1947,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       navLabel: 'Slik kommer du hit',
       relatedLinkLabel: 'Les den fullstendige guiden: tog, bil eller fly fra Milano',
       faq: [
-        { q: 'Hva er den nøyaktige adressen til Ironwood Livigno?', a: 'Via Saroch 771, 23041 Livigno (SO) — GPS-koordinater 46.525061, 10.126967.' },
+        { q: 'Hva er den nøyaktige adressen til Ironwood Livigno?', a: 'Via Saroch 767, 23041 Livigno (SO) — GPS-koordinater 46.525061, 10.126967.' },
         { q: 'Er parkering inkludert?', a: 'Ja, leiligheten inkluderer en gratis parkeringsplass.' },
         { q: 'Hvordan kommer man til Livigno med bil eller tog?', a: 'Med bil fra Milano via SS38 til Foscagno-passet (fra Sveits tar man i stedet Forcola di Livigno); med tog til Tirano og videre med rutebuss, med bytte i Bormio.' }
       ]
@@ -1955,7 +1955,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     nl: {
       title: 'Zo bereik je Ironwood Livigno: adres, parkeren en de laatste kilometers',
       metaTitle: 'Zo kom je bij Ironwood Livigno | Adres en parkeren',
-      metaDescription: 'Adres, gratis parkeren en afstand tot de liften: de praktische gids om Ironwood Livigno, Via Saroch 771, zonder verrassingen te bereiken.',
+      metaDescription: 'Adres, gratis parkeren en afstand tot de liften: de praktische gids om Ironwood Livigno, Via Saroch 767, zonder verrassingen te bereiken.',
       eyebrow: 'Hoe je hier komt',
       intro:
         'Heb je al besloten om bij Ironwood Livigno te verblijven? Deze pagina bundelt de praktische informatie over het laatste stuk van de reis: waar het appartement precies ligt, hoe je er komt vanaf de Foscagno-pas of vanuit Tirano, en wat je moet weten over parkeren en aankomst. Voor de volledige gids over trein, auto of vliegtuig vanuit Milaan vind je alle details in ons speciale artikel, gelinkt onderaan deze pagina.',
@@ -1963,7 +1963,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: 'Adres en exacte locatie',
           body: [
-            'Ironwood Livigno bevindt zich aan de Via Saroch 771, 23041 Livigno (SO), ongeveer 100 meter lopen van de skiliften en 50 meter van de skischool en verhuur van uitrusting. Het is een locatie die praktisch maar rustig is, ongeveer 15 minuten lopen van het centrum van het dorp — handig om eenmaal aangekomen te voet naar piste, winkels en restaurants te gaan.',
+            'Ironwood Livigno bevindt zich aan de Via Saroch 767, 23041 Livigno (SO), ongeveer 100 meter lopen van de skiliften en 50 meter van de skischool en verhuur van uitrusting. Het is een locatie die praktisch maar rustig is, ongeveer 15 minuten lopen van het centrum van het dorp — handig om eenmaal aangekomen te voet naar piste, winkels en restaurants te gaan.',
             'De exacte GPS-coördinaten zijn 46.525061, 10.126967: handig om in te voeren in de navigatie, vooral op de laatste bergkilometers waar het mobiele netwerk minder betrouwbaar kan zijn.'
           ]
         },
@@ -1983,7 +1983,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         }
       ],
       highlights: [
-        'Via Saroch 771, Livigno (SO) — 100 m van de skiliften',
+        'Via Saroch 767, Livigno (SO) — 100 m van de skiliften',
         'Gratis parkeerplaats inbegrepen',
         'GPS-coördinaten: 46.525061, 10.126967',
         'Flexibele check-in, bevestigd via WhatsApp'
@@ -1993,7 +1993,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       navLabel: 'Hoe je hier komt',
       relatedLinkLabel: 'Lees de volledige gids: trein, auto of vliegtuig vanuit Milaan',
       faq: [
-        { q: 'Wat is het exacte adres van Ironwood Livigno?', a: 'Via Saroch 771, 23041 Livigno (SO) — GPS-coördinaten 46.525061, 10.126967.' },
+        { q: 'Wat is het exacte adres van Ironwood Livigno?', a: 'Via Saroch 767, 23041 Livigno (SO) — GPS-coördinaten 46.525061, 10.126967.' },
         { q: 'Is parkeren inbegrepen?', a: 'Ja, bij het appartement hoort een gratis parkeerplaats.' },
         { q: 'Hoe bereik je Livigno met de auto of trein?', a: 'Met de auto vanuit Milaan via de SS38 naar de Foscagno-pas (vanuit Zwitserland neem je in plaats daarvan de Forcola di Livigno); met de trein tot Tirano en verder met een lijnbus, met overstap in Bormio.' }
       ]
@@ -2001,7 +2001,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     zh: {
       title: '如何抵达Ironwood Livigno:地址、停车与最后几公里',
       metaTitle: '如何抵达Ironwood Livigno | 地址、停车与最后路段',
-      metaDescription: '地址、免费停车位与距缆车的距离:前往Ironwood Livigno(via Saroch 771)的实用指南,不会有任何意外。',
+      metaDescription: '地址、免费停车位与距缆车的距离:前往Ironwood Livigno(via Saroch 767)的实用指南,不会有任何意外。',
       eyebrow: '如何抵达',
       intro:
         '如果您已决定入住Ironwood Livigno,本页汇总了旅程最后一段的实用信息:公寓的确切位置、如何从Foscagno山口或Tirano抵达,以及关于停车和到达的注意事项。有关从米兰出发乘坐火车、汽车或飞机的完整指南,请参阅本页底部链接的专文。',
@@ -2009,7 +2009,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: '地址与确切位置',
           body: [
-            '位于via Saroch 771, 23041 Livigno (SO)的Ironwood Livigno,距滑雪缆车约100米步行路程,距滑雪学校和器材租赁点50米。这里地理位置优越却十分安静,距镇中心约步行15分钟——抵达后步行即可前往雪道、商店和餐厅,无需驾车。',
+            '位于via Saroch 767, 23041 Livigno (SO)的Ironwood Livigno,距滑雪缆车约100米步行路程,距滑雪学校和器材租赁点50米。这里地理位置优越却十分安静,距镇中心约步行15分钟——抵达后步行即可前往雪道、商店和餐厅,无需驾车。',
             '确切GPS坐标为46.525061, 10.126967:建议输入导航系统,尤其是在山区最后几公里,那里的网络信号可能不太稳定。'
           ]
         },
@@ -2029,7 +2029,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         }
       ],
       highlights: [
-        'Via Saroch 771, Livigno (SO)——距滑雪缆车100米',
+        'Via Saroch 767, Livigno (SO)——距滑雪缆车100米',
         '含免费停车位',
         'GPS坐标:46.525061, 10.126967',
         '灵活入住时间,通过WhatsApp确认'
@@ -2039,7 +2039,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       navLabel: '如何抵达',
       relatedLinkLabel: '阅读完整指南:从米兰出发的火车、汽车或飞机',
       faq: [
-        { q: 'Ironwood Livigno的确切地址是什么?', a: 'Via Saroch 771, 23041 Livigno (SO)——GPS坐标46.525061, 10.126967。' },
+        { q: 'Ironwood Livigno的确切地址是什么?', a: 'Via Saroch 767, 23041 Livigno (SO)——GPS坐标46.525061, 10.126967。' },
         { q: '是否含停车位?', a: '是的,公寓附带一个免费停车位。' },
         { q: '如何自驾或乘火车抵达利维尼奥?', a: '自驾从米兰出发沿SS38公路前往Foscagno山口(从瑞士方向则经由Forcola di Livigno山口);乘火车可到Tirano站,再转乘班车,在Bormio换乘。' }
       ]
@@ -2047,7 +2047,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
     ja: {
       title: 'Ironwood Livignoへのアクセス:住所、駐車場、そして最後の道のり',
       metaTitle: 'Ironwood Livignoへのアクセス | 住所、駐車場、最後の区間',
-      metaDescription: '住所、無料駐車場、リフトまでの距離。Ironwood Livigno(Via Saroch 771)へ迷わずたどり着くための実用ガイドです。',
+      metaDescription: '住所、無料駐車場、リフトまでの距離。Ironwood Livigno(Via Saroch 767)へ迷わずたどり着くための実用ガイドです。',
       eyebrow: 'アクセス',
       intro:
         'すでにIronwood Livignoへの滞在を決めている方のために、このページでは旅の最後の区間に関する実用的な情報をまとめています。アパートメントの正確な場所、Foscagno峠やティラノからのアクセス方法、駐車場や到着時に知っておくべきことなどです。ミラノからの電車、車、飛行機での行き方については、このページ下部にリンクした専用記事に詳細をまとめています。',
@@ -2055,7 +2055,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: '住所と正確な場所',
           body: [
-            'Ironwood LivignoはVia Saroch 771, 23041 Livigno (SO)にあり、スキーリフトから徒歩約100m、スキースクールとレンタル用品店から50mの場所にあります。便利でありながら静かな立地で、町の中心部からは徒歩約15分。到着後は徒歩でゲレンデやお店、レストランへアクセスできます。',
+            'Ironwood LivignoはVia Saroch 767, 23041 Livigno (SO)にあり、スキーリフトから徒歩約100m、スキースクールとレンタル用品店から50mの場所にあります。便利でありながら静かな立地で、町の中心部からは徒歩約15分。到着後は徒歩でゲレンデやお店、レストランへアクセスできます。',
             '正確なGPS座標は46.525061, 10.126967です。特に山道の最後の数キロメートルは携帯電波が不安定になることがあるため、カーナビに入力しておくと安心です。'
           ]
         },
@@ -2075,7 +2075,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         }
       ],
       highlights: [
-        'Via Saroch 771, Livigno (SO) — スキーリフトから100m',
+        'Via Saroch 767, Livigno (SO) — スキーリフトから100m',
         '無料駐車場付き',
         'GPS座標:46.525061, 10.126967',
         '柔軟なチェックイン、WhatsAppで確認'
@@ -2085,7 +2085,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
       navLabel: 'アクセス',
       relatedLinkLabel: '完全ガイドを読む:ミラノからの電車・車・飛行機',
       faq: [
-        { q: 'Ironwood Livignoの正確な住所は?', a: 'Via Saroch 771, 23041 Livigno (SO)——GPS座標46.525061, 10.126967。' },
+        { q: 'Ironwood Livignoの正確な住所は?', a: 'Via Saroch 767, 23041 Livigno (SO)——GPS座標46.525061, 10.126967。' },
         { q: '駐車場は含まれていますか?', a: 'はい、アパートメントには無料駐車場が含まれています。' },
         { q: '車や電車でリヴィーニョへ行くにはどうすればよいですか?', a: '車の場合、ミラノからSS38号線でFoscagno峠へ向かいます(スイスからの場合はForcola di Livignoを経由)。電車の場合はティラノ駅で下車し、ボルミオで乗り換えて路線バスで向かいます。' }
       ]

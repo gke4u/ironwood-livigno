@@ -5,25 +5,25 @@
 | Field | Value |
 |---|---|
 | Name | **Ironwood Livigno** |
-| Address | Via Saroch 771, 23041 Livigno (SO), Italia |
+| Address | Via Saroch 767, 23041 Livigno (SO), Italia |
 | Phone / WhatsApp | +39 0342 929285 |
 | Email | info@ironwoodlivigno.com |
 | Website | https://ironwoodlivigno.com |
 | Coordinates | 46.525061, 10.126967 (owner's Google Maps pin) |
 | National ID | CIN IT014037C274OJ27T8 |
 
-On the site the NAP is identical on every page (footer of all 361 URLs, contact pages in 12 languages, JSON-LD). Checked by the audit; no variants found.
+On the site the NAP is identical on every page (footer of all 361 URLs, contact pages in 12 languages, JSON-LD). **2026-10-02:** the owner confirmed the street number is **767**; the site had 771 everywhere (footer, contact, JSON-LD, privacy, llms files, 12 languages) and was corrected the same day. Check that Google Business Profile, Airbnb and Holidu also show 767.
 
 ## Consistency across the web (evidence: web searches 2026-10-02)
 
 | Source | What it shows | Conflict | Action (who) |
 |---|---|---|---|
 | Google Business Profile | Linked from the site (reviews section, CID) | — | Now also in JSON-LD `sameAs` |
-| **livigno.eu** (official tourism portal) | "Appartamenti Iron Wood", **Via Saroch 767**, star classification | **Name and street number differ** | Owner: ask APT Livigno to show "Ironwood Livigno", Via Saroch 771, and a link to ironwoodlivigno.com |
+| **livigno.eu** (official tourism portal) | "Appartamenti Iron Wood", Via Saroch 767, star classification | **Name differs** (address matches) | Owner: ask APT Livigno to show "Ironwood Livigno" and a link to ironwoodlivigno.com |
 | Expedia (Holidu syndication) | "Holiday Apartment Iron Wood Near Slopes With 2 Balconies Wi-Fi" — "direct access to the ski slopes" | Name variant; **ski access overstated** | Owner: edit the Holidu listing title/description ("Ironwood Livigno", "about 100 m on foot from the lifts") |
 | Holidu / livigno.eu | "grocery shop 20 m, 2 supermarkets 80 m" | Not on the site | Owner to confirm → then add to location points |
 | Airbnb | Listing linked in `sameAs` | — | Keep name "Ironwood Livigno" in the title |
-| Instagram | @ironwood_livigno | — | Bio: add "Via Saroch 771, Livigno" + site link |
+| Instagram | @ironwood_livigno | — | Bio: add "Via Saroch 767, Livigno" + site link |
 
 Naming rule (spec 54): the official name is **Ironwood Livigno**. Do not use "Iron Wood", "Appartamenti Iron Wood", "Ironwood Apartment" or "Casa IronWood" on new listings.
 

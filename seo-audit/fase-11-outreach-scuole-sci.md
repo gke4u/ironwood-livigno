@@ -35,7 +35,7 @@ Nota: su Ski Planet un sito terzo riporta `info@skiplanetlivigno.it`, ma il loro
 ```
 Buongiorno,
 
-sono Francesco di Ironwood Livigno, l'appartamento vacanze in Via Saroch 771, a pochi passi dal vostro skilift Doss 18.
+sono Francesco di Ironwood Livigno, l'appartamento vacanze in Via Saroch 767, a pochi passi dal vostro skilift Doss 18.
 
 Molti dei nostri ospiti sono famiglie che arrivano con bambini da iscrivere a scuola sci, e il primo consiglio che ci chiedono è proprio a chi rivolgersi. Essendo praticamente vicini di casa, ci piacerebbe indicarvi come riferimento ai nostri ospiti in modo più strutturato.
 
@@ -45,19 +45,19 @@ Se vi va, passo volentieri da voi per conoscerci prima dell'apertura della stagi
 
 Grazie e buona preparazione della stagione,
 Francesco
-Ironwood Livigno — Via Saroch 771, Livigno
+Ironwood Livigno — Via Saroch 767, Livigno
 +39 0342 929285 · info@ironwoodlivigno.com
 https://ironwoodlivigno.com
 ```
 
 ## Email 2 — Ski Planet
 
-**Oggetto:** Ironwood Livigno (Via Saroch 771): collaborazione con Ski Planet
+**Oggetto:** Ironwood Livigno (Via Saroch 767): collaborazione con Ski Planet
 
 ```
 Buongiorno,
 
-sono Francesco di Ironwood Livigno, l'appartamento vacanze in Via Saroch 771, a poche decine di metri dalla vostra sede davanti a San Rocco.
+sono Francesco di Ironwood Livigno, l'appartamento vacanze in Via Saroch 767, a poche decine di metri dalla vostra sede davanti a San Rocco.
 
 I nostri ospiti ci chiedono spesso dove prendere lezioni e noleggiare l'attrezzatura, e ci piacerebbe consigliarvi in modo stabile: siete i più comodi da raggiungere a piedi dall'appartamento.
 
@@ -67,7 +67,7 @@ Possiamo sentirci o incontrarci quando vi è più comodo.
 
 Grazie,
 Francesco
-Ironwood Livigno — Via Saroch 771, Livigno
+Ironwood Livigno — Via Saroch 767, Livigno
 +39 0342 929285 · info@ironwoodlivigno.com
 https://ironwoodlivigno.com
 ```
@@ -79,7 +79,7 @@ https://ironwoodlivigno.com
 ```
 Ciao,
 
-sono Francesco di Ironwood Livigno, appartamento vacanze in Via Saroch 771, a due passi dalla vostra scuola.
+sono Francesco di Ironwood Livigno, appartamento vacanze in Via Saroch 767, a due passi dalla vostra scuola.
 
 Ospitiamo spesso famiglie e gruppi che cercano un maestro per qualche lezione privata, e ci piacerebbe avere una scuola di riferimento vicina da consigliare.
 
@@ -89,7 +89,7 @@ Fammi sapere se ti interessa, passo volentieri a presentarmi.
 
 Grazie,
 Francesco
-Ironwood Livigno — Via Saroch 771, Livigno
+Ironwood Livigno — Via Saroch 767, Livigno
 +39 0342 929285 · info@ironwoodlivigno.com
 ```
 
@@ -100,7 +100,7 @@ Ironwood Livigno — Via Saroch 771, Livigno
 ```
 Buongiorno,
 
-sono Francesco di Ironwood Livigno, l'appartamento vacanze in Via Saroch 771, vicino ai vostri punti noleggio di Via Saroch.
+sono Francesco di Ironwood Livigno, l'appartamento vacanze in Via Saroch 767, vicino ai vostri punti noleggio di Via Saroch.
 
 Ogni settimana in inverno i nostri ospiti ci chiedono dove noleggiare sci e scarponi. Ci piacerebbe consigliarvi come noleggio di riferimento, visto che siete a pochi passi dall'appartamento.
 
@@ -110,7 +110,7 @@ Resto a disposizione per sentirci.
 
 Grazie,
 Francesco
-Ironwood Livigno — Via Saroch 771, Livigno
+Ironwood Livigno — Via Saroch 767, Livigno
 +39 0342 929285 · info@ironwoodlivigno.com
 ```
 
@@ -121,7 +121,7 @@ Ironwood Livigno — Via Saroch 771, Livigno
 ```
 Buongiorno,
 
-sono Francesco di Ironwood Livigno, appartamento vacanze in Via Saroch 771, sul lato del Carosello 3000 dove si trova anche la vostra sede di Via Saroch 1242.
+sono Francesco di Ironwood Livigno, appartamento vacanze in Via Saroch 767, sul lato del Carosello 3000 dove si trova anche la vostra sede di Via Saroch 1242.
 
 Molti nostri ospiti sciano al Carosello e ci chiedono una scuola affidabile per bambini e principianti. Ci piacerebbe consigliarvi.
 
@@ -129,7 +129,7 @@ Se i vostri clienti vi chiedono un alloggio comodo per il Carosello, potreste se
 
 Grazie per l'attenzione,
 Francesco
-Ironwood Livigno — Via Saroch 771, Livigno
+Ironwood Livigno — Via Saroch 767, Livigno
 +39 0342 929285 · info@ironwoodlivigno.com
 https://ironwoodlivigno.com
 ```

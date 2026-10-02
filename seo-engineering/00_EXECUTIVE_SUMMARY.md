@@ -16,7 +16,7 @@ A static, 12-language site (361 indexable URLs) on Cloudflare Workers. After thi
 
 ## Biggest opportunities (outside the code)
 
-- **Official tourism portal livigno.eu** lists "Appartamenti Iron Wood", **Via Saroch 767** — fix to "Ironwood Livigno", 771, with a website link.
+- **Address corrected 2026-10-02**: the owner confirmed **Via Saroch 767** (the site said 771 on every page, JSON-LD and llms files; livigno.eu was right). Fixed everywhere. Official tourism portal livigno.eu still uses the name "Appartamenti Iron Wood" — ask for "Ironwood Livigno" + a website link.
 - **Holidu listing** (syndicated to Expedia) says "direct access to the ski slopes" and uses "Iron Wood" — align.
 - **Prices**: nothing published; price-intent searches and AI answers can only say "ask".
 - **Search Console data**: needed for real query/CTR work (not accessible in this session).
