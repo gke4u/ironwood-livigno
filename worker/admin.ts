@@ -249,6 +249,7 @@ export function adminPage(): string {
       <div class="actions">
         <button type="button" id="prepOffer">Prepara post dell’offerta</button>
         <button type="button" id="prepPhoto">Prepara foto della settimana</button>
+        <button type="button" id="prepDescription" class="secondary">Descrizione del profilo</button>
       </div>
       <p id="manualLast" class="sub"></p>
       <div id="manualPanel" class="panel hidden"></div>
@@ -715,6 +716,24 @@ function copyField(label, value, multiline) {
 function step(html) { const li = document.createElement('li'); li.innerHTML = html; return li; }
 const GBP_URL = 'https://business.google.com/locations';
 function itDate(d) { return d.slice(8, 10) + '/' + d.slice(5, 7) + '/' + d.slice(0, 4); }
+
+// Profile description: same facts as the site (property-facts.json), max 750
+// characters, no links or phone numbers (Google's rules for this field).
+const GBP_DESCRIPTION = 'Ironwood Livigno è un appartamento vacanze di 90 m² in Via Saroch 767, a Livigno, a 100 metri a piedi dallo skilift San Rocco, collegato sci ai piedi al Carosello 3000. Tre camere da letto e due bagni completi per un massimo di 6 ospiti, con sauna a infrarossi e bagno turco privati, mai condivisi con altri ospiti. Fermata dell’autobus a 40 metri, market di fronte e due supermercati entro 100 metri. Parcheggio gratuito e deposito per sci e bici. Su richiesta: colazione in una struttura convenzionata a 50 metri, e-bike a noleggio, culla e seggiolone. Aperto tutto l’anno, gestito direttamente dalla famiglia proprietaria.';
+$('prepDescription').addEventListener('click', () => {
+  const panel = $('manualPanel');
+  panel.innerHTML = '';
+  panel.classList.remove('hidden');
+  const h = document.createElement('h3'); h.textContent = 'Descrizione del profilo (' + GBP_DESCRIPTION.length + ' caratteri su 750)';
+  const ol = document.createElement('ol');
+  ol.append(
+    step('Tocca <b>Copia</b> qui sopra.'),
+    step('Apri <a href="' + GBP_URL + '" target="_blank" rel="noopener">il tuo profilo Google</a> (o su Google Maps: tua foto → Il tuo profilo dell’attività) → <b>Modifica profilo</b> → <b>Informazioni</b> → <b>Descrizione</b>.'),
+    step('Cancella il testo vecchio, incolla e premi <b>Salva</b>. Google la controlla prima di mostrarla.')
+  );
+  panel.append(h, copyField('Descrizione', GBP_DESCRIPTION, true), ol);
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+});
 
 $('prepOffer').addEventListener('click', async (e) => {
   const panel = $('manualPanel');
