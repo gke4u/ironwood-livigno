@@ -22,7 +22,7 @@ Link: `https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno?utm_source=
 ### Post 3 — pubblica a fine settembre/inizio ottobre (apertura stagione sci, urgenza prenotazione)
 
 ```
-La stagione sciistica del Carosello 3000 si avvicina! Ironwood Livigno è a 100 metri dagli impianti, con deposito sci dedicato e sauna calda ad aspettarvi dopo le piste. Le camere per Natale e Capodanno si stanno già riempiendo — prenota diretto per il miglior prezzo.
+La stagione sciistica del Carosello 3000 si avvicina! Ironwood Livigno è a 100 metri dallo skilift San Rocco, collegato sci ai piedi al Carosello 3000, con deposito sci dedicato e sauna calda ad aspettarvi dopo le piste. Le camere per Natale e Capodanno si stanno già riempiendo — prenota diretto per il miglior prezzo.
 ```
 
 ## Post ottobre – dicembre 2026 (aggiunti il 30 settembre 2026)
@@ -43,7 +43,7 @@ Link: `https://ironwoodlivigno.com/it?utm_source=google&utm_medium=gbp&utm_campa
 Foto: una camera da letto.
 
 ```
-Settimana bianca in famiglia? Da noi la scuola sci è a pochi passi e gli impianti a 100 metri: niente auto, niente navette. Culla e seggiolone su richiesta, deposito sci dedicato, e la sera sauna privata per i grandi mentre i bimbi si scaldano davanti al camino.
+Settimana bianca in famiglia? Da noi la scuola sci è a 50 metri e lo skilift San Rocco a 100 metri: niente auto, niente navette. Culla e seggiolone su richiesta, deposito sci dedicato, e la sera sauna privata per i grandi mentre i bimbi si scaldano davanti al camino.
 ```
 Link: `https://ironwoodlivigno.com/famiglie?utm_source=google&utm_medium=gbp&utm_campaign=post-famiglie`
 
@@ -70,7 +70,7 @@ Link: `https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno?utm_source=
 Pubblicalo quando gli impianti annunciano la data ufficiale di apertura, e scrivila nel testo.
 
 ```
-Si torna sugli sci! Gli impianti di Livigno riaprono il [DATA UFFICIALE]. Ironwood Livigno è a 100 metri dalle piste: parcheggi l'auto e per tutta la vacanza ti muovi a piedi. Ultime date disponibili per dicembre: scrivici su WhatsApp dal link qui sotto.
+Si torna sugli sci! Gli impianti di Livigno riaprono il [DATA UFFICIALE]. Ironwood Livigno è a 100 metri dallo skilift San Rocco, collegato sci ai piedi al Carosello 3000: parcheggi l'auto e per tutta la vacanza ti muovi a piedi. Ultime date disponibili per dicembre: scrivici su WhatsApp dal link qui sotto.
 ```
 Link: `https://ironwoodlivigno.com/inverno?utm_source=google&utm_medium=gbp&utm_campaign=post-apertura`
 
@@ -88,7 +88,7 @@ Link: `https://ironwoodlivigno.com/blog/natale-capodanno-a-livigno?utm_source=go
 Google mostra il post nella lingua in cui lo scrivi. Se vuoi raggiungere anche i turisti stranieri, ogni tanto puoi pubblicarne uno in inglese:
 
 ```
-A private sauna and steam bath inside your apartment, 100 m from Livigno's ski lifts. Ironwood Livigno sleeps up to 6 in 3 bedrooms, with free parking and a ski room. Plan your winter: message us on WhatsApp via the link below.
+A private sauna and steam bath inside your apartment, 100 m from the San Rocco ski lift, linked on skis to Carosello 3000. Ironwood Livigno sleeps up to 6 in 3 bedrooms, with free parking and a ski room. Plan your winter: message us on WhatsApp via the link below.
 ```
 Link: `https://ironwoodlivigno.com/en?utm_source=google&utm_medium=gbp&utm_campaign=post-en`
 
@@ -114,7 +114,7 @@ Se trovi questa sezione (di solito visibile scorrendo la scheda pubblica su Maps
 R: È ad uso esclusivo degli ospiti dell'appartamento, mai condivisa con altre unità.
 
 **D: Quanto dista dagli impianti di risalita?**
-R: Circa 100 metri a piedi. Scuola sci e noleggio attrezzatura sono a circa 50 metri.
+R: Circa 100 metri a piedi fino allo skilift San Rocco, che collega sci ai piedi al Carosello 3000; lo skilift Doss 18 è a circa 200 metri e il Carosello 3000 a circa 400 metri. Scuola sci e noleggio attrezzatura sono a circa 50 metri.
 
 **D: C'è il parcheggio?**
 R: Sì, l'appartamento include un posto auto gratuito.
@@ -122,10 +122,12 @@ R: Sì, l'appartamento include un posto auto gratuito.
 **D: Accettate animali domestici?**
 R: No, l'appartamento non accetta animali domestici.
 
-## Descrizione attività (se un giorno ritrovi quel campo)
+## Descrizione attività (aggiornata 2 ottobre 2026)
+
+Copia e incolla nel campo "Descrizione" del profilo (Modifica profilo → Informazioni → Descrizione). Sono 625 caratteri, il limite di Google è 750. Niente link e niente numero di telefono: Google li vieta nella descrizione.
 
 ```
-Ironwood Livigno è un appartamento vacanze di 90 m² a Livigno, a soli 100 metri dagli impianti di risalita del Carosello 3000. Tre camere da letto e due bagni per un massimo di 6 ospiti, con sauna a infrarossi e bagno turco privati — mai condivisi con altri ospiti — disponibili in ogni momento. Finiture in legno e pietra in stile "refuge moderno", parcheggio gratuito incluso. Su richiesta: colazione presso struttura convenzionata a 50 m, noleggio e-bike in loco, culla e seggiolone per famiglie con bambini. Aperto tutto l'anno: sci in inverno, mountain bike, trekking e Lago di Livigno in estate. Valutazione media 5,0/5 su recensioni verificate Google e Airbnb. Scrivici su WhatsApp per disponibilità e preventivo.
+Ironwood Livigno è un appartamento vacanze di 90 m² in Via Saroch 767, a Livigno, a 100 metri a piedi dallo skilift San Rocco, collegato sci ai piedi al Carosello 3000. Tre camere da letto e due bagni completi per un massimo di 6 ospiti, con sauna a infrarossi e bagno turco privati, mai condivisi con altri ospiti. Fermata dell'autobus a 40 metri, market di fronte e due supermercati entro 100 metri. Parcheggio gratuito e deposito per sci e bici. Su richiesta: colazione in una struttura convenzionata a 50 metri, e-bike a noleggio, culla e seggiolone. Aperto tutto l'anno, gestito direttamente dalla famiglia proprietaria.
 ```
 
 ## Attributi (sezione "Altro" → "Frequentazione", quella che già vedi)
