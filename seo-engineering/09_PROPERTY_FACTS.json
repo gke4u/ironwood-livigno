@@ -114,20 +114,27 @@
         "items": [
           "restaurants",
           "bars",
-          "wine bar",
+          "My Wine — wine shop and wine bar (Via Saroch 810)",
           "ski schools",
           "clothing shops",
           "greengrocer",
-          "launderette"
+          "launderette",
+          "Amazing 24 — automated shop: snacks, drinks, self-service laundry (Via Saroch 822)"
         ],
         "range_m": "70-100",
-        "source": "owner, 2026-10-02"
+        "source": "owner, 2026-10-02",
+        "named_places_source": "owner names; addresses and type from paginegialle.it / livignomiwine.it / holidaylivigno.net, 2026-10-02"
       }
     },
     "ski_access_claim": "About 100 m on foot to the San Rocco ski lift, which links on skis to Carosello 3000. NOT ski-in/ski-out: never describe it as ski-in, ski-out or ski-to-door.",
     "source": "location section, FAQ q2/q13, llms.txt",
     "address_note": "Street number 767 confirmed by the owner on 2026-10-02 (the site said 771 until then)",
-    "lifts_source": "Owner, 2026-10-02"
+    "lifts_source": "Owner, 2026-10-02",
+    "neighbour_street_numbers": {
+      "810": "My Wine",
+      "822": "Amazing 24",
+      "note": "other businesses on Via Saroch named on the site; the property itself is 767"
+    }
   },
   "capacity": {
     "max_guests": 6,

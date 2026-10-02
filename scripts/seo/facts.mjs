@@ -49,6 +49,8 @@ export function checkFacts(pages) {
           // distances: 50 m is the ski school/rental, which may sit next to "impianti"
           // other confirmed distances: ski school 50 m, Doss 18 lift 200 m, Carosello 3000 400 m
           const D = facts.location.distances;
+          // neighbours' addresses on the same street (My Wine 810, Amazing 24 822)
+          if (name === 'street_number' && Object.keys(facts.location.neighbour_street_numbers ?? {}).map(Number).includes(v)) continue;
           if (name === 'lift_distance_m' && [D.ski_school.value, D.doss18_lift.value, D.carosello3000.value].includes(v)) continue;
           if (v !== expected) {
             const ctx = text.slice(Math.max(0, m.index - 60), m.index + m[0].length + 40);
