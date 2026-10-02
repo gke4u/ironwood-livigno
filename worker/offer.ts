@@ -21,7 +21,8 @@ export type Offer = {
 };
 
 export type Stay = { checkIn: string; checkOut: string };
-export const MAX_EXTRA_STAYS = 3;
+// Enough for every weekend of a season stretch (e.g. ten weekends in a row). Keep in sync with EXTRA_ROWS in admin.ts.
+export const MAX_EXTRA_STAYS = 9;
 
 export const OFFER_KEY = 'offer';
 

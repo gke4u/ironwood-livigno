@@ -297,6 +297,10 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
     return fill(t.nights[new Intl.PluralRules(intl).select(n)] ?? t.nights.other, { n: String(n) });
   };
   const nightsLabel = nightsOf(stay);
+  // More than two periods that all start and end on the same weekdays with the
+  // same nights: shown as small date buttons, with "Fri – Sun · 2 nights" said once.
+  const sameShape = (s: Stay) => dayRange(s, { weekday: 'short' }) + nightsOf(s);
+  const compact = stays.length > 2 && stays.every((s) => sameShape(s) === sameShape(stays[0]));
   const pct = offer.originalPrice ? Math.round(((offer.originalPrice - offer.price) / offer.originalPrice) * 100) : 0;
   const unitLabel = offer.unit === 'night' ? t.perNight : t.perStay;
   const features = isSkiStay(stay.checkIn, stay.checkOut) ? t.features : t.features.map((f, i) => (i === 1 ? t.featureOffSeason : f));
@@ -316,7 +320,8 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
   );
 
   const values = { checkIn: longDate(stay.checkIn), checkOut: longDate(stay.checkOut), price: priceText };
-  const waText = fill(t.waMessage, values);
+  // Italian elides "al"/"dal" before 8 and 11: "dall’8 all’11 novembre".
+  const waText = fill(t.waMessage, values).replace(/\b(d?al) (8|11) /g, (m, w, n) => (locale === 'it' ? `${w}l’${n} ` : m));
   const waHref = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(waText)}`;
   const mailHref = `mailto:${EMAIL}?subject=${encodeURIComponent(fill(t.emailSubject, values))}&body=${encodeURIComponent(`${waText}\n\n${t.emailFields}`)}`;
 
@@ -350,20 +355,25 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
       )}
 
       {open && (
-        <div className="fixed inset-0 z-[80] flex items-end md:items-center justify-center" role="presentation">
+        <div
+          className="fixed inset-0 z-[80] flex items-end md:items-center justify-center p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:p-0"
+          role="presentation"
+        >
           <div
             className={`absolute inset-0 bg-ink/70 backdrop-blur-sm transition-opacity duration-300 ${shown ? 'opacity-100' : 'opacity-0'}`}
             onClick={hide}
             aria-hidden
           />
-          {/* Height in dvh (the part of the screen really visible): on phones 92vh is
+          {/* Height in dvh (the part of the screen really visible): on phones vh is
               measured without the browser's address bar, so the top of the pop-up —
-              the photo with the discount badge — ended up hidden under it. */}
+              the photo with the discount badge — ended up hidden under it.
+              Phones: a floating card with the site showing all round it (a full-width
+              sheet didn't read as a pop-up). */}
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="offer-title"
-            className={`relative w-full md:max-w-4xl md:mx-6 max-h-[92vh] supports-[height:100dvh]:max-h-[92dvh] md:max-h-[94vh] md:supports-[height:100dvh]:max-h-[94dvh] overflow-y-auto overscroll-contain bg-[#3D3026] text-mist rounded-t-[2rem] md:rounded-[2rem] shadow-[0_40px_120px_-20px_rgba(0,0,0,0.6)] md:grid md:grid-cols-[1.05fr_1fr] transition-all duration-500 ease-out motion-reduce:transition-none ${
+            className={`relative w-full md:max-w-4xl md:mx-6 max-h-[84vh] supports-[height:100dvh]:max-h-[84dvh] md:max-h-[94vh] md:supports-[height:100dvh]:max-h-[94dvh] overflow-y-auto overscroll-contain bg-[#3D3026] text-mist rounded-[1.75rem] md:rounded-[2rem] shadow-[0_40px_120px_-20px_rgba(0,0,0,0.6)] md:grid md:grid-cols-[1.05fr_1fr] transition-all duration-500 ease-out motion-reduce:transition-none ${
               shown ? 'translate-y-0 opacity-100 md:scale-100' : 'translate-y-full md:translate-y-6 opacity-0 md:scale-95'
             }`}
           >
@@ -379,7 +389,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
               </svg>
             </button>
 
-            <div className="relative aspect-[var(--ar)] md:aspect-auto md:min-h-[540px] overflow-hidden" style={{ '--ar': phoneAspect } as React.CSSProperties}>
+            <div className="relative w-full aspect-[var(--ar)] max-h-[28vh] md:max-h-none md:aspect-auto md:min-h-[540px] overflow-hidden" style={{ '--ar': phoneAspect } as React.CSSProperties}>
               <span className="md:hidden absolute top-2.5 left-1/2 -translate-x-1/2 z-10 h-1.5 w-12 rounded-full bg-mist/60" aria-hidden />
               <picture>
                 {/* AVIF only while it reaches the size a computer needs: otherwise the browser would
@@ -414,29 +424,46 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
 
               {stays.length > 1 ? (
                 <fieldset className="mt-5">
-                  <legend className="text-[11px] uppercase tracking-widest text-mist/55">{t.chooseDates}</legend>
+                  <legend className="text-[11px] uppercase tracking-widest text-mist/55">
+                    {t.chooseDates}
+                    {/* Many periods all alike (e.g. every weekend, Fri–Sun): days and nights said once here. */}
+                    {compact && (
+                      <span className="normal-case tracking-normal text-gold font-semibold">
+                        {' '}
+                        · {dayRange(stays[0], { weekday: 'short' })} · {nightsLabel}
+                      </span>
+                    )}
+                  </legend>
                   {/* Phones: side by side and compact, so the price stays above the booking buttons. */}
-                  <div className="mt-2 grid grid-cols-2 md:grid-cols-1 gap-2">
+                  <div className={`mt-2 grid gap-2 ${compact ? 'grid-cols-3 md:grid-cols-4' : 'grid-cols-2 md:grid-cols-1'}`}>
                     {stays.map((s, i) => (
                       <label
                         key={s.checkIn}
-                        className={`flex flex-col md:flex-row md:items-center gap-0.5 md:gap-3 rounded-2xl px-3 py-2.5 md:px-4 md:py-3 cursor-pointer transition ring-1 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-gold ${
-                          i === picked ? 'bg-gold/15 ring-gold/70' : 'bg-mist/[0.06] ring-mist/10 hover:bg-mist/10'
-                        }`}
+                        className={`flex cursor-pointer transition ring-1 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-gold ${
+                          compact
+                            ? 'items-center justify-center text-center rounded-xl px-1.5 py-2 min-h-[44px]'
+                            : 'flex-col md:flex-row md:items-center gap-0.5 md:gap-3 rounded-2xl px-3 py-2.5 md:px-4 md:py-3'
+                        } ${i === picked ? 'bg-gold/15 ring-gold/70' : 'bg-mist/[0.06] ring-mist/10 hover:bg-mist/10'}`}
                       >
                         <input type="radio" name="offer-stay" className="sr-only" checked={i === picked} onChange={() => setPicked(i)} />
-                        <span
-                          className={`hidden md:block flex-none h-4 w-4 rounded-full ring-2 ${i === picked ? 'ring-gold bg-gold shadow-[inset_0_0_0_3px_#3D3026]' : 'ring-mist/40'}`}
-                          aria-hidden
-                        />
-                        <span className="md:hidden font-medium leading-snug">{dayRange(s, { day: 'numeric', month: 'short' })}</span>
-                        <span className="hidden md:inline font-medium leading-snug">
-                          {day(s.checkIn, { weekday: 'short', day: 'numeric', month: 'short' })} → {day(s.checkOut, { weekday: 'short', day: 'numeric', month: 'short' })}
-                        </span>
-                        <span className="md:ml-auto text-xs text-gold font-semibold whitespace-nowrap">
-                          <span className="md:hidden">{dayRange(s, { weekday: 'short' })} · </span>
-                          {nightsOf(s)}
-                        </span>
+                        {compact ? (
+                          <span className="text-[13px] font-medium leading-tight">{dayRange(s, { day: 'numeric', month: 'short' })}</span>
+                        ) : (
+                          <>
+                            <span
+                              className={`hidden md:block flex-none h-4 w-4 rounded-full ring-2 ${i === picked ? 'ring-gold bg-gold shadow-[inset_0_0_0_3px_#3D3026]' : 'ring-mist/40'}`}
+                              aria-hidden
+                            />
+                            <span className="md:hidden font-medium leading-snug">{dayRange(s, { day: 'numeric', month: 'short' })}</span>
+                            <span className="hidden md:inline font-medium leading-snug">
+                              {day(s.checkIn, { weekday: 'short', day: 'numeric', month: 'short' })} → {day(s.checkOut, { weekday: 'short', day: 'numeric', month: 'short' })}
+                            </span>
+                            <span className="md:ml-auto text-xs text-gold font-semibold whitespace-nowrap">
+                              <span className="md:hidden">{dayRange(s, { weekday: 'short' })} · </span>
+                              {nightsOf(s)}
+                            </span>
+                          </>
+                        )}
                       </label>
                     ))}
                   </div>

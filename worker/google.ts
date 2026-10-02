@@ -200,7 +200,7 @@ export function offerPostBody(o: OfferForPost, siteOrigin: string) {
   const where = o.skiStay ? '100 m dagli impianti' : '15 minuti a piedi dal centro';
   const stays = o.stays && o.stays.length > 1 ? o.stays : null;
   const when = stays
-    ? `soggiorno a scelta ${stays.map(fmtRange).join(' oppure ')}`
+    ? `soggiorno a scelta ${stays.slice(0, -1).map(fmtRange).join(', ')} oppure ${fmtRange(stays[stays.length - 1])}`
     : `soggiorno dal ${fmtDay(o.checkIn)} ${al(o.checkOut)}`;
   const summary =
     `Offerta speciale a Ironwood Livigno: ${when} ` +

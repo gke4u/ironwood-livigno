@@ -193,9 +193,8 @@ export function adminPage(): string {
         <details id="offerMore">
           <summary class="field">Altri periodi allo stesso prezzo (facoltativi)</summary>
           <p class="sub" style="margin-top:6px">Es. i due weekend successivi: nel pop-up il cliente sceglie il periodo che preferisce. I periodi già iniziati spariscono da soli dal sito.</p>
-          <div class="row2"><div><label class="field" for="offerIn1">Arrivo</label><input type="date" id="offerIn1"></div><div><label class="field" for="offerOut1">Partenza</label><input type="date" id="offerOut1"></div></div>
-          <div class="row2"><div><label class="field" for="offerIn2">Arrivo</label><input type="date" id="offerIn2"></div><div><label class="field" for="offerOut2">Partenza</label><input type="date" id="offerOut2"></div></div>
-          <div class="row2"><div><label class="field" for="offerIn3">Arrivo</label><input type="date" id="offerIn3"></div><div><label class="field" for="offerOut3">Partenza</label><input type="date" id="offerOut3"></div></div>
+          <div id="offerExtra"></div>
+          <button type="button" id="offerAddStay" class="secondary">+ Aggiungi un periodo</button>
         </details>
         <div class="row2">
           <div><label class="field" for="offerPrice">Prezzo offerta (€)</label><input type="number" id="offerPrice" min="1" step="1" inputmode="numeric" required></div>
@@ -314,7 +313,7 @@ function showPanel() {
 $('loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   $('loginError').textContent = '';
-  const btn = e.target.querySelector('button');
+  const btn = e.target.querySelector('button[type=submit]');
   btn.disabled = true;
   try {
     await api('login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ user: $('user').value, password: $('password').value }) });
@@ -361,6 +360,25 @@ function showOfferStatus(offer, today) {
 
 let offerBaseId = null;
 
+// Extra periods at the same price: one row per period, added with the button.
+// Same limit as MAX_EXTRA_STAYS in worker/offer.ts.
+const EXTRA_ROWS = 9;
+function addStayRow(st) {
+  const box = $('offerExtra');
+  const row = document.createElement('div');
+  row.className = 'row2';
+  row.innerHTML = '<div><label class="field">Arrivo</label><input type="date"></div><div><label class="field">Partenza</label><input type="date"></div>';
+  const [a, b] = row.querySelectorAll('input');
+  a.value = st ? st.checkIn : '';
+  b.value = st ? st.checkOut : '';
+  // A new arrival proposes the same length of stay as the main period.
+  a.addEventListener('change', () => { if (a.value && !b.value && nights() > 0) b.value = addDaysISO(a.value, nights()); });
+  box.appendChild(row);
+  $('offerAddStay').hidden = box.children.length >= EXTRA_ROWS;
+  return a;
+}
+$('offerAddStay').addEventListener('click', () => addStayRow().focus());
+
 // Same list and default as OFFER_IMAGES in worker/offer.ts.
 const OFFER_PICS = [
   ['esterno-giorno', 'La casa di giorno (foto piccola: sul computer meno nitida)'],
@@ -387,10 +405,8 @@ function fillOffer(offer, today) {
   $('offerCheckIn').value = offer ? offer.checkIn : '';
   $('offerCheckOut').value = offer ? offer.checkOut : '';
   const extra = (offer && offer.extraStays) || [];
-  [1, 2, 3].forEach((i) => {
-    $('offerIn' + i).value = extra[i - 1] ? extra[i - 1].checkIn : '';
-    $('offerOut' + i).value = extra[i - 1] ? extra[i - 1].checkOut : '';
-  });
+  $('offerExtra').innerHTML = '';
+  extra.forEach((st) => addStayRow(st));
   $('offerMore').open = extra.length > 0;
   $('offerPrice').value = offer ? offer.price : '';
   $('offerUnit').value = offer ? offer.unit : 'stay';
@@ -411,7 +427,7 @@ $('offerForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const msg = $('offerMsg');
   msg.className = ''; msg.textContent = '';
-  const btn = e.target.querySelector('button');
+  const btn = e.target.querySelector('button[type=submit]');
   btn.disabled = true;
   try {
     const data = await api('offer', {
@@ -423,7 +439,10 @@ $('offerForm').addEventListener('submit', async (e) => {
         active: $('offerActive').checked,
         checkIn: $('offerCheckIn').value,
         checkOut: $('offerCheckOut').value,
-        extraStays: [1, 2, 3].map((i) => ({ checkIn: $('offerIn' + i).value, checkOut: $('offerOut' + i).value })),
+        extraStays: Array.from(document.querySelectorAll('#offerExtra .row2')).map((row) => {
+          const [a, b] = row.querySelectorAll('input');
+          return { checkIn: a.value, checkOut: b.value };
+        }),
         price: $('offerPrice').value,
         unit: $('offerUnit').value,
         originalPrice: $('offerOriginal').value,
