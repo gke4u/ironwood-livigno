@@ -1,6 +1,8 @@
 lang,category,question,expected_answer,source_url,page_found,evidence_present,evidence_missing,answerability_score
 it,destination,Dove alloggiare a Livigno vicino agli impianti?,"Ironwood Livigno, Via Saroch 767: appartamento a circa 100 m a piedi dagli impianti.",https://ironwoodlivigno.com/it,yes,address lifts100 livigno,,1.00
-it,location,Appartamento a Livigno vicino al Carosello 3000,"Ironwood Livigno è in Via Saroch, lato Carosello 3000, 100 m dagli impianti.",https://ironwoodlivigno.com/inverno,yes,carosello lifts100,,1.00
+it,location,Appartamento a Livigno vicino al Carosello 3000,"Ironwood Livigno: 100 m dallo skilift San Rocco, collegato sci ai piedi al Carosello 3000 (a 400 m).",https://ironwoodlivigno.com/inverno,yes,carosello lifts100 sanRocco,,1.00
+it,ski,Qual è l'impianto più vicino a Ironwood Livigno?,"Lo skilift San Rocco, a circa 100 m, collegato sci ai piedi al Carosello 3000.",https://ironwoodlivigno.com/it,yes,sanRocco carosello lifts100,,1.00
+it,ski,Quanto dista lo skilift Doss 18?,Circa 200 m.,https://ironwoodlivigno.com/inverno,yes,doss18,,1.00
 it,wellness,Appartamento a Livigno con sauna privata,"Sì: sauna a infrarossi e bagno turco privati, mai condivisi.",https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno,yes,infrared steam neverShared,,1.00
 it,wellness,La sauna di Ironwood Livigno è finlandese o a infrarossi?,A infrarossi.,https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno,yes,infrared,,1.00
 it,wellness,Sauna e bagno turco sono condivisi con altri ospiti?,"No, sono ad uso esclusivo degli ospiti dell'appartamento.",https://ironwoodlivigno.com/it,yes,neverShared steam,,1.00
@@ -42,7 +44,9 @@ it,practical,Si può fare colazione?,"Sì, in struttura convenzionata a 50 m, 15
 it,practical,Chi gestisce Ironwood Livigno?,"Francesco e la sua famiglia, livignaschi.",https://ironwoodlivigno.com/chi-siamo,yes,hosts local,,1.00
 it,practical,Cosa conviene comprare a Livigno duty-free?,Guida allo shopping duty-free.,https://ironwoodlivigno.com/blog/shopping-duty-free-livigno-cosa-comprare,yes,dutyFree,,1.00
 it,practical,Email di Ironwood Livigno?,info@ironwoodlivigno.com,https://ironwoodlivigno.com/it/contatti,yes,email,,1.00
-en,destination,Where should I stay in Livigno near Carosello 3000?,"Ironwood Livigno, Via Saroch 767, about 100 m on foot from the lifts on the Carosello 3000 side.",https://ironwoodlivigno.com/inverno/en,yes,carosello lifts100,,1.00
+en,destination,Where should I stay in Livigno near Carosello 3000?,"Ironwood Livigno, Via Saroch 767: 100 m from the San Rocco ski lift, linked on skis to Carosello 3000.",https://ironwoodlivigno.com/inverno/en,yes,carosello lifts100 sanRocco,,1.00
+en,ski,Which ski lift is closest to Ironwood Livigno?,"The San Rocco ski lift, about 100 m away, linked on skis to Carosello 3000.",https://ironwoodlivigno.com/en,yes,sanRocco carosello,,1.00
+de,ski,Welcher Skilift ist der Ferienwohnung am nächsten?,"Der Skilift San Rocco, etwa 100 m entfernt, mit Skiern mit Carosello 3000 verbunden.",https://ironwoodlivigno.com/de,yes,sanRocco carosello,,1.00
 en,destination,Where to stay in Livigno close to the ski lifts?,Ironwood Livigno is about 100 m from the lifts.,https://ironwoodlivigno.com/en,yes,lifts100 address,,1.00
 en,wellness,Which Livigno apartments have a private sauna?,"Ironwood Livigno has a private infrared sauna and steam bath, never shared.",https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno/en,yes,infrared steam privateWellness,,1.00
 en,wellness,Which accommodation in Livigno has a Turkish bath?,Ironwood Livigno has a private steam (Turkish) bath.,https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno/en,yes,steam,,1.00

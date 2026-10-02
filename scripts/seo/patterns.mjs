@@ -14,6 +14,8 @@ export const F = {
   centre15: /15[\s-]?(minut|min|Minuten|minutter|minuter|minuten|分)/i,
   address: /Via Saroch/i,
   carosello: /Carosello/i,
+  sanRocco: /San Rocco/,
+  doss18: /Doss 18/,
   livigno: /Livigno|利维尼奥|リヴィーニョ/i,
   area90: /90\s?(m²|sqm|sq m|square met|平方米|㎡)/i,
   parkingFree: /parcheggio|posto auto|parking|Parkplatz|parkeringsplads|parkeringsplass|parkovac|parkeerplaats|miejsce parkingowe|停车|駐車/i,

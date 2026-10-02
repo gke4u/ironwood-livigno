@@ -70,6 +70,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
           heading: 'The advantage of coming home 100 metres from the slopes',
           body: [
             "Ironwood Livigno is just a 100-metre walk from the ski lifts, and 50 metres from the ski school and equipment rental: you can ski all morning without moving the car, come back for lunch if you like, and be back on the slopes in the afternoon without losing time getting around.",
+            "In detail: about 100 metres away is the San Rocco ski lift, which links on skis to Carosello 3000; about 200 metres away is the Doss 18 ski lift, and Carosello 3000 itself is about 400 metres away.",
             "But it's after the last run that the difference really shows. Inside the apartment, the infrared sauna and steam bath are private — never shared with other guests, unlike a hotel spa. That's when your muscles actually warm up, before you've even thought about dinner, sitting by the living room's electric fireplace.",
             "The apartment also includes a dedicated storage space for skis, boots and gear, so you don't have to carry everything inside every evening, plus a free parking space for anyone arriving by car."
           ]
@@ -117,6 +118,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
           heading: 'The advantage of coming home 100 meters from the slopes',
           body: [
             "Ironwood Livigno is just a 100-meter walk from the ski lifts, and 50 meters from the ski school and equipment rental: you can ski all morning without moving the car, come back for lunch if you like, and be back on the slopes in the afternoon without losing time getting around.",
+            "In detail: about 100 meters away is the San Rocco ski lift, which links on skis to Carosello 3000; about 200 meters away is the Doss 18 ski lift, and Carosello 3000 itself is about 400 meters away.",
             "But it's after the last run that the difference really shows. Inside the apartment, the infrared sauna and steam bath are private — never shared with other guests, unlike a hotel spa. That's when your muscles actually warm up, before you've even thought about dinner, sitting by the living room's electric fireplace.",
             "The apartment also includes a dedicated storage space for skis, boots and gear, so you don't have to carry everything inside every evening, plus a free parking space for anyone arriving by car."
           ]
@@ -163,6 +165,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
           heading: 'Der Vorteil, 100 Meter von der Piste entfernt zu wohnen',
           body: [
             'Ironwood Livigno liegt nur 100 Meter zu Fuß von den Skiliften entfernt und 50 Meter von Skischule und Ausrüstungsverleih: Sie können den ganzen Vormittag Ski fahren, ohne das Auto zu bewegen, bei Bedarf zum Mittagessen zurückkehren und am Nachmittag ohne Zeitverlust wieder auf die Piste.',
+            "Im Detail: Etwa 100 Meter entfernt liegt der Skilift San Rocco, der mit Skiern direkt mit Carosello 3000 verbunden ist; etwa 200 Meter entfernt der Skilift Doss 18, und Carosello 3000 selbst liegt etwa 400 Meter entfernt.",
             "Doch erst nach der letzten Abfahrt zeigt sich der wahre Unterschied. In der Wohnung sind Infrarotsauna und Dampfbad privat — nie mit anderen Gästen geteilt, anders als im Hotel-Spa. Genau dann werden die Muskeln wirklich warm, noch bevor Sie ans Abendessen denken, am elektrischen Kamin im Wohnzimmer.",
             'Die Wohnung verfügt außerdem über einen eigenen Abstellraum für Ski, Skischuhe und Ausrüstung, sodass Sie nicht jeden Abend alles hineintragen müssen, plus einen kostenlosen Parkplatz für die Anreise mit dem Auto.'
           ]
@@ -210,6 +213,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
           heading: "L'avantage de rentrer à 100 mètres des pistes",
           body: [
             "Ironwood Livigno se trouve à seulement 100 mètres à pied des remontées mécaniques et à 50 mètres de l'école de ski et de la location de matériel : vous pouvez skier toute la matinée sans déplacer la voiture, rentrer déjeuner si besoin, et retourner sur les pistes l'après-midi sans perdre de temps en trajets.",
+            "Plus précisément : à environ 100 mètres se trouve le téléski San Rocco, relié skis aux pieds au Carosello 3000 ; à environ 200 mètres le téléski Doss 18, et le Carosello 3000 lui-même est à environ 400 mètres.",
             "Mais c'est après la dernière descente que la différence se fait vraiment sentir. Dans l'appartement, le sauna infrarouge et le hammam sont privés — jamais partagés avec d'autres clients, contrairement à un spa d'hôtel. C'est le moment où les muscles se détendent vraiment, avant même de penser au dîner, près de la cheminée électrique du salon.",
             "L'appartement dispose aussi d'un espace dédié pour ranger skis, chaussures et matériel, pour ne pas avoir à tout rentrer chaque soir, ainsi que d'une place de parking gratuite pour les arrivées en voiture."
           ]
@@ -256,6 +260,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
           heading: 'Fordelen ved at bo 100 meter fra pisterne',
           body: [
             'Ironwood Livigno ligger kun 100 meter til fods fra skiliftene og 50 meter fra skiskole og udstyrsudlejning: du kan stå på ski hele formiddagen uden at flytte bilen, komme hjem til frokost hvis du vil, og være tilbage på pisten om eftermiddagen uden at spilde tid på transport.',
+            "Mere præcist: ca. 100 meter væk ligger skiliften San Rocco, som er forbundet på ski med Carosello 3000; ca. 200 meter væk ligger skiliften Doss 18, og selve Carosello 3000 ligger ca. 400 meter væk.",
             'Men det er efter dagens sidste tur, at forskellen for alvor mærkes. I lejligheden er den infrarøde sauna og dampbadet privat — aldrig delt med andre gæster, i modsætning til et hotelspa. Det er da, musklerne rigtig varmes op, endnu inden du tænker på aftensmaden, ved stuens elektriske pejs.',
             'Lejligheden har desuden et eget opbevaringsrum til ski, støvler og udstyr, så du ikke behøver bære alt ind hver aften, plus en gratis parkeringsplads for dem, der ankommer i bil.'
           ]
@@ -303,6 +308,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
           heading: 'Zaleta powrotu 100 metrów od stoków',
           body: [
             'Ironwood Livigno znajduje się zaledwie 100 metrów pieszo od wyciągów narciarskich i 50 metrów od szkółki narciarskiej i wypożyczalni sprzętu: możesz jeździć na nartach cały poranek bez ruszania samochodu, wrócić na obiad, jeśli chcesz, i po południu znów być na stoku bez straty czasu na dojazdy.',
+            "Dokładniej: około 100 metrów od apartamentu znajduje się wyciąg San Rocco, połączony na nartach z Carosello 3000; około 200 metrów – wyciąg Doss 18, a sam Carosello 3000 jest około 400 metrów.",
             'Ale to dopiero po ostatnim zjeździe naprawdę czuć różnicę. W apartamencie sauna na podczerwień i łaźnia parowa są prywatne — nigdy nie dzielone z innymi gośćmi, w przeciwieństwie do spa w hotelu. To wtedy mięśnie naprawdę się rozgrzewają, jeszcze zanim pomyślisz o kolacji, przy elektrycznym kominku w salonie.',
             'Apartament obejmuje też dedykowaną przechowalnię na narty, buty i sprzęt, więc nie trzeba wnosić wszystkiego do domu każdego wieczoru, a także bezpłatne miejsce parkingowe dla przyjeżdżających samochodem.'
           ]
@@ -349,6 +355,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
           heading: 'Výhoda návratu 100 metrů od sjezdovek',
           body: [
             'Ironwood Livigno se nachází pouhých 100 metrů pěšky od lyžařských vleků a 50 metrů od lyžařské školy a půjčovny vybavení: lyžovat můžete celé dopoledne, aniž byste hnuli autem, v případě potřeby se vrátit na oběd a odpoledne se opět vydat na sjezdovky bez ztráty času přesuny.',
+            "Podrobněji: asi 100 metrů odtud je vlek San Rocco, který je na lyžích propojen s Carosello 3000; asi 200 metrů je vlek Doss 18 a samotné Carosello 3000 je asi 400 metrů.",
             'Skutečný rozdíl ale pocítíte až po posledním sjezdu dne. V apartmánu jsou infrasauna a parní lázeň soukromé — nikdy sdílené s jinými hosty, na rozdíl od hotelového spa. Právě tehdy se svaly opravdu prohřejí, ještě než začnete myslet na večeři, u elektrického krbu v obývacím pokoji.',
             'Apartmán navíc zahrnuje vyhrazenou úschovnu na lyže, boty a vybavení, takže nemusíte nosit všechno dovnitř každý večer, a bezplatné parkovací místo pro ty, kdo přijíždějí autem.'
           ]
@@ -395,6 +402,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
           heading: 'Fordelen ved å bo 100 meter fra bakkene',
           body: [
             'Ironwood Livigno ligger bare 100 meter til fots fra skiheisene, og 50 meter fra skiskole og utstyrsutleie: du kan stå på ski hele formiddagen uten å flytte bilen, komme hjem til lunsj om du vil, og være tilbake i bakken om ettermiddagen uten å miste tid på transport.',
+            "Mer presist: ca. 100 meter unna ligger skiheisen San Rocco, som er koblet på ski til Carosello 3000; ca. 200 meter unna ligger skiheisen Doss 18, og selve Carosello 3000 ligger ca. 400 meter unna.",
             'Men det er etter dagens siste tur at forskjellen virkelig merkes. Inne i leiligheten er den infrarøde badstuen og dampbadet privat — aldri delt med andre gjester, i motsetning til et hotellspa. Det er da musklene virkelig varmes opp, lenge før du har tenkt på middag, ved stuens elektriske peis.',
             'Leiligheten har også et eget lagringsrom for ski, støvler og utstyr, så du slipper å bære alt inn hver kveld, samt en gratis parkeringsplass for dem som kommer med bil.'
           ]
@@ -441,6 +449,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
           heading: 'Het voordeel van thuiskomen op 100 meter van de piste',
           body: [
             "Ironwood Livigno ligt op slechts 100 meter lopen van de skiliften en 50 meter van de skischool en verhuur van uitrusting: je kunt de hele ochtend skiën zonder de auto te verplaatsen, terugkomen voor de lunch als je wilt, en 's middags weer op de piste staan zonder tijd te verliezen aan verplaatsingen.",
+            "Preciezer: op ongeveer 100 meter ligt de skilift San Rocco, die op ski's verbonden is met Carosello 3000; op ongeveer 200 meter ligt de skilift Doss 18, en Carosello 3000 zelf ligt op ongeveer 400 meter.",
             "Maar het is pas na de laatste afdaling dat je het verschil echt voelt. In het appartement zijn de infraroodsauna en het stoombad privé — nooit gedeeld met andere gasten, in tegenstelling tot een hotelspa. Dat is het moment waarop je spieren écht opwarmen, nog voor je aan het avondeten denkt, bij de elektrische open haard in de woonkamer.",
             "Het appartement beschikt bovendien over een eigen bergruimte voor ski's, skischoenen en uitrusting, zodat je niet elke avond alles naar binnen hoeft te dragen, plus een gratis parkeerplaats voor wie met de auto komt."
           ]
@@ -487,6 +496,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
           heading: '距雪道仅100米的优势',
           body: [
             'Ironwood Livigno距离滑雪缆车仅100米步行路程,距滑雪学校和器材租赁点仅50米:您可以整个上午滑雪而无需挪动汽车,需要的话中午回来吃饭,下午再回到雪道上,不必在路途上浪费时间。',
+            "具体来说：约100米处是 San Rocco 滑雪缆车，可穿着滑雪板直达 Carosello 3000；约200米处是 Doss 18 滑雪缆车；Carosello 3000 本身约400米。",
             '但真正感受到差异的,是滑完最后一趟雪之后。公寓内的红外线桑拿和土耳其蒸汽浴都是私人专属——绝不与其他客人共用,这一点与酒店水疗中心截然不同。在客厅的电壁炉旁,还没想到晚餐,肌肉就已经真正地暖和了起来。',
             '公寓还配有专用的滑雪板、雪靴和装备储藏室,不必每晚把所有装备都搬进屋内;自驾前来的客人还可享有免费停车位。'
           ]
@@ -533,6 +543,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
           heading: 'ゲレンデから100mという利点',
           body: [
             'Ironwood Livignoはスキーリフトから徒歩わずか100m、スキースクールとレンタル用品店からは50mの場所にあります。車を動かさずに午前中スキーを楽しみ、必要であればランチのために戻り、移動時間を無駄にすることなく午後には再びゲレンデへ戻ることができます。',
+            "詳しくは、約100mの場所にスキーリフト San Rocco があり、スキーを履いたまま Carosello 3000 へつながっています。約200mにはスキーリフト Doss 18 があり、Carosello 3000 自体は約400mです。",
             'しかし、本当に違いを実感できるのは最後の滑走を終えたあとです。アパートメント内の赤外線サウナとスチームバスは完全に専用で、ホテルのスパのように他の宿泊客と共有することは決してありません。リビングの電気暖炉のそばで、夕食のことを考える前に、まさに筋肉が芯から温まる瞬間です。',
             'アパートメントにはスキー板やブーツ、用具専用の収納スペースも備わっているため、毎晩すべてを室内に運び込む必要はありません。また、車でお越しの方には無料駐車場もご用意しています。'
           ]

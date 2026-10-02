@@ -18,7 +18,7 @@ Phase 1 (technical foundation), Phase 2 (international: hreflang and x-default),
 | 6 Authority / local | Ski-school outreach emails (mid-October), Google Business posts | owner | — |
 | 7 Performance | LCP experiments (critical CSS inline / font strategy), ≥5 runs before/after | Claude | — |
 | 8 CRO | ~~Click-event counting~~ done 2026-10-02 → read it monthly in the admin | owner | — |
-| 4 Content | Bus stop / market in front, which lift is 100 m away (Carosello?) → location points + glance + facts | Claude | owner confirmation |
+| 4 Content | Bus stop / market in front → location points + glance + facts (lifts: done 2026-10-02) | Claude | owner confirmation |
 | 6 Authority / local | Holidu title 'Eisenholz' → 'Ironwood Livigno'; 85–90 m² → 90 m² | owner | — |
 | 6 Authority / local | Free listings: livignoitaly.it (sauna filter), snowplaza.nl, yesalps | owner | — |
 | 7 Performance | JS reduction on the homepage (lazy islands) — only if CrUX field data shows a problem | Claude | GSC |

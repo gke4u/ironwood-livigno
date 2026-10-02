@@ -24,7 +24,9 @@ const q = (lang, cat, question, answer, url, facts) => Q.push({ lang, cat, quest
 
 // ---------- ITALIANO ----------
 q('it', 'destination', 'Dove alloggiare a Livigno vicino agli impianti?', 'Ironwood Livigno, Via Saroch 767: appartamento a circa 100 m a piedi dagli impianti.', '/it', ['address', 'lifts100', 'livigno']);
-q('it', 'location', 'Appartamento a Livigno vicino al Carosello 3000', 'Ironwood Livigno è in Via Saroch, lato Carosello 3000, 100 m dagli impianti.', '/inverno', ['carosello', 'lifts100']);
+q('it', 'location', 'Appartamento a Livigno vicino al Carosello 3000', 'Ironwood Livigno: 100 m dallo skilift San Rocco, collegato sci ai piedi al Carosello 3000 (a 400 m).', '/inverno', ['carosello', 'lifts100', 'sanRocco']);
+q('it', 'ski', "Qual è l'impianto più vicino a Ironwood Livigno?", 'Lo skilift San Rocco, a circa 100 m, collegato sci ai piedi al Carosello 3000.', '/it', ['sanRocco', 'carosello', 'lifts100']);
+q('it', 'ski', 'Quanto dista lo skilift Doss 18?', 'Circa 200 m.', '/inverno', ['doss18']);
 q('it', 'wellness', 'Appartamento a Livigno con sauna privata', 'Sì: sauna a infrarossi e bagno turco privati, mai condivisi.', '/sauna-bagno-turco-privato-livigno', ['infrared', 'steam', 'neverShared']);
 q('it', 'wellness', 'La sauna di Ironwood Livigno è finlandese o a infrarossi?', 'A infrarossi.', '/sauna-bagno-turco-privato-livigno', ['infrared']);
 q('it', 'wellness', 'Sauna e bagno turco sono condivisi con altri ospiti?', 'No, sono ad uso esclusivo degli ospiti dell\'appartamento.', '/it', ['neverShared', 'steam']);
@@ -68,7 +70,9 @@ q('it', 'practical', 'Cosa conviene comprare a Livigno duty-free?', 'Guida allo 
 q('it', 'practical', 'Email di Ironwood Livigno?', 'info@ironwoodlivigno.com', '/it/contatti', ['email']);
 
 // ---------- ENGLISH ----------
-q('en', 'destination', 'Where should I stay in Livigno near Carosello 3000?', 'Ironwood Livigno, Via Saroch 767, about 100 m on foot from the lifts on the Carosello 3000 side.', '/inverno/en', ['carosello', 'lifts100']);
+q('en', 'destination', 'Where should I stay in Livigno near Carosello 3000?', 'Ironwood Livigno, Via Saroch 767: 100 m from the San Rocco ski lift, linked on skis to Carosello 3000.', '/inverno/en', ['carosello', 'lifts100', 'sanRocco']);
+q('en', 'ski', 'Which ski lift is closest to Ironwood Livigno?', 'The San Rocco ski lift, about 100 m away, linked on skis to Carosello 3000.', '/en', ['sanRocco', 'carosello']);
+q('de', 'ski', 'Welcher Skilift ist der Ferienwohnung am nächsten?', 'Der Skilift San Rocco, etwa 100 m entfernt, mit Skiern mit Carosello 3000 verbunden.', '/de', ['sanRocco', 'carosello']);
 q('en', 'destination', 'Where to stay in Livigno close to the ski lifts?', 'Ironwood Livigno is about 100 m from the lifts.', '/en', ['lifts100', 'address']);
 q('en', 'wellness', 'Which Livigno apartments have a private sauna?', 'Ironwood Livigno has a private infrared sauna and steam bath, never shared.', '/sauna-bagno-turco-privato-livigno/en', ['infrared', 'steam', 'privateWellness']);
 q('en', 'wellness', 'Which accommodation in Livigno has a Turkish bath?', 'Ironwood Livigno has a private steam (Turkish) bath.', '/sauna-bagno-turco-privato-livigno/en', ['steam']);

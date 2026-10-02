@@ -47,7 +47,9 @@ export function checkFacts(pages) {
         for (const m of text.matchAll(new RegExp(p, 'giu'))) {
           const v = Number(m[1]);
           // distances: 50 m is the ski school/rental, which may sit next to "impianti"
-          if (name === 'lift_distance_m' && v === facts.location.distances.ski_school.value) continue;
+          // other confirmed distances: ski school 50 m, Doss 18 lift 200 m, Carosello 3000 400 m
+          const D = facts.location.distances;
+          if (name === 'lift_distance_m' && [D.ski_school.value, D.doss18_lift.value, D.carosello3000.value].includes(v)) continue;
           if (v !== expected) {
             const ctx = text.slice(Math.max(0, m.index - 60), m.index + m[0].length + 40);
             out.push({ sev: 'P1', code: `fact-conflict-${name}`, url: d.url, detail: `"${m[0]}" (expected ${expected}) … ${ctx}` });

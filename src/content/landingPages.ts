@@ -71,6 +71,7 @@ export const landingPages: LandingPage[] = [
         heading: 'Il vantaggio di tornare a 100 metri dalle piste',
         body: [
           "Ironwood Livigno si trova a soli 100 metri a piedi dagli impianti di risalita e a 50 metri da scuola sci e noleggio attrezzatura: si scia al mattino senza muovere l'auto, si rientra per pranzo se serve e si può tornare sulle piste nel pomeriggio senza perdere tempo in spostamenti.",
+          "Più nel dettaglio: a circa 100 metri c'è lo skilift San Rocco, che collega sci ai piedi al Carosello 3000; a circa 200 metri c'è lo skilift Doss 18, e il Carosello 3000 è a circa 400 metri.",
           "Ma è dopo l'ultima discesa che si sente davvero la differenza. Nell'appartamento, sauna a infrarossi e bagno turco sono privati — mai condivisi con altri ospiti, a differenza della spa di un hotel. È il momento in cui i muscoli si scaldano davvero, prima ancora di pensare alla cena, seduti vicino al camino elettrico del soggiorno.",
           "L'appartamento include inoltre un deposito dedicato per sci, scarponi e attrezzatura, così non serve portare tutto dentro casa ogni sera, e un posto auto gratuito per chi arriva in macchina."
         ]

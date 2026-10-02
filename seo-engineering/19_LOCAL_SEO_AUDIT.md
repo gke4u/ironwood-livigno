@@ -29,7 +29,7 @@ Naming rule (spec 54): the official name is **Ironwood Livigno**. Do not use "Ir
 
 ## Local relations used on the site (verified only)
 
-Ironwood → Via Saroch → about 100 m on foot to the lifts (which area — probably Carosello 3000 — to be confirmed by the owner) → ski school and ski/bike rental ~50 m → pedestrian duty-free centre ~15 min on foot → Lago di Livigno, cycling and hiking (summer guides). Not used: "ski-in/ski-out" (not true), the name of the nearest lift (not confirmed).
+Ironwood → Via Saroch → about 100 m on foot to the San Rocco ski lift (linked on skis to Carosello 3000), Doss 18 lift ~200 m, Carosello 3000 ~400 m (owner, 2026-10-02) → ski school and ski/bike rental ~50 m → pedestrian duty-free centre ~15 min on foot → Lago di Livigno, cycling and hiking (summer guides). Not used: "ski-in/ski-out" (not true).
 
 ## Citations / digital PR (spec 52–53) — quality over quantity
 
