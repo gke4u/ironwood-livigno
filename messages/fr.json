@@ -41,6 +41,7 @@
     "point_2": "50 m de l'école de ski et de la location",
     "point_3": "15 minutes à pied du centre de Livigno",
     "point_4": "Vue sur la montagne depuis deux balcons",
+    "point_5": "Arrêt de bus à 40 m, supérette juste en face",
     "address": "Via Saroch 767, Livigno"
   },
   "weather": {
@@ -92,7 +93,8 @@
     "address": "Adresse",
     "booking": "Réservation",
     "value_area": "90 m², l'appartement entier",
-    "value_booking": "Demande directe aux propriétaires (formulaire, WhatsApp ou e-mail), sans commission"
+    "value_booking": "Demande directe aux propriétaires (formulaire, WhatsApp ou e-mail), sans commission",
+    "nearby": "À proximité"
   },
   "amenities": {
     "eyebrow": "Tout inclus",
@@ -193,7 +195,7 @@
     "q12_q": "Quelle est la politique d'annulation ?",
     "q12_a": "L'annulation prévoit un remboursement partiel si elle est effectuée avant une certaine échéance avant l'arrivée. Pour les détails exacts liés à votre réservation, contactez-nous sur WhatsApp au +39 0342 929285.",
     "q13_q": "L'appartement est-il proche du centre de Livigno ?",
-    "q13_a": "Oui, notre appartement à Livigno se trouve à seulement 15 minutes à pied du centre du village, dans un quartier calme et stratégique, à deux pas des remontées mécaniques et de la piste de ski de fond.",
+    "q13_a": "Oui, notre appartement à Livigno se trouve à seulement 15 minutes à pied du centre du village, dans un quartier calme et stratégique, à deux pas des remontées mécaniques et de la piste de ski de fond. L'arrêt de bus est à environ 40 mètres et une supérette se trouve juste en face de l'appartement.",
     "q14_q": "Louez-vous aussi à 2 personnes ou à un voyageur seul, pas seulement à des groupes nombreux ?",
     "q14_a": "Oui : nous louons l'appartement entier quel que soit le nombre d'invités, de 1 à 6 personnes. Il est pensé pour accueillir confortablement familles et groupes, mais nous accueillons tout aussi volontiers un couple ou un voyageur seul."
   },

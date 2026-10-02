@@ -41,6 +41,7 @@
     "point_2": "50 m fra skiskole og udlejning",
     "point_3": "15 minutters gang til Livignos centrum",
     "point_4": "Udsigt til bjergene fra to altaner",
+    "point_5": "Busstoppested 40 m væk, dagligvarebutik lige overfor",
     "address": "Via Saroch 767, Livigno"
   },
   "weather": {
@@ -92,7 +93,8 @@
     "address": "Adresse",
     "booking": "Booking",
     "value_area": "90 m², hele lejligheden",
-    "value_booking": "Direkte forespørgsel til ejerne (formular, WhatsApp eller e-mail), uden kommission"
+    "value_booking": "Direkte forespørgsel til ejerne (formular, WhatsApp eller e-mail), uden kommission",
+    "nearby": "I nærheden"
   },
   "amenities": {
     "eyebrow": "Alt inkluderet",
@@ -193,7 +195,7 @@
     "q12_q": "Hvad er afbestillingspolitikken?",
     "q12_a": "Afbestilling giver delvis refundering, hvis den sker inden en bestemt frist før ankomst. For de præcise detaljer om din booking, kontakt os på WhatsApp på +39 0342 929285.",
     "q13_q": "Ligger lejligheden tæt på centrum af Livigno?",
-    "q13_a": "Ja, vores lejlighed i Livigno ligger kun 15 minutters gang fra bycentret, i et roligt og strategisk område, tæt på skiliftene og langrendssporet.",
+    "q13_a": "Ja, vores lejlighed i Livigno ligger kun 15 minutters gang fra bycentret, i et roligt og strategisk område, tæt på skiliftene og langrendssporet. Busstoppestedet ligger ca. 40 meter væk, og der er en dagligvarebutik lige over for lejligheden.",
     "q14_q": "Udlejer I også til 2 gæster eller en enkelt rejsende, ikke kun til større grupper?",
     "q14_a": "Ja: vi udlejer hele lejligheden til et hvilket som helst antal gæster, fra 1 til 6 personer. Den er designet til komfortabelt at rumme familier og grupper, men vi tager lige så gerne imod et par eller en enkelt rejsende."
   },

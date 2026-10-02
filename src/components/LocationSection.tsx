@@ -9,7 +9,7 @@ const MapEmbed = dynamic(() => import('./MapEmbed'));
 
 export default function LocationSection() {
   const t = useTranslations('location');
-  const points = [t('point_1'), t('point_2'), t('point_3'), t('point_4')];
+  const points = [t('point_1'), t('point_2'), t('point_3'), t('point_5'), t('point_4')];
 
   return (
     <section id="posizione" className="bg-wood-dark text-mist py-24 md:py-32">

@@ -41,6 +41,7 @@
     "point_2": "50 m from ski school & rental",
     "point_3": "15-minute walk to Livigno's centre",
     "point_4": "Mountain views from two balconies",
+    "point_5": "Bus stop 40 m away, grocery shop right opposite",
     "address": "Via Saroch 767, Livigno"
   },
   "weather": {
@@ -92,7 +93,8 @@
     "address": "Address",
     "booking": "Booking",
     "value_area": "90 m², the whole apartment",
-    "value_booking": "Direct request to the owners (form, WhatsApp or email), no commission"
+    "value_booking": "Direct request to the owners (form, WhatsApp or email), no commission",
+    "nearby": "Nearby"
   },
   "amenities": {
     "eyebrow": "All included",
@@ -193,7 +195,7 @@
     "q12_q": "What is the cancellation policy?",
     "q12_a": "If you cancel before a set deadline ahead of arrival, you receive a partial refund. For the exact terms of your booking, contact us on WhatsApp at +39 0342 929285.",
     "q13_q": "Is the apartment close to the centre of Livigno?",
-    "q13_a": "Yes, our apartment in Livigno is just a 15-minute walk from the town centre, in a quiet area, close to the ski lifts and the cross-country ski trail.",
+    "q13_a": "Yes, our apartment in Livigno is just a 15-minute walk from the town centre, in a quiet area, close to the ski lifts and the cross-country ski trail. The bus stop is about 40 metres away and there is a grocery shop right opposite the apartment.",
     "q14_q": "Do you also rent to 2 guests or a solo traveller, not just larger groups?",
     "q14_a": "Yes: we rent out the whole apartment to any number of guests, from 1 to 6. It's designed to comfortably fit families and groups, but we're just as happy to host a couple or a solo traveller."
   },

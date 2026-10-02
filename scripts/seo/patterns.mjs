@@ -16,6 +16,7 @@ export const F = {
   carosello: /Carosello/i,
   sanRocco: /San Rocco/,
   doss18: /Doss 18/,
+  bus40: /40\s?(m|metri|meter|metres|mètres|metrů|metrów|米|メートル)/i,
   livigno: /Livigno|利维尼奥|リヴィーニョ/i,
   area90: /90\s?(m²|sqm|sq m|square met|平方米|㎡)/i,
   parkingFree: /parcheggio|posto auto|parking|Parkplatz|parkeringsplads|parkeringsplass|parkovac|parkeerplaats|miejsce parkingowe|停车|駐車/i,

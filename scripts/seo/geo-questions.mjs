@@ -67,6 +67,9 @@ q('it', 'practical', 'Sono ammessi cani?', 'No, niente animali.', '/it', ['pets'
 q('it', 'practical', 'Si può fare colazione?', 'Sì, in struttura convenzionata a 50 m, 15 € a persona al giorno.', '/it', ['breakfast15', 'school50']);
 q('it', 'practical', 'Chi gestisce Ironwood Livigno?', 'Francesco e la sua famiglia, livignaschi.', '/chi-siamo', ['hosts', 'local']);
 q('it', 'practical', 'Cosa conviene comprare a Livigno duty-free?', 'Guida allo shopping duty-free.', '/blog/shopping-duty-free-livigno-cosa-comprare', ['dutyFree']);
+q('it', 'practical', "C'è una fermata dell'autobus vicino a Ironwood Livigno?", "Sì, a circa 40 m; e c'è un market proprio di fronte.", '/it', ['bus40']);
+q('en', 'practical', 'Is there a bus stop and a supermarket near Ironwood Livigno?', 'Bus stop about 40 m away, grocery shop right opposite.', '/en', ['bus40']);
+q('de', 'practical', 'Gibt es eine Bushaltestelle und einen Supermarkt in der Nähe?', 'Bushaltestelle etwa 40 m, Lebensmittelgeschäft direkt gegenüber.', '/de', ['bus40']);
 q('it', 'practical', 'Email di Ironwood Livigno?', 'info@ironwoodlivigno.com', '/it/contatti', ['email']);
 
 // ---------- ENGLISH ----------

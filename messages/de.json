@@ -41,6 +41,7 @@
     "point_2": "50 m von Skischule & Verleih",
     "point_3": "15 Minuten zu Fuß ins Zentrum von Livigno",
     "point_4": "Bergblick von zwei Balkonen",
+    "point_5": "Bushaltestelle 40 m entfernt, Lebensmittelgeschäft direkt gegenüber",
     "address": "Via Saroch 767, Livigno"
   },
   "weather": {
@@ -92,7 +93,8 @@
     "address": "Adresse",
     "booking": "Buchung",
     "value_area": "90 m², die ganze Wohnung",
-    "value_booking": "Direkte Anfrage bei den Eigentümern (Formular, WhatsApp oder E-Mail), ohne Provision"
+    "value_booking": "Direkte Anfrage bei den Eigentümern (Formular, WhatsApp oder E-Mail), ohne Provision",
+    "nearby": "In der Nähe"
   },
   "amenities": {
     "eyebrow": "Alles inklusive",
@@ -193,7 +195,7 @@
     "q12_q": "Welche Stornobedingungen gelten?",
     "q12_a": "Bei Stornierung bis zu einer bestimmten Frist vor Anreise erfolgt eine teilweise Rückerstattung. Für die genauen Details zu Ihrer Buchung kontaktieren Sie uns auf WhatsApp unter +39 0342 929285.",
     "q13_q": "Liegt die Wohnung in der Nähe des Zentrums von Livigno?",
-    "q13_a": "Ja, unsere Wohnung in Livigno liegt nur 15 Gehminuten vom Ortszentrum entfernt, in ruhiger Lage ganz in der Nähe der Skilifte und der Langlaufloipe.",
+    "q13_a": "Ja, unsere Wohnung in Livigno liegt nur 15 Gehminuten vom Ortszentrum entfernt, in ruhiger Lage ganz in der Nähe der Skilifte und der Langlaufloipe. Die Bushaltestelle ist etwa 40 Meter entfernt, und direkt gegenüber der Wohnung gibt es ein Lebensmittelgeschäft.",
     "q14_q": "Vermieten Sie auch an 2 Gäste oder einen Einzelreisenden, nicht nur an größere Gruppen?",
     "q14_a": "Ja: Wir vermieten die gesamte Wohnung an jede Gästeanzahl, von 1 bis 6 Personen. Sie ist so konzipiert, dass Familien und Gruppen bequem Platz finden, aber wir heißen ebenso gerne ein Paar oder einen Einzelreisenden willkommen."
   },

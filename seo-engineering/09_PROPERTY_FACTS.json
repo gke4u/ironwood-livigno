@@ -89,6 +89,18 @@
         "unit": "m",
         "mode": "on foot",
         "lift": "Carosello 3000"
+      },
+      "bus_stop": {
+        "value": 40,
+        "unit": "m",
+        "mode": "on foot",
+        "source": "owner, 2026-10-02"
+      },
+      "grocery_shop": {
+        "value": 0,
+        "unit": "m",
+        "note": "right opposite the apartment",
+        "source": "owner, 2026-10-02 (a guest review also mentions it)"
       }
     },
     "ski_access_claim": "About 100 m on foot to the San Rocco ski lift, which links on skis to Carosello 3000. NOT ski-in/ski-out: never describe it as ski-in, ski-out or ski-to-door.",

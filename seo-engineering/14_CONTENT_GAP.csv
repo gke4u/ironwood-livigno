@@ -9,6 +9,6 @@ Real nightly rates,rates.ts all null; price questions answered only with 'ask us
 Name of the lift 100 m away,content said 'impianti' generically,useful,FIXED 2026-10-02 (owner),/inverno,San Rocco named
 Accessibility / step-free access,no information on the site,irrelevant unless guests ask,-,-,-
 Topic pages without the core facts (bathrooms / size / wellness),content model: topic fact coverage 0.69,important,FIXED 2026-10-02,/{topic}/{locale},'At a glance' block added to all 84 topic pages (fact coverage 0.97)
-Bus stop / market / ski rental right in front,guest review (Urban; Google) + Holidu text,important,OPEN - owner must confirm (which bus line; free ski bus?),/it#posizione,add to location points + glance block + facts DB once confirmed
+Bus stop / market right in front,guest review (Urban; Google) + Holidu text,important,FIXED 2026-10-02 (owner: bus stop 40 m; grocery shop opposite),/{locale}#posizione,location point + at a glance + FAQ q13 + llms.txt in 12 languages
 Which ski area / lift is the one ~100 m away,"site never said; homepages never mentioned Carosello 3000",important,FIXED 2026-10-02 (owner),/{locale} /inverno FAQ llms.txt,"San Rocco lift ~100 m (linked on skis to Carosello 3000), Doss 18 ~200 m, Carosello 3000 ~400 m — 12 languages"
 Question-form headings in articles,content model: article question coverage 0.01,useful,DECIDED NOT TO MASS-ADD,/blog/*,"spec 46/108: no generic FAQ; add Q&A only where a real guest question exists (Search Console queries once available)"

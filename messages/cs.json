@@ -41,6 +41,7 @@
     "point_2": "50 m od lyžařské školy a půjčovny",
     "point_3": "15 minut pěšky do centra Livigna",
     "point_4": "Výhled na hory ze dvou balkonů",
+    "point_5": "Autobusová zastávka 40 m, obchod s potravinami přímo naproti",
     "address": "Via Saroch 767, Livigno"
   },
   "weather": {
@@ -92,7 +93,8 @@
     "address": "Adresa",
     "booking": "Rezervace",
     "value_area": "90 m², celý apartmán",
-    "value_booking": "Přímá poptávka u majitelů (formulář, WhatsApp nebo e-mail), bez provize"
+    "value_booking": "Přímá poptávka u majitelů (formulář, WhatsApp nebo e-mail), bez provize",
+    "nearby": "V okolí"
   },
   "amenities": {
     "eyebrow": "Vše v ceně",
@@ -193,7 +195,7 @@
     "q12_q": "Jaká je storno politika?",
     "q12_a": "Při zrušení do určitého termínu před příjezdem je vrácena částečná platba. Přesné podrobnosti k vaší rezervaci vám sdělíme na WhatsApp na čísle +39 0342 929285.",
     "q13_q": "Je apartmán blízko centra Livigna?",
-    "q13_a": "Ano, náš apartmán v Livignu je jen 15 minut pěšky od centra městečka, v klidné a strategické lokalitě, kousek od vleků a běžecké trati.",
+    "q13_a": "Ano, náš apartmán v Livignu je jen 15 minut pěšky od centra městečka, v klidné a strategické lokalitě, kousek od vleků a běžecké trati. Autobusová zastávka je asi 40 metrů daleko a přímo naproti apartmánu je obchod s potravinami.",
     "q14_q": "Pronajímáte i 2 hostům nebo jednomu cestovateli, nejen větším skupinám?",
     "q14_a": "Ano: pronajímáme celý apartmán bez ohledu na počet hostů, od 1 do 6 osob. Je navržen tak, aby pohodlně pojal rodiny a skupiny, ale stejně rádi přivítáme i pár nebo jednotlivého cestovatele."
   },
