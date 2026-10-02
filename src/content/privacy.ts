@@ -26,7 +26,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. Titolare del trattamento',
-        body: 'Titolare del trattamento è Ironwood Livigno, con sede in Via Saroch 767, 23041 Livigno (SO), Italia — CIN IT014037C274OJ27T8. Per qualsiasi richiesta relativa alla presente informativa o ai tuoi dati personali, puoi contattarci su WhatsApp al numero +39 0342 929285, oppure via email a info@ironwoodlivigno.com.'
+        body: 'Titolare del trattamento è Ironwood Livigno, con sede in Via Saroch 767, 23041 Livigno (SO), Italia — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. Per qualsiasi richiesta relativa alla presente informativa o ai tuoi dati personali, puoi contattarci su WhatsApp al numero +39 0342 929285, oppure via email a info@ironwoodlivigno.com.'
       },
       {
         heading: '2. Quali dati raccolgono e perché',
@@ -70,7 +70,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. Data controller',
-        body: 'The data controller is Ironwood Livigno, based at Via Saroch 767, 23041 Livigno (SO), Italy — CIN IT014037C274OJ27T8. For any request regarding this policy or your personal data, you can contact us on WhatsApp at +39 0342 929285, or by email at info@ironwoodlivigno.com.'
+        body: 'The data controller is Ironwood Livigno, based at Via Saroch 767, 23041 Livigno (SO), Italy — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. For any request regarding this policy or your personal data, you can contact us on WhatsApp at +39 0342 929285, or by email at info@ironwoodlivigno.com.'
       },
       {
         heading: '2. What data we collect and why',
@@ -115,7 +115,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. Verantwortlicher',
-        body: 'Verantwortlicher ist Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Italien — CIN IT014037C274OJ27T8. Für Anfragen zu dieser Erklärung oder Ihren personenbezogenen Daten erreichen Sie uns per WhatsApp unter +39 0342 929285 oder per E-Mail an info@ironwoodlivigno.com.'
+        body: 'Verantwortlicher ist Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Italien — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. Für Anfragen zu dieser Erklärung oder Ihren personenbezogenen Daten erreichen Sie uns per WhatsApp unter +39 0342 929285 oder per E-Mail an info@ironwoodlivigno.com.'
       },
       {
         heading: '2. Welche Daten wir erheben und warum',
@@ -159,7 +159,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. Responsable du traitement',
-        body: 'Le responsable du traitement est Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Italie — CIN IT014037C274OJ27T8. Pour toute demande concernant cette politique ou vos données personnelles, contactez-nous sur WhatsApp au +39 0342 929285, ou par e-mail à info@ironwoodlivigno.com.'
+        body: 'Le responsable du traitement est Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Italie — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. Pour toute demande concernant cette politique ou vos données personnelles, contactez-nous sur WhatsApp au +39 0342 929285, ou par e-mail à info@ironwoodlivigno.com.'
       },
       {
         heading: '2. Quelles données nous collectons et pourquoi',
@@ -203,7 +203,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. Dataansvarlig',
-        body: 'Dataansvarlig er Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Italien — CIN IT014037C274OJ27T8. For henvendelser om denne politik eller dine personoplysninger kan du kontakte os på WhatsApp på +39 0342 929285, eller via e-mail på info@ironwoodlivigno.com.'
+        body: 'Dataansvarlig er Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Italien — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. For henvendelser om denne politik eller dine personoplysninger kan du kontakte os på WhatsApp på +39 0342 929285, eller via e-mail på info@ironwoodlivigno.com.'
       },
       {
         heading: '2. Hvilke data vi indsamler, og hvorfor',
@@ -247,7 +247,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. Administrator danych',
-        body: 'Administratorem danych jest Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Włochy — CIN IT014037C274OJ27T8. W sprawie niniejszej polityki lub swoich danych osobowych możesz się z nami skontaktować przez WhatsApp pod numerem +39 0342 929285, lub e-mailem na adres info@ironwoodlivigno.com.'
+        body: 'Administratorem danych jest Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Włochy — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. W sprawie niniejszej polityki lub swoich danych osobowych możesz się z nami skontaktować przez WhatsApp pod numerem +39 0342 929285, lub e-mailem na adres info@ironwoodlivigno.com.'
       },
       {
         heading: '2. Jakie dane zbieramy i dlaczego',
@@ -291,7 +291,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. Správce údajů',
-        body: 'Správcem údajů je Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Itálie — CIN IT014037C274OJ27T8. S jakýmkoli dotazem ohledně těchto zásad nebo vašich osobních údajů nás můžete kontaktovat na WhatsApp na čísle +39 0342 929285, nebo e-mailem na info@ironwoodlivigno.com.'
+        body: 'Správcem údajů je Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Itálie — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. S jakýmkoli dotazem ohledně těchto zásad nebo vašich osobních údajů nás můžete kontaktovat na WhatsApp na čísle +39 0342 929285, nebo e-mailem na info@ironwoodlivigno.com.'
       },
       {
         heading: '2. Jaké údaje shromažďujeme a proč',
@@ -335,7 +335,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. Behandlingsansvarlig',
-        body: 'Behandlingsansvarlig er Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Italia — CIN IT014037C274OJ27T8. For henvendelser om denne erklæringen eller dine personopplysninger kan du kontakte oss på WhatsApp på +39 0342 929285, eller på e-post til info@ironwoodlivigno.com.'
+        body: 'Behandlingsansvarlig er Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Italia — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. For henvendelser om denne erklæringen eller dine personopplysninger kan du kontakte oss på WhatsApp på +39 0342 929285, eller på e-post til info@ironwoodlivigno.com.'
       },
       {
         heading: '2. Hvilke data vi samler inn, og hvorfor',
@@ -379,7 +379,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. Verwerkingsverantwoordelijke',
-        body: 'De verwerkingsverantwoordelijke is Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Italië — CIN IT014037C274OJ27T8. Voor vragen over dit beleid of uw persoonsgegevens kunt u contact met ons opnemen via WhatsApp op +39 0342 929285, of per e-mail op info@ironwoodlivigno.com.'
+        body: 'De verwerkingsverantwoordelijke is Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Italië — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. Voor vragen over dit beleid of uw persoonsgegevens kunt u contact met ons opnemen via WhatsApp op +39 0342 929285, of per e-mail op info@ironwoodlivigno.com.'
       },
       {
         heading: '2. Welke gegevens we verzamelen en waarom',
@@ -423,7 +423,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. Data controller',
-        body: 'The data controller is Ironwood Livigno, based at Via Saroch 767, 23041 Livigno (SO), Italy — CIN IT014037C274OJ27T8. For any request regarding this policy or your personal data, you can contact us on WhatsApp at +39 0342 929285, or by email at info@ironwoodlivigno.com.'
+        body: 'The data controller is Ironwood Livigno, based at Via Saroch 767, 23041 Livigno (SO), Italy — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. For any request regarding this policy or your personal data, you can contact us on WhatsApp at +39 0342 929285, or by email at info@ironwoodlivigno.com.'
       },
       {
         heading: '2. What data we collect and why',
@@ -467,7 +467,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. 数据控制者',
-        body: '数据控制者为 Ironwood Livigno，地址位于意大利利维尼奥（Livigno）萨罗赫街767号，邮编23041（SO省）— CIN编号 IT014037C274OJ27T8。如对本政策或您的个人数据有任何疑问，可通过WhatsApp（+39 0342 929285）或电子邮件（info@ironwoodlivigno.com）与我们联系。'
+        body: '数据控制者为 Ironwood Livigno，地址位于意大利利维尼奥（Livigno）萨罗赫街767号，邮编23041（SO省）— CIN编号 IT014037C274OJ27T8，CIR编号 014037-CNI-01104。如对本政策或您的个人数据有任何疑问，可通过WhatsApp（+39 0342 929285）或电子邮件（info@ironwoodlivigno.com）与我们联系。'
       },
       {
         heading: '2. 我们收集哪些数据及原因',
@@ -511,7 +511,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. データ管理者',
-        body: 'データ管理者はIronwood Livignoであり、所在地はイタリア、Via Saroch 767, 23041 Livigno (SO) です — CIN番号 IT014037C274OJ27T8。本ポリシーまたはお客様の個人データに関するお問い合わせは、WhatsApp（+39 0342 929285）または電子メール（info@ironwoodlivigno.com）までご連絡ください。'
+        body: 'データ管理者はIronwood Livignoであり、所在地はイタリア、Via Saroch 767, 23041 Livigno (SO) です — CIN番号 IT014037C274OJ27T8、CIR番号 014037-CNI-01104。本ポリシーまたはお客様の個人データに関するお問い合わせは、WhatsApp（+39 0342 929285）または電子メール（info@ironwoodlivigno.com）までご連絡ください。'
       },
       {
         heading: '2. 収集するデータとその目的',

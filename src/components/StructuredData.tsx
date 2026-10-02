@@ -61,8 +61,8 @@ export default async function StructuredData({ locale }: { locale: Locale }) {
     // the one identifier that tells this "Ironwood" apart from any other.
     identifier: [
       { '@type': 'PropertyValue', propertyID: 'CIN', value: F.property.identifier.cin },
-      // Code of the property in the Lombardy regional database (CIN certificate).
-      { '@type': 'PropertyValue', propertyID: 'Codice identificativo regionale (Lombardia)', value: F.property.identifier.regional_code }
+      // CIR: the property's code in the Lombardy regional database (CIN certificate).
+      { '@type': 'PropertyValue', propertyID: 'CIR', value: F.property.identifier.cir }
     ],
     description: hero('meta_description'),
     url: `${siteUrl}/${locale}`,

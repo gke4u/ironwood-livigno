@@ -23,8 +23,8 @@
     "source": "hero, rooms, chi-siamo page",
     "identifier": {
       "cin": "IT014037C274OJ27T8",
-      "regional_code": "014037-CNI-01104",
-      "note": "From the Ministry of Tourism CIN certificate (prot. 0115214/24 of 06/09/2024): CIN and the structure's code in the Lombardy regional database. CIN is printed in every footer."
+      "note": "From the Ministry of Tourism CIN certificate (prot. 0115214/24 of 06/09/2024). CIN and CIR (Lombardy regional code) are printed in every footer, as required in listings.",
+      "cir": "014037-CNI-01104"
     },
     "same_as": [
       "https://www.google.com/maps?cid=08261644844997455473",

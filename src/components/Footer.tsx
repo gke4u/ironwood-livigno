@@ -5,6 +5,8 @@ import Logo from './Logo';
 import { blogIndexHref } from '@/lib/blogIndex';
 
 const CIN = 'IT014037C274OJ27T8';
+// Lombardy regional code (CIR), required in listings next to the CIN.
+const CIR = '014037-CNI-01104';
 // No VAT number — sole proprietor operating under a personal tax code
 // (confirmed by the site owner directly, not a placeholder).
 const TAX_CODE = 'GNUFNC74D07E621H';
@@ -82,7 +84,7 @@ export default function Footer({ locale }: { locale: Locale }) {
             there's no VAT number (sole proprietor, not VAT-registered). */}
         <div className="text-center text-xs text-mist/60 mb-8 space-y-1">
           <p>
-            Ironwood Livigno — {FULL_ADDRESS} · CIN {CIN} · CF {TAX_CODE}
+            Ironwood Livigno — {FULL_ADDRESS} · CIN {CIN} · CIR {CIR} · CF {TAX_CODE}
           </p>
         </div>
 
