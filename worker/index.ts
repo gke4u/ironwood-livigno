@@ -338,7 +338,16 @@ async function offerApi(request: Request, env: Env): Promise<Response> {
   return json(body, 200, { 'Cache-Control': 'public, max-age=60' });
 }
 
+// The owner's own devices: any browser that has opened the admin carries
+// iw_nostats=1 (set by the admin page, 2 years) or the admin session cookie.
+// Their page views and clicks are not counted, so the stats show guests only.
+function isOwnerDevice(request: Request): boolean {
+  const cookie = request.headers.get('Cookie') ?? '';
+  return /(^|;\s*)iw_nostats=1(;|$)/.test(cookie) || cookie.includes(`${SESSION_COOKIE}=`);
+}
+
 async function countVisit(request: Request, env: Env): Promise<void> {
+  if (isOwnerDevice(request)) return;
   const url = new URL(request.url);
   const country = (request.cf?.country as string | undefined) ?? 'XX';
   await env.STATS.getByName('site').hit({
@@ -352,6 +361,7 @@ async function countVisit(request: Request, env: Env): Promise<void> {
 // A contact action or engagement click (WhatsApp, email, phone, form sent,
 // 360° tour or map opened): kind and page only, nothing about the visitor.
 async function countEvent(request: Request, env: Env): Promise<void> {
+  if (isOwnerDevice(request)) return;
   const url = new URL(request.url);
   const kind = url.searchParams.get('e');
   if (!kind || !(EVENT_KINDS as readonly string[]).includes(kind)) return;

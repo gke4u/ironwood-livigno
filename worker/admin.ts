@@ -555,6 +555,8 @@ function topList(title, rows, label) {
   return box;
 }
 async function loadStats() {
+  // This device belongs to the owner: stop counting its visits and clicks (see isOwnerDevice in index.ts).
+  document.cookie = 'iw_nostats=1; Max-Age=63072000; Path=/; Secure; SameSite=Lax';
   const s = await api('stats');
   const box = $('statsBox');
   box.innerHTML = '';
@@ -590,7 +592,8 @@ async function loadStats() {
   note.style.marginTop = '14px';
   note.textContent = (s.since ? 'Conteggio attivo dal ' + fmt(s.since) + '. ' : 'Il conteggio parte con la prossima visita. ') +
     'Conta le pagine aperte da persone vere (non i robot); nessun dato personale, niente cookie. Passa il dito o il mouse su una barra per vedere il giorno.' +
-    (s.eventsSince ? ' Contatti e azioni contati dal ' + fmt(s.eventsSince) + '.' : ' Contatti e azioni: il conteggio parte con il primo clic.');
+    (s.eventsSince ? ' Contatti e azioni contati dal ' + fmt(s.eventsSince) + '.' : ' Contatti e azioni: il conteggio parte con il primo clic.') +
+    ' Le tue visite da questo dispositivo (e da ogni dispositivo su cui apri l’admin) non vengono contate dal 2 ottobre 2026.';
   box.append(kpis, bars, x, tops, note);
 }
 
