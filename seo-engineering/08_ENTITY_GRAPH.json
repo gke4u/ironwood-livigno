@@ -1,0 +1,44 @@
+{
+  "_meta": {
+    "description": "Ironwood entity graph: only relations verified on the site (source column) or from the owner. Status 'verified' = stated on the site and in property-facts.json; 'external' = third-party source, to be kept consistent; 'unverified' = seen off-site, NOT used on the site until the owner confirms.",
+    "generated": "2026-10-02",
+    "jsonld_id": "https://ironwoodlivigno.com/#organization"
+  },
+  "entity": {
+    "id": "https://ironwoodlivigno.com/#organization",
+    "name": "Ironwood Livigno",
+    "types": ["LodgingBusiness", "VacationRental"],
+    "identifier": { "CIN": "IT014037C274OJ27T8" },
+    "disambiguation": "Holiday apartment in Livigno (Italy). Not related to other businesses or products named 'Ironwood' / 'Iron Wood'. OTAs (Airbnb, Holidu, Expedia via Holidu) are distribution channels, not the entity."
+  },
+  "relations": [
+    { "subject": "Ironwood Livigno", "predicate": "located in", "object": "Livigno (SO), Lombardy, Italy", "object_id": "https://en.wikipedia.org/wiki/Livigno", "status": "verified", "source": "footer, JSON-LD containedInPlace" },
+    { "subject": "Ironwood Livigno", "predicate": "located at", "object": "Via Saroch 771, 23041 Livigno", "status": "verified", "source": "footer, contact page, JSON-LD address", "conflict": "livigno.eu lists 'Appartamenti Iron Wood' at Via Saroch 767 — see 19_LOCAL_SEO_AUDIT.md" },
+    { "subject": "Ironwood Livigno", "predicate": "geo", "object": "46.525061, 10.126967", "status": "verified", "source": "owner (Google Maps pin)" },
+    { "subject": "Ironwood Livigno", "predicate": "near (walking distance ~100 m)", "object": "Livigno ski lifts, Carosello 3000 side", "status": "verified", "source": "location section, FAQ q2, /inverno", "note": "NOT ski-in/ski-out" },
+    { "subject": "Ironwood Livigno", "predicate": "near (~50 m)", "object": "ski school and ski/bike rental", "status": "verified", "source": "location section" },
+    { "subject": "Ironwood Livigno", "predicate": "distance to", "object": "Livigno pedestrian duty-free centre (~15 min on foot)", "status": "verified", "source": "location section, FAQ q13" },
+    { "subject": "Ironwood Livigno", "predicate": "offers", "object": "whole-apartment holiday accommodation (short stays)", "status": "verified", "source": "hero, FAQ q14" },
+    { "subject": "Ironwood Livigno", "predicate": "accommodates", "object": "1 to 6 guests", "status": "verified", "source": "hero stats, JSON-LD occupancy" },
+    { "subject": "Ironwood Livigno", "predicate": "contains", "object": "3 bedrooms (1 double bed, 4 single beds)", "status": "verified", "source": "rooms section, JSON-LD numberOfBedrooms/bed" },
+    { "subject": "Ironwood Livigno", "predicate": "contains", "object": "2 full bathrooms", "status": "verified", "source": "rooms section, JSON-LD numberOfBathroomsTotal" },
+    { "subject": "Ironwood Livigno", "predicate": "floor area", "object": "90 m²", "status": "verified", "source": "rooms landing page, 'at a glance' block, JSON-LD floorSize" },
+    { "subject": "Ironwood Livigno", "predicate": "provides", "object": "private infrared sauna (not shared, no extra charge)", "status": "verified", "source": "experience section, FAQ q1, /sauna-bagno-turco-privato-livigno" },
+    { "subject": "Ironwood Livigno", "predicate": "provides", "object": "private Turkish/steam bath (not shared, no extra charge)", "status": "verified", "source": "experience section, FAQ q1" },
+    { "subject": "Ironwood Livigno", "predicate": "provides", "object": "ski and bike storage, free parking space, high-speed Wi-Fi, electric fireplace, two balconies with mountain view", "status": "verified", "source": "amenities section" },
+    { "subject": "Ironwood Livigno", "predicate": "offers (paid, on request)", "object": "breakfast at partner venue ~50 m (€15/person/day); 2 e-bikes (€35/person/day)", "status": "verified", "source": "extras section" },
+    { "subject": "Ironwood Livigno", "predicate": "supports", "object": "winter tourism (skiing, Carosello 3000, Mottolino)", "status": "verified", "source": "/inverno, ski guides" },
+    { "subject": "Ironwood Livigno", "predicate": "supports", "object": "summer tourism (hiking, mountain bike/e-bike, Lago di Livigno)", "status": "verified", "source": "/estate, summer guides" },
+    { "subject": "Ironwood Livigno", "predicate": "managed by", "object": "Francesco and family (born and raised in Livigno), no agency", "status": "verified", "source": "/chi-siamo" },
+    { "subject": "Ironwood Livigno", "predicate": "booked via", "object": "direct request (form → WhatsApp, WhatsApp, email), no commission", "status": "verified", "source": "booking section, /chi-siamo" },
+    { "subject": "Ironwood Livigno", "predicate": "listed on", "object": "Airbnb (17 reviews, 5.0), Holidu (23 reviews, 10/10), Google (11 reviews), Instagram", "status": "external", "source": "reviews section, JSON-LD sameAs" },
+    { "subject": "Ironwood Livigno", "predicate": "listed on", "object": "livigno.eu (official tourism portal) as 'Appartamenti Iron Wood'", "status": "external", "source": "web search 2026-10-02", "action": "ask APT Livigno to correct name/number/link" },
+    { "subject": "Ironwood Livigno", "predicate": "listed on", "object": "Expedia as 'Holiday Apartment Iron Wood Near Slopes With 2 Balconies Wi-Fi' (Holidu syndication)", "status": "external", "source": "web search 2026-10-02", "action": "Holidu description says 'direct access to the ski slopes': align with 'about 100 m on foot'" },
+    { "subject": "Ironwood Livigno", "predicate": "near", "object": "grocery shop ~20 m, 2 supermarkets ~80 m", "status": "unverified", "source": "Holidu / livigno.eu descriptions", "action": "owner to confirm before adding to the site" }
+  ],
+  "external_entities": {
+    "Livigno": { "sameAs": ["https://it.wikipedia.org/wiki/Livigno", "https://en.wikipedia.org/wiki/Livigno"] },
+    "Carosello 3000": { "type": "ski area (Livigno)", "note": "treated as a geographic entity in content; no schema sameAs added (no verified canonical URL chosen)" },
+    "Mottolino": { "type": "ski area / bike park (Livigno)" }
+  }
+}

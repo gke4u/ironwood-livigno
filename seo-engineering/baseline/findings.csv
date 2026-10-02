@@ -1,0 +1,23 @@
+severity,code,url,detail
+P1,fact-conflict-bedrooms,https://ironwoodlivigno.com/en,"""63 bedroom"" (expected 3) … her guests.Check availabilityDiscover the apartmentSleeps 1–63 bedrooms · 2 bathrooms100 m from the liftsLive "
+P1,fact-conflict-bedrooms,https://ironwoodlivigno.com/en,"""63 bedroom"" (expected 3) …  fireplace in the living room, for family evenings.Sleeps 1–63 bedrooms · 2 bathrooms100 m from the liftsWho's"
+P1,fact-conflict-bedrooms,https://ironwoodlivigno.com/en-us,"""63 bedroom"" (expected 3) … her guests.Check availabilityDiscover the apartmentSleeps 1–63 bedrooms · 2 bathrooms100 m from the liftsLive "
+P1,fact-conflict-bedrooms,https://ironwoodlivigno.com/en-us,"""63 bedroom"" (expected 3) …  fireplace in the living room, for family evenings.Sleeps 1–63 bedrooms · 2 bathrooms100 m from the liftsWho's"
+P1,fact-conflict-max_guests,https://ironwoodlivigno.com/en,"""Sleeps 1"" (expected 6) … d with other guests.Check availabilityDiscover the apartmentSleeps 1–63 bedrooms · 2 bathrooms100 m from the"
+P1,fact-conflict-max_guests,https://ironwoodlivigno.com/en,"""Sleeps 1"" (expected 6) …  electric fireplace in the living room, for family evenings.Sleeps 1–63 bedrooms · 2 bathrooms100 m from the"
+P1,fact-conflict-max_guests,https://ironwoodlivigno.com/en-us,"""Sleeps 1"" (expected 6) … d with other guests.Check availabilityDiscover the apartmentSleeps 1–63 bedrooms · 2 bathrooms100 m from the"
+P1,fact-conflict-max_guests,https://ironwoodlivigno.com/en-us,"""Sleeps 1"" (expected 6) …  electric fireplace in the living room, for family evenings.Sleeps 1–63 bedrooms · 2 bathrooms100 m from the"
+P1,fact-unsupported-claim,llms.txt,ski-in/ski-out claim: …a di Livigno. ## Punti di forza - 100 metri dagli impianti sciistici (ski-in/ski-out di fatto) - Sauna a infrarossi privata e bagn…
+P1,fact-unsupported-claim,llms.txt,ski-in/ski-out claim: …li su richiesta per i più piccoli. D: Cerco un appartamento a Livigno ski-in ski-out con bagno turco per un weekend: cosa mi consi…
+P2,hreflang-page-vs-sitemap,https://ironwoodlivigno.com/it/contatti,
+P2,hreflang-page-vs-sitemap,https://ironwoodlivigno.com/en/contact,
+P2,hreflang-page-vs-sitemap,https://ironwoodlivigno.com/de/kontakt,
+P2,hreflang-page-vs-sitemap,https://ironwoodlivigno.com/fr/contact,
+P2,hreflang-page-vs-sitemap,https://ironwoodlivigno.com/da/kontakt,
+P2,hreflang-page-vs-sitemap,https://ironwoodlivigno.com/pl/kontakt,
+P2,hreflang-page-vs-sitemap,https://ironwoodlivigno.com/cs/kontakt,
+P2,hreflang-page-vs-sitemap,https://ironwoodlivigno.com/no/kontakt,
+P2,hreflang-page-vs-sitemap,https://ironwoodlivigno.com/nl/contact,
+P2,hreflang-page-vs-sitemap,https://ironwoodlivigno.com/zh/contact,
+P2,hreflang-page-vs-sitemap,https://ironwoodlivigno.com/ja/contact,
+P2,hreflang-page-vs-sitemap,https://ironwoodlivigno.com/en-us/contact,

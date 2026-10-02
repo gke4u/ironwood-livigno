@@ -1,0 +1,151 @@
+lang,category,question,expected_answer,source_url,expected_facts
+it,destination,Dove alloggiare a Livigno vicino agli impianti?,"Ironwood Livigno, Via Saroch 771: appartamento a circa 100 m a piedi dagli impianti.",https://ironwoodlivigno.com/it,address lifts100 livigno
+it,location,Appartamento a Livigno vicino al Carosello 3000,"Ironwood Livigno è in Via Saroch, lato Carosello 3000, 100 m dagli impianti.",https://ironwoodlivigno.com/inverno,carosello lifts100
+it,wellness,Appartamento a Livigno con sauna privata,"Sì: sauna a infrarossi e bagno turco privati, mai condivisi.",https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno,infrared steam neverShared
+it,wellness,La sauna di Ironwood Livigno è finlandese o a infrarossi?,A infrarossi.,https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno,infrared
+it,wellness,Sauna e bagno turco sono condivisi con altri ospiti?,"No, sono ad uso esclusivo degli ospiti dell'appartamento.",https://ironwoodlivigno.com/it,neverShared steam
+it,wellness,Si paga a parte la sauna?,"No, l'uso di sauna e bagno turco è incluso, senza prenotazione.",https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno,infrared
+it,wellness,Appartamento con bagno turco a Livigno,Ironwood Livigno ha un bagno turco privato in appartamento.,https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno,steam privateWellness
+it,accommodation,Appartamento a Livigno per 6 persone,Ironwood Livigno ospita fino a 6 persone in 3 camere.,https://ironwoodlivigno.com/camere-appartamento-livigno,guests6 bedrooms3
+it,accommodation,Appartamento a Livigno con 3 camere da letto,"3 camere: matrimoniale, doppia con letti uniti, camera con due singoli.",https://ironwoodlivigno.com/camere-appartamento-livigno,bedrooms3
+it,accommodation,Quanti bagni ha Ironwood Livigno?,2 bagni completi.,https://ironwoodlivigno.com/camere-appartamento-livigno,bathrooms2
+it,accommodation,Quanto è grande l'appartamento?,90 m².,https://ironwoodlivigno.com/camere-appartamento-livigno,area90
+it,accommodation,Affittate anche a una coppia?,"Sì, l'intero appartamento si affitta da 1 a 6 ospiti.",https://ironwoodlivigno.com/it,guests6
+it,accommodation,L'appartamento ha il camino?,"Sì, un camino elettrico in soggiorno.",https://ironwoodlivigno.com/it,fireplace
+it,accommodation,C'è il Wi-Fi?,"Sì, Wi-Fi ad alta velocità.",https://ironwoodlivigno.com/it,wifi
+it,accommodation,L'appartamento ha il balcone?,Due balconi con vista montagna.,https://ironwoodlivigno.com/it,balconies
+it,ski,Quanto dista Ironwood dagli impianti di risalita?,Circa 100 m a piedi; scuola sci e noleggio a 50 m.,https://ironwoodlivigno.com/it,lifts100 school50
+it,ski,Ironwood Livigno è ski-in ski-out?,"No, ma è a circa 100 m a piedi dagli impianti.",https://ironwoodlivigno.com/inverno,lifts100
+it,ski,C'è un deposito sci?,"Sì, deposito dedicato per sci, scarponi e biciclette.",https://ironwoodlivigno.com/it,skiStorage
+it,ski,Scuola sci vicino all'appartamento?,Scuola sci e noleggio a circa 50 m.,https://ironwoodlivigno.com/inverno,school50
+it,ski,Carosello 3000 o Mottolino: quale scegliere?,Guida al confronto dei due versanti.,https://ironwoodlivigno.com/blog/carosello-3000-vs-mottolino-quale-scegliere,carosello mottolino
+it,ski,Quando apre la stagione sciistica a Livigno?,Da fine novembre a inizio maggio.,https://ironwoodlivigno.com/inverno,season
+it,location,Quanto dista dal centro di Livigno?,Circa 15 minuti a piedi dal centro pedonale.,https://ironwoodlivigno.com/it,centre15
+it,location,Qual è l'indirizzo di Ironwood Livigno?,"Via Saroch 771, 23041 Livigno (SO).",https://ironwoodlivigno.com/it/contatti,address
+it,location,Come si arriva a Livigno in treno?,"Treno fino a Tirano, poi bus o taxi (circa 70 km).",https://ironwoodlivigno.com/come-arrivare,tirano
+it,location,Come arrivare a Livigno da Milano?,In auto circa 3 ore via Foscagno o Forcola; in treno via Tirano.,https://ironwoodlivigno.com/blog/come-arrivare-a-livigno,milan tirano
+it,family,Appartamento a Livigno per famiglie con bambini,"Culla e seggiolone su richiesta, 3 camere, fino a 6 persone.",https://ironwoodlivigno.com/famiglie,cot highchair guests6
+it,family,Avete la culla?,"Sì, culla e seggiolone su richiesta.",https://ironwoodlivigno.com/it,cot highchair
+it,family,Cosa fare a Livigno con i bambini?,Guida alle attività in famiglia.,https://ironwoodlivigno.com/blog/livigno-con-bambini-attivita-famiglia,family
+it,groups,Alloggio a Livigno per un gruppo di amici,"3 camere e 2 bagni per 6 persone, sauna e bagno turco privati.",https://ironwoodlivigno.com/blog/livigno-per-gruppi-numerosi-fino-a-6-persone,guests6 bedrooms3
+it,summer,Appartamento a Livigno d'estate,"Base per trekking, mountain bike, lago; e-bike a noleggio.",https://ironwoodlivigno.com/estate,summer mtb ebike
+it,summer,Noleggio e-bike a Livigno in appartamento,"2 e-bike in struttura, 35 € a persona al giorno.",https://ironwoodlivigno.com/it,ebike ebike35
+it,summer,Cosa fare a Livigno d'estate?,"Mountain bike, trekking, Lago di Livigno.",https://ironwoodlivigno.com/blog/livigno-estate-mountain-bike-trekking-lago,mtb lake
+it,booking,Come si prenota Ironwood Livigno?,Modulo di richiesta sul sito o WhatsApp +39 0342 929285.,https://ironwoodlivigno.com/it,requestForm whatsapp phone
+it,booking,Si può prenotare senza commissioni?,"Sì, prenotando direttamente non ci sono commissioni di intermediazione.",https://ironwoodlivigno.com/chi-siamo,noCommission directBooking
+it,booking,Qual è il soggiorno minimo?,Generalmente 2-3 notti.,https://ironwoodlivigno.com/it,minStay
+it,booking,Orari di check-in?,"Confermati alla prenotazione, flessibili.",https://ironwoodlivigno.com/it,checkin
+it,booking,Politica di cancellazione?,"Rimborso parziale entro una scadenza, dettagli alla prenotazione.",https://ironwoodlivigno.com/it,cancellation
+it,practical,C'è il parcheggio?,"Sì, un posto auto gratuito.",https://ironwoodlivigno.com/it,parkingFree
+it,practical,Sono ammessi cani?,"No, niente animali.",https://ironwoodlivigno.com/it,pets
+it,practical,Si può fare colazione?,"Sì, in struttura convenzionata a 50 m, 15 € a persona al giorno.",https://ironwoodlivigno.com/it,breakfast15 school50
+it,practical,Chi gestisce Ironwood Livigno?,"Francesco e la sua famiglia, livignaschi.",https://ironwoodlivigno.com/chi-siamo,hosts local
+it,practical,Cosa conviene comprare a Livigno duty-free?,Guida allo shopping duty-free.,https://ironwoodlivigno.com/blog/shopping-duty-free-livigno-cosa-comprare,dutyFree
+it,practical,Email di Ironwood Livigno?,info@ironwoodlivigno.com,https://ironwoodlivigno.com/it/contatti,email
+en,destination,Where should I stay in Livigno near Carosello 3000?,"Ironwood Livigno, Via Saroch 771, about 100 m on foot from the lifts on the Carosello 3000 side.",https://ironwoodlivigno.com/inverno/en,carosello lifts100
+en,destination,Where to stay in Livigno close to the ski lifts?,Ironwood Livigno is about 100 m from the lifts.,https://ironwoodlivigno.com/en,lifts100 address
+en,wellness,Which Livigno apartments have a private sauna?,"Ironwood Livigno has a private infrared sauna and steam bath, never shared.",https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno/en,infrared steam privateWellness
+en,wellness,Which accommodation in Livigno has a Turkish bath?,Ironwood Livigno has a private steam (Turkish) bath.,https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno/en,steam
+en,wellness,Does Ironwood Livigno have a private sauna?,"Yes, a private infrared sauna for its guests only.",https://ironwoodlivigno.com/en,infrared neverShared
+en,wellness,Is the sauna at Ironwood Livigno shared?,"No, never shared with other guests.",https://ironwoodlivigno.com/en,neverShared
+en,wellness,Is the sauna extra or included?,"Included, no booking or extra charge.",https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno/en,infrared
+en,accommodation,Where can six people stay in a 3-bedroom apartment in Livigno?,"Ironwood Livigno: 3 bedrooms, 2 bathrooms, up to 6 guests.",https://ironwoodlivigno.com/camere-appartamento-livigno/en,guests6 bedrooms3 bathrooms2
+en,accommodation,Which apartment has three bedrooms and two bathrooms in Livigno?,Ironwood Livigno.,https://ironwoodlivigno.com/en,bedrooms3 bathrooms2
+en,accommodation,Livigno apartment for 6 people,"Up to 6 guests in 3 bedrooms, 90 m².",https://ironwoodlivigno.com/en,guests6 area90
+en,accommodation,How big is Ironwood Livigno?,90 m².,https://ironwoodlivigno.com/camere-appartamento-livigno/en,area90
+en,accommodation,What beds are in the bedrooms?,Main double bed; double room with joined singles; twin room.,https://ironwoodlivigno.com/camere-appartamento-livigno/en,bedrooms3
+en,accommodation,What is a luxury apartment near Carosello 3000?,"Ironwood Livigno: renovated 2022, wood and iron, private wellness, 100 m from lifts.",https://ironwoodlivigno.com/en,lifts100 infrared
+en,accommodation,Does the apartment have Wi-Fi?,"Yes, high-speed Wi-Fi.",https://ironwoodlivigno.com/en,wifi
+en,accommodation,Is there a fireplace?,An electric fireplace in the living room.,https://ironwoodlivigno.com/en,fireplace
+en,ski,How far is Ironwood Livigno from the ski lifts?,About 100 m on foot.,https://ironwoodlivigno.com/en,lifts100
+en,ski,Is Ironwood Livigno ski-in ski-out?,No; it is about 100 m on foot from the lifts.,https://ironwoodlivigno.com/inverno/en,lifts100
+en,ski,Is there a ski school near the apartment?,Ski school and ski rental about 50 m away.,https://ironwoodlivigno.com/en,school50
+en,ski,Does the apartment have ski storage?,"Yes, a dedicated ski and bike storage room.",https://ironwoodlivigno.com/en,skiStorage
+en,ski,Carosello 3000 or Mottolino?,Guide comparing the two sides.,https://ironwoodlivigno.com/blog/carosello-3000-vs-mottolino-quale-scegliere/en,carosello mottolino
+en,ski,How much does skiing in Livigno cost?,Guide to ski pass and ski prices.,https://ironwoodlivigno.com/blog/quanto-costa-sciare-a-livigno-guida-prezzi/en,livigno
+en,location,How far is Ironwood from Livigno centre?,About 15 minutes on foot.,https://ironwoodlivigno.com/en,centre15
+en,location,What is the address of Ironwood Livigno?,"Via Saroch 771, 23041 Livigno (SO), Italy.",https://ironwoodlivigno.com/en/contact,address
+en,location,How do I get to Livigno by train?,"Train to Tirano, then bus or taxi.",https://ironwoodlivigno.com/come-arrivare/en,tirano
+en,location,How do I get to Livigno from Milan?,By car via Foscagno/Forcola or train to Tirano.,https://ironwoodlivigno.com/blog/come-arrivare-a-livigno/en,milan tirano
+en,family,Which Livigno accommodation is suitable for a family?,"Ironwood Livigno: cot and high chair on request, 3 bedrooms.",https://ironwoodlivigno.com/famiglie/en,cot highchair bedrooms3
+en,family,Do you have a cot and high chair?,"Yes, on request.",https://ironwoodlivigno.com/en,cot highchair
+en,family,What can kids do in Livigno?,Family activities guide.,https://ironwoodlivigno.com/blog/livigno-con-bambini-attivita-famiglia/en,family
+en,groups,Livigno accommodation for a group of 6 friends,"3 bedrooms, 2 bathrooms, private sauna.",https://ironwoodlivigno.com/blog/livigno-per-gruppi-numerosi-fino-a-6-persone/en,guests6 bedrooms3
+en,summer,Summer apartment in Livigno,"Base for hiking, mountain biking and the lake.",https://ironwoodlivigno.com/estate/en,summer mtb lake
+en,summer,E-bike apartment Livigno,"2 e-bikes for rent on site, €35 per person per day.",https://ironwoodlivigno.com/en,ebike ebike35
+en,summer,What to do in Livigno in summer?,"Mountain biking, hiking, Lake Livigno.",https://ironwoodlivigno.com/blog/livigno-estate-mountain-bike-trekking-lago/en,mtb lake
+en,booking,How do I book Ironwood Livigno?,Request form on the site or WhatsApp +39 0342 929285.,https://ironwoodlivigno.com/en,requestForm whatsapp phone
+en,booking,Can I book directly without commission?,"Yes, direct booking with the owners, no commission.",https://ironwoodlivigno.com/chi-siamo/en,noCommission directBooking
+en,booking,What is the minimum stay?,Usually 2-3 nights.,https://ironwoodlivigno.com/en,minStay
+en,booking,What are the check-in times?,"Confirmed at booking, flexible.",https://ironwoodlivigno.com/en,checkin
+en,booking,What is the cancellation policy?,Partial refund before a deadline.,https://ironwoodlivigno.com/en,cancellation
+en,practical,Is parking included?,"Yes, one free parking space.",https://ironwoodlivigno.com/en,parkingFree
+en,practical,Are dogs allowed?,No pets.,https://ironwoodlivigno.com/en,pets
+en,practical,Is breakfast available?,"At a partner venue 50 m away, €15 per person per day.",https://ironwoodlivigno.com/en,breakfast15
+en,practical,Who runs Ironwood Livigno?,"Francesco and his family, born and raised in Livigno.",https://ironwoodlivigno.com/chi-siamo/en,hosts local
+en,practical,What is duty-free shopping in Livigno?,Guide to duty-free shopping.,https://ironwoodlivigno.com/blog/shopping-duty-free-livigno-cosa-comprare/en,dutyFree
+en-us,accommodation,Vacation rental in Livigno for 6 people with a sauna,"Ironwood Livigno: up to 6 guests, private infrared sauna.",https://ironwoodlivigno.com/en-us,guests6 infrared
+de,wellness,Ferienwohnung Livigno Sauna,"Ironwood Livigno: private Infrarotsauna und Dampfbad, nie geteilt.",https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno/de,infrared steam neverShared
+de,wellness,Ferienwohnung Livigno mit privatem Dampfbad,"Ja, privates Dampfbad in der Wohnung.",https://ironwoodlivigno.com/de,steam privateWellness
+de,accommodation,Ferienwohnung Livigno für 6 Personen,"Bis zu 6 Gäste, 3 Schlafzimmer, 2 Bäder.",https://ironwoodlivigno.com/de,guests6 bedrooms3 bathrooms2
+de,accommodation,Ferienwohnung Livigno 3 Schlafzimmer,"3 Schlafzimmer, 90 m².",https://ironwoodlivigno.com/camere-appartamento-livigno/de,bedrooms3 area90
+de,ski,Unterkunft Livigno nah am Skilift,Etwa 100 m zu Fuß zu den Liften.,https://ironwoodlivigno.com/de,lifts100
+de,ski,Ferienwohnung Livigno Carosello 3000,"Via Saroch, Seite Carosello 3000.",https://ironwoodlivigno.com/inverno/de,carosello lifts100
+de,ski,Skischule und Skiverleih in der Nähe?,Etwa 50 m entfernt.,https://ironwoodlivigno.com/de,school50
+de,ski,Gibt es einen Skiraum?,"Ja, Ski- und Fahrradraum.",https://ironwoodlivigno.com/de,skiStorage
+de,family,Familienurlaub Livigno Ferienwohnung,Babybett und Hochstuhl auf Anfrage.,https://ironwoodlivigno.com/famiglie/de,cot highchair
+de,summer,Livigno im Sommer: Wandern und Mountainbike,"Wandern, Mountainbike, See.",https://ironwoodlivigno.com/estate/de,summer mtb
+de,summer,E-Bike Verleih Livigno Ferienwohnung,"2 E-Bikes, 35 € pro Person und Tag.",https://ironwoodlivigno.com/de,ebike ebike35
+de,location,Wie weit ist es zum Zentrum von Livigno?,Etwa 15 Minuten zu Fuß.,https://ironwoodlivigno.com/de,centre15
+de,location,Anreise nach Livigno mit dem Zug,"Bis Tirano, dann Bus oder Taxi.",https://ironwoodlivigno.com/come-arrivare/de,tirano
+de,booking,Wie buche ich direkt?,Anfrageformular oder WhatsApp.,https://ironwoodlivigno.com/de,requestForm whatsapp
+de,practical,Parkplatz inklusive?,"Ja, kostenloser Parkplatz.",https://ironwoodlivigno.com/de,parkingFree
+de,practical,Sind Haustiere erlaubt?,Nein.,https://ironwoodlivigno.com/de,pets
+de,practical,Frühstück möglich?,"15 € pro Person und Tag, 50 m entfernt.",https://ironwoodlivigno.com/de,breakfast15
+de,practical,Wer vermietet Ironwood Livigno?,Francesco und Familie aus Livigno.,https://ironwoodlivigno.com/chi-siamo/de,hosts
+de,destination,Carosello 3000 oder Mottolino?,Vergleich der beiden Skigebiete.,https://ironwoodlivigno.com/blog/carosello-3000-vs-mottolino-quale-scegliere/de,carosello mottolino
+de,practical,Zollfrei einkaufen in Livigno,Ratgeber zollfreies Einkaufen.,https://ironwoodlivigno.com/blog/shopping-duty-free-livigno-cosa-comprare/de,dutyFree
+fr,wellness,Appartement Livigno sauna privée,Sauna infrarouge et hammam privés.,https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno/fr,infrared steam
+fr,accommodation,Location Livigno 6 personnes 3 chambres,"Jusqu'à 6 personnes, 3 chambres, 2 salles de bains.",https://ironwoodlivigno.com/fr,guests6 bedrooms3 bathrooms2
+fr,ski,Appartement Livigno proche des remontées,Environ 100 m à pied.,https://ironwoodlivigno.com/fr,lifts100
+fr,family,Appartement Livigno famille,Lit bébé et chaise haute sur demande.,https://ironwoodlivigno.com/famiglie/fr,cot highchair
+fr,summer,Livigno en été,"Randonnée, VTT, lac.",https://ironwoodlivigno.com/estate/fr,summer lake
+fr,location,Comment aller à Livigno en train ?,Jusqu'à Tirano puis bus.,https://ironwoodlivigno.com/come-arrivare/fr,tirano
+fr,booking,Comment réserver ?,Formulaire ou WhatsApp.,https://ironwoodlivigno.com/fr,whatsapp
+fr,practical,Parking gratuit ?,"Oui, une place gratuite.",https://ironwoodlivigno.com/fr,parkingFree
+fr,ski,Local à skis ?,Oui.,https://ironwoodlivigno.com/fr,skiStorage
+fr,location,Distance du centre de Livigno ?,Environ 15 minutes à pied.,https://ironwoodlivigno.com/fr,centre15
+pl,wellness,Apartament Livigno sauna,Prywatna sauna na podczerwień i łaźnia parowa.,https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno/pl,infrared steam
+pl,accommodation,Apartament Livigno dla 6 osób,"Do 6 osób, 3 sypialnie, 2 łazienki.",https://ironwoodlivigno.com/pl,guests6 bedrooms3 bathrooms2
+pl,ski,Nocleg Livigno blisko wyciągów,Około 100 m pieszo.,https://ironwoodlivigno.com/pl,lifts100
+pl,family,Livigno z dziećmi apartament,Łóżeczko i krzesełko na życzenie.,https://ironwoodlivigno.com/famiglie/pl,cot highchair
+pl,summer,Livigno latem,"Wędrówki, rower górski, jezioro.",https://ironwoodlivigno.com/estate/pl,summer
+pl,booking,Jak zarezerwować?,Formularz lub WhatsApp.,https://ironwoodlivigno.com/pl,whatsapp
+pl,practical,Czy jest parking?,"Tak, bezpłatne miejsce.",https://ironwoodlivigno.com/pl,parkingFree
+pl,location,Jak dojechać do Livigno?,"Pociągiem do Tirano, potem autobus.",https://ironwoodlivigno.com/come-arrivare/pl,tirano
+da,ski,Lejlighed Livigno ski,"Ca. 100 m til liftene, skirum.",https://ironwoodlivigno.com/da,lifts100 skiStorage
+da,wellness,Lejlighed Livigno med privat sauna,Privat infrarød sauna og dampbad.,https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno/da,infrared steam
+da,accommodation,Ferielejlighed Livigno 6 personer,"Op til 6 gæster, 3 soveværelser.",https://ironwoodlivigno.com/da,guests6 bedrooms3
+da,family,Livigno med børn,Tremmeseng og høj stol efter aftale.,https://ironwoodlivigno.com/famiglie/da,cot
+da,location,Hvordan kommer man til Livigno?,"Tog til Tirano, derefter bus.",https://ironwoodlivigno.com/come-arrivare/da,tirano
+da,booking,Hvordan booker man?,Formular eller WhatsApp.,https://ironwoodlivigno.com/da,whatsapp
+no,ski,Leilighet Livigno nær skiheisen,Ca. 100 m til heisene.,https://ironwoodlivigno.com/no,lifts100
+no,wellness,Leilighet Livigno med privat badstue,Privat infrarød badstue og dampbad.,https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno/no,infrared steam
+no,accommodation,Leilighet Livigno for 6 personer,"Opptil 6 gjester, 3 soverom.",https://ironwoodlivigno.com/no,guests6 bedrooms3
+no,location,Hvordan reise til Livigno?,"Tog til Tirano, så buss.",https://ironwoodlivigno.com/come-arrivare/no,tirano
+no,booking,Hvordan bestiller man?,Skjema eller WhatsApp.,https://ironwoodlivigno.com/no,whatsapp
+nl,ski,Appartement Livigno ski,"Ongeveer 100 m van de liften, skiberging.",https://ironwoodlivigno.com/nl,lifts100 skiStorage
+nl,wellness,Appartement Livigno met privé sauna,Privé infraroodsauna en stoombad.,https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno/nl,infrared steam
+nl,accommodation,Vakantieappartement Livigno 6 personen,"Tot 6 gasten, 3 slaapkamers.",https://ironwoodlivigno.com/nl,guests6 bedrooms3
+nl,family,Livigno met kinderen,Kinderbed en kinderstoel op aanvraag.,https://ironwoodlivigno.com/famiglie/nl,cot highchair
+nl,location,Hoe kom je in Livigno?,"Trein naar Tirano, dan bus.",https://ironwoodlivigno.com/come-arrivare/nl,tirano
+nl,booking,Hoe boek ik?,Formulier of WhatsApp.,https://ironwoodlivigno.com/nl,whatsapp
+cs,ski,Apartmán Livigno u vleku,Asi 100 m od lanovek.,https://ironwoodlivigno.com/cs,lifts100
+cs,wellness,Apartmán Livigno se saunou,Soukromá infrasauna a parní lázeň.,https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno/cs,infrared steam
+cs,accommodation,Apartmán Livigno pro 6 osob,"Až 6 hostů, 3 ložnice.",https://ironwoodlivigno.com/cs,guests6 bedrooms3
+cs,location,Jak se dostat do Livigna?,"Vlakem do Tirana, pak autobusem.",https://ironwoodlivigno.com/come-arrivare/cs,tirano
+cs,booking,Jak rezervovat?,Formulář nebo WhatsApp.,https://ironwoodlivigno.com/cs,whatsapp
+zh,wellness,利维尼奥 带私人桑拿的公寓,私人红外桑拿和蒸汽浴。,https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno/zh,infrared steam
+zh,accommodation,利维尼奥 6人公寓,最多6人，3间卧室。,https://ironwoodlivigno.com/zh,guests6
+ja,wellness,リヴィーニョ プライベートサウナ付きアパート,赤外線サウナとスチームバス。,https://ironwoodlivigno.com/sauna-bagno-turco-privato-livigno/ja,infrared
+ja,accommodation,リヴィーニョ 6人 アパート,最大6名、寝室3室。,https://ironwoodlivigno.com/ja,guests6

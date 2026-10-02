@@ -1,0 +1,13 @@
+market,language,locale_url,natural_query_examples,best_url,hreflang,status,notes
+Italia,it,/it,"appartamento Livigno sauna privata · appartamento Livigno 6 persone · dove dormire a Livigno vicino impianti",/it and /sauna-bagno-turco-privato-livigno,it + x-default,live,original language; x-default = it on every page group (contact pages fixed 2026-10-02)
+Germania / Austria / Svizzera tedesca,de,/de,"Ferienwohnung Livigno Sauna · Ferienwohnung Livigno 6 Personen · Unterkunft Livigno nah am Skilift",/de and /sauna-bagno-turco-privato-livigno/de,de,live,'Sie' form throughout; no de-AT / de-CH variants (no different intent)
+Regno Unito / internazionale,en,/en,"Livigno apartment private sauna · where to stay in Livigno near the lifts · 3 bedroom apartment Livigno",/en and landing pages /en,en,live,British English
+Stati Uniti,en-us,/en-us,"Livigno vacation rental with sauna · ski vacation rental Livigno",/en-us,en-us,live,home and contact only; landing and blog pages are served by /en
+Francia / Belgio,fr,/fr,"appartement Livigno sauna privée · location Livigno 6 personnes",/fr and /sauna-bagno-turco-privato-livigno/fr,fr,live,
+Danimarca,da,/da,"lejlighed Livigno ski · ferielejlighed Livigno sauna",/da,da,live,
+Polonia,pl,/pl,"apartament Livigno sauna · nocleg Livigno blisko wyciągów",/pl,pl,live,
+Repubblica Ceca,cs,/cs,"apartmán Livigno sauna · ubytování Livigno u vleku",/cs,cs,live,Czech declension handled (do Livigna)
+Norvegia,no,/no,"leilighet Livigno ski · ferieleilighet Livigno badstue",/no,no,live,'no' code with Bokmål content
+Paesi Bassi / Belgio,nl,/nl,"appartement Livigno ski · vakantieappartement Livigno sauna",/nl,nl,live,
+Cina,zh,/zh,"利维尼奥 公寓 桑拿",/zh,zh,live,Livigno = 利维尼奥 (Wikipedia spelling)
+Giappone,ja,/ja,"リヴィーニョ アパート サウナ",/ja,ja,live,Livigno = リヴィーニョ

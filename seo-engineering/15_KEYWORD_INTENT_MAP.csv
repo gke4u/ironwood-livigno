@@ -1,0 +1,24 @@
+cluster,query (it unless noted),primary_intent,secondary_intent,best_url,supporting_url,conversion_cta,volume_data,notes
+destination,dove dormire a Livigno vicino impianti,commercial investigation,local,/it,/inverno,Richiedi disponibilità,not available (no GSC / Keyword Planner access),OTAs dominate the SERP (web search 2026-10-02)
+accommodation,appartamento Livigno,transactional,accommodation,/it,/camere-appartamento-livigno,Richiedi disponibilità,not available,one primary page: the home
+accommodation,appartamento Livigno 6 persone,transactional,group,/camere-appartamento-livigno,/blog/livigno-per-gruppi-numerosi-fino-a-6-persone,Richiedi disponibilità,not available,
+accommodation,appartamento 3 camere Livigno,transactional,accommodation facts,/camere-appartamento-livigno,/it#camere,Richiedi disponibilità,not available,title already targets this
+accommodation,appartamento di lusso Livigno,commercial investigation,luxury,/it,/chi-siamo,Richiedi disponibilità,not available,"'lusso' only where supported (reviews, 2022 renovation)"
+wellness,appartamento Livigno sauna privata,transactional,wellness,/sauna-bagno-turco-privato-livigno,/blog/sauna-privata-vs-condivisa-livigno,Richiedi disponibilità,not available,competitors: La Corte (shared sauna) and Wood House (similar offer)
+wellness,appartamento Livigno bagno turco,transactional,wellness,/sauna-bagno-turco-privato-livigno,/it#esperienza,Richiedi disponibilità,not available,
+wellness,sauna privata o condivisa Livigno,informational,wellness,/blog/sauna-privata-vs-condivisa-livigno,/sauna-bagno-turco-privato-livigno,link to the sauna page,not available,
+location,appartamento vicino Carosello 3000,transactional,proximity,/inverno,/it#posizione,Richiedi disponibilità,not available,never 'ski-in/ski-out'
+ski,sci Livigno guida Carosello 3000,informational,skiing,/blog/sci-a-livigno-guida-carosello-3000,/inverno,link to /inverno,not available,
+ski,Carosello 3000 o Mottolino,informational,skiing,/blog/carosello-3000-vs-mottolino-quale-scegliere,/blog/sci-a-livigno-guida-carosello-3000,link to /inverno,not available,
+ski,quanto costa sciare a Livigno,informational,price,/blog/quanto-costa-sciare-a-livigno-guida-prezzi,/blog/quanto-costa-un-appartamento-a-livigno,link to availability,not available,
+ski,ski in ski out Livigno appartamento,transactional,proximity,/inverno,,"honest answer: about 100 m on foot",not available,NOT targeted as a claim (spec 104-105)
+family,appartamento Livigno famiglia bambini,transactional,family,/famiglie,/blog/livigno-con-bambini-attivita-famiglia,Richiedi disponibilità,not available,
+family,Livigno con bambini cosa fare,informational,family,/blog/livigno-con-bambini-attivita-famiglia,/famiglie,link to /famiglie,not available,
+group,Livigno gruppo di amici appartamento,commercial investigation,group,/blog/livigno-per-gruppi-numerosi-fino-a-6-persone,/camere-appartamento-livigno,Richiedi disponibilità,not available,
+summer,appartamento Livigno estate,transactional,summer,/estate,/blog/livigno-estate-mountain-bike-trekking-lago,Richiedi disponibilità,not available,
+summer,e-bike Livigno noleggio,commercial investigation,cycling,/blog/vacanza-senza-pensieri-a-livigno-colazione-ed-e-bike,/estate,Richiedi e prenota (extras),not available,
+travel,come arrivare a Livigno,informational,navigational,/blog/come-arrivare-a-livigno,/come-arrivare,link to /come-arrivare,not available,HowTo schema present
+travel,quando prenotare Livigno,informational,seasonal,/blog/quando-prenotare-livigno-calendario-stagionale,/blog/migliori-periodi-per-evitare-la-folla-a-livigno,link to availability,not available,
+price,quanto costa un appartamento a Livigno,commercial investigation,price,/blog/quanto-costa-un-appartamento-a-livigno,/it#tariffe,Richiedi disponibilità,not available,rates.ts is null: no published prices (owner decision)
+brand,Ironwood Livigno,navigational,brand,/it,/chi-siamo,-,not available,"variants seen off-site: 'Iron Wood', 'Appartamenti Iron Wood' (livigno.eu)"
+booking,prenotare Ironwood Livigno senza commissioni,transactional,direct booking,/chi-siamo,/it#prenota,Richiedi disponibilità,not available,

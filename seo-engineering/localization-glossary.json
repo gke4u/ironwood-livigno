@@ -1,0 +1,173 @@
+{
+  "_meta": {
+    "purpose": "Consistent terms per language. private_sauna, turkish_bath, lift_distance, centre and availability are copied from the live site translations (messages/*.json); the other entries are the reference terms to use in new content. Facts never change between languages: see property-facts.json.",
+    "last_reviewed": "2026-10-02",
+    "native_review": "Not yet reviewed by native speakers — recommended for de, pl, cs, da, no, nl, zh, ja (see 26_ROLLOUT_PLAN.md)."
+  },
+  "terms": {
+    "holiday_apartment": {
+      "it": "appartamento vacanze",
+      "en": "holiday apartment",
+      "en-us": "vacation rental / apartment",
+      "de": "Ferienwohnung",
+      "fr": "appartement de vacances",
+      "da": "ferielejlighed",
+      "pl": "apartament wakacyjny",
+      "cs": "apartmán",
+      "no": "ferieleilighet",
+      "nl": "vakantieappartement",
+      "zh": "度假公寓",
+      "ja": "ホリデーアパートメント"
+    },
+    "private_sauna": {
+      "it": "sauna a infrarossi privata",
+      "en": "private infrared sauna",
+      "de": "private Infrarotsauna",
+      "fr": "sauna infrarouge privé",
+      "da": "privat infrarød sauna",
+      "pl": "prywatna sauna na podczerwień",
+      "cs": "soukromá infrasauna",
+      "no": "privat infrarød badstue",
+      "nl": "privé infraroodsauna",
+      "zh": "私人红外线桑拿",
+      "ja": "専用遠赤外線サウナ",
+      "never": [
+        "sauna finlandese",
+        "Finnish sauna",
+        "finnische Sauna"
+      ]
+    },
+    "turkish_bath": {
+      "it": "bagno turco",
+      "en": "steam bath (Turkish bath)",
+      "de": "Dampfbad",
+      "fr": "hammam",
+      "da": "dampbad",
+      "pl": "łaźnia parowa",
+      "cs": "parní lázeň",
+      "no": "dampbad",
+      "nl": "stoombad",
+      "zh": "蒸汽浴室",
+      "ja": "スチームバス"
+    },
+    "ski_lifts": {
+      "it": "impianti di risalita",
+      "en": "ski lifts",
+      "de": "Skilifte",
+      "fr": "remontées mécaniques",
+      "da": "skilifte",
+      "pl": "wyciągi narciarskie",
+      "cs": "lyžařské vleky",
+      "no": "skiheiser",
+      "nl": "skiliften",
+      "zh": "滑雪缆车",
+      "ja": "スキーリフト"
+    },
+    "lift_distance": {
+      "it": "100 m dagli impianti di risalita",
+      "en": "100 m from the lifts",
+      "de": "100 m von den Skiliften",
+      "fr": "100 m des remontées mécaniques",
+      "da": "100 m fra skiliftene",
+      "pl": "100 m od wyciągów narciarskich",
+      "cs": "100 m od lyžařských vleků",
+      "no": "100 m fra skiheisene",
+      "nl": "100 m van de skiliften",
+      "zh": "距滑雪缆车100米",
+      "ja": "スキーリフトまで100m",
+      "never": [
+        "ski-in/ski-out",
+        "ski-to-door",
+        "direct access to the slopes"
+      ]
+    },
+    "ski_school": {
+      "it": "scuola sci",
+      "en": "ski school",
+      "de": "Skischule",
+      "fr": "école de ski",
+      "da": "skiskole",
+      "pl": "szkoła narciarska",
+      "cs": "lyžařská škola",
+      "no": "skiskole",
+      "nl": "skischool",
+      "zh": "滑雪学校",
+      "ja": "スキースクール"
+    },
+    "ski_rental": {
+      "it": "noleggio sci",
+      "en": "ski rental",
+      "de": "Skiverleih",
+      "fr": "location de skis",
+      "da": "skiudlejning",
+      "pl": "wypożyczalnia nart",
+      "cs": "půjčovna lyží",
+      "no": "skiutleie",
+      "nl": "skiverhuur",
+      "zh": "滑雪器材租赁",
+      "ja": "スキーレンタル"
+    },
+    "centre": {
+      "it": "centro di Livigno",
+      "en": "Livigno's centre",
+      "en-us": "downtown Livigno",
+      "de": "Zentrum von Livigno",
+      "fr": "centre de Livigno",
+      "da": "Livignos centrum",
+      "pl": "centrum Livigno",
+      "cs": "centrum Livigna",
+      "no": "sentrum av Livigno",
+      "nl": "centrum van Livigno",
+      "zh": "利维尼奥市中心",
+      "ja": "リヴィーニョ中心部"
+    },
+    "mountain_views": {
+      "it": "vista montagna",
+      "en": "mountain views",
+      "de": "Bergblick",
+      "fr": "vue sur la montagne",
+      "da": "bjergudsigt",
+      "pl": "widok na góry",
+      "cs": "výhled na hory",
+      "no": "fjellutsikt",
+      "nl": "bergzicht",
+      "zh": "山景",
+      "ja": "山の眺め"
+    },
+    "availability": {
+      "it": "Richiedi disponibilità",
+      "en": "Check availability",
+      "de": "Verfügbarkeit anfragen",
+      "fr": "Demander la disponibilité",
+      "da": "Forespørg ledighed",
+      "pl": "Zapytaj o dostępność",
+      "cs": "Poptat dostupnost",
+      "no": "Forespør tilgjengelighet",
+      "nl": "Vraag beschikbaarheid aan",
+      "zh": "咨询空房情况",
+      "ja": "空室状況を問い合わせる"
+    },
+    "booking": {
+      "it": "prenotazione diretta",
+      "en": "direct booking",
+      "de": "Direktbuchung",
+      "fr": "réservation directe",
+      "da": "direkte booking",
+      "pl": "rezerwacja bezpośrednia",
+      "cs": "přímá rezervace",
+      "no": "direkte bestilling",
+      "nl": "rechtstreeks boeken",
+      "zh": "直接预订",
+      "ja": "直接予約"
+    },
+    "livigno": {
+      "zh": "利维尼奥",
+      "ja": "リヴィーニョ",
+      "note": "Latin 'Livigno' in all other languages; Czech declines it (do Livigna, v Livignu)"
+    },
+    "carosello_3000": {
+      "all": "Carosello 3000",
+      "note": "proper name, never translated"
+    }
+  }
+}

@@ -1,0 +1,263 @@
+{
+  "_meta": {
+    "purpose": "Single source of truth for every fact about Ironwood Livigno. The JSON-LD (src/components/StructuredData.tsx via src/data/propertyFacts.ts) reads it; scripts/seo/facts.mjs checks every published page against it before each deploy.",
+    "owner": "Francesco (host) — facts confirmed by the owner and already published on the site",
+    "last_reviewed": "2026-10-02",
+    "next_review": "2027-01-15",
+    "rule": "Change a fact here first, then in the page texts (messages/*.json, src/content/*). Never add a value that the owner has not confirmed: unknown = null."
+  },
+  "property": {
+    "official_name": "Ironwood Livigno",
+    "name_variants_to_avoid": [
+      "Ironwood",
+      "Iron Wood",
+      "Ironwood Apartment",
+      "Casa IronWood"
+    ],
+    "type": "Holiday apartment (whole apartment, self-catering), rented directly by the owners",
+    "schema_type": "VacationRental",
+    "floor_area_m2": 90,
+    "renovated_year": 2022,
+    "style": "Modern mountain refuge: wood, iron, stone",
+    "website": "https://ironwoodlivigno.com",
+    "source": "hero, rooms, chi-siamo page",
+    "identifier": {
+      "cin": "IT014037C274OJ27T8",
+      "note": "Codice Identificativo Nazionale for short-term rentals, published in the footer"
+    },
+    "same_as": [
+      "https://www.google.com/maps?cid=08261644844997455473",
+      "https://www.airbnb.com/rooms/1001347662140918475",
+      "https://www.holiduhost.com/d/54247934",
+      "https://instagram.com/ironwood_livigno"
+    ],
+    "same_as_note": "Google Business Profile (CID, same link as the reviews section), Airbnb, Holidu, Instagram"
+  },
+  "location": {
+    "street_address": "Via Saroch 771",
+    "postal_code": "23041",
+    "locality": "Livigno",
+    "region": "SO (Sondrio), Lombardy",
+    "country": "IT",
+    "latitude": 46.525061,
+    "longitude": 10.126967,
+    "geo_source": "Pin provided by the owner from Google Maps Street View",
+    "maps_url": "https://www.google.com/maps?q=46.525061,10.126967",
+    "ski_area": "Carosello 3000 side of Livigno (Via Saroch)",
+    "distances": {
+      "ski_lifts": {
+        "value": 100,
+        "unit": "m",
+        "mode": "on foot",
+        "wording_it": "100 m dagli impianti di risalita"
+      },
+      "ski_school": {
+        "value": 50,
+        "unit": "m",
+        "mode": "on foot"
+      },
+      "ski_rental": {
+        "value": 50,
+        "unit": "m",
+        "mode": "on foot"
+      },
+      "breakfast_partner": {
+        "value": 50,
+        "unit": "m",
+        "mode": "on foot"
+      },
+      "village_centre": {
+        "value": 15,
+        "unit": "min",
+        "mode": "on foot",
+        "note": "pedestrian duty-free centre"
+      },
+      "tirano_station": {
+        "value": 70,
+        "unit": "km"
+      }
+    },
+    "ski_access_claim": "Walking distance to the lifts (about 100 m). NOT ski-in/ski-out: never describe it as ski-in, ski-out or ski-to-door.",
+    "source": "location section, FAQ q2/q13, llms.txt"
+  },
+  "capacity": {
+    "max_guests": 6,
+    "min_guests": 1,
+    "whole_apartment_any_group_size": true,
+    "source": "hero stat_sleeps, FAQ q14"
+  },
+  "bedrooms": {
+    "count": 3,
+    "list": [
+      {
+        "name_it": "Camera Matrimoniale Principale",
+        "beds": "double bed with topper"
+      },
+      {
+        "name_it": "Camera Doppia (letti uniti)",
+        "beds": "two single beds joined with a topper"
+      },
+      {
+        "name_it": "Camera Letti Singoli",
+        "beds": "two single beds, can be joined on request"
+      }
+    ],
+    "source": "rooms section"
+  },
+  "bathrooms": {
+    "count": 2,
+    "type": "full bathrooms",
+    "source": "rooms.bathrooms_note, amenities g3_3"
+  },
+  "wellness": {
+    "sauna": {
+      "type": "infrared",
+      "private": true,
+      "shared_with_other_guests": false,
+      "extra_charge": false,
+      "booking_needed": false
+    },
+    "steam_bath": {
+      "type": "Turkish bath / steam bath",
+      "private": true,
+      "shared_with_other_guests": false,
+      "extra_charge": false,
+      "booking_needed": false
+    },
+    "never_call_it": [
+      "Finnish sauna",
+      "sauna finlandese"
+    ],
+    "fireplace": "electric fireplace in the living room",
+    "source": "experience section, FAQ q1"
+  },
+  "ski": {
+    "ski_and_bike_storage": true,
+    "ski_area": "Carosello 3000 (Livigno also has Mottolino)",
+    "source": "amenities g3_2, FAQ q4"
+  },
+  "summer": {
+    "ebikes_on_site": 2,
+    "activities": [
+      "hiking",
+      "mountain bike and e-bike",
+      "Lago di Livigno",
+      "alpine pastures"
+    ],
+    "source": "summer section, extras"
+  },
+  "amenities": {
+    "kitchen": [
+      "fully equipped kitchen",
+      "dishwasher",
+      "oven",
+      "cappuccino machine",
+      "wine fridge"
+    ],
+    "living": [
+      "electric fireplace",
+      "smart TV",
+      "two balconies with mountain view",
+      "high-speed Wi-Fi"
+    ],
+    "practical": [
+      "washing machine",
+      "ski and bike storage",
+      "2 full bathrooms",
+      "central heating"
+    ],
+    "family": [
+      "cot on request",
+      "high chair on request"
+    ],
+    "parking": {
+      "free": true,
+      "spaces": 1
+    },
+    "pets_allowed": false,
+    "source": "amenities section, FAQ q9/q10"
+  },
+  "services": {
+    "breakfast": {
+      "available": true,
+      "price_eur": 15,
+      "unit": "per person per day used",
+      "where": "partner venue about 50 m away",
+      "paid": "on site",
+      "book": "in advance"
+    },
+    "ebike_rental": {
+      "available": true,
+      "bikes": 2,
+      "price_eur": 35,
+      "unit": "per person per day",
+      "paid": "on site",
+      "book": "in advance"
+    },
+    "source": "extras section, FAQ q7/q8"
+  },
+  "booking": {
+    "method": "Direct availability request (website form that opens WhatsApp, WhatsApp, email). No online instant booking on the site.",
+    "commission_free": true,
+    "minimum_stay": "usually 2-3 nights, may vary in high season",
+    "checkin_time": null,
+    "checkout_time": null,
+    "checkin_note": "Times confirmed at booking (flexible)",
+    "cancellation": "Partial refund if cancelled before a deadline; details confirmed per booking",
+    "nightly_rates": null,
+    "rates_note": "src/data/rates.ts is all null on purpose: no price is published until the owner confirms it",
+    "source": "FAQ q5/q6/q11/q12, chi-siamo"
+  },
+  "reviews": {
+    "airbnb": {
+      "count": 17,
+      "rating": "5.0/5",
+      "url": "https://www.airbnb.com/rooms/1001347662140918475"
+    },
+    "holidu": {
+      "count": 23,
+      "rating": "10/10",
+      "url": "https://www.holiduhost.com/d/54247934"
+    },
+    "google": {
+      "count": 11,
+      "rating": null,
+      "note": "count published on the site; rating to re-check on the Google profile"
+    },
+    "total": 51,
+    "last_counted": "2026-09-30 (as published on the site)",
+    "schema_policy": "No Review/AggregateRating markup: self-serving reviews are not eligible for rich results",
+    "source": "reviews.disclaimer"
+  },
+  "hosts": {
+    "names": "Francesco, with his wife Tania (daughters Nicole and Giulia)",
+    "local": "Born and raised in Livigno, live there all year",
+    "management": "Managed directly by the family, no agency or property manager",
+    "source": "chi-siamo page"
+  },
+  "languages": {
+    "site": [
+      "it",
+      "en",
+      "en-us",
+      "de",
+      "fr",
+      "da",
+      "pl",
+      "cs",
+      "no",
+      "nl",
+      "zh",
+      "ja"
+    ],
+    "x_default": "it"
+  },
+  "contacts": {
+    "phone": "+39 0342 929285",
+    "whatsapp": "+39 0342 929285",
+    "whatsapp_url": "https://wa.me/390342929285",
+    "email": "info@ironwoodlivigno.com",
+    "instagram": "https://instagram.com/ironwood_livigno",
+    "source": "footer, contact page"
+  }
+}

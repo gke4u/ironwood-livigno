@@ -1,0 +1,10 @@
+topic,evidence,classification,status,url,action
+Floor area (90 m²) missing on every homepage and on the en/zh/ja rooms page,GEO baseline: area90 missing (18_GEO_ANSWERABILITY_AUDIT),important,FIXED 2026-10-02,/{locale},'At a glance' definition list in the rooms section (12 languages)
+'At a glance' fact block (spec 15),no single self-contained fact block on the homepages,important,FIXED 2026-10-02,/{locale}#camere,PropertyFacts component (numbers from property-facts.json)
+Blog articles did not link to each other,133 URLs with at most 2 internal links (baseline 01_URL_INVENTORY),important,FIXED 2026-10-02,/blog/*,'Leggi anche' block: 3 related guides per article in 11 languages
+Grocery shop 20 m and 2 supermarkets 80 m,stated on Holidu and livigno.eu but not on the site,useful,OPEN - owner must confirm,/it#posizione,add to the location points only after confirmation
+Official apartment classification (stars),livigno.eu shows a star rating,useful,OPEN - owner must confirm,-,if official: add to facts and JSON-LD starRating
+Check-in / check-out times,FAQ says 'confirmed at booking'; JSON-LD has no checkinTime,useful,OPEN - owner decision,/it#faq,publish standard times if they exist
+Real nightly rates,rates.ts all null; price questions answered only with 'ask us',important,OPEN - owner decision,/it#tariffe,publish seasonal 'from' prices: enables Offer markup and answers 'how much'
+Name of the lift 100 m away,content says 'impianti' generically; competitors name the lift and the walking minutes,useful,OPEN - owner to confirm which lift,/inverno,name the nearest lift only once confirmed
+Accessibility / step-free access,no information on the site,irrelevant unless guests ask,-,-,-

@@ -1,0 +1,12 @@
+topic,Ironwood Livigno,Competitor A: Wood House Livigno (happy.rentals / Expedia),Competitor B: La Corte Appartamenti (momondo / OTAs),Competitor C: OTA portals (Airbnb / Holidu / Expedia),opportunity
+SERP presence on generic queries,own site rarely visible in the sampled SERPs; visible through OTAs,OTA listings,OTA listings,dominate every sampled query (it / en / de / pl),strengthen brand and entity signals; keep OTA listings consistent; digital PR (19_LOCAL_SEO_AUDIT)
+content depth,"22 guides x 11 languages, 7 topic pages x 11, 14 FAQ",listing text only,listing text only,listing templates,already ahead: keep it factual and first-hand
+entities / facts,complete fact database + JSON-LD VacationRental,"3 bedrooms, 6 guests, infrared sauna + Turkish bath (very similar offer)","shared sauna, 339 m to the ski area",structured facts per listing,"differentiate on what is true: private (never shared), direct with local hosts, 90 m², renovated 2022"
+location,about 100 m on foot to the lifts (stated honestly),"claims 'ski in ski out', 6-minute walk to Carosello 3000",50 m from the San Rocco lift,'near slopes' wording,do NOT copy 'ski-in' claims; state the walking distance precisely
+wellness,private infrared sauna + private steam bath,infrared sauna + Turkish bath,shared sauna,'sauna' filter,strong dedicated page already (/sauna-bagno-turco-privato-livigno)
+trust,"51 reviews on 3 platforms, real hosts page",platform reviews,9.2/10 (59 reviews),platform reviews,show the review counts consistently; ask happy guests for Google reviews
+technical SEO,0 issues (audit 2026-10-02),n/a (OTA pages),n/a,n/a,keep it there with the CI gate
+international,12 languages,OTA machine translation,OTA machine translation,OTA machine translation,native-speaker review of the translations
+structured data,"LodgingBusiness+VacationRental, FAQPage, BlogPosting, BreadcrumbList",OTA markup,OTA markup,OTA markup,keep parity with the visible facts
+performance,"mobile Lighthouse 82-91, CLS at most 0.034",n/a,n/a,n/a,mobile LCP about 3.7 s is the remaining work (Next.js JavaScript)
+internal linking,"every page has at least 3 internal links, max click depth 3",n/a,n/a,n/a,maintained by 'Leggi anche' and the audit check
