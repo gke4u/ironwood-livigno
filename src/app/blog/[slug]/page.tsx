@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { blogPosts, postModified } from '@/content/blog';
 import { organizationRef, livignoPlace, countWords } from '@/lib/structuredDataIds';
 import { blogTranslations, translatedBlogLocales } from '@/content/blogTranslations';
+import RelatedPosts from '@/components/RelatedPosts';
 import { BlogHeader, BlogFooter, BlogWhatsAppCta, InlineApartmentCta } from '@/components/BlogChrome';
 import Pic from '@/components/Pic';
 import { renderInlineLinks } from '@/lib/renderInlineLinks';
@@ -146,7 +147,7 @@ export default async function BlogArticle({ params }: { params: Params }) {
 
             {availableTranslations.length > 0 && (
               <p className="text-ink/65 text-sm mb-8">
-                Also available in:{' '}
+                Disponibile anche in:{' '}
                 {availableTranslations.map((l, i) => (
                   <span key={l}>
                     {i > 0 && ' · '}
@@ -202,6 +203,8 @@ export default async function BlogArticle({ params }: { params: Params }) {
                 </ul>
               </div>
             )}
+
+            <RelatedPosts slug={post.slug} locale="it" />
 
             <div className="max-w-3xl mt-8 p-8 bg-white rounded-3xl shadow-soft flex flex-col sm:flex-row items-center justify-between gap-4">
               <p className="font-display text-lg text-ink">Pronto a organizzare il tuo soggiorno a Livigno?</p>

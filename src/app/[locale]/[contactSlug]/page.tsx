@@ -46,7 +46,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   locales.forEach((l) => {
     languages[l] = `${siteUrl}/${l}/${contactSlugs[l]}`;
   });
-  languages['x-default'] = `${siteUrl}/en/${contactSlugs.en}`;
+  // Same x-default as every other page and as the sitemap: the Italian original.
+  languages['x-default'] = `${siteUrl}/it/${contactSlugs.it}`;
 
   return {
     title,
