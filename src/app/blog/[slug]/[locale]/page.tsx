@@ -4,6 +4,7 @@ import { Fragment } from 'react';
 import { notFound } from 'next/navigation';
 import { blogPosts } from '@/content/blog';
 import { blogTranslations, translatedBlogLocales, type TranslatedBlogLocale } from '@/content/blogTranslations';
+import RelatedPosts from '@/components/RelatedPosts';
 import { BlogHeader, BlogFooter, BlogWhatsAppCta, InlineApartmentCta } from '@/components/BlogChrome';
 import Pic from '@/components/Pic';
 import { renderInlineLinks } from '@/lib/renderInlineLinks';
@@ -272,6 +273,8 @@ export default async function TranslatedBlogArticle({ params }: { params: Params
                 </ul>
               </div>
             )}
+
+            <RelatedPosts slug={post.slug} locale={data.locale} />
 
             <div className="max-w-3xl mt-8 p-8 bg-white rounded-3xl shadow-soft flex flex-col sm:flex-row items-center justify-between gap-4">
               <p className="font-display text-lg text-ink">{ui.ctaText}</p>
