@@ -8,6 +8,7 @@ import { getSatellitePages } from '@/data/satellite-pages';
 import Footer from '@/components/Footer';
 import Reveal from '@/components/Reveal';
 import RequestForm from '@/components/RequestForm';
+import { OG_LOCALE, ogAlternates } from '@/lib/ogLocale';
 
 // Was a literal `contact/` folder — one English slug for all 12 locales.
 // Now a translated slug per locale (/it/contatti, /de/kontakt, /en/contact,
@@ -59,6 +60,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       description,
       url,
       siteName: 'Ironwood Livigno',
+      locale: OG_LOCALE[locale],
+      alternateLocale: ogAlternates(languages, locale),
       images: [{ url: `${siteUrl}/images/og-image.jpg`, width: 1200, height: 630, alt: title }],
       type: 'website'
     }

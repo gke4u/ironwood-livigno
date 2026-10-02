@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Pic from './Pic';
+import { trackEvent } from '@/lib/trackEvent';
 
 // Reverted to a consent-gated map (was briefly changed to always-on — see
 // git history) at the site owner's explicit request, to match: "Nessuna
@@ -37,6 +38,7 @@ export default function MapEmbed() {
   }, []);
 
   function enableMap() {
+    trackEvent('map');
     try {
       localStorage.setItem(MAP_CONSENT_KEY, 'accepted');
       window.dispatchEvent(new Event(MAP_CONSENT_EVENT));

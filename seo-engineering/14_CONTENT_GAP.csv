@@ -8,3 +8,7 @@ Check-in / check-out times,FAQ says 'confirmed at booking'; JSON-LD has no check
 Real nightly rates,rates.ts all null; price questions answered only with 'ask us',important,OPEN - owner decision,/it#tariffe,publish seasonal 'from' prices: enables Offer markup and answers 'how much'
 Name of the lift 100 m away,content says 'impianti' generically; competitors name the lift and the walking minutes,useful,OPEN - owner to confirm which lift,/inverno,name the nearest lift only once confirmed
 Accessibility / step-free access,no information on the site,irrelevant unless guests ask,-,-,-
+Topic pages without the core facts (bathrooms / size / wellness),content model: topic fact coverage 0.69,important,FIXED 2026-10-02,/{topic}/{locale},'At a glance' block added to all 84 topic pages (fact coverage 0.97)
+Bus stop / market / ski rental right in front,guest review (Urban; Google) + Holidu text,important,OPEN - owner must confirm (which bus line; free ski bus?),/it#posizione,add to location points + glance block + facts DB once confirmed
+Which ski area / lift is the one ~100 m away,"site never says; homepages never mention Carosello 3000 (content model: entity coverage 0.60)",important,OPEN - owner must confirm,/{locale},"once confirmed: name it in the location points ('100 m from the X lift, Carosello 3000 side')"
+Question-form headings in articles,content model: article question coverage 0.01,useful,DECIDED NOT TO MASS-ADD,/blog/*,"spec 46/108: no generic FAQ; add Q&A only where a real guest question exists (Search Console queries once available)"

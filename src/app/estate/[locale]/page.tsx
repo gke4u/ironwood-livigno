@@ -11,7 +11,9 @@ import {
 } from '@/content/landingPageTranslations';
 import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
 import LandingPageBody from '@/components/LandingPageBody';
+import PropertyFacts from '@/components/PropertyFacts';
 import { buildTitle } from '@/lib/buildTitle';
+import { OG_LOCALE, ogAlternates } from '@/lib/ogLocale';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
 const SLUG = 'estate';
@@ -53,6 +55,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       siteName: 'Ironwood Livigno',
       images: [{ url: `${siteUrl}${original.image.src}`, width: original.image.w, height: original.image.h, alt: original.image.alt }],
       locale: landingPageUi[data.locale].ogLocale,
+      alternateLocale: ogAlternates(languages, data.locale),
       type: 'website'
     },
     twitter: {
@@ -136,6 +139,7 @@ export default async function TranslatedLandingPage({ params }: { params: Params
         <BlogHeader locale={data.locale} />
         <main className="bg-mist min-h-screen">
           <LandingPageBody
+            facts={<PropertyFacts locale={data.locale} />}
             page={page}
             ui={{
               backLabel: ui.backLabel,

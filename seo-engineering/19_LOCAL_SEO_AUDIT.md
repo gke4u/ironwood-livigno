@@ -29,7 +29,7 @@ Naming rule (spec 54): the official name is **Ironwood Livigno**. Do not use "Ir
 
 ## Local relations used on the site (verified only)
 
-Ironwood → Via Saroch → about 100 m on foot to the lifts (Carosello 3000 side) → ski school and ski/bike rental ~50 m → pedestrian duty-free centre ~15 min on foot → Lago di Livigno, cycling and hiking (summer guides). Not used: "ski-in/ski-out" (not true), the name of the nearest lift (not confirmed).
+Ironwood → Via Saroch → about 100 m on foot to the lifts (which area — probably Carosello 3000 — to be confirmed by the owner) → ski school and ski/bike rental ~50 m → pedestrian duty-free centre ~15 min on foot → Lago di Livigno, cycling and hiking (summer guides). Not used: "ski-in/ski-out" (not true), the name of the nearest lift (not confirmed).
 
 ## Citations / digital PR (spec 52–53) — quality over quantity
 
@@ -39,5 +39,10 @@ Ironwood → Via Saroch → about 100 m on foot to the lifts (Carosello 3000 sid
 | 5 ski schools / rentals in Via Saroch (emails ready in `seo-audit/fase-11-outreach-scuole-sci.md`) | local, real neighbours | Owner, mid-October |
 | Google Business posts (texts in `testi-google-business-profile.md`, phone numbers removed) | local pack | Owner |
 | Valtellina / Lombardy tourism directories (in-lombardia.it lists Livigno properties) | regional | Optional |
+| livignoitaly.it / livignoitaly.eu (local apartment directory with a "sauna" filter; ranks for Italian queries) | local, vertical | Owner — free listing request |
+| snowplaza.nl (Dutch ski portal, ranks for "appartement Livigno …") | NL market | Owner |
+| yesalps.com (Valtellina lodging directory) | regional | Optional |
+
+Listing texts seen on Holidu and Airbnb (31_REVIEW_ANALYSIS.md): "Eisenholz" (German translation of the name), "Iron Wood", "85–90 m²", "direct access to the slopes" → align with the site.
 
 No paid links, no directory spam. Backlink data (referring domains) was not available in this session — needs Search Console "Links" report or an SEO tool.

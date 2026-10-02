@@ -193,6 +193,8 @@ for (const d of Object.values(pages)) {
   if (!d.lang) add('P1', 'html-lang-missing', u);
   if (!d.og['og:image']) add('P2', 'og-image-missing', u);
   if (!d.og['og:title']) add('P2', 'og-title-missing', u);
+  if (!d.og['og:locale']) add('P2', 'og-locale-missing', u);
+  if (d.hreflang.filter(([l]) => l !== 'x-default').length > 1 && !d.og['og:locale:alternate']) add('P3', 'og-locale-alternate-missing', u);
   if (!d.landmarks.includes('main')) add('P2', 'no-main-landmark', u);
   for (const s of d.headingSkips) add('P2', 'heading-level-skip', u, s);
   const cjk = /^(zh|ja)/.test(d.lang);

@@ -10,6 +10,7 @@ import { organizationRef, websiteId } from '@/lib/structuredDataIds';
 import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
 import Pic from '@/components/Pic';
 import { getSatellitePages } from '@/data/satellite-pages';
+import { OG_LOCALE, ogAlternates } from '@/lib/ogLocale';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
 
@@ -194,6 +195,7 @@ export function blogHubMetadata(locale: TranslatedBlogLocale): Metadata {
       siteName: 'Ironwood Livigno',
       images: [{ url: `${siteUrl}/images/og-image.jpg`, width: 1200, height: 630 }],
       locale: hub.ogLocale,
+      alternateLocale: ogAlternates(languages, locale),
       type: 'website'
     },
     twitter: {
@@ -286,7 +288,7 @@ export function BlogHub({ locale }: { locale: TranslatedBlogLocale }) {
                       {post.readingTime.replace(/\s*min$/, '')} {hub.readingSuffix}
                     </p>
                     <h2 className="font-display text-xl text-ink mb-2 leading-snug">{translation.title}</h2>
-                    <p className="text-ink/60 text-sm">{translation.description}</p>
+                    <p className="text-ink/70 text-sm">{translation.description}</p>
                   </div>
                 </a>
               ))}

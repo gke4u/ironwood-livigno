@@ -5,6 +5,7 @@ import { translatedBlogLocales } from '@/content/blogTranslations';
 import { organizationRef, websiteId } from '@/lib/structuredDataIds';
 import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
 import Pic from '@/components/Pic';
+import { OG_LOCALE } from '@/lib/ogLocale';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
 
@@ -40,6 +41,7 @@ export const metadata: Metadata = {
     siteName: 'Ironwood Livigno',
     images: [{ url: `${siteUrl}/images/og-image.jpg`, width: 1200, height: 630 }],
     locale: 'it_IT',
+    alternateLocale: translatedBlogLocales.map((l) => OG_LOCALE[l]),
     type: 'website'
   },
   twitter: {
@@ -152,7 +154,7 @@ export default function BlogIndex() {
                   <div className="p-6 flex-1 flex flex-col">
                     <p className="text-ink/65 text-xs mb-2">{post.readingTime} di lettura</p>
                     <h2 className="font-display text-xl text-ink mb-2 leading-snug">{post.title}</h2>
-                    <p className="text-ink/60 text-sm">{post.description}</p>
+                    <p className="text-ink/70 text-sm">{post.description}</p>
                   </div>
                 </a>
               ))}

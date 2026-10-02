@@ -13,6 +13,12 @@ const KEEP_DAYS = 400;
 
 export type Hit = { day: string; path: string; country: string; source: string };
 
+// Contact actions and engagement, counted the same way (no personal data):
+// the visitor's click sends a beacon to /api/evento?e=<kind>.
+export const EVENT_KINDS = ['whatsapp', 'email', 'phone', 'form', 'tour', 'map'] as const;
+export type EventKind = (typeof EVENT_KINDS)[number];
+export type EventHit = { day: string; kind: EventKind; path: string };
+
 export type StatsSummary = {
   since: string | null;
   days: { day: string; views: number }[]; // last 30 days, oldest first, including empty days
@@ -22,6 +28,9 @@ export type StatsSummary = {
   countries: { key: string; views: number }[];
   pages: { key: string; views: number }[];
   sources: { key: string; views: number }[];
+  events: { key: string; views: number }[]; // last 30 days, per kind
+  eventPages: { key: string; views: number }[]; // pages where contacts started (whatsapp/email/phone/form)
+  eventsSince: string | null;
 };
 
 export class Stats extends DurableObject {
@@ -31,6 +40,11 @@ export class Stats extends DurableObject {
       `CREATE TABLE IF NOT EXISTS views (
          day TEXT NOT NULL, path TEXT NOT NULL, country TEXT NOT NULL, source TEXT NOT NULL,
          n INTEGER NOT NULL, PRIMARY KEY (day, path, country, source))`
+    );
+    ctx.storage.sql.exec(
+      `CREATE TABLE IF NOT EXISTS events (
+         day TEXT NOT NULL, kind TEXT NOT NULL, path TEXT NOT NULL,
+         n INTEGER NOT NULL, PRIMARY KEY (day, kind, path))`
     );
   }
 
@@ -45,8 +59,17 @@ export class Stats extends DurableObject {
     if (last !== h.day) {
       const cutoff = new Date(Date.parse(`${h.day}T00:00:00Z`) - KEEP_DAYS * 86400_000).toISOString().slice(0, 10);
       this.ctx.storage.sql.exec('DELETE FROM views WHERE day < ?', cutoff);
+      this.ctx.storage.sql.exec('DELETE FROM events WHERE day < ?', cutoff);
       await this.ctx.storage.put('pruned', h.day);
     }
+  }
+
+  async event(e: EventHit): Promise<void> {
+    this.ctx.storage.sql.exec(
+      `INSERT INTO events (day, kind, path, n) VALUES (?, ?, ?, 1)
+       ON CONFLICT (day, kind, path) DO UPDATE SET n = n + 1`,
+      e.day, e.kind, e.path
+    );
   }
 
   async summary(today: string): Promise<StatsSummary> {
@@ -64,6 +87,17 @@ export class Stats extends DurableObject {
         .exec<{ key: string; views: number }>(`SELECT ${col} AS key, SUM(n) AS views FROM views WHERE day >= ? GROUP BY ${col} ORDER BY views DESC LIMIT 8`, from30)
         .toArray();
     const since = sql.exec<{ d: string | null }>('SELECT MIN(day) AS d FROM views').one().d;
+    const events = sql
+      .exec<{ key: string; views: number }>('SELECT kind AS key, SUM(n) AS views FROM events WHERE day >= ? GROUP BY kind ORDER BY views DESC', from30)
+      .toArray();
+    const eventPages = sql
+      .exec<{ key: string; views: number }>(
+        `SELECT path AS key, SUM(n) AS views FROM events WHERE day >= ? AND kind IN ('whatsapp','email','phone','form')
+         GROUP BY path ORDER BY views DESC LIMIT 8`,
+        from30
+      )
+      .toArray();
+    const eventsSince = sql.exec<{ d: string | null }>('SELECT MIN(day) AS d FROM events').one().d;
     return {
       since,
       days,
@@ -72,7 +106,10 @@ export class Stats extends DurableObject {
       month: sum(from30),
       countries: top('country'),
       pages: top('path'),
-      sources: top('source')
+      sources: top('source'),
+      events,
+      eventPages,
+      eventsSince
     };
   }
 }

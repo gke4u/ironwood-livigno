@@ -29,14 +29,24 @@ Real photos (gallery, rooms, 360° tour), 51 real reviews with platform links, h
 
 ## Measurement (spec 73)
 
-Available: page views and referrer host per day (internal beacon `/api/visita`, no cookies, no IP) + Cloudflare Web Analytics. **Not available:** click events (whatsapp_click, email_click, form submit, tour_open, map_open).
+Page views and referrer host per day (beacon `/api/visita`) + Cloudflare Web Analytics, and **since 2026-10-02 contact events**: `POST /api/evento?e=whatsapp|email|phone|form|tour|map` → table `events (day, kind, path, n)` in the same Durable Object. No cookie, no IP, no visitor id, nothing typed in the form (spec 73: no PII).
 
-Recommendation (Phase 8, not implemented — needs a decision on what to count): extend the existing beacon with an event name (`?e=whatsapp|email|form|tour|map`), counted per day in the same Durable Object, no personal data.
+| Event (spec 73) | Implemented as | Trigger |
+|---|---|---|
+| whatsapp_click | `whatsapp` | any `wa.me` link on any page (one capture listener in OfferPopup, mounted site-wide) |
+| email_click | `email` | any `mailto:` link |
+| phone_click | `phone` | any `tel:` link |
+| availability_submit / booking_start | `form` | request form sent successfully (not the honeypot path) |
+| tour_open | `tour` | 360° tour poster clicked |
+| map_open | `map` | map consent button clicked |
+| booking_complete | — | happens off-site (WhatsApp/email); not measurable on the site |
+
+Admin → Visite: "Contatti e azioni (30 giorni)" and "Da quali pagine partono i contatti". Tested locally with Playwright (all kinds recorded, 204 responses; unknown kinds ignored).
 
 ## Findings
 
 | ID | Finding | Severity |
 |---|---|---|
 | CRO-1 | No published prices: price-intent visitors must ask | P2 (owner decision) |
-| CRO-2 | No click-event measurement | P2 |
+| CRO-2 | No click-event measurement | P2 → **fixed 2026-10-02** |
 | CRO-3 | Cancellation policy vague | P3 (owner decision) |

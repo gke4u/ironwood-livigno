@@ -11,6 +11,7 @@ import Pic from '@/components/Pic';
 import { renderInlineLinks } from '@/lib/renderInlineLinks';
 import { buildTitle } from '@/lib/buildTitle';
 import { BlogHub, blogHubMetadata, isBlogLocale } from '@/components/BlogHub';
+import { OG_LOCALE, ogAlternates } from '@/lib/ogLocale';
 
 const LANG_LABEL: Record<string, string> = {
   en: 'English',
@@ -55,6 +56,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       title: post.title,
       description: post.description,
       url,
+      siteName: 'Ironwood Livigno',
+      locale: OG_LOCALE.it,
+      alternateLocale: ogAlternates(languages, 'it'),
       images: [{ url: `${siteUrl}${post.image.src}`, width: post.image.w, height: post.image.h, alt: post.image.alt }],
       type: 'article'
     },

@@ -30,6 +30,12 @@ A static, 12-language site (361 indexable URLs) on Cloudflare Workers. After thi
 - Performance: metric-matched fallback fonts (CLS).
 - Quality system: audit engine + fact checker + GEO test run before every deploy (`predeploy`) and in GitHub Actions; deploy is blocked on P0/P1 or GEO regression.
 
+## Second pass (same day)
+
+Useful 404 (title, language, availability CTA); og:locale + alternates on every page; contact-event measurement (WhatsApp, email, phone, form, tour, map) visible in the admin, without personal data, and described in the privacy policy (12 languages); WCAG 2.1 AA: axe 0 violations after a contrast fix, keyboard navigation verified; "At a glance" on the 84 topic pages; content governance (29) and depth model (30); review analysis (31); two LCP experiments run and rejected with data; an unverified "Carosello 3000 side" statement I had added was removed. Address corrected to **Via Saroch 767** everywhere (owner).
+
+Still impossible from here: Search Console, keyword volumes, backlink data, Google review texts.
+
 ## Risks
 
 Low. No URL was created, removed or redirected. Rollback = one command (27_ROLLBACK_PLAN.md). The new blocks add page length (rooms section +~500 px).

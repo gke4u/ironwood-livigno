@@ -15,19 +15,19 @@ import { locales, defaultLocale, type Locale } from '@/i18n/routing';
 // root sits outside `src/app/[locale]/`, so it never receives a `locale`
 // param to begin with — the only way to know which language section the
 // visitor was trying to reach is to look at the URL that actually 404'd.
-const COPY: Record<Locale, { title: string; body: string; home: string; rooms: string; blog: string; contact: string }> = {
-  it: { title: 'Pagina non trovata', body: 'Il link che hai seguito potrebbe essere vecchio o scritto male.', home: 'Home', rooms: 'Camere', blog: 'Blog', contact: 'Contatti' },
-  en: { title: 'Page not found', body: 'The link you followed may be old or mistyped.', home: 'Home', rooms: 'Rooms', blog: 'Blog', contact: 'Contact' },
-  de: { title: 'Seite nicht gefunden', body: 'Der Link, dem du gefolgt bist, ist möglicherweise veraltet oder falsch geschrieben.', home: 'Startseite', rooms: 'Zimmer', blog: 'Blog', contact: 'Kontakt' },
-  fr: { title: 'Page introuvable', body: 'Le lien que vous avez suivi est peut-être ancien ou mal orthographié.', home: 'Accueil', rooms: 'Chambres', blog: 'Blog', contact: 'Contact' },
-  da: { title: 'Siden blev ikke fundet', body: 'Linket, du fulgte, er muligvis forældet eller forkert skrevet.', home: 'Forside', rooms: 'Værelser', blog: 'Blog', contact: 'Kontakt' },
-  pl: { title: 'Nie znaleziono strony', body: 'Link, z którego skorzystano, mógł być nieaktualny lub błędnie zapisany.', home: 'Strona główna', rooms: 'Pokoje', blog: 'Blog', contact: 'Kontakt' },
-  cs: { title: 'Stránka nenalezena', body: 'Odkaz, který jste použili, může být starý nebo špatně napsaný.', home: 'Domů', rooms: 'Pokoje', blog: 'Blog', contact: 'Kontakt' },
-  no: { title: 'Siden ble ikke funnet', body: 'Lenken du fulgte kan være utdatert eller feilstavet.', home: 'Hjem', rooms: 'Rom', blog: 'Blog', contact: 'Kontakt' },
-  nl: { title: 'Pagina niet gevonden', body: 'De link die je volgde is mogelijk verouderd of verkeerd getypt.', home: 'Home', rooms: 'Kamers', blog: 'Blog', contact: 'Contact' },
-  zh: { title: '未找到页面', body: '您访问的链接可能已过期或拼写有误。', home: '首页', rooms: '房间', blog: '博客', contact: '联系我们' },
-  ja: { title: 'ページが見つかりません', body: 'リンクが古いか、入力に誤りがある可能性があります。', home: 'ホーム', rooms: '部屋', blog: 'ブログ', contact: 'お問い合わせ' },
-  'en-us': { title: 'Page not found', body: 'The link you followed may be old or mistyped.', home: 'Home', rooms: 'Rooms', blog: 'Blog', contact: 'Contact' }
+const COPY: Record<Locale, { title: string; body: string; home: string; rooms: string; blog: string; contact: string; availability: string }> = {
+  it: { title: 'Pagina non trovata', body: 'Il link che hai seguito potrebbe essere vecchio o scritto male.', home: 'Home', rooms: 'Camere', blog: 'Blog', contact: 'Contatti', availability: 'Richiedi disponibilità' },
+  en: { title: 'Page not found', body: 'The link you followed may be old or mistyped.', home: 'Home', rooms: 'Rooms', blog: 'Blog', contact: 'Contact', availability: 'Check availability' },
+  de: { title: 'Seite nicht gefunden', body: 'Der Link, dem Sie gefolgt sind, ist möglicherweise veraltet oder falsch geschrieben.', home: 'Startseite', rooms: 'Zimmer', blog: 'Blog', contact: 'Kontakt', availability: 'Verfügbarkeit anfragen' },
+  fr: { title: 'Page introuvable', body: 'Le lien que vous avez suivi est peut-être ancien ou mal orthographié.', home: 'Accueil', rooms: 'Chambres', blog: 'Blog', contact: 'Contact', availability: 'Demander la disponibilité' },
+  da: { title: 'Siden blev ikke fundet', body: 'Linket, du fulgte, er muligvis forældet eller forkert skrevet.', home: 'Forside', rooms: 'Værelser', blog: 'Blog', contact: 'Kontakt', availability: 'Forespørg ledighed' },
+  pl: { title: 'Nie znaleziono strony', body: 'Link, z którego skorzystano, mógł być nieaktualny lub błędnie zapisany.', home: 'Strona główna', rooms: 'Pokoje', blog: 'Blog', contact: 'Kontakt', availability: 'Zapytaj o dostępność' },
+  cs: { title: 'Stránka nenalezena', body: 'Odkaz, který jste použili, může být starý nebo špatně napsaný.', home: 'Domů', rooms: 'Pokoje', blog: 'Blog', contact: 'Kontakt', availability: 'Poptat dostupnost' },
+  no: { title: 'Siden ble ikke funnet', body: 'Lenken du fulgte kan være utdatert eller feilstavet.', home: 'Hjem', rooms: 'Rom', blog: 'Blog', contact: 'Kontakt', availability: 'Forespør tilgjengelighet' },
+  nl: { title: 'Pagina niet gevonden', body: 'De link die je volgde is mogelijk verouderd of verkeerd getypt.', home: 'Home', rooms: 'Kamers', blog: 'Blog', contact: 'Contact', availability: 'Vraag beschikbaarheid aan' },
+  zh: { title: '未找到页面', body: '您访问的链接可能已过期或拼写有误。', home: '首页', rooms: '房间', blog: '博客', contact: '联系我们', availability: '咨询空房情况' },
+  ja: { title: 'ページが見つかりません', body: 'リンクが古いか、入力に誤りがある可能性があります。', home: 'ホーム', rooms: '部屋', blog: 'ブログ', contact: 'お問い合わせ', availability: '空室状況を問い合わせる' },
+  'en-us': { title: 'Page not found', body: 'The link you followed may be old or mistyped.', home: 'Home', rooms: 'Rooms', blog: 'Blog', contact: 'Contact', availability: 'Check availability' }
 };
 
 const CONTACT_SLUGS: Record<Locale, string> = {
@@ -49,11 +49,20 @@ export default function NotFound() {
     const detected = (locales as readonly string[]).includes(seg) ? (seg as Locale) : defaultLocale;
     setLocale(detected);
     document.documentElement.lang = detected;
+    document.title = `${COPY[detected].title} — Ironwood Livigno`;
   }, []);
 
   const c = COPY[locale];
 
+  // Its own <html>/<title>: the root layout renders neither (each section of
+  // the site sets its own), so the 404 had no title and no lang at all. The
+  // static file is rendered in Italian; the effect above switches language.
   return (
+    <html lang={locale}>
+      <head>
+        <title>{`${c.title} — Ironwood Livigno`}</title>
+      </head>
+      <body style={{ margin: 0 }}>
     <main
       style={{
         margin: 0,
@@ -77,6 +86,23 @@ export default function NotFound() {
       <p style={{ opacity: 0.7, margin: 0, maxWidth: '32rem' }}>{c.body}</p>
 
       <nav style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', justifyContent: 'center', marginTop: '0.5rem' }}>
+        {/* The page a lost visitor most likely wanted: asking for dates. */}
+        <a
+          href={`/${locale}#prenota`}
+          style={{
+            background: '#C9A059',
+            color: '#241C15',
+            borderRadius: '999px',
+            padding: '0.75rem 1.75rem',
+            textDecoration: 'none',
+            fontWeight: 600,
+            minHeight: '44px',
+            display: 'inline-flex',
+            alignItems: 'center'
+          }}
+        >
+          {c.availability}
+        </a>
         <a
           href={`/${locale}`}
           style={{
@@ -109,7 +135,7 @@ export default function NotFound() {
           {c.rooms}
         </a>
         <Link
-          href="/blog"
+          href={locale === 'it' ? '/blog' : `/blog/${locale === 'en-us' ? 'en' : locale}`}
           style={{
             border: '1px solid rgba(247,243,236,0.3)',
             color: '#F7F3EC',
@@ -140,5 +166,7 @@ export default function NotFound() {
         </a>
       </nav>
     </main>
+      </body>
+    </html>
   );
 }

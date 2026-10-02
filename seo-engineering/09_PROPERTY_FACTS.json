@@ -43,7 +43,7 @@
     "longitude": 10.126967,
     "geo_source": "Pin provided by the owner from Google Maps Street View",
     "maps_url": "https://www.google.com/maps?q=46.525061,10.126967",
-    "ski_area": "Carosello 3000 side of Livigno (Via Saroch)",
+    "ski_area": null,
     "distances": {
       "ski_lifts": {
         "value": 100,
@@ -79,7 +79,8 @@
     },
     "ski_access_claim": "Walking distance to the lifts (about 100 m). NOT ski-in/ski-out: never describe it as ski-in, ski-out or ski-to-door.",
     "source": "location section, FAQ q2/q13, llms.txt",
-    "address_note": "Street number 767 confirmed by the owner on 2026-10-02 (the site said 771 until then)"
+    "address_note": "Street number 767 confirmed by the owner on 2026-10-02 (the site said 771 until then)",
+    "ski_area_note": "UNCONFIRMED: which ski area / lift is the one ~100 m away (Carosello 3000 side is likely from the address but not stated by the owner). Do not publish until confirmed."
   },
   "capacity": {
     "max_guests": 6,
@@ -134,7 +135,7 @@
   },
   "ski": {
     "ski_and_bike_storage": true,
-    "ski_area": "Carosello 3000 (Livigno also has Mottolino)",
+    "ski_area": "Livigno ski areas: Carosello 3000 and Mottolino (general destination content)",
     "source": "amenities g3_2, FAQ q4"
   },
   "summer": {

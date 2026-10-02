@@ -61,7 +61,7 @@ export default async function Experience({ locale }: { locale: Locale }) {
                   </span>
                   <div>
                     <h3 className="font-medium text-ink mb-1">{p.title}</h3>
-                    <p className="text-ink/60 text-sm">{p.text}</p>
+                    <p className="text-ink/70 text-sm">{p.text}</p>
                   </div>
                 </div>
               </Reveal>
@@ -76,7 +76,7 @@ export default async function Experience({ locale }: { locale: Locale }) {
               time someone reaches this section). */}
           <Reveal delay={360}>
             {/* A real list: each fact is its own item for screen readers, search engines and AI. */}
-            <ul className="flex flex-wrap gap-x-8 gap-y-3 border-t border-ink/10 mt-8 pt-6 text-sm text-ink/60">
+            <ul className="flex flex-wrap gap-x-8 gap-y-3 border-t border-ink/10 mt-8 pt-6 text-sm text-ink/70">
               <li>{th('stat_sleeps')}</li>
               <li>{th('stat_rooms')}</li>
               <li>{th('stat_distance')}</li>

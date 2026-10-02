@@ -27,7 +27,7 @@ export default function RelatedPosts({ slug, locale }: { slug: string; locale: '
           <li key={it.href}>
             <a href={it.href} className="block h-full rounded-2xl bg-white p-5 shadow-soft hover:shadow-xl transition-shadow">
               <span className="font-display text-lg text-ink leading-snug block mb-2">{it.title}</span>
-              <span className="text-ink/60 text-sm leading-relaxed line-clamp-3">{it.description}</span>
+              <span className="text-ink/70 text-sm leading-relaxed line-clamp-3">{it.description}</span>
             </a>
           </li>
         ))}

@@ -5,6 +5,8 @@ import { landingLanguages } from '@/content/landingPageTranslations';
 import { buildTitle } from '@/lib/buildTitle';
 import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
 import LandingPageBody from '@/components/LandingPageBody';
+import PropertyFacts from '@/components/PropertyFacts';
+import { OG_LOCALE, ogAlternates } from '@/lib/ogLocale';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
 const page = landingPages.find((p) => p.slug === 'sauna-bagno-turco-privato-livigno')!;
@@ -21,6 +23,7 @@ export const metadata: Metadata = {
     siteName: 'Ironwood Livigno',
     images: [{ url: `${siteUrl}${page.image.src}`, width: page.image.w, height: page.image.h, alt: page.image.alt }],
     locale: 'it_IT',
+    alternateLocale: ogAlternates(landingLanguages(page.slug, siteUrl), 'it'),
     type: 'website'
   },
   twitter: {
@@ -74,7 +77,7 @@ export default function SaunaPrivataPage() {
         )}
         <BlogHeader />
         <main className="bg-mist min-h-screen">
-          <LandingPageBody page={page} />
+          <LandingPageBody page={page} facts={<PropertyFacts locale="it" />} />
         </main>
         <BlogWhatsAppCta />
         <BlogFooter />

@@ -24,7 +24,7 @@
 		"binding": "ASSETS",
 		"html_handling": "auto-trailing-slash",
 		"not_found_handling": "404-page",
-		"run_worker_first": ["/admin", "/admin/*", "/api/admin/*", "/api/offer", "/foto-del-giorno", "/foto/*", "/foto-google/*", "/recensione", "/api/sezioni", "/api/visita",
+		"run_worker_first": ["/admin", "/admin/*", "/api/admin/*", "/api/offer", "/foto-del-giorno", "/foto/*", "/foto-google/*", "/recensione", "/api/sezioni", "/api/visita", "/api/evento",
 			"/it", "/en", "/de", "/fr", "/da", "/pl", "/cs", "/no", "/nl", "/zh", "/ja", "/en-us"]
 	},
 	// Secrets (set once with `npx wrangler secret put`):

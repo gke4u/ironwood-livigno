@@ -579,10 +579,18 @@ async function loadStats() {
   x.innerHTML = '<span></span><span>oggi</span>'; x.firstChild.textContent = fmt(s.days[0].day);
   const tops = document.createElement('div'); tops.className = 'tops';
   tops.append(topList('Da quali paesi (30 giorni)', s.countries, countryLabel), topList('Pagine più viste', s.pages, pageLabel), topList('Da dove arrivano', s.sources, (k) => k));
+  // Contact actions (clicks counted by the site, no personal data).
+  const EVENT_LABELS = { whatsapp: 'WhatsApp aperto', email: 'Email aperta', phone: 'Telefono (chiamata)', form: 'Modulo di richiesta inviato', tour: 'Tour 360° aperto', map: 'Mappa aperta' };
+  const ev = s.events || [];
+  tops.append(
+    topList('Contatti e azioni (30 giorni)', ev, (k) => EVENT_LABELS[k] || k),
+    topList('Da quali pagine partono i contatti', s.eventPages || [], pageLabel)
+  );
   const note = document.createElement('p'); note.className = 'sub';
   note.style.marginTop = '14px';
   note.textContent = (s.since ? 'Conteggio attivo dal ' + fmt(s.since) + '. ' : 'Il conteggio parte con la prossima visita. ') +
-    'Conta le pagine aperte da persone vere (non i robot); nessun dato personale, niente cookie. Passa il dito o il mouse su una barra per vedere il giorno.';
+    'Conta le pagine aperte da persone vere (non i robot); nessun dato personale, niente cookie. Passa il dito o il mouse su una barra per vedere il giorno.' +
+    (s.eventsSince ? ' Contatti e azioni contati dal ' + fmt(s.eventsSince) + '.' : ' Contatti e azioni: il conteggio parte con il primo clic.');
   box.append(kpis, bars, x, tops, note);
 }
 

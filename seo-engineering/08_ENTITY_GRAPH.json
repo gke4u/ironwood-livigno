@@ -15,7 +15,7 @@
     { "subject": "Ironwood Livigno", "predicate": "located in", "object": "Livigno (SO), Lombardy, Italy", "object_id": "https://en.wikipedia.org/wiki/Livigno", "status": "verified", "source": "footer, JSON-LD containedInPlace" },
     { "subject": "Ironwood Livigno", "predicate": "located at", "object": "Via Saroch 767, 23041 Livigno", "status": "verified", "source": "footer, contact page, JSON-LD address", "note": "Owner confirmed 767 on 2026-10-02 (site previously said 771 — corrected); livigno.eu shows 767 too" },
     { "subject": "Ironwood Livigno", "predicate": "geo", "object": "46.525061, 10.126967", "status": "verified", "source": "owner (Google Maps pin)" },
-    { "subject": "Ironwood Livigno", "predicate": "near (walking distance ~100 m)", "object": "Livigno ski lifts, Carosello 3000 side", "status": "verified", "source": "location section, FAQ q2, /inverno", "note": "NOT ski-in/ski-out" },
+    { "subject": "Ironwood Livigno", "predicate": "near (walking distance ~100 m)", "object": "Livigno ski lifts (which area/lift: UNCONFIRMED, likely Carosello 3000 side)", "status": "verified (distance) / unverified (area)", "source": "location section, FAQ q2, /inverno", "note": "NOT ski-in/ski-out" },
     { "subject": "Ironwood Livigno", "predicate": "near (~50 m)", "object": "ski school and ski/bike rental", "status": "verified", "source": "location section" },
     { "subject": "Ironwood Livigno", "predicate": "distance to", "object": "Livigno pedestrian duty-free centre (~15 min on foot)", "status": "verified", "source": "location section, FAQ q13" },
     { "subject": "Ironwood Livigno", "predicate": "offers", "object": "whole-apartment holiday accommodation (short stays)", "status": "verified", "source": "hero, FAQ q14" },

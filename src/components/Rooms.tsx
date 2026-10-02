@@ -108,7 +108,7 @@ export default function Rooms({ children }: { children?: React.ReactNode }) {
                 </button>
                 <div className="bg-white p-6 flex-1">
                   <h3 className="font-display text-xl text-ink mb-2">{room.title}</h3>
-                  <p className="text-ink/60 text-sm">{room.text}</p>
+                  <p className="text-ink/70 text-sm">{room.text}</p>
                 </div>
               </div>
             </Reveal>

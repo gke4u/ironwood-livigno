@@ -32,7 +32,7 @@ import { adminPage } from './admin';
 import { OFFER_KEY, isLive, parseOffer, publicOffer, type Offer } from './offer';
 import * as google from './google';
 import { HOME_PATHS, LAYOUT_KEY, SECTIONS, isDefault, layoutCss, parseLayout } from './layout';
-import { pagePath, sourceName, type Stats } from './stats';
+import { EVENT_KINDS, pagePath, sourceName, type EventKind, type Stats } from './stats';
 
 // The Durable Object class must be exported by the Worker's main module.
 export { Stats } from './stats';
@@ -107,6 +107,10 @@ export default {
       if (path.startsWith('/foto/')) return await photoById(request, path.slice('/foto/'.length), env);
       if (path.startsWith('/foto-google/')) return await photoForGoogle(request, path.slice('/foto-google/'.length), env);
       if (path === '/api/offer') return await offerApi(request, env);
+      if (path === '/api/evento' && request.method === 'POST') {
+        ctx.waitUntil(countEvent(request, env).catch((err) => console.error(err)));
+        return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
+      }
       if (path === '/api/visita' && request.method === 'POST') {
         ctx.waitUntil(countVisit(request, env).catch((err) => console.error(err)));
         return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
@@ -342,6 +346,19 @@ async function countVisit(request: Request, env: Env): Promise<void> {
     path: pagePath(request.headers.get('Referer'), url.origin),
     country: /^[A-Z]{2}$/.test(country) ? country : 'XX',
     source: sourceName(url.searchParams.get('r'), url.hostname)
+  });
+}
+
+// A contact action or engagement click (WhatsApp, email, phone, form sent,
+// 360° tour or map opened): kind and page only, nothing about the visitor.
+async function countEvent(request: Request, env: Env): Promise<void> {
+  const url = new URL(request.url);
+  const kind = url.searchParams.get('e');
+  if (!kind || !(EVENT_KINDS as readonly string[]).includes(kind)) return;
+  await env.STATS.getByName('site').event({
+    day: romeDate(),
+    kind: kind as EventKind,
+    path: pagePath(request.headers.get('Referer'), url.origin)
   });
 }
 

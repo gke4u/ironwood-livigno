@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Reveal from './Reveal';
 import Pic from './Pic';
+import { trackEvent } from '@/lib/trackEvent';
 
 const TOUR_SRC = 'https://app.lapentor.com/sphere/appartamento-guana';
 
@@ -39,7 +40,10 @@ export default function VirtualTour() {
             ) : (
               <button
                 type="button"
-                onClick={() => setLoaded(true)}
+                onClick={() => {
+                  setLoaded(true);
+                  trackEvent('tour');
+                }}
                 className="group absolute inset-0 w-full h-full text-left"
                 aria-label={t('open_button')}
               >
@@ -75,7 +79,7 @@ export default function VirtualTour() {
               href={TOUR_SRC}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-ink/60 hover:text-brick underline underline-offset-4 transition-colors"
+              className="text-ink/70 hover:text-brick underline underline-offset-4 transition-colors"
             >
               {t('open_new_tab')}
             </a>

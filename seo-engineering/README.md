@@ -39,7 +39,7 @@ Navigation + footer (topic pages, blog), contextual links in articles, `relatedL
 
 ```
 npm run build          # static export to out/
-npm run deploy         # predeploy runs npm run test:seo; stops on P0/P1 or GEO regression
+npm run deploy         # predeploy = build + test:seo; stops on P0/P1 or GEO regression
 npm run audit:live     # same audit against the live site → seo-engineering/live/
 npm run indexnow       # notify Bing/Yandex/Seznam of changed URLs
 ```
@@ -53,5 +53,11 @@ GitHub Actions (`.github/workflows/seo.yml`) runs build + `test:seo` on every pu
 | `audit.mjs` | crawl from the sitemap (build or `--live`), all checks, CSV tables with `--report=DIR` |
 | `facts.mjs` | fact consistency engine (12 languages + llms files) |
 | `geo-questions.mjs` | 150-question GEO/AEO retrieval set → 17/18 CSVs; `--strict` fails on regression |
+| `content-model.mjs` | content governance (29) and depth model (30) |
+| `patterns.mjs` | fact regexes shared by the GEO set and the content model |
+
+## Measurement
+
+`/api/visita` (page views) and `/api/evento?e=whatsapp|email|phone|form|tour|map` (contact actions) → Durable Object `Stats` (`worker/stats.ts`), shown in /admin. Client side: `src/lib/trackEvent.ts`. No cookie, IP or visitor id.
 
 Severity: P0 critical indexing/security · P1 major visibility (blocks deploy) · P2 important · P3 nice-to-have.

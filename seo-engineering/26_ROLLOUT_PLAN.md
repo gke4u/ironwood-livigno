@@ -17,7 +17,11 @@ Phase 1 (technical foundation), Phase 2 (international: hreflang and x-default),
 | 6 Authority / local | Fix Holidu title/description ("Ironwood Livigno", "about 100 m on foot", no "direct access to slopes") — syndicates to Expedia | owner | — |
 | 6 Authority / local | Ski-school outreach emails (mid-October), Google Business posts | owner | — |
 | 7 Performance | LCP experiments (critical CSS inline / font strategy), ≥5 runs before/after | Claude | — |
-| 8 CRO | Click-event counting (WhatsApp, email, form, tour, map) in the existing beacon | Claude | owner OK |
+| 8 CRO | ~~Click-event counting~~ done 2026-10-02 → read it monthly in the admin | owner | — |
+| 4 Content | Bus stop / market in front, which lift is 100 m away (Carosello?) → location points + glance + facts | Claude | owner confirmation |
+| 6 Authority / local | Holidu title 'Eisenholz' → 'Ironwood Livigno'; 85–90 m² → 90 m² | owner | — |
+| 6 Authority / local | Free listings: livignoitaly.it (sauna filter), snowplaza.nl, yesalps | owner | — |
+| 7 Performance | JS reduction on the homepage (lazy islands) — only if CrUX field data shows a problem | Claude | GSC |
 | 9 Monitoring | Monthly: `npm run audit:live`, GEO set, Lighthouse 4 pages, Search Console (coverage, queries, CWV) | Claude + owner | GSC access |
 
 ## Search Console tasks (owner, needs login)

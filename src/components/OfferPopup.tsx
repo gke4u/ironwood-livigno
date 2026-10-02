@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { linkKind, trackEvent } from '@/lib/trackEvent';
 
 // Special-offer pop-up. The offer itself (stay dates, price, visibility
 // window, on/off) is set by the owner at /admin and served by the Worker at
@@ -187,6 +188,16 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
     try {
       navigator.sendBeacon(`/api/visita${ref ? `?r=${encodeURIComponent(ref)}` : ''}`);
     } catch {}
+    // Contact clicks anywhere on the page (WhatsApp, email, phone links —
+    // sticky button, forms, footer, this pop-up), counted for the admin.
+    // This component is on every page, so one listener covers the site.
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as Element | null)?.closest?.('a');
+      const kind = linkKind(a?.getAttribute('href') ?? null);
+      if (kind) trackEvent(kind);
+    };
+    document.addEventListener('click', onClick, true);
+    return () => document.removeEventListener('click', onClick, true);
   }, []);
 
   // Fetch after the page has settled, then open after a short delay.
@@ -310,7 +321,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
     <>
       <div className="flex items-end flex-wrap gap-x-4 gap-y-1">
         <span className="font-display text-5xl md:text-6xl leading-none tabular-nums">{money(offer.price)}</span>
-        {offer.originalPrice && <span className="text-xl text-mist/45 line-through tabular-nums mb-1">{money(offer.originalPrice)}</span>}
+        {offer.originalPrice && <span className="text-xl text-mist/60 line-through tabular-nums mb-1">{money(offer.originalPrice)}</span>}
       </div>
       <p className="mt-2 text-sm text-mist/70">
         {unitLabel}

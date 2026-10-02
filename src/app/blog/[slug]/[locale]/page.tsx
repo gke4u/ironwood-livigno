@@ -10,6 +10,7 @@ import Pic from '@/components/Pic';
 import { renderInlineLinks } from '@/lib/renderInlineLinks';
 import { buildTitle } from '@/lib/buildTitle';
 import { organizationRef, livignoPlace, countWords } from '@/lib/structuredDataIds';
+import { OG_LOCALE, ogAlternates } from '@/lib/ogLocale';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
 
@@ -161,6 +162,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       url,
       images: [{ url: `${siteUrl}${post.image.src}`, width: post.image.w, height: post.image.h, alt: post.image.alt }],
       locale: UI[data.locale].ogLocale,
+      alternateLocale: ogAlternates(languages, data.locale),
       type: 'article'
     },
     twitter: {

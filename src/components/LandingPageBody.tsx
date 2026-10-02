@@ -28,7 +28,9 @@ const defaultUi: LandingUiStrings = {
 // don't pass locale/ui) render byte-for-byte the same as before this was
 // parametrized. Header/footer/WhatsApp CTA come from BlogChrome — this
 // only renders the article content itself.
-export default function LandingPageBody({ page, ui }: { page: LandingPage; ui?: Partial<LandingUiStrings> }) {
+// `facts`: the property's "at a glance" block (PropertyFacts), passed in by
+// the page so it renders in the page's language.
+export default function LandingPageBody({ page, ui, facts }: { page: LandingPage; ui?: Partial<LandingUiStrings>; facts?: React.ReactNode }) {
   const t = { ...defaultUi, ...ui };
   return (
     <div className="max-w-content mx-auto px-6 md:px-10 py-16 md:py-20">
@@ -115,6 +117,8 @@ export default function LandingPageBody({ page, ui }: { page: LandingPage; ui?: 
             </ul>
           </div>
         )}
+
+        {facts}
 
         {page.faq && page.faq.length > 0 && (
           <div className="mt-14">

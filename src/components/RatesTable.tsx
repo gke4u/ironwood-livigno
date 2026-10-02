@@ -31,7 +31,7 @@ export default function RatesTable() {
                   <div key={season.id} className="rounded-2xl border border-ink/10 bg-mist/40 p-6">
                     <span className="block h-1 w-8 rounded-full bg-gold mb-4" aria-hidden />
                     <h3 className="font-display text-lg text-ink mb-1.5">{t(`season_${season.id}_label`)}</h3>
-                    <p className="text-ink/60 text-sm">{t(`season_${season.id}_period`)}</p>
+                    <p className="text-ink/70 text-sm">{t(`season_${season.id}_period`)}</p>
                   </div>
                 ))}
               </div>

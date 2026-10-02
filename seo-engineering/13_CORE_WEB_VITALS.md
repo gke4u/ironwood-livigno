@@ -34,8 +34,19 @@ No field data. Lab proxies: TBT 90–130 ms, no long third-party tasks before in
 
 ## Remaining LCP options (not done — trade-offs)
 
-1. Inline the critical CSS of the hero (removes one render-blocking request; Next static export doesn't do it natively).
-2. `font-display: optional` for Fraunces on the H1 (faster LCP, but first-time visitors may see the fallback serif).
-3. Preload only the Fraunces 400 latin woff2 used by the H1.
+1. ~~Inline the critical CSS~~ — already the case: Next inlines the CSS in a `<style>` element (Lighthouse: 0 render-blocking resources).
+2. `font-display: optional` for Fraunces on the H1 (first-time visitors may see the fallback serif) — not tried: the experiments below show fonts are not the bottleneck.
+3. Font preload — tried, rejected (see below).
 
 Each must be measured with ≥5 Lighthouse runs before/after because the current spread is ±0.4 s.
+
+## LCP experiments run (2026-10-02, local Worker, Lighthouse mobile, 5 runs each)
+
+| Variant | Perf | LCP | FCP | TBT | CLS | Decision |
+|---|---|---|---|---|---|---|
+| Baseline | 89 | 3,425 ms | 1,548 ms | 163 ms | 0.002 | — |
+| Preload Fraunces 400 + Poppins 400/500 (latin) | 84 | 3,567 ms | **1,257 ms** | 286 ms | 0.000 | **Rejected**: LCP not better (worse), TBT worse |
+| Hero photo without `fetchpriority=high` | 89 | 3,433 ms | 1,545 ms | 154 ms | 0.002 | **Rejected**: no effect |
+| Control page /de (baseline) | 88 | 3,470 ms | 1,543 ms | 191 ms | 0.022 | — |
+
+What the trace shows: unthrottled, the H1 is painted at ~0.46 s (TTFB 17 ms + render delay 443 ms). The 3.4 s is Lighthouse's simulation of slow 4G over everything requested before that paint — mainly ~150 KB of Next.js JavaScript chunks (requested at low priority but before the LCP). Fonts and the hero photo are not the bottleneck. Lowering it further means shipping less JavaScript on the homepage (e.g. turning client components such as the gallery, rooms tilt, weather and pop-up into lazily hydrated islands) — a refactor with regression risk, to be planned and measured separately, not done in this pass. Field data (CrUX in Search Console) should decide whether it is worth it.

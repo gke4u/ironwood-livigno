@@ -65,7 +65,7 @@ export default function BookingSection() {
                   <StarIcon key={i} />
                 ))}
               </span>
-              <span className="text-ink/60 text-sm">{tp('point3')}</span>
+              <span className="text-ink/70 text-sm">{tp('point3')}</span>
             </div>
           </Reveal>
 

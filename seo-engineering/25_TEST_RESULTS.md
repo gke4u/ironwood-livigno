@@ -29,6 +29,19 @@ Injected into `out/inverno.html`: wrong canonical, H1 removed, alt removed → a
 
 See `13_CORE_WEB_VITALS.md`: CLS 0.186 → 0.034 (blog), 0.129 → 0.012 (/en); Accessibility 100 and SEO 100 on all tested pages.
 
+## Second pass (2026-10-02, after "procedi con tutto")
+
+| Check | Result |
+|---|---|
+| axe-core WCAG 2.0/2.1 A+AA, 10 pages × 2 viewports (home, topic, article, blog index, contact, privacy, 404) | first run: 1 rule (color-contrast 4.42:1 on grey text) → fixed → **0 violations** on the live site |
+| Keyboard: 45 × Tab on /it, desktop and phone | logical order (skip link → nav → hero CTA → gallery → tour → rooms → form), focus style visible on every element, no hidden element focused, no trap |
+| Contact events | whatsapp, email, tour, map recorded locally (204), shown in the admin; live endpoint 204 (one test "map" event recorded on 2026-10-02) |
+| 404 | live: 404 status, `<title>` + `lang`, language from the URL, availability CTA |
+| OpenGraph | og:locale on every page; og:locale:alternate on every multi-language page (audit check) |
+| Content model | topic pages fact coverage 0.69 → 0.97 |
+| LCP experiments | 2 hypotheses tested ×5 runs, both rejected (13_CORE_WEB_VITALS.md) |
+| Deploy gate | `predeploy` now runs `npm run build` + `test:seo` (a deploy once shipped a stale build — fixed the same minute) |
+
 ## Manual / browser QA (Playwright, live, 2026-10-02)
 
 | Check | Mobile 390×844 | Desktop 1366×800 |

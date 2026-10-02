@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import DatePicker, { fromISO } from './DatePicker';
+import { trackEvent } from '@/lib/trackEvent';
 
 // Submits to TORBERO's own public intake Worker (torbero-richieste, in the
 // separate `torberto` project — richieste-worker/src/index.js's /submit
@@ -277,6 +278,7 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
       const json = (await res.json()) as { ok?: boolean };
       if (json.ok) {
         setStatus('success');
+        trackEvent('form');
         setName('');
         setEmail('');
         setPhone('');
@@ -640,7 +642,7 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
 
         {showAltMethods && (
           <div className="mt-6 pt-6 border-t border-ink/10">
-            <p className="text-ink/60 text-sm mb-3">{t('alt_methods_intro')}</p>
+            <p className="text-ink/70 text-sm mb-3">{t('alt_methods_intro')}</p>
             <div className="flex flex-wrap gap-3">
               <a
                 href={mailtoHref}

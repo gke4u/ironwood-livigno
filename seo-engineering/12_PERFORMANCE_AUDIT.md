@@ -41,6 +41,6 @@ Measured 2026-10-02 on the live site with Lighthouse (mobile emulation: Moto G p
 | ID | Finding | Severity | Status |
 |---|---|---|---|
 | PERF-1 | CLS 0.186 on blog posts, 0.129 on /en: web-font swap re-wrapped the H1 / "available in" line and pushed content | P1 | **Fixed** (metric-matched fallbacks) |
-| PERF-2 | Mobile LCP 3.4–4.0 s; LCP element is the H1 text, delayed by render-blocking CSS + font + Next.js JS (~170 KB on the homepage) | P2 | Open — options in 13 |
+| PERF-2 | Mobile LCP 3.4–4.0 s (lab); LCP element is the H1 text; experiments show the bottleneck is the Next.js JavaScript requested before the paint, not fonts or the hero photo | P2 | Open — 2 experiments rejected with data (13); JS reduction to be planned |
 | PERF-3 | Best-Practices 96 on homepages from the analytics CORS error | P3 | Accepted (data is received; verified via Cloudflare GraphQL on 2026-09-30) |
 | PERF-4 | Trailing-slash variants answer 307 (Cloudflare `auto-trailing-slash`) instead of 301/308 | P3 | Open — canonical tags already consolidate; low impact |
