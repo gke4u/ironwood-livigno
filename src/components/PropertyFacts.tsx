@@ -19,7 +19,7 @@ export default async function PropertyFacts({ locale }: { locale: string }) {
     [g('wellness'), hero('subtitle').replace(/\.$/, '')],
     [g('ski'), `${loc('point_1')} · ${loc('point_2')}`],
     [g('centre'), loc('point_3')],
-    [g('nearby'), loc('point_5')],
+    [g('nearby'), `${loc('point_5')} · ${loc('point_6')}`],
     [g('address'), `${F.location.street_address}, ${F.location.postal_code} ${F.location.locality} (SO)`],
     [g('booking'), g('value_booking')]
   ];

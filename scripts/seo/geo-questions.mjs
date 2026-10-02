@@ -70,6 +70,9 @@ q('it', 'practical', 'Cosa conviene comprare a Livigno duty-free?', 'Guida allo 
 q('it', 'practical', "C'è una fermata dell'autobus vicino a Ironwood Livigno?", "Sì, a circa 40 m; e c'è un market proprio di fronte.", '/it', ['bus40']);
 q('en', 'practical', 'Is there a bus stop and a supermarket near Ironwood Livigno?', 'Bus stop about 40 m away, grocery shop right opposite.', '/en', ['bus40']);
 q('de', 'practical', 'Gibt es eine Bushaltestelle und einen Supermarkt in der Nähe?', 'Bushaltestelle etwa 40 m, Lebensmittelgeschäft direkt gegenüber.', '/de', ['bus40']);
+q('it', 'practical', "C'è una lavanderia a gettoni vicino all'appartamento?", 'Sì, entro 100 m, insieme a 2 supermercati, ristoranti e bar.', '/it', ['laundry', 'supermarkets']);
+q('en', 'practical', 'Are there supermarkets and restaurants near Ironwood Livigno?', '2 supermarkets about 80 and 100 m away; restaurants, bars, a wine bar within 100 m.', '/en', ['supermarkets']);
+q('de', 'practical', 'Gibt es einen Waschsalon in der Nähe der Ferienwohnung?', 'Ja, im Umkreis von 100 m.', '/de', ['laundry']);
 q('it', 'practical', 'Email di Ironwood Livigno?', 'info@ironwoodlivigno.com', '/it/contatti', ['email']);
 
 // ---------- ENGLISH ----------

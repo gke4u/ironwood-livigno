@@ -16,6 +16,8 @@ export const F = {
   carosello: /Carosello/i,
   sanRocco: /San Rocco/,
   doss18: /Doss 18/,
+  laundry: /lavanderia|launderette|laundromat|Waschsalon|laverie|møntvaskeri|myntvaskeri|pralnia|prádelna|wasserette|自助洗衣|コインランドリー/i,
+  supermarkets: /supermercat|supermarket|Supermärkte|supermarché|supermarked|supermarkt|超市|スーパーマーケット/i,
   bus40: /40\s?(m|metri|meter|metres|mètres|metrů|metrów|米|メートル)/i,
   livigno: /Livigno|利维尼奥|リヴィーニョ/i,
   area90: /90\s?(m²|sqm|sq m|square met|平方米|㎡)/i,

@@ -101,6 +101,27 @@
         "unit": "m",
         "note": "right opposite the apartment",
         "source": "owner, 2026-10-02 (a guest review also mentions it)"
+      },
+      "supermarkets": {
+        "count": 2,
+        "values_m": [
+          80,
+          100
+        ],
+        "source": "owner, 2026-10-02"
+      },
+      "within_100m": {
+        "items": [
+          "restaurants",
+          "bars",
+          "wine bar",
+          "ski schools",
+          "clothing shops",
+          "greengrocer",
+          "launderette"
+        ],
+        "range_m": "70-100",
+        "source": "owner, 2026-10-02"
       }
     },
     "ski_access_claim": "About 100 m on foot to the San Rocco ski lift, which links on skis to Carosello 3000. NOT ski-in/ski-out: never describe it as ski-in, ski-out or ski-to-door.",
