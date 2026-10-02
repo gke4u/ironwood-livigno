@@ -206,7 +206,7 @@ export function offerPostBody(o: OfferForPost, siteOrigin: string) {
     `Offerta speciale a Ironwood Livigno: ${when} ` +
     `(${nights} ${nights === 1 ? 'notte' : 'notti'}) a ${price}${was}. ` +
     `Sauna e bagno turco privati, fino a 6 ospiti in 3 camere, ${where}. ` +
-    `Una sola casa: quando è prenotata, l’offerta finisce. Scrivici su WhatsApp al 0342 929285.`;
+    `Una sola casa: quando è prenotata, l’offerta finisce. Prenota dal link qui sotto.`;
   return {
     languageCode: 'it',
     topicType: 'OFFER',
