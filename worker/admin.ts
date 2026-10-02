@@ -223,6 +223,8 @@ export function adminPage(): string {
     <section class="card" id="visite">
       <h2>Visite al sito</h2>
       <div id="statsBox"><p class="hint">Caricamento…</p></div>
+      <div class="actions"><button type="button" id="statsReset" class="danger">Azzera statistiche</button></div>
+      <p id="statsResetMsg" class="sub"></p>
     </section>
 
     <section class="card" id="ordine">
@@ -596,6 +598,20 @@ async function loadStats() {
     ' Le tue visite da questo dispositivo (e da ogni dispositivo su cui apri l’admin) non vengono contate dal 2 ottobre 2026.';
   box.append(kpis, bars, x, tops, note);
 }
+
+$('statsReset').addEventListener('click', async (e) => {
+  if (!confirm('Cancellare TUTTE le visite e i clic contati finora? Non si possono recuperare. Il conteggio ripartirà da zero (senza contare i tuoi dispositivi).')) return;
+  e.target.disabled = true;
+  try {
+    await api('stats/reset', { method: 'POST' });
+    await loadStats();
+    $('statsResetMsg').textContent = 'Statistiche azzerate: da ora si contano solo gli ospiti.';
+  } catch (err) {
+    $('statsResetMsg').textContent = 'Non è riuscito: ' + err.message;
+  } finally {
+    e.target.disabled = false;
+  }
+});
 
 // ---- homepage section order ----
 let layout = null;

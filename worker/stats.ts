@@ -72,6 +72,12 @@ export class Stats extends DurableObject {
     );
   }
 
+  // Admin "Azzera statistiche": deletes every counted visit and click.
+  async reset(): Promise<void> {
+    this.ctx.storage.sql.exec('DELETE FROM views');
+    this.ctx.storage.sql.exec('DELETE FROM events');
+  }
+
   async summary(today: string): Promise<StatsSummary> {
     const sql = this.ctx.storage.sql;
     const back = (n: number) => new Date(Date.parse(`${today}T00:00:00Z`) - n * 86400_000).toISOString().slice(0, 10);

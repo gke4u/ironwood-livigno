@@ -506,6 +506,10 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
   if (route === 'stats' && request.method === 'GET') {
     return json(await env.STATS.getByName('site').summary(romeDate()));
   }
+  if (route === 'stats/reset' && request.method === 'POST') {
+    await env.STATS.getByName('site').reset();
+    return json(await env.STATS.getByName('site').summary(romeDate()));
+  }
 
   if (route === 'layout' && request.method === 'GET') {
     const raw = await env.PHOTOS.get(LAYOUT_KEY);
