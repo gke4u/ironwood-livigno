@@ -8,6 +8,8 @@
 //   /foto-del-giorno       today's photo, the same one for everyone all day
 //   /foto/<id>             a single uploaded photo (admin thumbnails)
 //   /api/offer             the special offer to show in the site pop-up, if any
+//   /api/chat              NIGI, the site chat: on/off for the page, and AI answers (worker/chat.ts)
+//   /api/chat/evento       chat opened / FAQ button used, for the admin's chat counters
 //   /it, /en, …            the homepages, to apply the section order (and hidden sections) chosen in the admin
 //   /recensione            short link to the "write a review" page on Google
 //   /api/sezioni           the homepage sections hidden in the admin (to hide links to them)
@@ -33,6 +35,7 @@ import { OFFER_KEY, isLive, parseOffer, publicOffer, type Offer } from './offer'
 import * as google from './google';
 import { HOME_PATHS, LAYOUT_KEY, SECTIONS, isDefault, layoutCss, parseLayout } from './layout';
 import { EVENT_KINDS, pagePath, sourceName, type EventKind, type Stats } from './stats';
+import { CHAT_KEY, DAILY_AI_LIMIT, askAI, parseMessages, systemPrompt, type ChatSettings } from './chat';
 
 // The Durable Object class must be exported by the Worker's main module.
 export { Stats } from './stats';
@@ -49,6 +52,9 @@ export interface Env {
   GOOGLE_CLIENT_SECRET?: string;
   // Visit counter for the admin (worker/stats.ts).
   STATS: DurableObjectNamespace<Stats>;
+  // NIGI, the site chat (worker/chat.ts): Workers AI and a per-visitor rate limit.
+  AI: Ai;
+  CHAT_LIMIT: RateLimit;
 }
 
 type PhotoMeta = { id: string; type: string; w: number; h: number; bytes: number; created: string; season?: Season };
@@ -107,6 +113,11 @@ export default {
       if (path.startsWith('/foto/')) return await photoById(request, path.slice('/foto/'.length), env);
       if (path.startsWith('/foto-google/')) return await photoForGoogle(request, path.slice('/foto-google/'.length), env);
       if (path === '/api/offer') return await offerApi(request, env);
+      if (path === '/api/chat') return await chatApi(request, env, ctx);
+      if (path === '/api/chat/evento' && request.method === 'POST') {
+        ctx.waitUntil(countChat(request, env).catch((err) => console.error(err)));
+        return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
+      }
       if (path === '/api/evento' && request.method === 'POST') {
         ctx.waitUntil(countEvent(request, env).catch((err) => console.error(err)));
         return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
@@ -372,6 +383,67 @@ async function countEvent(request: Request, env: Env): Promise<void> {
   });
 }
 
+// ---------- NIGI chat (public) ----------
+
+async function readChat(env: Env, cacheTtl = 60): Promise<ChatSettings> {
+  const raw = await env.PHOTOS.get(CHAT_KEY, cacheTtl ? { cacheTtl } : undefined);
+  return raw ? (JSON.parse(raw) as ChatSettings) : { active: false, updated: '' };
+}
+
+// The admin's preview link (?anteprima-nigi) shows and runs the chat for the
+// logged-in owner even while it is switched off.
+async function isAdmin(request: Request, env: Env): Promise<boolean> {
+  return Boolean(env.SESSION_SECRET) && (await isLoggedIn(request, env, await readAuth(env)));
+}
+
+//   GET  /api/chat   { active } — whether the site shows the chat button
+//   POST /api/chat   { messages } -> { reply } or { error: 'off' | 'busy' | 'limit' | 'invalid' }
+async function chatApi(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+  const preview = new URL(request.url).searchParams.has('preview');
+  if (request.method === 'GET') {
+    if (preview) return json({ active: (await readChat(env, 0)).active || (await isAdmin(request, env)) });
+    return json({ active: (await readChat(env)).active }, 200, { 'Cache-Control': 'public, max-age=60' });
+  }
+  if (request.method !== 'POST') return json({ error: 'invalid' }, 405);
+
+  // Only the site's own pages may ask: the AI is not a public API.
+  const origin = request.headers.get('Origin');
+  if (!origin || origin !== new URL(request.url).origin) return json({ error: 'invalid' }, 403);
+
+  const settings = await readChat(env);
+  if (!settings.active && !(preview && (await isAdmin(request, env)))) return json({ error: 'off' }, 503);
+
+  const ip = request.headers.get('CF-Connecting-IP') ?? 'unknown';
+  if (!(await env.CHAT_LIMIT.limit({ key: ip })).success) return json({ error: 'busy' }, 429);
+
+  const messages = parseMessages(await request.json().catch(() => null));
+  if (!messages) return json({ error: 'invalid' }, 400);
+
+  const today = romeDate();
+  const stats = env.STATS.getByName('site');
+  if (!(await stats.chatAllow(today, DAILY_AI_LIMIT))) return json({ error: 'limit' }, 429);
+
+  const offer = await readOffer(env);
+  const live = offer && isLive(offer, today) ? publicOffer(offer, today) : null;
+  const reply = await askAI(env.AI, systemPrompt(today, live), messages).catch((err) => {
+    console.error(err);
+    return null;
+  });
+  if (!reply) {
+    ctx.waitUntil(stats.chatCount(today, 'error').catch((err) => console.error(err)));
+    return json({ error: 'busy' }, 503);
+  }
+  return json({ reply });
+}
+
+// Chat opened, or a FAQ button used (answered in the browser): counts only.
+async function countChat(request: Request, env: Env): Promise<void> {
+  const kind = new URL(request.url).searchParams.get('k');
+  if (kind !== 'open' && kind !== 'faq') return;
+  if (isOwnerDevice(request)) return;
+  await env.STATS.getByName('site').chatCount(romeDate(), kind);
+}
+
 async function readOffer(env: Env, cacheTtl = 60): Promise<Offer | null> {
   const raw = await env.PHOTOS.get(OFFER_KEY, cacheTtl ? { cacheTtl } : undefined);
   return raw ? (JSON.parse(raw) as Offer) : null;
@@ -524,6 +596,21 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
       return kvWriteError(err);
     }
     return json({ ok: true, ...layout });
+  }
+
+  if (route === 'chat' && request.method === 'GET') {
+    return json({ settings: await readChat(env, 0), limit: DAILY_AI_LIMIT, stats: await env.STATS.getByName('site').chatSummary(romeDate()) });
+  }
+  if (route === 'chat' && request.method === 'PUT') {
+    const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
+    if (typeof body.active !== 'boolean') return json({ error: 'Richiesta non valida' }, 400);
+    const settings: ChatSettings = { active: body.active, updated: new Date().toISOString() };
+    try {
+      await env.PHOTOS.put(CHAT_KEY, JSON.stringify(settings));
+    } catch (err) {
+      return kvWriteError(err);
+    }
+    return json({ settings });
   }
 
   if (route === 'offer' && request.method === 'GET') return json({ offer: await readOffer(env, 0), today: romeDate() });

@@ -372,5 +372,22 @@
     "waMessage": "Dobrý den! Rád bych si rezervoval speciální nabídku Ironwood Livigno od {checkIn} do {checkOut} ({price}). Je ještě volná?",
     "emailSubject": "Speciální nabídka {checkIn} – {checkOut}",
     "emailFields": "Jméno:\nPočet hostů:"
+  },
+  "chat": {
+    "subtitle": "Virtuální asistent",
+    "open": "Chatujte s NIGI, asistentem Ironwood Livigno",
+    "close": "Zavřít chat",
+    "welcome": "Dobrý den, jsem NIGI, asistent Ironwood Livigno 👋 Jak vám mohu pomoci?",
+    "placeholder": "Napište otázku…",
+    "send": "Odeslat",
+    "faqTitle": "Časté dotazy",
+    "showFaq": "Časté dotazy",
+    "typing": "NIGI píše…",
+    "restart": "Nová konverzace",
+    "errorBusy": "Momentálně nemohu odpovědět. Napište nám na WhatsApp, odpovíme vám osobně.",
+    "errorLimit": "Dnes jsem už odpověděl na spoustu otázek! Napište nám na WhatsApp, odpovíme vám osobně.",
+    "errorRate": "Píšete velmi rychle: počkejte prosím pár sekund a zkuste to znovu.",
+    "disclaimer": "Automatické odpovědi. Termíny a ceny vám potvrdíme osobně.",
+    "moreFaq": "Další dotazy"
   }
 }

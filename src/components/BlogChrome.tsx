@@ -14,6 +14,7 @@ import { blogIndexHref } from '@/lib/blogIndex';
 import Logo from './Logo';
 import BlogMobileMenu from './BlogMobileMenu';
 import OfferPopupServer from './OfferPopupServer';
+import ChatWidgetServer from './ChatWidgetServer';
 
 export async function BlogHeader({ locale = 'it' }: { locale?: Locale }) {
   const t = await getTranslations({ locale, namespace: 'nav' });
@@ -106,6 +107,7 @@ export async function BlogFooter({ locale = 'it' }: { locale?: Locale }) {
   return (
     <>
     <OfferPopupServer locale={locale} />
+    <ChatWidgetServer locale={locale} />
     <footer className="bg-ink text-mist/70 py-10">
       <div className="max-w-content mx-auto px-6 md:px-10">
         <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs uppercase tracking-widest mb-8 pb-8 border-b border-mist/10">

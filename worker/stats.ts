@@ -19,6 +19,17 @@ export const EVENT_KINDS = ['whatsapp', 'email', 'phone', 'form', 'tour', 'map']
 export type EventKind = (typeof EVENT_KINDS)[number];
 export type EventHit = { day: string; kind: EventKind; path: string };
 
+// NIGI, the site chat (worker/chat.ts): per day, how often it was opened,
+// FAQ buttons used, AI answers given, questions refused by the daily cap and
+// AI failures. Counts only: what visitors write is never stored.
+export const CHAT_KINDS = ['open', 'faq', 'ai', 'limited', 'error'] as const;
+export type ChatKind = (typeof CHAT_KINDS)[number];
+export type ChatSummary = {
+  today: Record<ChatKind, number>;
+  month: Record<ChatKind, number>; // last 30 days
+  since: string | null;
+};
+
 export type StatsSummary = {
   since: string | null;
   days: { day: string; views: number }[]; // last 30 days, oldest first, including empty days
@@ -46,6 +57,11 @@ export class Stats extends DurableObject {
          day TEXT NOT NULL, kind TEXT NOT NULL, path TEXT NOT NULL,
          n INTEGER NOT NULL, PRIMARY KEY (day, kind, path))`
     );
+    ctx.storage.sql.exec(
+      `CREATE TABLE IF NOT EXISTS chat (
+         day TEXT NOT NULL, kind TEXT NOT NULL,
+         n INTEGER NOT NULL, PRIMARY KEY (day, kind))`
+    );
   }
 
   async hit(h: Hit): Promise<void> {
@@ -60,6 +76,7 @@ export class Stats extends DurableObject {
       const cutoff = new Date(Date.parse(`${h.day}T00:00:00Z`) - KEEP_DAYS * 86400_000).toISOString().slice(0, 10);
       this.ctx.storage.sql.exec('DELETE FROM views WHERE day < ?', cutoff);
       this.ctx.storage.sql.exec('DELETE FROM events WHERE day < ?', cutoff);
+      this.ctx.storage.sql.exec('DELETE FROM chat WHERE day < ?', cutoff);
       await this.ctx.storage.put('pruned', h.day);
     }
   }
@@ -72,7 +89,42 @@ export class Stats extends DurableObject {
     );
   }
 
-  // Admin "Azzera statistiche": deletes every counted visit and click.
+  async chatCount(day: string, kind: ChatKind): Promise<void> {
+    this.ctx.storage.sql.exec(
+      `INSERT INTO chat (day, kind, n) VALUES (?, ?, 1) ON CONFLICT (day, kind) DO UPDATE SET n = n + 1`,
+      day, kind
+    );
+  }
+
+  // Counts one AI answer if today's cap still allows it. A Durable Object
+  // handles one call at a time, so the check and the increment can't race.
+  async chatAllow(day: string, limit: number): Promise<boolean> {
+    const used = this.ctx.storage.sql.exec<{ n: number }>("SELECT n FROM chat WHERE day = ? AND kind = 'ai'", day).toArray()[0]?.n ?? 0;
+    if (used >= limit) {
+      await this.chatCount(day, 'limited');
+      return false;
+    }
+    await this.chatCount(day, 'ai');
+    return true;
+  }
+
+  async chatSummary(today: string): Promise<ChatSummary> {
+    const sql = this.ctx.storage.sql;
+    const from30 = new Date(Date.parse(`${today}T00:00:00Z`) - 29 * 86400_000).toISOString().slice(0, 10);
+    const zero = () => Object.fromEntries(CHAT_KINDS.map((k) => [k, 0])) as Record<ChatKind, number>;
+    const todayCounts = zero();
+    const month = zero();
+    for (const r of sql.exec<{ day: string; kind: ChatKind; n: number }>('SELECT day, kind, n FROM chat WHERE day >= ?', from30)) {
+      if (!(r.kind in month)) continue;
+      month[r.kind] += r.n;
+      if (r.day === today) todayCounts[r.kind] += r.n;
+    }
+    const since = sql.exec<{ d: string | null }>('SELECT MIN(day) AS d FROM chat').one().d;
+    return { today: todayCounts, month, since };
+  }
+
+  // Admin "Azzera statistiche": deletes every counted visit and click
+  // (not the chat counters, which also hold today's AI cap).
   async reset(): Promise<void> {
     this.ctx.storage.sql.exec('DELETE FROM views');
     this.ctx.storage.sql.exec('DELETE FROM events');

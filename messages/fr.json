@@ -370,5 +370,22 @@
     "waMessage": "Bonjour ! Je souhaite réserver l’offre spéciale d’Ironwood Livigno du {checkIn} au {checkOut} ({price}). Est-elle encore disponible ?",
     "emailSubject": "Offre spéciale {checkIn} – {checkOut}",
     "emailFields": "Nom :\nNombre de personnes :"
+  },
+  "chat": {
+    "subtitle": "Assistant virtuel",
+    "open": "Discuter avec NIGI, l’assistant d’Ironwood Livigno",
+    "close": "Fermer la discussion",
+    "welcome": "Bonjour, je suis NIGI, l’assistant d’Ironwood Livigno 👋 Comment puis-je vous aider ?",
+    "placeholder": "Écrivez une question…",
+    "send": "Envoyer",
+    "faqTitle": "Questions fréquentes",
+    "showFaq": "Questions fréquentes",
+    "typing": "NIGI écrit…",
+    "restart": "Nouvelle conversation",
+    "errorBusy": "Je ne peux pas répondre pour le moment. Écrivez-nous sur WhatsApp : nous vous répondrons personnellement.",
+    "errorLimit": "J’ai déjà répondu à beaucoup de questions aujourd’hui ! Écrivez-nous sur WhatsApp : nous vous répondrons personnellement.",
+    "errorRate": "Vous écrivez très vite : patientez quelques secondes puis réessayez.",
+    "disclaimer": "Réponses automatiques. Nous confirmons nous-mêmes dates et prix.",
+    "moreFaq": "Autres questions"
   }
 }

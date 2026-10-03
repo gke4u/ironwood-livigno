@@ -370,5 +370,22 @@
     "waMessage": "Hei! Jeg vil gjerne bestille Ironwood Livignos spesialtilbud fra {checkIn} til {checkOut} ({price}). Er det fortsatt ledig?",
     "emailSubject": "Spesialtilbud {checkIn} – {checkOut}",
     "emailFields": "Navn:\nAntall gjester:"
+  },
+  "chat": {
+    "subtitle": "Virtuell assistent",
+    "open": "Chat med NIGI, assistenten til Ironwood Livigno",
+    "close": "Lukk chatten",
+    "welcome": "Hei, jeg er NIGI, assistenten til Ironwood Livigno 👋 Hvordan kan jeg hjelpe deg?",
+    "placeholder": "Skriv et spørsmål…",
+    "send": "Send",
+    "faqTitle": "Vanlige spørsmål",
+    "showFaq": "Vanlige spørsmål",
+    "typing": "NIGI skriver…",
+    "restart": "Ny samtale",
+    "errorBusy": "Jeg kan ikke svare akkurat nå. Skriv til oss på WhatsApp, så svarer vi personlig.",
+    "errorLimit": "Jeg har allerede svart på veldig mange spørsmål i dag! Skriv til oss på WhatsApp, så svarer vi personlig.",
+    "errorRate": "Du skriver veldig fort: vent noen sekunder og prøv igjen.",
+    "disclaimer": "Automatiske svar. Datoer og priser bekrefter vi personlig.",
+    "moreFaq": "Flere spørsmål"
   }
 }

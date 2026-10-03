@@ -369,5 +369,22 @@
     "waMessage": "こんにちは！Ironwood Livignoの特別オファー（{checkIn}〜{checkOut}、{price}）を予約したいです。まだ空いていますか？",
     "emailSubject": "特別オファー {checkIn} – {checkOut}",
     "emailFields": "お名前：\n人数："
+  },
+  "chat": {
+    "subtitle": "バーチャルアシスタント",
+    "open": "Ironwood Livigno のアシスタント NIGI とチャット",
+    "close": "チャットを閉じる",
+    "welcome": "こんにちは、Ironwood Livigno のアシスタント NIGI です 👋 どのようなご用件でしょうか？",
+    "placeholder": "質問を入力…",
+    "send": "送信",
+    "faqTitle": "よくある質問",
+    "showFaq": "よくある質問",
+    "typing": "NIGI が入力中…",
+    "restart": "新しい会話",
+    "errorBusy": "現在お答えできません。WhatsApp でご連絡いただければ、スタッフが直接お返事します。",
+    "errorLimit": "本日はたくさんのご質問にお答えしました！WhatsApp でご連絡いただければ、スタッフが直接お返事します。",
+    "errorRate": "入力が速すぎます。数秒待ってからもう一度お試しください。",
+    "disclaimer": "自動回答です。日程と料金はスタッフが確認します。",
+    "moreFaq": "その他の質問"
   }
 }

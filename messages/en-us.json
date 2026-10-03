@@ -370,5 +370,22 @@
     "waMessage": "Hi! I’d like to book the Ironwood Livigno special offer from {checkIn} to {checkOut} ({price}). Is it still available?",
     "emailSubject": "Special offer {checkIn} – {checkOut}",
     "emailFields": "Name:\nNumber of guests:"
+  },
+  "chat": {
+    "subtitle": "Virtual assistant",
+    "open": "Chat with NIGI, the Ironwood Livigno assistant",
+    "close": "Close chat",
+    "welcome": "Hi, I’m NIGI, the Ironwood Livigno assistant 👋 How can I help you?",
+    "placeholder": "Type a question…",
+    "send": "Send",
+    "faqTitle": "Frequently asked questions",
+    "showFaq": "FAQ",
+    "typing": "NIGI is typing…",
+    "restart": "New conversation",
+    "errorBusy": "I can’t answer right now. Message us on WhatsApp and we’ll reply in person.",
+    "errorLimit": "I’ve answered a lot of questions today! Message us on WhatsApp and we’ll reply in person.",
+    "errorRate": "You’re typing very fast: please wait a few seconds and try again.",
+    "disclaimer": "Automatic answers. We’ll confirm dates and prices personally.",
+    "moreFaq": "More questions"
   }
 }

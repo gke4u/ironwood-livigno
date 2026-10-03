@@ -369,5 +369,22 @@
     "waMessage": "您好！我想预订 Ironwood Livigno 的特别优惠，{checkIn} 至 {checkOut}（{price}）。现在还可以预订吗？",
     "emailSubject": "特别优惠 {checkIn} – {checkOut}",
     "emailFields": "姓名：\n入住人数："
+  },
+  "chat": {
+    "subtitle": "虚拟助手",
+    "open": "与 Ironwood Livigno 的助手 NIGI 聊天",
+    "close": "关闭聊天",
+    "welcome": "您好，我是 Ironwood Livigno 的助手 NIGI 👋 有什么可以帮您？",
+    "placeholder": "请输入问题…",
+    "send": "发送",
+    "faqTitle": "常见问题",
+    "showFaq": "常见问题",
+    "typing": "NIGI 正在输入…",
+    "restart": "新的对话",
+    "errorBusy": "我现在无法回答。请通过 WhatsApp 联系我们，我们会亲自回复您。",
+    "errorLimit": "今天我已经回答了很多问题！请通过 WhatsApp 联系我们，我们会亲自回复您。",
+    "errorRate": "您输入得太快了：请稍等几秒钟再试。",
+    "disclaimer": "自动回答。日期和价格将由我们亲自确认。",
+    "moreFaq": "更多问题"
   }
 }
