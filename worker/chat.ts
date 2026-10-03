@@ -19,8 +19,8 @@ export const CHAT_MODEL = '@cf/google/gemma-4-26b-a4b-it';
 // 10,000 a day Workers AI gives for free (they reset at 00:00 UTC, an hour or
 // two before Italian midnight, so the margin also covers that gap). Counted
 // from each answer's real usage, so it stays free however long the facts and
-// the owner's questions get. One answer is ~22 Neurons today (2026-10-03):
-// about 400 answers a day.
+// the owner's questions get. One answer is ~41 Neurons (measured 2026-10-03
+// with the theme-page questions and 13 owner Q&A): about 220 answers a day.
 export const DAILY_NEURONS = 9000;
 // Gemma 4 26B on Workers AI: Neurons per million tokens (developers.cloudflare.com/workers-ai/platform/pricing).
 const NEURONS_PER_M_IN = 9091;

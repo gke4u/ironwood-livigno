@@ -163,7 +163,7 @@ export function adminPage(): string {
 
     <section class="card" id="nigi">
       <h2>Assistente NIGI (chat sul sito)</h2>
-      <p class="hint">NIGI risponde ai visitatori in tutte le lingue, 24 ore su 24. Le risposte usano l’intelligenza artificiale gratuita di Cloudflare (circa 400 risposte al giorno; quando la quota gratuita del giorno finisce, NIGI propone WhatsApp e non spendi nulla). Per date, prezzi e prenotazioni NIGI rimanda sempre a WhatsApp, email o al modulo.</p>
+      <p class="hint">NIGI risponde ai visitatori in tutte le lingue, 24 ore su 24. Le risposte usano l’intelligenza artificiale gratuita di Cloudflare (circa 200 risposte al giorno; quando la quota gratuita del giorno finisce, NIGI propone WhatsApp e non spendi nulla). Per date, prezzi e prenotazioni NIGI rimanda sempre a WhatsApp, email o al modulo.</p>
       <div id="chatStatus" class="status off">Caricamento…</div>
       <label class="switch"><input type="checkbox" id="chatActive" disabled><span class="track"></span><span id="chatSwitchText">…</span></label>
       <div id="chatStats"></div>

@@ -9,6 +9,7 @@
 
 import it from '../messages/it.json';
 import { rates } from '../src/data/rates';
+import { landingPages } from '../src/content/landingPages';
 
 type Dict = Record<string, string>;
 
@@ -56,6 +57,10 @@ function buildFacts(): string {
   const qa: string[] = [];
   for (let i = 1; faq[`q${i}_q`]; i++) qa.push(`- ${faq[`q${i}_q`]} ${faq[`q${i}_a`]}`);
 
+  // The theme pages' own questions (winter, summer, families, how to get
+  // here, about us, sauna, rooms), in Italian.
+  const pageQa = landingPages.flatMap((p) => (p.faq ?? []).map((f) => `- ${f.q} ${f.a}`));
+
   return `
 # Ironwood Livigno — appartamento vacanze
 - ${hero.seo_description}
@@ -92,6 +97,9 @@ ${seasons.join('\n')}
 
 ## Domande frequenti (risposte ufficiali)
 ${qa.join('\n')}
+
+## Altre domande dalle pagine del sito (inverno, estate, famiglie, come arrivare, chi siamo, sauna, camere)
+${pageQa.join('\n')}
 
 ## Recensioni
 - ${rev.disclaimer}
