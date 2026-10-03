@@ -60,7 +60,7 @@ q('it', 'summer', 'Cosa fare a Livigno d\'estate?', 'Mountain bike, trekking, La
 q('it', 'booking', 'Come si prenota Ironwood Livigno?', 'Modulo di richiesta sul sito o WhatsApp +39 0342 929285.', '/it', ['requestForm', 'whatsapp', 'phone']);
 q('it', 'booking', 'Si può prenotare senza commissioni?', 'Sì, prenotando direttamente non ci sono commissioni di intermediazione.', '/chi-siamo', ['noCommission', 'directBooking']);
 q('it', 'booking', 'Qual è il soggiorno minimo?', 'Generalmente 2-3 notti.', '/it', ['minStay']);
-q('it', 'booking', 'Orari di check-in?', 'Confermati alla prenotazione, flessibili.', '/it', ['checkin']);
+q('it', 'booking', 'Orari di check-in?', 'Dalle 16:00; check-out entro le 9:00, flessibili su richiesta.', '/it', ['checkin']);
 q('it', 'booking', 'Politica di cancellazione?', 'Rimborso parziale entro una scadenza, dettagli alla prenotazione.', '/it', ['cancellation']);
 q('it', 'practical', 'C\'è il parcheggio?', 'Sì, un posto auto gratuito.', '/it', ['parkingFree']);
 q('it', 'practical', 'Sono ammessi cani?', 'No, niente animali.', '/it', ['pets']);
@@ -113,7 +113,7 @@ q('en', 'summer', 'What to do in Livigno in summer?', 'Mountain biking, hiking, 
 q('en', 'booking', 'How do I book Ironwood Livigno?', 'Request form on the site or WhatsApp +39 0342 929285.', '/en', ['requestForm', 'whatsapp', 'phone']);
 q('en', 'booking', 'Can I book directly without commission?', 'Yes, direct booking with the owners, no commission.', '/chi-siamo/en', ['noCommission', 'directBooking']);
 q('en', 'booking', 'What is the minimum stay?', 'Usually 2-3 nights.', '/en', ['minStay']);
-q('en', 'booking', 'What are the check-in times?', 'Confirmed at booking, flexible.', '/en', ['checkin']);
+q('en', 'booking', 'What are the check-in times?', 'From 4 pm; check-out by 9 am, flexible on request.', '/en', ['checkin']);
 q('en', 'booking', 'What is the cancellation policy?', 'Partial refund before a deadline.', '/en', ['cancellation']);
 q('en', 'practical', 'Is parking included?', 'Yes, one free parking space.', '/en', ['parkingFree']);
 q('en', 'practical', 'Are dogs allowed?', 'No pets.', '/en', ['pets']);

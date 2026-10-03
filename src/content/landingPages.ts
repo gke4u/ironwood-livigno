@@ -273,7 +273,7 @@ export const landingPages: LandingPage[] = [
       {
         heading: 'Parcheggio e arrivo in appartamento',
         body: [
-          "L'appartamento include un posto auto gratuito, quindi non è necessario cercare parcheggio a pagamento in paese. Gli orari di check-in e check-out vengono confermati al momento della prenotazione via WhatsApp, con una certa flessibilità in base alla disponibilità — comoda per chi arriva dopo un viaggio lungo o con orari di treno/autobus non sempre puntuali.",
+          "L'appartamento include un posto auto gratuito, quindi non è necessario cercare parcheggio a pagamento in paese. Il check-in è dalle 16:00 e il check-out entro le 9:00, con flessibilità: basta comunicarcelo su WhatsApp — comoda per chi arriva dopo un viaggio lungo o con orari di treno/autobus non sempre puntuali.",
           "Per qualsiasi dubbio sull'ultimo tratto del viaggio, il modo più rapido per contattarci è WhatsApp: rispondiamo con indicazioni precise e, se serve, con foto dell'ingresso per riconoscere subito il palazzo."
         ]
       }

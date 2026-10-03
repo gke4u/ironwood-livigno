@@ -1617,7 +1617,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: 'Parking and arriving at the apartment',
           body: [
-            "The apartment includes a free parking space, so there's no need to look for paid parking in town. Check-in and check-out times are confirmed at booking via WhatsApp, with some flexibility depending on availability — handy if you're arriving after a long journey or with train/bus times that aren't always on schedule.",
+            "The apartment includes a free parking space, so there's no need to look for paid parking in town. Check-in is from 4:00 pm and check-out by 9:00 am, with flexibility: just let us know on WhatsApp — handy if you're arriving after a long journey or with train/bus times that aren't always on schedule.",
             "For any questions about the final stretch of the journey, the fastest way to reach us is WhatsApp: we reply with precise directions and, if needed, photos of the entrance so you can spot the building right away."
           ]
         }
@@ -1664,7 +1664,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: 'Parking and arriving at the apartment',
           body: [
-            "The apartment includes a free parking space, so there's no need to look for paid parking in town. Check-in and check-out times are confirmed at booking via WhatsApp, with some flexibility depending on availability — handy if you're arriving after a long trip or with train/bus times that aren't always on schedule.",
+            "The apartment includes a free parking space, so there's no need to look for paid parking in town. Check-in is from 4:00 pm and check-out by 9:00 am, with flexibility: just let us know on WhatsApp — handy if you're arriving after a long trip or with train/bus times that aren't always on schedule.",
             "For any questions about the final stretch of the trip, the fastest way to reach us is WhatsApp: we reply with precise directions and, if needed, photos of the entrance so you can spot the building right away."
           ]
         }
@@ -1711,7 +1711,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: 'Parken und Ankunft in der Wohnung',
           body: [
-            'Zur Wohnung gehört ein kostenloser Parkplatz, sodass Sie im Ort nicht nach einem kostenpflichtigen Parkplatz suchen müssen. Check-in- und Check-out-Zeiten werden bei der Buchung per WhatsApp bestätigt, mit einer gewissen Flexibilität je nach Verfügbarkeit — praktisch, wenn Sie nach einer langen Reise oder mit nicht immer pünktlichen Zug-/Busverbindungen ankommen.',
+            'Zur Wohnung gehört ein kostenloser Parkplatz, sodass Sie im Ort nicht nach einem kostenpflichtigen Parkplatz suchen müssen. Check-in ist ab 16:00 Uhr, Check-out bis 9:00 Uhr, mit Flexibilität: Sagen Sie uns einfach per WhatsApp Bescheid — praktisch, wenn Sie nach einer langen Reise oder mit nicht immer pünktlichen Zug-/Busverbindungen ankommen.',
             'Bei Fragen zum letzten Streckenabschnitt erreichen Sie uns am schnellsten über WhatsApp: Wir antworten mit präzisen Wegbeschreibungen und, falls nötig, mit Fotos des Eingangs, damit Sie das Gebäude sofort erkennen.'
           ]
         }
@@ -1758,7 +1758,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: "Parking et arrivée à l'appartement",
           body: [
-            "L'appartement inclut une place de parking gratuite, pas besoin de chercher un parking payant dans le village. Les horaires de check-in et check-out sont confirmés au moment de la réservation via WhatsApp, avec une certaine flexibilité selon les disponibilités — pratique en cas d'arrivée après un long trajet ou avec des horaires de train/bus pas toujours ponctuels.",
+            "L'appartement inclut une place de parking gratuite, pas besoin de chercher un parking payant dans le village. L’arrivée se fait à partir de 16h00 et le départ avant 9h00, avec de la flexibilité : il suffit de nous prévenir sur WhatsApp — pratique en cas d'arrivée après un long trajet ou avec des horaires de train/bus pas toujours ponctuels.",
             "Pour toute question sur le dernier tronçon du trajet, le moyen le plus rapide de nous joindre est WhatsApp : nous répondons avec des indications précises et, si besoin, des photos de l'entrée pour repérer immédiatement le bâtiment."
           ]
         }
@@ -1804,7 +1804,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: 'Parkering og ankomst til lejligheden',
           body: [
-            'Lejligheden inkluderer en gratis parkeringsplads, så det er ikke nødvendigt at lede efter betalt parkering i byen. Check-in- og check-out-tider bekræftes ved booking via WhatsApp, med en vis fleksibilitet afhængigt af ledighed — praktisk for dem, der ankommer efter en lang rejse eller med tog-/bustider, der ikke altid er præcise.',
+            'Lejligheden inkluderer en gratis parkeringsplads, så det er ikke nødvendigt at lede efter betalt parkering i byen. Check-in er fra kl. 16:00 og check-out senest kl. 9:00, med fleksibilitet: giv os bare besked på WhatsApp — praktisk for dem, der ankommer efter en lang rejse eller med tog-/bustider, der ikke altid er præcise.',
             'Ved eventuelle spørgsmål om den sidste del af rejsen er den hurtigste måde at kontakte os på WhatsApp: vi svarer med præcise anvisninger og, hvis nødvendigt, billeder af indgangen, så du straks kan genkende bygningen.'
           ]
         }
@@ -1850,7 +1850,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: 'Parking i przyjazd do apartamentu',
           body: [
-            'Apartament obejmuje bezpłatne miejsce parkingowe, więc nie trzeba szukać płatnego parkingu w miasteczku. Godziny zameldowania i wymeldowania są potwierdzane przy rezerwacji przez WhatsApp, z pewną elastycznością w zależności od dostępności — wygodne dla osób przyjeżdżających po długiej podróży lub z niezawsze punktualnymi połączeniami pociągów/autobusów.',
+            'Apartament obejmuje bezpłatne miejsce parkingowe, więc nie trzeba szukać płatnego parkingu w miasteczku. Zameldowanie od 16:00, wymeldowanie do 9:00, z elastycznością: wystarczy dać nam znać na WhatsApp — wygodne dla osób przyjeżdżających po długiej podróży lub z niezawsze punktualnymi połączeniami pociągów/autobusów.',
             'W razie jakichkolwiek wątpliwości dotyczących ostatniego odcinka podróży najszybszym sposobem kontaktu jest WhatsApp: odpowiadamy z dokładnymi wskazówkami, a w razie potrzeby przesyłamy zdjęcia wejścia, aby od razu rozpoznać budynek.'
           ]
         }
@@ -1896,7 +1896,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: 'Parkování a příjezd do apartmánu',
           body: [
-            'Apartmán zahrnuje bezplatné parkovací místo, takže není třeba hledat placené parkování v městečku. Časy check-inu a check-outu jsou potvrzeny při rezervaci přes WhatsApp, s určitou flexibilitou v závislosti na dostupnosti — praktické pro ty, kdo přijíždějí po dlouhé cestě nebo s ne vždy přesnými časy vlaků/autobusů.',
+            'Apartmán zahrnuje bezplatné parkovací místo, takže není třeba hledat placené parkování v městečku. Check-in je od 16:00 a check-out do 9:00, s flexibilitou: stačí nám dát vědět přes WhatsApp — praktické pro ty, kdo přijíždějí po dlouhé cestě nebo s ne vždy přesnými časy vlaků/autobusů.',
             'V případě jakýchkoli otázek k poslednímu úseku cesty je nejrychlejším způsobem kontaktu WhatsApp: odpovídáme s přesnými pokyny a v případě potřeby i s fotkami vchodu, abyste budovu ihned poznali.'
           ]
         }
@@ -1942,7 +1942,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: 'Parkering og ankomst til leiligheten',
           body: [
-            'Leiligheten inkluderer en gratis parkeringsplass, så det er ikke nødvendig å lete etter betalt parkering i byen. Innsjekkings- og utsjekkingstider bekreftes ved booking via WhatsApp, med en viss fleksibilitet avhengig av tilgjengelighet — praktisk for dem som ankommer etter en lang reise eller med tog-/busstider som ikke alltid er presise.',
+            'Leiligheten inkluderer en gratis parkeringsplass, så det er ikke nødvendig å lete etter betalt parkering i byen. Innsjekk er fra kl. 16:00 og utsjekk senest kl. 9:00, med fleksibilitet: bare gi oss beskjed på WhatsApp — praktisk for dem som ankommer etter en lang reise eller med tog-/busstider som ikke alltid er presise.',
             'Ved spørsmål om den siste delen av reisen er den raskeste måten å nå oss på WhatsApp: vi svarer med presise anvisninger og, om nødvendig, bilder av inngangen slik at du straks kjenner igjen bygningen.'
           ]
         }
@@ -1988,7 +1988,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: 'Parkeren en aankomst bij het appartement',
           body: [
-            'Bij het appartement hoort een gratis parkeerplaats, dus je hoeft in het dorp niet naar betaald parkeren te zoeken. Check-in- en check-outtijden worden bij de boeking via WhatsApp bevestigd, met enige flexibiliteit afhankelijk van beschikbaarheid — handig als je aankomt na een lange reis of met trein-/bustijden die niet altijd op schema lopen.',
+            'Bij het appartement hoort een gratis parkeerplaats, dus je hoeft in het dorp niet naar betaald parkeren te zoeken. Inchecken kan vanaf 16:00 uur en uitchecken uiterlijk om 9:00 uur, met flexibiliteit: laat het ons gewoon weten via WhatsApp — handig als je aankomt na een lange reis of met trein-/bustijden die niet altijd op schema lopen.',
             "Voor vragen over het laatste stuk van de reis is WhatsApp de snelste manier om ons te bereiken: we reageren met precieze aanwijzingen en, indien nodig, foto's van de ingang zodat je het gebouw meteen herkent."
           ]
         }
@@ -2080,7 +2080,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         {
           heading: '駐車場とアパートメントへの到着',
           body: [
-            'アパートメントには無料駐車場が付いているため、町で有料駐車場を探す必要はありません。チェックインとチェックアウトの時間は、ご予約時にWhatsAppでご案内し、空室状況に応じて多少の融通も可能です。長旅の後や、電車・バスの時刻が必ずしも正確でない場合にも安心です。',
+            'アパートメントには無料駐車場が付いているため、町で有料駐車場を探す必要はありません。チェックインは16:00から、チェックアウトは9:00までです。WhatsAppでご連絡いただければ柔軟に対応します。長旅の後や、電車・バスの時刻が必ずしも正確でない場合にも安心です。',
             '旅の最後の区間についてご不明な点があれば、最も早くご連絡いただける方法はWhatsAppです。正確な道案内をお伝えし、必要であれば入口の写真もお送りしますので、すぐに建物を見つけていただけます。'
           ]
         }

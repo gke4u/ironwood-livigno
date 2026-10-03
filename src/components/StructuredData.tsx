@@ -141,6 +141,9 @@ export default async function StructuredData({ locale }: { locale: Locale }) {
     containedInPlace: livignoPlace,
     numberOfRooms: F.bedrooms.count,
     petsAllowed: F.amenities.pets_allowed,
+    // Standard times (flexible on request, see the FAQ); omitted while unset.
+    ...(F.booking.checkin_time ? { checkinTime: F.booking.checkin_time } : {}),
+    ...(F.booking.checkout_time ? { checkoutTime: F.booking.checkout_time } : {}),
     // Detailed accommodation facts (all from the property description:
     // 90 m², 3 bedrooms, 2 bathrooms, sleeps 6). Machine-readable numbers
     // that search engines and AI answer engines can quote directly.
