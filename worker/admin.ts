@@ -147,36 +147,21 @@ export function adminPage(): string {
   </section>
 
   <div id="panel" class="hidden">
-    <section class="card">
-      <h2>Oggi sul sito</h2>
-      <div id="todayBox" class="today"></div>
+    <section class="card" id="visite">
+      <h2>Visite al sito</h2>
+      <div id="statsBox"><p class="hint">Caricamento…</p></div>
+      <div class="actions"><button type="button" id="statsReset" class="danger">Azzera statistiche</button></div>
+      <p id="statsResetMsg" class="sub"></p>
     </section>
 
-    <section class="card">
-      <h2>Aggiungi foto</h2>
-      <p class="hint">Scegli una o più foto, anche direttamente dal telefono. Vengono ridotte e alleggerite automaticamente prima dell'invio (lato lungo 1600 px, circa 150–300 KB). Ogni giorno a mezzanotte la foto sul sito cambia, seguendo l'ordine di caricamento, e ricomincia dalla prima dopo l'ultima.</p>
-      <p class="hint"><strong>1. Di che stagione sono le foto che carichi?</strong> Le foto con la neve compaiono solo da dicembre ad aprile, quando gli impianti sono aperti; quelle senza neve da maggio a novembre. Puoi cambiarla dopo, foto per foto, qui sotto.</p>
-      <div class="season-pick" id="seasonPick">
-        <label><input type="radio" name="uploadSeason" value="neve">❄️ Con neve<small>dicembre – aprile</small></label>
-        <label><input type="radio" name="uploadSeason" value="verde">🌿 Senza neve<small>maggio – novembre</small></label>
-        <label><input type="radio" name="uploadSeason" value="sempre">🏠 Tutto l'anno<small>interni, dettagli, foto senza stagione</small></label>
-      </div>
-      <p class="hint"><strong>2. Scegli le foto</strong></p>
-      <label class="drop" id="drop">
-        <strong>Tocca per scegliere le foto</strong>
-        <span class="muted">oppure trascinale qui</span>
-        <input type="file" id="files" accept="image/*" multiple hidden>
-      </label>
-      <div id="progressBar" class="hidden"><div></div></div>
-      <p id="progressSummary"></p>
-      <div id="progress"></div>
-    </section>
-
-    <section class="card">
-      <h2>Foto in rotazione <span id="count" class="muted"></span></h2>
-      <div id="grid" class="grid"></div>
-      <button type="button" id="more" class="more hidden">Mostra altre foto</button>
-      <p id="empty" class="hint hidden">Nessuna foto ancora: finché non ne carichi una, sul sito compare una foto di Livigno già presente.</p>
+    <section class="card" id="nigi">
+      <h2>Assistente NIGI (chat sul sito)</h2>
+      <p class="hint">NIGI risponde ai visitatori in tutte le lingue, 24 ore su 24. I pulsanti con le domande frequenti rispondono subito e gratis; le domande scritte liberamente usano l’intelligenza artificiale gratuita di Cloudflare. Per date, prezzi e prenotazioni NIGI rimanda sempre a WhatsApp, email o al modulo.</p>
+      <div id="chatStatus" class="status off">Caricamento…</div>
+      <label class="switch"><input type="checkbox" id="chatActive" disabled><span class="track"></span><span id="chatSwitchText">…</span></label>
+      <div id="chatStats"></div>
+      <div class="actions"><a class="btn-link" href="/it?anteprima-nigi" target="_blank" rel="noopener">Prova NIGI →</a></div>
+      <p id="chatMsg" class="sub"></p>
     </section>
 
     <section class="card">
@@ -220,21 +205,36 @@ export function adminPage(): string {
       </form>
     </section>
 
-    <section class="card" id="nigi">
-      <h2>Assistente NIGI (chat sul sito)</h2>
-      <p class="hint">NIGI risponde ai visitatori in tutte le lingue, 24 ore su 24. I pulsanti con le domande frequenti rispondono subito e gratis; le domande scritte liberamente usano l’intelligenza artificiale gratuita di Cloudflare. Per date, prezzi e prenotazioni NIGI rimanda sempre a WhatsApp, email o al modulo.</p>
-      <div id="chatStatus" class="status off">Caricamento…</div>
-      <label class="switch"><input type="checkbox" id="chatActive" disabled><span class="track"></span><span id="chatSwitchText">…</span></label>
-      <div id="chatStats"></div>
-      <div class="actions"><a class="btn-link" href="/it?anteprima-nigi" target="_blank" rel="noopener">Prova NIGI →</a></div>
-      <p id="chatMsg" class="sub"></p>
+    <section class="card">
+      <h2>Oggi sul sito</h2>
+      <div id="todayBox" class="today"></div>
     </section>
 
-    <section class="card" id="visite">
-      <h2>Visite al sito</h2>
-      <div id="statsBox"><p class="hint">Caricamento…</p></div>
-      <div class="actions"><button type="button" id="statsReset" class="danger">Azzera statistiche</button></div>
-      <p id="statsResetMsg" class="sub"></p>
+    <section class="card">
+      <h2>Aggiungi foto</h2>
+      <p class="hint">Scegli una o più foto, anche direttamente dal telefono. Vengono ridotte e alleggerite automaticamente prima dell'invio (lato lungo 1600 px, circa 150–300 KB). Ogni giorno a mezzanotte la foto sul sito cambia, seguendo l'ordine di caricamento, e ricomincia dalla prima dopo l'ultima.</p>
+      <p class="hint"><strong>1. Di che stagione sono le foto che carichi?</strong> Le foto con la neve compaiono solo da dicembre ad aprile, quando gli impianti sono aperti; quelle senza neve da maggio a novembre. Puoi cambiarla dopo, foto per foto, qui sotto.</p>
+      <div class="season-pick" id="seasonPick">
+        <label><input type="radio" name="uploadSeason" value="neve">❄️ Con neve<small>dicembre – aprile</small></label>
+        <label><input type="radio" name="uploadSeason" value="verde">🌿 Senza neve<small>maggio – novembre</small></label>
+        <label><input type="radio" name="uploadSeason" value="sempre">🏠 Tutto l'anno<small>interni, dettagli, foto senza stagione</small></label>
+      </div>
+      <p class="hint"><strong>2. Scegli le foto</strong></p>
+      <label class="drop" id="drop">
+        <strong>Tocca per scegliere le foto</strong>
+        <span class="muted">oppure trascinale qui</span>
+        <input type="file" id="files" accept="image/*" multiple hidden>
+      </label>
+      <div id="progressBar" class="hidden"><div></div></div>
+      <p id="progressSummary"></p>
+      <div id="progress"></div>
+    </section>
+
+    <section class="card">
+      <h2>Foto in rotazione <span id="count" class="muted"></span></h2>
+      <div id="grid" class="grid"></div>
+      <button type="button" id="more" class="more hidden">Mostra altre foto</button>
+      <p id="empty" class="hint hidden">Nessuna foto ancora: finché non ne carichi una, sul sito compare una foto di Livigno già presente.</p>
     </section>
 
     <section class="card" id="ordine">
