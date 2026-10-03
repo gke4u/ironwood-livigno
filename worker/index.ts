@@ -35,7 +35,7 @@ import { OFFER_KEY, isLive, parseOffer, publicOffer, type Offer } from './offer'
 import * as google from './google';
 import { HOME_PATHS, LAYOUT_KEY, SECTIONS, isDefault, layoutCss, parseLayout } from './layout';
 import { EVENT_KINDS, pagePath, sourceName, type EventKind, type Stats } from './stats';
-import { CHAT_KEY, DAILY_AI_LIMIT, askAI, parseMessages, systemPrompt, type ChatSettings } from './chat';
+import { CHAT_KEY, DAILY_AI_LIMIT, KB_KEY, MAX_KB_ITEMS, askAI, parseKb, parseMessages, systemPrompt, type ChatSettings, type Kb } from './chat';
 
 // The Durable Object class must be exported by the Worker's main module.
 export { Stats } from './stats';
@@ -390,6 +390,11 @@ async function readChat(env: Env, cacheTtl = 60): Promise<ChatSettings> {
   return raw ? (JSON.parse(raw) as ChatSettings) : { active: false, updated: '' };
 }
 
+async function readKb(env: Env, cacheTtl = 60): Promise<Kb> {
+  const raw = await env.PHOTOS.get(KB_KEY, cacheTtl ? { cacheTtl } : undefined);
+  return raw ? (JSON.parse(raw) as Kb) : { items: [], updated: '', ver: '' };
+}
+
 // The admin's preview link (?anteprima-nigi) shows and runs the chat for the
 // logged-in owner even while it is switched off.
 async function isAdmin(request: Request, env: Env): Promise<boolean> {
@@ -423,9 +428,9 @@ async function chatApi(request: Request, env: Env, ctx: ExecutionContext): Promi
   const stats = env.STATS.getByName('site');
   if (!(await stats.chatAllow(today, DAILY_AI_LIMIT))) return json({ error: 'limit' }, 429);
 
-  const offer = await readOffer(env);
+  const [offer, kb] = await Promise.all([readOffer(env), readKb(env)]);
   const live = offer && isLive(offer, today) ? publicOffer(offer, today) : null;
-  const reply = await askAI(env.AI, systemPrompt(today, live), messages).catch((err) => {
+  const reply = await askAI(env.AI, systemPrompt(today, live, kb.items), messages).catch((err) => {
     console.error(err);
     return null;
   });
@@ -600,6 +605,23 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
 
   if (route === 'chat' && request.method === 'GET') {
     return json({ settings: await readChat(env, 0), limit: DAILY_AI_LIMIT, stats: await env.STATS.getByName('site').chatSummary(romeDate()) });
+  }
+  if (route === 'chat/kb' && request.method === 'GET') return json({ kb: await readKb(env, 0), max: MAX_KB_ITEMS });
+  if (route === 'chat/kb' && request.method === 'PUT') {
+    const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
+    // Refuse to overwrite answers saved meanwhile from another tab or device.
+    const current = await readKb(env, 0);
+    if (current.ver && body.baseVer !== current.ver) {
+      return json({ error: 'Le domande sono state modificate da un’altra pagina o da un altro dispositivo. Ricarica questa pagina e riprova.' }, 409);
+    }
+    const parsed = parseKb(body);
+    if (typeof parsed === 'string') return json({ error: parsed }, 400);
+    try {
+      await env.PHOTOS.put(KB_KEY, JSON.stringify(parsed));
+    } catch (err) {
+      return kvWriteError(err);
+    }
+    return json({ kb: parsed, max: MAX_KB_ITEMS });
   }
   if (route === 'chat' && request.method === 'PUT') {
     const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;

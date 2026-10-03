@@ -80,6 +80,13 @@ export function adminPage(): string {
   .check:has(input:disabled) { opacity:.55; cursor:default; }
   a.btn { display:inline-block; background:var(--brick); color:#fff; text-decoration:none; font-weight:600; padding:12px 18px; border-radius:12px; }
   .log { list-style:none; padding:0; margin:0; font-size:13px; }
+  .kb { border-top:1px solid var(--line); margin-top:4px; padding-top:4px; }
+  .kb summary { cursor:pointer; font-weight:600; padding:10px 0; color:var(--brick); }
+  .kbrow { border:1px solid var(--line); border-radius:12px; padding:12px; margin-bottom:10px; background:#fdfbf8; }
+  .kbrow label { display:block; font-size:12px; font-weight:600; color:#6b625b; margin-bottom:4px; }
+  .kbrow input, .kbrow textarea { font:inherit; width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:10px; margin-bottom:8px; background:#fff; color:var(--ink); }
+  .kbrow textarea { min-height:70px; resize:vertical; }
+  .kbrow .danger { margin-top:0; }
   .kpis { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-bottom:16px; }
   .kpi { background:#fbf6f2; border-radius:12px; padding:12px; text-align:center; }
   .kpi b { display:block; font-size:28px; line-height:1.1; }
@@ -160,6 +167,16 @@ export function adminPage(): string {
       <div id="chatStatus" class="status off">Caricamento…</div>
       <label class="switch"><input type="checkbox" id="chatActive" disabled><span class="track"></span><span id="chatSwitchText">…</span></label>
       <div id="chatStats"></div>
+      <details id="kbBox" class="kb">
+        <summary>Cosa deve sapere NIGI <span id="kbCount" class="muted"></span></summary>
+        <p class="sub" style="margin-top:8px">Aggiungi domande e risposte: NIGI le usa subito, in tutte le lingue, riformulandole con parole sue. Valgono più delle informazioni del sito (es. un orario di check-in preciso).</p>
+        <div id="kbList"></div>
+        <div class="actions">
+          <button type="button" id="kbAdd" class="secondary">+ Aggiungi domanda</button>
+          <button type="button" id="kbSave">Salva</button>
+        </div>
+        <p id="kbMsg" class="sub"></p>
+      </details>
       <div class="actions"><a class="btn-link" href="/it?anteprima-nigi" target="_blank" rel="noopener">Prova NIGI →</a></div>
       <p id="chatMsg" class="sub"></p>
     </section>
@@ -443,12 +460,12 @@ function showChat(data) {
   st.textContent = on
     ? 'NIGI è attivo: i visitatori vedono il pulsante della chat in basso a destra su tutte le pagine.'
     : 'NIGI è spento: sul sito la chat non compare. Puoi comunque provarlo con “Prova NIGI”.';
-  const d = data.stats.today, m = data.stats.month;
-  const row = (label, v) => '<div><strong>' + v + '</strong><span class="muted"> ' + label + '</span></div>';
-  let html = '<div class="row2" style="margin-bottom:12px">'
-    + '<div><p style="font-weight:600;margin:0 0 6px">Oggi</p>' + row('chat aperte', d.open) + row('risposte AI su ' + data.limit + ' al giorno', d.ai) + '</div>'
-    + '<div><p style="font-weight:600;margin:0 0 6px">Ultimi 30 giorni</p>' + row('chat aperte', m.open) + row('risposte AI', m.ai) + '</div>'
-    + '</div>';
+  const d = data.stats.today, w = data.stats.week, m = data.stats.month;
+  // Messages = questions visitors wrote (answered, refused by the daily cap, or failed).
+  const msgs = (c) => c.ai + c.limited + c.error;
+  const kpi = (v, label) => '<div class="kpi"><b>' + v + '</b><span>' + label + '</span></div>';
+  let html = '<div class="kpis">' + kpi(msgs(d), 'Messaggi oggi') + kpi(msgs(w), 'Ultimi 7 giorni') + kpi(msgs(m), 'Ultimi 30 giorni') + '</div>'
+    + '<p class="sub" style="margin:0 0 14px">Chat aperte: ' + d.open + ' oggi · ' + m.open + ' in 30 giorni. Risposte AI oggi: ' + d.ai + ' su ' + data.limit + ' gratuite.</p>';
   if (d.limited) html += '<p class="warn">Oggi il limite di ' + data.limit + ' risposte AI è stato raggiunto ' + d.limited + ' volte: a quei visitatori NIGI ha proposto WhatsApp. Il limite si azzera a mezzanotte.</p>';
   if (d.error) html += '<p class="sub">Oggi l’AI non ha risposto ' + d.error + ' volte (NIGI ha proposto WhatsApp).</p>';
   html += '<p class="sub">Contiamo solo i numeri: quello che scrivono i visitatori non viene salvato. Le tue prove dall’admin non contano nelle chat aperte.</p>';
@@ -458,6 +475,65 @@ function showChat(data) {
 async function loadChat() {
   showChat(await api('chat'));
 }
+
+// ---- "Cosa deve sapere NIGI": owner's questions and answers ----
+let kbVer = '';
+let kbMax = 40;
+function kbRows() { return Array.from(document.querySelectorAll('#kbList .kbrow')); }
+function kbCountText() {
+  const n = kbRows().filter((r) => r.querySelector('input').value.trim()).length;
+  $('kbCount').textContent = n ? '(' + n + ')' : '';
+}
+function kbDirty() { $('kbMsg').className = 'warn'; $('kbMsg').textContent = 'Modifiche non salvate: premi “Salva”.'; kbCountText(); }
+function addKbRow(item) {
+  const row = document.createElement('div');
+  row.className = 'kbrow';
+  row.innerHTML = '<label>Domanda</label><input type="text" maxlength="200" placeholder="es. A che ora si può fare il check-in?">'
+    + '<label>Risposta</label><textarea maxlength="800" placeholder="es. Dalle 15:00, con arrivo flessibile se ci avvisi su WhatsApp."></textarea>'
+    + '<button type="button" class="danger">Elimina</button>';
+  const [q, a] = [row.querySelector('input'), row.querySelector('textarea')];
+  q.value = item ? item.q : '';
+  a.value = item ? item.a : '';
+  q.addEventListener('input', kbDirty);
+  a.addEventListener('input', kbDirty);
+  row.querySelector('.danger').addEventListener('click', () => { row.remove(); kbDirty(); });
+  $('kbList').append(row);
+  return row;
+}
+function fillKb(data) {
+  kbVer = data.kb.ver || '';
+  kbMax = data.max || kbMax;
+  $('kbList').innerHTML = '';
+  data.kb.items.forEach(addKbRow);
+  kbCountText();
+}
+async function loadKb() { fillKb(await api('chat/kb')); }
+
+$('kbAdd').addEventListener('click', () => {
+  if (kbRows().length >= kbMax) { $('kbMsg').className = 'error'; $('kbMsg').textContent = 'Massimo ' + kbMax + ' domande.'; return; }
+  addKbRow(null).querySelector('input').focus();
+});
+
+$('kbSave').addEventListener('click', async () => {
+  const btn = $('kbSave');
+  btn.disabled = true;
+  $('kbMsg').className = 'sub';
+  $('kbMsg').textContent = 'Salvataggio…';
+  try {
+    const items = kbRows().map((r) => ({ q: r.querySelector('input').value, a: r.querySelector('textarea').value }));
+    const data = await api('chat/kb', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ baseVer: kbVer, items }) });
+    fillKb(data);
+    $('kbMsg').className = 'okmsg';
+    $('kbMsg').textContent = data.kb.items.length
+      ? 'Salvato: NIGI conosce ' + data.kb.items.length + (data.kb.items.length === 1 ? ' tua risposta' : ' tue risposte') + ' (attive entro 1–2 minuti).'
+      : 'Salvato: nessuna domanda aggiuntiva.';
+  } catch (err) {
+    $('kbMsg').className = 'error';
+    $('kbMsg').textContent = err.message;
+  } finally {
+    btn.disabled = false;
+  }
+});
 
 $('chatActive').addEventListener('change', async () => {
   const box = $('chatActive');
@@ -943,6 +1019,7 @@ async function load() {
   if (!window.offerLoaded) {
     window.offerLoaded = true;
     loadGoogle().catch(() => {}).finally(() => loadOffer().catch(() => {}));
+    loadKb().catch((err) => { $('kbMsg').className = 'error'; $('kbMsg').textContent = 'Impossibile leggere le domande: ' + err.message; });
     loadChat().catch((err) => { $('chatStatus').className = 'status wait'; $('chatStatus').textContent = 'Impossibile leggere lo stato di NIGI: ' + err.message + '. Ricarica la pagina.'; });
   }
   if (document.activeElement !== $('newUser')) $('newUser').value = data.user;

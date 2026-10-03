@@ -26,6 +26,7 @@ export const CHAT_KINDS = ['open', 'faq', 'ai', 'limited', 'error'] as const;
 export type ChatKind = (typeof CHAT_KINDS)[number];
 export type ChatSummary = {
   today: Record<ChatKind, number>;
+  week: Record<ChatKind, number>; // last 7 days
   month: Record<ChatKind, number>; // last 30 days
   since: string | null;
 };
@@ -112,15 +113,18 @@ export class Stats extends DurableObject {
     const sql = this.ctx.storage.sql;
     const from30 = new Date(Date.parse(`${today}T00:00:00Z`) - 29 * 86400_000).toISOString().slice(0, 10);
     const zero = () => Object.fromEntries(CHAT_KINDS.map((k) => [k, 0])) as Record<ChatKind, number>;
+    const from7 = new Date(Date.parse(`${today}T00:00:00Z`) - 6 * 86400_000).toISOString().slice(0, 10);
     const todayCounts = zero();
+    const week = zero();
     const month = zero();
     for (const r of sql.exec<{ day: string; kind: ChatKind; n: number }>('SELECT day, kind, n FROM chat WHERE day >= ?', from30)) {
       if (!(r.kind in month)) continue;
       month[r.kind] += r.n;
+      if (r.day >= from7) week[r.kind] += r.n;
       if (r.day === today) todayCounts[r.kind] += r.n;
     }
     const since = sql.exec<{ d: string | null }>('SELECT MIN(day) AS d FROM chat').one().d;
-    return { today: todayCounts, month, since };
+    return { today: todayCounts, week, month, since };
   }
 
   // Admin "Azzera statistiche": deletes every counted visit and click
