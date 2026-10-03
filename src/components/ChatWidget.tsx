@@ -95,7 +95,9 @@ function rich(text: string): ReactNode {
       );
     }
     return (
-      <a key={i} href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer" className={cls}>
+      // Each number opens its own WhatsApp chat (e.g. the transfer service's,
+      // not only the owners').
+      <a key={i} href={`https://wa.me/${part.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className={cls}>
         {part}
       </a>
     );
