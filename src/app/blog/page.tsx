@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { blogPosts, postModified } from '@/content/blog';
 import { translatedBlogLocales } from '@/content/blogTranslations';
 import { organizationRef, websiteId } from '@/lib/structuredDataIds';
-import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
+import { BlogHeader, BlogFooter } from '@/components/BlogChrome';
 import Pic from '@/components/Pic';
 import { OG_LOCALE } from '@/lib/ogLocale';
 
@@ -161,7 +161,6 @@ export default function BlogIndex() {
             </div>
           </div>
         </main>
-        <BlogWhatsAppCta />
         <BlogFooter />
       </body>
     </html>

@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { blogPosts } from '@/content/blog';
 import { blogTranslations, translatedBlogLocales, type TranslatedBlogLocale } from '@/content/blogTranslations';
 import RelatedPosts from '@/components/RelatedPosts';
-import { BlogHeader, BlogFooter, BlogWhatsAppCta, InlineApartmentCta } from '@/components/BlogChrome';
+import { BlogHeader, BlogFooter, InlineApartmentCta } from '@/components/BlogChrome';
 import Pic from '@/components/Pic';
 import { renderInlineLinks } from '@/lib/renderInlineLinks';
 import { buildTitle } from '@/lib/buildTitle';
@@ -289,7 +289,6 @@ export default async function TranslatedBlogArticle({ params }: { params: Params
             </div>
           </div>
         </main>
-        <BlogWhatsAppCta locale={data.locale} />
         <BlogFooter locale={data.locale} />
       </body>
     </html>

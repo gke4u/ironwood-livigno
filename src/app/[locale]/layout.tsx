@@ -7,6 +7,7 @@ import LangSuggestBanner from '@/components/LangSuggestBanner';
 import BackToTop from '@/components/BackToTop';
 import OfferPopupServer from '@/components/OfferPopupServer';
 import ChatWidgetServer from '@/components/ChatWidgetServer';
+import FloatingDockServer from '@/components/FloatingDockServer';
 import HiddenSectionLinks from '@/components/HiddenSectionLinks';
 
 // Cloudflare Web Analytics: cookieless, GDPR-friendly page-view tracking.
@@ -126,6 +127,7 @@ export default async function LocaleLayout({
           <BackToTop />
           <OfferPopupServer locale={locale} />
           <ChatWidgetServer locale={locale} />
+          <FloatingDockServer locale={locale} />
           <HiddenSectionLinks />
         </NextIntlClientProvider>
         <Script

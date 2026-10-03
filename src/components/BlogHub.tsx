@@ -7,7 +7,7 @@ import type { Metadata } from 'next';
 import { blogPosts } from '@/content/blog';
 import { blogTranslations, translatedBlogLocales, type TranslatedBlogLocale } from '@/content/blogTranslations';
 import { organizationRef, websiteId } from '@/lib/structuredDataIds';
-import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
+import { BlogHeader, BlogFooter } from '@/components/BlogChrome';
 import Pic from '@/components/Pic';
 import { getSatellitePages } from '@/data/satellite-pages';
 import { OG_LOCALE, ogAlternates } from '@/lib/ogLocale';
@@ -305,7 +305,6 @@ export function BlogHub({ locale }: { locale: TranslatedBlogLocale }) {
             </div>
           </div>
         </main>
-        <BlogWhatsAppCta locale={locale} />
         <BlogFooter locale={locale} />
       </body>
     </html>

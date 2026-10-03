@@ -1,6 +1,8 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
+import { DOCK_ICON, DOCK_ITEM, DOCK_SLOT_NIGI } from './FloatingDock';
 
 // NIGI, the site's virtual assistant (free to run: Workers AI's daily allowance):
 //   - a question goes to /api/chat, where the Worker asks Workers AI
@@ -121,6 +123,9 @@ export default function ChatWidget({
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const launcherRef = useRef<HTMLButtonElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // NIGI's button lives in the contact dock (FloatingDock.tsx), next to the offer and WhatsApp.
+  const [dockSlot, setDockSlot] = useState<HTMLElement | null>(null);
+  useEffect(() => setDockSlot(document.getElementById(DOCK_SLOT_NIGI)), []);
 
   const openChat = useCallback(() => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -250,22 +255,18 @@ export default function ChatWidget({
 
   return (
     <>
-      {!open && (
-        <button
-          ref={launcherRef}
-          type="button"
-          onClick={openChat}
-          aria-label={s.open}
-          aria-haspopup="dialog"
-          className={`fixed right-6 bottom-[7.25rem] z-50 inline-flex items-center gap-2 rounded-full ${PANEL} text-mist pl-1.5 pr-4 py-1.5 text-xs font-semibold shadow-soft ring-1 ring-gold/60 hover:ring-gold hover:-translate-y-0.5 transition motion-reduce:transition-none motion-reduce:hover:translate-y-0`}
-        >
-          <span className="relative grid place-items-center w-7 h-7 rounded-full bg-ink ring-1 ring-gold/40">
-            <BrandMark className="w-[15px] h-[15px] text-mist" />
-            <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[#4cc27a] ring-2 ring-[#3D3026]" aria-hidden />
-          </span>
-          {s.cta}
-        </button>
-      )}
+      {!open &&
+        dockSlot &&
+        createPortal(
+          <button ref={launcherRef} type="button" onClick={openChat} aria-label={s.open} aria-haspopup="dialog" className={DOCK_ITEM}>
+            <span className={`${DOCK_ICON} bg-ink ring-1 ring-gold/50`}>
+              <BrandMark className="w-4 h-4 text-mist" />
+              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[#4cc27a] ring-2 ring-[#3D3026]" aria-hidden />
+            </span>
+            <span className="truncate max-w-full">{s.cta}</span>
+          </button>,
+          dockSlot
+        )}
 
       {open && (
         <div

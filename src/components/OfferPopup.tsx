@@ -1,6 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { DOCK_ICON, DOCK_ITEM, DOCK_SLOT_OFFER } from './FloatingDock';
 import { linkKind, trackEvent } from '@/lib/trackEvent';
 
 // Special-offer pop-up. The offer itself (stay dates, price, visibility
@@ -160,6 +162,9 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
   const previewRef = useRef(false);
   const closeRef = useRef<HTMLButtonElement>(null);
   const pillRef = useRef<HTMLButtonElement>(null);
+  // The reopen button lives in the contact dock (FloatingDock.tsx), between NIGI and WhatsApp.
+  const [dockSlot, setDockSlot] = useState<HTMLElement | null>(null);
+  useEffect(() => setDockSlot(document.getElementById(DOCK_SLOT_OFFER)), []);
 
   const show = useCallback(() => {
     setOpen(true);
@@ -355,20 +360,24 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
 
   return (
     <>
-      {!open && (
-        <button
-          ref={pillRef}
-          type="button"
-          onClick={show}
-          className="iw-floating fixed right-6 bottom-[4.25rem] z-50 inline-flex items-center gap-2 rounded-full bg-gold text-ink pl-3 pr-4 py-2 text-xs font-semibold shadow-soft hover:brightness-105 transition"
-        >
-          <span className="relative flex h-2.5 w-2.5" aria-hidden>
-            <span className="absolute inline-flex h-full w-full rounded-full bg-brick opacity-75 animate-ping motion-reduce:animate-none" />
-            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-brick" />
-          </span>
-          {t.pill} · {money(offer.price)}
-        </button>
-      )}
+      {!open &&
+        dockSlot &&
+        createPortal(
+          <button ref={pillRef} type="button" onClick={show} className={DOCK_ITEM}>
+            <span className={`${DOCK_ICON} bg-gold text-ink`} aria-hidden>
+              <span className="absolute inline-flex h-full w-full rounded-full bg-gold opacity-60 animate-ping motion-reduce:animate-none" />
+              <svg className="relative w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z" />
+                <circle cx="7.5" cy="7.5" r="1.5" fill="currentColor" />
+              </svg>
+            </span>
+            <span className="truncate max-w-full">
+              <span>{t.pill} · </span>
+              <span className="text-gold tabular-nums">{money(offer.price)}</span>
+            </span>
+          </button>,
+          dockSlot
+        )}
 
       {open && (
         <div

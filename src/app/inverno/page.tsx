@@ -3,7 +3,7 @@ import { orgId, websiteId } from '@/lib/structuredDataIds';
 import { landingPages } from '@/content/landingPages';
 import { landingLanguages } from '@/content/landingPageTranslations';
 import { buildTitle } from '@/lib/buildTitle';
-import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
+import { BlogHeader, BlogFooter } from '@/components/BlogChrome';
 import LandingPageBody from '@/components/LandingPageBody';
 import PropertyFacts from '@/components/PropertyFacts';
 import { OG_LOCALE, ogAlternates } from '@/lib/ogLocale';
@@ -79,7 +79,6 @@ export default function InvernoPage() {
         <main className="bg-mist min-h-screen">
           <LandingPageBody page={page} facts={<PropertyFacts locale="it" />} />
         </main>
-        <BlogWhatsAppCta />
         <BlogFooter />
       </body>
     </html>

@@ -9,7 +9,7 @@ import {
   localizeLandingLink,
   type TranslatedLandingLocale
 } from '@/content/landingPageTranslations';
-import { BlogHeader, BlogFooter, BlogWhatsAppCta } from '@/components/BlogChrome';
+import { BlogHeader, BlogFooter } from '@/components/BlogChrome';
 import LandingPageBody from '@/components/LandingPageBody';
 import PropertyFacts from '@/components/PropertyFacts';
 import { buildTitle } from '@/lib/buildTitle';
@@ -151,7 +151,6 @@ export default async function TranslatedLandingPage({ params }: { params: Params
             }}
           />
         </main>
-        <BlogWhatsAppCta locale={data.locale} />
         <BlogFooter locale={data.locale} />
       </body>
     </html>
