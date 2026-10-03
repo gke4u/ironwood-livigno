@@ -360,7 +360,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
           ref={pillRef}
           type="button"
           onClick={show}
-          className="fixed right-6 bottom-[4.25rem] z-50 inline-flex items-center gap-2 rounded-full bg-gold text-ink pl-3 pr-4 py-2 text-xs font-semibold shadow-soft hover:brightness-105 transition"
+          className="iw-floating fixed right-6 bottom-[4.25rem] z-50 inline-flex items-center gap-2 rounded-full bg-gold text-ink pl-3 pr-4 py-2 text-xs font-semibold shadow-soft hover:brightness-105 transition"
         >
           <span className="relative flex h-2.5 w-2.5" aria-hidden>
             <span className="absolute inline-flex h-full w-full rounded-full bg-brick opacity-75 animate-ping motion-reduce:animate-none" />

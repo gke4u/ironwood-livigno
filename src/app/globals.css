@@ -202,3 +202,10 @@ body {
   #sezioni > #recensioni { contain-intrinsic-size: auto 1120px; }
   #sezioni > #faq { contain-intrinsic-size: auto 1590px; }
 }
+
+/* While NIGI's chat panel is open (ChatWidget.tsx sets html[data-nigi]),
+   the other floating buttons (WhatsApp, offer) step aside: on computers the
+   panel sits in the same corner and their edges peeked out behind it. */
+html[data-nigi='open'] .iw-floating {
+  visibility: hidden;
+}

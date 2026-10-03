@@ -386,6 +386,7 @@
     "errorLimit": "I’ve answered a lot of questions today! Message us on WhatsApp and we’ll reply in person.",
     "errorRate": "You’re typing very fast: please wait a few seconds and try again.",
     "disclaimer": "Automatic answers. We’ll confirm dates and prices personally.",
-    "moreFaq": "More questions"
+    "moreFaq": "More questions",
+    "cta": "Ask NIGI"
   }
 }

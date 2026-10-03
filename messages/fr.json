@@ -386,6 +386,7 @@
     "errorLimit": "J’ai déjà répondu à beaucoup de questions aujourd’hui ! Écrivez-nous sur WhatsApp : nous vous répondrons personnellement.",
     "errorRate": "Vous écrivez très vite : patientez quelques secondes puis réessayez.",
     "disclaimer": "Réponses automatiques. Nous confirmons nous-mêmes dates et prix.",
-    "moreFaq": "Autres questions"
+    "moreFaq": "Autres questions",
+    "cta": "Demandez à NIGI"
   }
 }
