@@ -1,23 +1,30 @@
 // NIGI, the site's virtual assistant (src/components/ChatWidget.tsx).
 //
-// Hybrid by design, so it costs nothing to run:
-//   - the FAQ buttons in the chat answer from the site's own translated FAQ
-//     (messages/*.json), entirely in the browser: no request, no AI;
-//   - only questions typed by the visitor reach this file, which asks
-//     Workers AI (Gemma 4, free up to 10,000 Neurons a day on every plan;
-//     one answer is ~12-20 Neurons).
+// Visitors' questions reach this file, which asks Workers AI (Gemma 4, free
+// up to 10,000 Neurons a day on every plan; one answer is ~22 Neurons) with
+// what NIGI knows: the site's own texts (worker/facts.ts, rebuilt with every
+// deploy), the live special offer and the owner's questions and answers.
 //
 // The owner switches it on and off from the admin (KV key `chat`). Three
 // safety nets keep it free and abuse-proof: a per-visitor rate limit (the
-// CHAT_LIMIT binding), a daily cap on AI answers counted in the Stats
-// Durable Object, and short, validated input. Whenever the AI can't answer
-// (cap reached, error, timeout) the chat shows the WhatsApp contact instead.
+// CHAT_LIMIT binding), a daily Neuron budget counted from real usage in the
+// Stats Durable Object, and short, validated input. Whenever the AI can't
+// answer (budget used up, error, timeout) the chat shows WhatsApp instead.
+
+import { FACTS } from './facts';
 
 export const CHAT_KEY = 'chat';
 export const CHAT_MODEL = '@cf/google/gemma-4-26b-a4b-it';
-// AI answers per day (Italian time) across all visitors. 500 × ~20 Neurons
-// stays well inside the 10,000 free Neurons, with room for longer chats.
-export const DAILY_AI_LIMIT = 500;
+// Neurons NIGI may use per day (Italian time) across all visitors: under the
+// 10,000 a day Workers AI gives for free (they reset at 00:00 UTC, an hour or
+// two before Italian midnight, so the margin also covers that gap). Counted
+// from each answer's real usage, so it stays free however long the facts and
+// the owner's questions get. One answer is ~22 Neurons today (2026-10-03):
+// about 400 answers a day.
+export const DAILY_NEURONS = 9000;
+// Gemma 4 26B on Workers AI: Neurons per million tokens (developers.cloudflare.com/workers-ai/platform/pricing).
+const NEURONS_PER_M_IN = 9091;
+const NEURONS_PER_M_OUT = 27273;
 // What one request may carry: the last few turns, each one short.
 const MAX_TURNS = 10;
 const MAX_CHARS = 600;
@@ -86,49 +93,6 @@ export function parseMessages(body: unknown): ChatMsg[] | null {
   return out;
 }
 
-// The facts NIGI may use, in Italian (the model answers in the guest's
-// language). Mirrors the site texts in messages/it.json: keep it in sync
-// when prices, services or rules change there.
-const FACTS = `
-# Ironwood Livigno — appartamento vacanze
-- Indirizzo: Via Saroch 767, 23041 Livigno (SO), Italia.
-- Appartamento intero di 90 m², da 1 a 6 ospiti. Si affitta anche a coppie o a una persona sola.
-- 3 camere: camera doppia (due letti singoli uniti da un topper), camera con due letti singoli (abbinabili in matrimoniale a richiesta), camera matrimoniale principale con topper. 2 bagni completi condivisi tra le camere.
-- Benessere privato, mai condiviso con altri ospiti: sauna a infrarossi e bagno turco. Camino elettrico in soggiorno.
-- Cucina completamente attrezzata: lavastoviglie, forno, macchina per cappuccino, cantinetta vino.
-- Soggiorno: Smart TV, Wi-Fi ad alta velocità, due balconi con vista montagna.
-- Pratici: lavatrice, deposito sci, scarponi e bici, riscaldamento centralizzato, posto auto gratuito.
-- Famiglie: culla e seggiolone su richiesta.
-- Animali domestici: NON ammessi.
-- Tour virtuale a 360° e galleria fotografica sul sito.
-
-## Posizione
-- 100 m dallo skilift San Rocco, collegato sci ai piedi al Carosello 3000. Skilift Doss 18 a circa 200 m, Carosello 3000 a circa 400 m.
-- 50 m da scuola sci e noleggio attrezzatura. Vicino alla pista da fondo.
-- 15 minuti a piedi dal centro di Livigno, zona tranquilla.
-- Fermata autobus a 40 m, market proprio di fronte.
-- Entro 100 m: 2 supermercati, ristoranti, bar, enoteca e wine bar My Wine, negozi di abbigliamento, fruttivendolo, lavanderia a gettoni, Amazing 24 (negozio automatico con snack, bevande e lavanderia self-service).
-- Gli impianti di Livigno sono aperti indicativamente da dicembre ad aprile. D'estate: trekking, mountain bike, Lago di Livigno, alpeggi.
-
-## Servizi extra (a pagamento, su richiesta, pagamento in loco)
-- Colazione: € 15,00 a persona al giorno, in una struttura convenzionata a circa 50 m. Da prenotare in anticipo.
-- Noleggio e-bike: 2 e-bike disponibili in struttura, € 35,00 a persona al giorno. Da prenotare in anticipo.
-
-## Prenotazione e regole
-- Prenotazione diretta con i proprietari, senza commissioni: modulo "Richiedi disponibilità" sul sito, WhatsApp o email. Nessun pagamento online: si paga in struttura.
-- I proprietari rispondono su WhatsApp di solito entro poche ore.
-- Soggiorno minimo: generalmente 2-3 notti, può variare in alta stagione.
-- Check-in e check-out: orari confermati alla prenotazione via WhatsApp, con flessibilità.
-- Cancellazione: rimborso parziale se si cancella entro una certa scadenza prima dell'arrivo; dettagli esatti su WhatsApp.
-- Stagioni (prezzi sempre su preventivo): bassa = novembre, aprile-maggio; media = dicembre, gennaio, marzo; alta = febbraio e vacanze di Natale; altissima = Capodanno. Il prezzo dipende da periodo e numero di ospiti: NON esiste un prezzo fisso da comunicare.
-
-## Recensioni
-- 51 recensioni verificate: 17 su Airbnb (5,0/5), 23 su Holidu (10/10), 11 su Google.
-
-## Contatti
-- WhatsApp e telefono: +39 0342 929285
-- Email: info@ironwoodlivigno.com
-`;
 
 // The live special offer (from the admin), if any, so NIGI can mention it.
 export type OfferFact = { stays: { checkIn: string; checkOut: string }[]; price: number; unit: 'stay' | 'night'; originalPrice: number | null; showUntil: string };
@@ -162,8 +126,9 @@ ${FACTS}${offerFact(offer)}${kbFact(kb)}
 LANGUAGE RULE (most important): the information above is in Italian, but you must ALWAYS reply in the language of the guest's last message — Czech if they write Czech, Polish if Polish, Danish if Danish, and so on. Reply in Italian only if the guest writes in Italian. Translate the facts into the guest's language.`;
 }
 
-// One answer from Workers AI, or null if it failed, timed out or came back empty.
-export async function askAI(ai: Ai, system: string, messages: ChatMsg[]): Promise<string | null> {
+// One answer from Workers AI with the Neurons it used, or null if it failed,
+// timed out or came back empty.
+export async function askAI(ai: Ai, system: string, messages: ChatMsg[]): Promise<{ text: string; neurons: number } | null> {
   const run = ai.run(CHAT_MODEL, {
     messages: [{ role: 'system', content: system }, ...messages],
     max_tokens: 400,
@@ -173,11 +138,19 @@ export async function askAI(ai: Ai, system: string, messages: ChatMsg[]): Promis
   } as never) as Promise<unknown>;
   const timeout = new Promise<null>((resolve) => setTimeout(() => resolve(null), AI_TIMEOUT_MS));
   const res = (await Promise.race([run, timeout])) as
-    | { response?: unknown; choices?: { message?: { content?: unknown } }[] }
+    | {
+        response?: unknown;
+        choices?: { message?: { content?: unknown } }[];
+        usage?: { prompt_tokens?: number; completion_tokens?: number };
+      }
     | null;
   if (!res) return null;
   const raw = res.choices?.[0]?.message?.content ?? res.response;
   if (typeof raw !== 'string') return null;
   const text = raw.replace(/<think>[\s\S]*?<\/think>/g, '').trim().slice(0, 2000);
-  return text || null;
+  if (!text) return null;
+  // If usage is missing, assume a long exchange rather than a free one.
+  const tin = res.usage?.prompt_tokens ?? 4000;
+  const tout = res.usage?.completion_tokens ?? 400;
+  return { text, neurons: Math.ceil((tin * NEURONS_PER_M_IN + tout * NEURONS_PER_M_OUT) / 1e6) };
 }

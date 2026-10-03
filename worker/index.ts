@@ -35,7 +35,7 @@ import { OFFER_KEY, isLive, parseOffer, publicOffer, type Offer } from './offer'
 import * as google from './google';
 import { HOME_PATHS, LAYOUT_KEY, SECTIONS, isDefault, layoutCss, parseLayout } from './layout';
 import { EVENT_KINDS, pagePath, sourceName, type EventKind, type Stats } from './stats';
-import { CHAT_KEY, DAILY_AI_LIMIT, KB_KEY, MAX_KB_ITEMS, askAI, parseKb, parseMessages, systemPrompt, type ChatSettings, type Kb } from './chat';
+import { CHAT_KEY, DAILY_NEURONS, KB_KEY, MAX_KB_ITEMS, askAI, parseKb, parseMessages, systemPrompt, type ChatSettings, type Kb } from './chat';
 
 // The Durable Object class must be exported by the Worker's main module.
 export { Stats } from './stats';
@@ -426,7 +426,7 @@ async function chatApi(request: Request, env: Env, ctx: ExecutionContext): Promi
 
   const today = romeDate();
   const stats = env.STATS.getByName('site');
-  if (!(await stats.chatAllow(today, DAILY_AI_LIMIT))) return json({ error: 'limit' }, 429);
+  if (!(await stats.chatAllow(today, DAILY_NEURONS))) return json({ error: 'limit' }, 429);
 
   const [offer, kb] = await Promise.all([readOffer(env), readKb(env)]);
   const live = offer && isLive(offer, today) ? publicOffer(offer, today) : null;
@@ -438,7 +438,8 @@ async function chatApi(request: Request, env: Env, ctx: ExecutionContext): Promi
     ctx.waitUntil(stats.chatCount(today, 'error').catch((err) => console.error(err)));
     return json({ error: 'busy' }, 503);
   }
-  return json({ reply });
+  ctx.waitUntil(stats.chatCount(today, 'neurons', reply.neurons).catch((err) => console.error(err)));
+  return json({ reply: reply.text });
 }
 
 // Chat opened, or a FAQ button used (answered in the browser): counts only.
@@ -604,7 +605,7 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
   }
 
   if (route === 'chat' && request.method === 'GET') {
-    return json({ settings: await readChat(env, 0), limit: DAILY_AI_LIMIT, stats: await env.STATS.getByName('site').chatSummary(romeDate()) });
+    return json({ settings: await readChat(env, 0), budget: DAILY_NEURONS, stats: await env.STATS.getByName('site').chatSummary(romeDate()) });
   }
   if (route === 'chat/kb' && request.method === 'GET') return json({ kb: await readKb(env, 0), max: MAX_KB_ITEMS });
   if (route === 'chat/kb' && request.method === 'PUT') {

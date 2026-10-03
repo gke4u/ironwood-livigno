@@ -22,7 +22,8 @@ export type EventHit = { day: string; kind: EventKind; path: string };
 // NIGI, the site chat (worker/chat.ts): per day, how often it was opened,
 // FAQ buttons used, AI answers given, questions refused by the daily cap and
 // AI failures. Counts only: what visitors write is never stored.
-export const CHAT_KINDS = ['open', 'faq', 'ai', 'limited', 'error'] as const;
+// 'neurons' is not a count of events but the Workers AI Neurons used that day.
+export const CHAT_KINDS = ['open', 'faq', 'ai', 'limited', 'error', 'neurons'] as const;
 export type ChatKind = (typeof CHAT_KINDS)[number];
 export type ChatSummary = {
   today: Record<ChatKind, number>;
@@ -90,18 +91,19 @@ export class Stats extends DurableObject {
     );
   }
 
-  async chatCount(day: string, kind: ChatKind): Promise<void> {
+  async chatCount(day: string, kind: ChatKind, by = 1): Promise<void> {
     this.ctx.storage.sql.exec(
-      `INSERT INTO chat (day, kind, n) VALUES (?, ?, 1) ON CONFLICT (day, kind) DO UPDATE SET n = n + 1`,
-      day, kind
+      `INSERT INTO chat (day, kind, n) VALUES (?, ?, ?) ON CONFLICT (day, kind) DO UPDATE SET n = n + excluded.n`,
+      day, kind, by
     );
   }
 
-  // Counts one AI answer if today's cap still allows it. A Durable Object
-  // handles one call at a time, so the check and the increment can't race.
-  async chatAllow(day: string, limit: number): Promise<boolean> {
-    const used = this.ctx.storage.sql.exec<{ n: number }>("SELECT n FROM chat WHERE day = ? AND kind = 'ai'", day).toArray()[0]?.n ?? 0;
-    if (used >= limit) {
+  // Counts one AI answer if today's Neuron budget isn't used up yet. The
+  // Neurons of each answer are added afterwards (chatCount 'neurons'), from
+  // the model's real usage.
+  async chatAllow(day: string, budget: number): Promise<boolean> {
+    const used = this.ctx.storage.sql.exec<{ n: number }>("SELECT n FROM chat WHERE day = ? AND kind = 'neurons'", day).toArray()[0]?.n ?? 0;
+    if (used >= budget) {
       await this.chatCount(day, 'limited');
       return false;
     }

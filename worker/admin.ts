@@ -163,7 +163,7 @@ export function adminPage(): string {
 
     <section class="card" id="nigi">
       <h2>Assistente NIGI (chat sul sito)</h2>
-      <p class="hint">NIGI risponde ai visitatori in tutte le lingue, 24 ore su 24. Le risposte usano l’intelligenza artificiale gratuita di Cloudflare (fino a 500 al giorno, poi NIGI propone WhatsApp). Per date, prezzi e prenotazioni NIGI rimanda sempre a WhatsApp, email o al modulo.</p>
+      <p class="hint">NIGI risponde ai visitatori in tutte le lingue, 24 ore su 24. Le risposte usano l’intelligenza artificiale gratuita di Cloudflare (circa 400 risposte al giorno; quando la quota gratuita del giorno finisce, NIGI propone WhatsApp e non spendi nulla). Per date, prezzi e prenotazioni NIGI rimanda sempre a WhatsApp, email o al modulo.</p>
       <div id="chatStatus" class="status off">Caricamento…</div>
       <label class="switch"><input type="checkbox" id="chatActive" disabled><span class="track"></span><span id="chatSwitchText">…</span></label>
       <div id="chatStats"></div>
@@ -465,8 +465,8 @@ function showChat(data) {
   const msgs = (c) => c.ai + c.limited + c.error;
   const kpi = (v, label) => '<div class="kpi"><b>' + v + '</b><span>' + label + '</span></div>';
   let html = '<div class="kpis">' + kpi(msgs(d), 'Messaggi oggi') + kpi(msgs(w), 'Ultimi 7 giorni') + kpi(msgs(m), 'Ultimi 30 giorni') + '</div>'
-    + '<p class="sub" style="margin:0 0 14px">Chat aperte: ' + d.open + ' oggi · ' + m.open + ' in 30 giorni. Risposte AI oggi: ' + d.ai + ' su ' + data.limit + ' gratuite.</p>';
-  if (d.limited) html += '<p class="warn">Oggi il limite di ' + data.limit + ' risposte AI è stato raggiunto ' + d.limited + ' volte: a quei visitatori NIGI ha proposto WhatsApp. Il limite si azzera a mezzanotte.</p>';
+    + '<p class="sub" style="margin:0 0 14px">Chat aperte: ' + d.open + ' oggi · ' + m.open + ' in 30 giorni. Quota AI gratuita usata oggi: ' + Math.min(100, Math.round(d.neurons / data.budget * 100)) + '%.</p>';
+  if (d.limited) html += '<p class="warn">Oggi la quota AI gratuita è finita: a ' + d.limited + (d.limited === 1 ? ' visitatore' : ' visitatori') + ' NIGI ha proposto WhatsApp. Si azzera a mezzanotte.</p>';
   if (d.error) html += '<p class="sub">Oggi l’AI non ha risposto ' + d.error + ' volte (NIGI ha proposto WhatsApp).</p>';
   html += '<p class="sub">Contiamo solo i numeri: quello che scrivono i visitatori non viene salvato. Le tue prove dall’admin non contano nelle chat aperte.</p>';
   $('chatStats').innerHTML = html;
