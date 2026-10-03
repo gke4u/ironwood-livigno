@@ -105,10 +105,12 @@ function rich(text: string): ReactNode {
 }
 
 export default function ChatWidget({
+  locale,
   strings: s,
   whatsappLabel,
   whatsappText
 }: {
+  locale: string;
   strings: ChatStrings;
   whatsappLabel: string;
   whatsappText: string;
@@ -228,7 +230,8 @@ export default function ChatWidget({
         method: 'POST',
         credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: history })
+        // The page's language: NIGI answers in it unless the visitor writes in another one.
+        body: JSON.stringify({ messages: history, lang: locale })
       });
       const data = (await res.json().catch(() => ({}))) as { reply?: string; error?: string };
       if (data.reply) reply = { role: 'assistant', content: data.reply, kind: 'ai' };

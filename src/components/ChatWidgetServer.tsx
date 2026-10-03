@@ -10,5 +10,5 @@ export default async function ChatWidgetServer({ locale }: { locale: string }) {
     booking_panel: { whatsapp_cta: string };
     request: { wa_intro: string };
   };
-  return <ChatWidget strings={m.chat} whatsappLabel={m.booking_panel.whatsapp_cta} whatsappText={m.request.wa_intro} />;
+  return <ChatWidget locale={locale} strings={m.chat} whatsappLabel={m.booking_panel.whatsapp_cta} whatsappText={m.request.wa_intro} />;
 }

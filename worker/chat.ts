@@ -111,6 +111,53 @@ function offerFact(offer: OfferFact | null): string {
   return `\n## Offerta speciale in corso (valida fino a ${longDate(offer.showUntil)})\n- Periodi: ${periods}.\n- Prezzo: ${price}${full}. Si prenota su WhatsApp o via email, finché l'appartamento è libero.\n`;
 }
 
+// The site's languages (messages/*.json) by name, for the language rule.
+export const SITE_LANGUAGES: Record<string, string> = {
+  it: 'Italian', en: 'English', 'en-us': 'English', de: 'German', fr: 'French', da: 'Danish', pl: 'Polish',
+  cs: 'Czech', no: 'Norwegian', nl: 'Dutch', zh: 'Chinese (Simplified)', ja: 'Japanese'
+};
+
+// The language of the page the chat is open on (sent by the widget), if known.
+export function siteLanguage(body: unknown): string | null {
+  const lang = (body as { lang?: unknown } | null)?.lang;
+  return typeof lang === 'string' && lang in SITE_LANGUAGES ? lang : null;
+}
+
+function languageRule(): string {
+  return "LANGUAGE RULE (most important): the information above is in Italian, but never reply in Italian just because the information is Italian: follow the reply-language note at the end of the guest's last message and translate the facts into that language.";
+}
+
+// Words that only an Italian message would contain (not French, Spanish…).
+const ITALIAN_WORDS = new Set(
+  ('che per ci arriva arrivare arrivo treno aereo auto ora orario orari costa costo costi serve servono già sì ' +
+    'avete abbiamo siete sono posso possiamo potete vorrei vorremmo grazie ciao buongiorno buonasera salve quanto quanta ' +
+    'quanti quante quando perché perche della dello delle degli nella nello nelle negli alla allo alle agli dalla dallo ' +
+    'dalle dagli sulla sullo sulle sugli ancora tutto tutti questo questa quello quella qualche camere colazione prezzo ' +
+    'notte notti settimana bambini cane animali parcheggio impianti disponibilità prenotare prenotazione appartamento gli è ' +
+    'più può puo abbiamo vicino lontano').split(' ')
+);
+
+function looksItalian(text: string): boolean {
+  const words = text.toLowerCase().replace(/[’']/g, ' ').split(/[^a-zàèéìòù]+/).filter(Boolean);
+  if (!words.length) return false;
+  const hits = words.filter((w) => ITALIAN_WORDS.has(w)).length;
+  return hits >= 1 && hits / words.length >= 0.12;
+}
+
+// The note added to the end of the visitor's last message: which language to
+// reply in. Decided here rather than by the model, which proved unreliable
+// with Italian facts and a visitor on a page in another language:
+//   - an Italian message, or one too short to tell (a greeting, a word), gets
+//     the language of the page the visitor chose on the site;
+//   - any other message gets its own language (a Pole on the German page).
+export function replyLanguageNote(lastUser: string, lang: string | null): string {
+  const page = lang ? SITE_LANGUAGES[lang] : null;
+  const short = lastUser.trim().split(/s+/).length <= 2 && lastUser.trim().length <= 16;
+  if (page && (looksItalian(lastUser) || short)) return `[Reply in ${page}.]`;
+  if (!page && short) return '[Reply in the language of this message; if unclear, in Italian.]';
+  return '[Reply in the same language this message is written in.]';
+}
+
 export function systemPrompt(today: string, offer: OfferFact | null, kb: KbItem[] = []): string {
   return `Sei NIGI, l'assistente virtuale di Ironwood Livigno, un appartamento vacanze a Livigno. Rispondi alle domande dei potenziali ospiti usando SOLO le informazioni qui sotto. Oggi è ${longDate(today)}.
 
@@ -123,7 +170,7 @@ Regole:
 
 INFORMAZIONI:
 ${FACTS}${offerFact(offer)}${kbFact(kb)}
-LANGUAGE RULE (most important): the information above is in Italian, but you must ALWAYS reply in the language of the guest's last message — Czech if they write Czech, Polish if Polish, Danish if Danish, and so on. Reply in Italian only if the guest writes in Italian. Translate the facts into the guest's language.`;
+${languageRule()}`;
 }
 
 // One answer from Workers AI with the Neurons it used, or null if it failed,
