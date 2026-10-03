@@ -220,7 +220,12 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
           closed = sessionStorage.getItem(CLOSED_KEY) === data.offer.id;
         } catch {}
         if (preview) show();
-        else if (!closed) cancelOpen = afterVisibleFor(Math.max(0, OPEN_AFTER_MS - performance.now()), show);
+        // Not on top of a conversation with NIGI (ChatWidget.tsx marks
+        // <html data-nigi="open">): the "Offer" button stays to reopen it.
+        else if (!closed)
+          cancelOpen = afterVisibleFor(Math.max(0, OPEN_AFTER_MS - performance.now()), () => {
+            if (document.documentElement.dataset.nigi !== 'open') show();
+          });
       } catch {
         // No offer endpoint (e.g. local `next dev`): nothing to show.
       }

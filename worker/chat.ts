@@ -38,7 +38,12 @@ export function parseMessages(body: unknown): ChatMsg[] | null {
     if ((m.role !== 'user' && m.role !== 'assistant') || typeof m.content !== 'string') return null;
     const content = m.content.trim().slice(0, m.role === 'user' ? MAX_CHARS : MAX_CHARS * 3);
     if (!content) return null;
-    out.push({ role: m.role, content });
+    // Gemma's chat template requires strictly alternating turns: two
+    // questions in a row (e.g. after a failed answer the page dropped) are
+    // joined into one turn instead of failing every later request.
+    const prev = out[out.length - 1];
+    if (prev && prev.role === m.role) prev.content += `\n\n${content}`;
+    else out.push({ role: m.role, content });
   }
   // The model expects the conversation to start with the visitor.
   while (out.length && out[0].role !== 'user') out.shift();
@@ -93,16 +98,22 @@ const FACTS = `
 // The live special offer (from the admin), if any, so NIGI can mention it.
 export type OfferFact = { stays: { checkIn: string; checkOut: string }[]; price: number; unit: 'stay' | 'night'; originalPrice: number | null; showUntil: string };
 
+// "2026-10-09" -> "venerdì 9 ottobre 2026": written-out dates, so the model
+// translates them naturally instead of repeating the ISO form.
+function longDate(iso: string): string {
+  return new Date(`${iso}T12:00:00Z`).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+}
+
 function offerFact(offer: OfferFact | null): string {
   if (!offer) return '';
-  const periods = offer.stays.map((s) => `dal ${s.checkIn} al ${s.checkOut}`).join('; ');
+  const periods = offer.stays.map((s) => `arrivo ${longDate(s.checkIn)}, partenza ${longDate(s.checkOut)}`).join('; ');
   const price = `€ ${offer.price} ${offer.unit === 'night' ? 'a notte' : 'per tutto il soggiorno'}`;
   const full = offer.originalPrice ? ` invece di € ${offer.originalPrice}` : '';
-  return `\n## Offerta speciale in corso (valida fino al ${offer.showUntil})\n- Periodi: ${periods}.\n- Prezzo: ${price}${full}. Si prenota su WhatsApp o via email, finché l'appartamento è libero.\n`;
+  return `\n## Offerta speciale in corso (valida fino a ${longDate(offer.showUntil)})\n- Periodi: ${periods}.\n- Prezzo: ${price}${full}. Si prenota su WhatsApp o via email, finché l'appartamento è libero.\n`;
 }
 
 export function systemPrompt(today: string, offer: OfferFact | null): string {
-  return `Sei NIGI, l'assistente virtuale di Ironwood Livigno, un appartamento vacanze a Livigno. Rispondi alle domande dei potenziali ospiti usando SOLO le informazioni qui sotto. Oggi è il ${today}.
+  return `Sei NIGI, l'assistente virtuale di Ironwood Livigno, un appartamento vacanze a Livigno. Rispondi alle domande dei potenziali ospiti usando SOLO le informazioni qui sotto. Oggi è ${longDate(today)}.
 
 Regole:
 - Sii cordiale, breve e concreto: al massimo 3-4 frasi, testo semplice senza titoli né elenchi lunghi.

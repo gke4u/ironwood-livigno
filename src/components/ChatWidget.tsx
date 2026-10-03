@@ -1,7 +1,6 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
-import { trackEvent } from '@/lib/trackEvent';
 
 // NIGI, the site's virtual assistant. Hybrid, so it costs nothing to run:
 //   - the FAQ buttons answer instantly from the site's own translated FAQ
@@ -69,32 +68,34 @@ function beacon(kind: 'open' | 'faq', preview: boolean) {
   } catch {}
 }
 
-// Answers are plain text: **bold**, links, e-mail addresses and the phone
-// number become real elements (never HTML from the model).
-const TOKEN = /(\*\*[^*\n]+\*\*|https?:\/\/[^\s<>()]+[^\s<>().,;:!?]|[\w.+-]+@[\w-]+\.[\w.-]*\w|\+39[\d\s]{8,13}\d)/g;
+// Answers are plain text: **bold**, links to this site, e-mail addresses and
+// the phone number become real elements (never HTML from the model; other
+// web addresses stay plain text, so an invented link is never clickable).
+// Their clicks are counted by the site-wide listener in OfferPopup.tsx, like
+// every other contact link.
+const TOKEN = /(\*\*[^*\n]+\*\*|https:\/\/(?:www\.)?ironwoodlivigno\.com[^\s<>()]*[^\s<>().,;:!?]|[\w.+-]+@[\w-]+\.[\w.-]*\w|\+39(?: ?\d){9,11})/g;
 function rich(text: string): ReactNode {
   const clean = text.replace(/^#{1,6}\s+/gm, '').replace(/^\s*[*-]\s+/gm, '• ');
   return clean.split(TOKEN).map((part, i) => {
     if (i % 2 === 0) return <Fragment key={i}>{part}</Fragment>;
     if (part.startsWith('**')) return <strong key={i}>{part.slice(2, -2)}</strong>;
     const cls = 'underline underline-offset-2 decoration-wood/40 hover:decoration-wood break-words';
-    if (part.startsWith('http')) {
-      const internal = part.startsWith('https://ironwoodlivigno.com');
+    if (part.startsWith('https://')) {
       return (
-        <a key={i} href={part} className={cls} {...(internal ? {} : { target: '_blank', rel: 'noopener noreferrer' })}>
-          {part.replace(/^https?:\/\/(www\.)?/, '')}
+        <a key={i} href={part} className={cls}>
+          {part.replace(/^https:\/\/(www\.)?/, '')}
         </a>
       );
     }
     if (part.includes('@')) {
       return (
-        <a key={i} href={`mailto:${part}`} className={cls} onClick={() => trackEvent('email')}>
+        <a key={i} href={`mailto:${part}`} className={cls}>
           {part}
         </a>
       );
     }
     return (
-      <a key={i} href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer" className={cls} onClick={() => trackEvent('whatsapp')}>
+      <a key={i} href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer" className={cls}>
         {part}
       </a>
     );
@@ -161,6 +162,8 @@ export default function ChatWidget({
   // on phones where the chat is full-screen. Esc closes it.
   useEffect(() => {
     if (!open) return;
+    // Tells the offer pop-up not to open by itself over the conversation.
+    document.documentElement.dataset.nigi = 'open';
     try {
       if (!sessionStorage.getItem(OPENED_KEY)) {
         sessionStorage.setItem(OPENED_KEY, '1');
@@ -176,6 +179,7 @@ export default function ChatWidget({
     };
     window.addEventListener('keydown', onKey);
     return () => {
+      delete document.documentElement.dataset.nigi;
       document.body.style.overflow = prevOverflow;
       window.removeEventListener('keydown', onKey);
     };
@@ -218,10 +222,9 @@ export default function ChatWidget({
       if (data.reply) reply = { role: 'assistant', content: data.reply, kind: 'ai' };
       else if (data.error === 'limit') reply = { role: 'assistant', content: s.errorLimit, kind: 'error' };
       else if (data.error === 'busy' && res.status === 429) reply = { role: 'assistant', content: s.errorRate, kind: 'error' };
-      else {
-        if (data.error === 'off') setEnabled(false);
-        reply = { role: 'assistant', content: s.errorBusy, kind: 'error' };
-      }
+      // 'off' (switched off meanwhile), 'busy' (AI failed) or anything else:
+      // the visitor keeps the open chat and gets the WhatsApp contact.
+      else reply = { role: 'assistant', content: s.errorBusy, kind: 'error' };
     } catch {
       reply = { role: 'assistant', content: s.errorBusy, kind: 'error' };
     }
@@ -307,7 +310,7 @@ export default function ChatWidget({
                     href={waHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={() => trackEvent('whatsapp')}
+                   
                     className="mt-2 flex w-fit items-center gap-1.5 rounded-full bg-[#075E54] text-white text-xs font-medium px-3 py-1.5 hover:bg-[#054942] transition-colors no-underline"
                   >
                     <WaIcon /> {whatsappLabel}
@@ -400,7 +403,7 @@ export default function ChatWidget({
                 href={waHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => trackEvent('whatsapp')}
+               
                 className="flex-none inline-flex items-center gap-1 font-medium text-[#075E54] hover:underline"
               >
                 <WaIcon /> WhatsApp

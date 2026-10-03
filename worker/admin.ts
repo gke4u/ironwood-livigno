@@ -940,7 +940,11 @@ async function load() {
   const data = await api('photos');
   showPanel();
   // Once per page load: reloading after every photo change would wipe unsaved edits.
-  if (!window.offerLoaded) { window.offerLoaded = true; loadGoogle().catch(() => {}).finally(() => loadOffer().catch(() => {})); loadChat().catch(() => {}); }
+  if (!window.offerLoaded) {
+    window.offerLoaded = true;
+    loadGoogle().catch(() => {}).finally(() => loadOffer().catch(() => {}));
+    loadChat().catch((err) => { $('chatStatus').className = 'status wait'; $('chatStatus').textContent = 'Impossibile leggere lo stato di NIGI: ' + err.message + '. Ricarica la pagina.'; });
+  }
   if (document.activeElement !== $('newUser')) $('newUser').value = data.user;
   const photos = data.photos;
   const today = romeToday();
