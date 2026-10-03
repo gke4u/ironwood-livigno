@@ -156,7 +156,7 @@ export function adminPage(): string {
 
     <section class="card" id="nigi">
       <h2>Assistente NIGI (chat sul sito)</h2>
-      <p class="hint">NIGI risponde ai visitatori in tutte le lingue, 24 ore su 24. I pulsanti con le domande frequenti rispondono subito e gratis; le domande scritte liberamente usano l’intelligenza artificiale gratuita di Cloudflare. Per date, prezzi e prenotazioni NIGI rimanda sempre a WhatsApp, email o al modulo.</p>
+      <p class="hint">NIGI risponde ai visitatori in tutte le lingue, 24 ore su 24. Le risposte usano l’intelligenza artificiale gratuita di Cloudflare (fino a 500 al giorno, poi NIGI propone WhatsApp). Per date, prezzi e prenotazioni NIGI rimanda sempre a WhatsApp, email o al modulo.</p>
       <div id="chatStatus" class="status off">Caricamento…</div>
       <label class="switch"><input type="checkbox" id="chatActive" disabled><span class="track"></span><span id="chatSwitchText">…</span></label>
       <div id="chatStats"></div>
@@ -446,12 +446,12 @@ function showChat(data) {
   const d = data.stats.today, m = data.stats.month;
   const row = (label, v) => '<div><strong>' + v + '</strong><span class="muted"> ' + label + '</span></div>';
   let html = '<div class="row2" style="margin-bottom:12px">'
-    + '<div><p style="font-weight:600;margin:0 0 6px">Oggi</p>' + row('chat aperte', d.open) + row('domande frequenti (gratis)', d.faq) + row('risposte AI su ' + data.limit + ' al giorno', d.ai) + '</div>'
-    + '<div><p style="font-weight:600;margin:0 0 6px">Ultimi 30 giorni</p>' + row('chat aperte', m.open) + row('domande frequenti', m.faq) + row('risposte AI', m.ai) + '</div>'
+    + '<div><p style="font-weight:600;margin:0 0 6px">Oggi</p>' + row('chat aperte', d.open) + row('risposte AI su ' + data.limit + ' al giorno', d.ai) + '</div>'
+    + '<div><p style="font-weight:600;margin:0 0 6px">Ultimi 30 giorni</p>' + row('chat aperte', m.open) + row('risposte AI', m.ai) + '</div>'
     + '</div>';
   if (d.limited) html += '<p class="warn">Oggi il limite di ' + data.limit + ' risposte AI è stato raggiunto ' + d.limited + ' volte: a quei visitatori NIGI ha proposto WhatsApp. Il limite si azzera a mezzanotte.</p>';
   if (d.error) html += '<p class="sub">Oggi l’AI non ha risposto ' + d.error + ' volte (NIGI ha proposto WhatsApp).</p>';
-  html += '<p class="sub">Contiamo solo i numeri: quello che scrivono i visitatori non viene salvato. Le tue prove dall’admin non contano nelle aperture e nelle domande frequenti.</p>';
+  html += '<p class="sub">Contiamo solo i numeri: quello che scrivono i visitatori non viene salvato. Le tue prove dall’admin non contano nelle chat aperte.</p>';
   $('chatStats').innerHTML = html;
 }
 

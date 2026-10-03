@@ -2,10 +2,8 @@
 
 import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 
-// NIGI, the site's virtual assistant. Hybrid, so it costs nothing to run:
-//   - the FAQ buttons answer instantly from the site's own translated FAQ
-//     (passed in by ChatWidgetServer), with no request at all;
-//   - a typed question goes to /api/chat, where the Worker asks Workers AI
+// NIGI, the site's virtual assistant (free to run: Workers AI's daily allowance):
+//   - a question goes to /api/chat, where the Worker asks Workers AI
 //     (worker/chat.ts) and replies in the visitor's language.
 // The owner switches it on and off in the admin: GET /api/chat says whether
 // to show the button, so the static pages never need rebuilding.
@@ -26,9 +24,6 @@ export type ChatStrings = {
   welcome: string;
   placeholder: string;
   send: string;
-  faqTitle: string;
-  showFaq: string;
-  moreFaq: string;
   typing: string;
   restart: string;
   errorBusy: string;
@@ -37,16 +32,13 @@ export type ChatStrings = {
   disclaimer: string;
 };
 
-type Faq = { q: string; a: string };
-type Msg = { role: 'user' | 'assistant'; content: string; kind?: 'faq' | 'ai' | 'error' };
+type Msg = { role: 'user' | 'assistant'; content: string; kind?: 'ai' | 'error' };
 
 const STORE_KEY = 'iw-nigi';
 const OPENED_KEY = 'iw-nigi-opened';
 const PREVIEW_PARAM = 'anteprima-nigi';
 const WHATSAPP = '390342929285';
 const MAX_INPUT = 500;
-// FAQ rows shown before "More questions" (the full list is 14).
-const FIRST_FAQ = 5;
 // Turns sent to the AI with each question (the Worker keeps at most 10 too).
 const CONTEXT_TURNS = 10;
 const PANEL = 'bg-[#3D3026]';
@@ -67,7 +59,7 @@ function save(list: Msg[]) {
   } catch {}
 }
 
-function beacon(kind: 'open' | 'faq', preview: boolean) {
+function beacon(kind: 'open', preview: boolean) {
   if (preview) return;
   try {
     navigator.sendBeacon(`/api/chat/evento?k=${kind}`);
@@ -110,12 +102,10 @@ function rich(text: string): ReactNode {
 
 export default function ChatWidget({
   strings: s,
-  faq,
   whatsappLabel,
   whatsappText
 }: {
   strings: ChatStrings;
-  faq: Faq[];
   whatsappLabel: string;
   whatsappText: string;
 }) {
@@ -127,8 +117,6 @@ export default function ChatWidget({
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
-  const [showFaq, setShowFaq] = useState(true);
-  const [allFaq, setAllFaq] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const launcherRef = useRef<HTMLButtonElement>(null);
@@ -154,7 +142,6 @@ export default function ChatWidget({
     setPreview(isPreview);
     const restored = load();
     setMessages(restored);
-    setShowFaq(!restored.some((m) => m.role === 'user'));
     let cancelled = false;
     fetch(isPreview ? '/api/chat?preview=1' : '/api/chat', { credentials: 'same-origin' })
       .then((r) => (r.ok ? (r.json() as Promise<{ active?: boolean }>) : { active: false }))
@@ -178,7 +165,7 @@ export default function ChatWidget({
   useLayoutEffect(() => {
     const el = listRef.current;
     if (el) el.scrollTop = messages.length ? el.scrollHeight : 0;
-  }, [messages, busy, open, showFaq, allFaq]);
+  }, [messages, busy, open]);
 
   // The question box grows with the text, up to a few lines.
   useLayoutEffect(() => {
@@ -216,12 +203,6 @@ export default function ChatWidget({
     };
   }, [open, preview, closeChat]);
 
-  function askFaq(item: Faq) {
-    setMessages((m) => [...m, { role: 'user', content: item.q }, { role: 'assistant', content: item.a, kind: 'faq' }]);
-    setShowFaq(false);
-    beacon('faq', preview);
-  }
-
   async function send(e?: React.FormEvent) {
     e?.preventDefault();
     const q = input.trim().slice(0, MAX_INPUT);
@@ -229,7 +210,6 @@ export default function ChatWidget({
     const next: Msg[] = [...messages, { role: 'user', content: q }];
     setMessages(next);
     setInput('');
-    setShowFaq(false);
     setBusy(true);
     let reply: Msg;
     try {
@@ -259,8 +239,6 @@ export default function ChatWidget({
 
   function restart() {
     setMessages([]);
-    setShowFaq(true);
-    setAllFaq(false);
     setInput('');
     inputRef.current?.focus();
   }
@@ -269,7 +247,6 @@ export default function ChatWidget({
 
   const waHref = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(whatsappText)}`;
   const fresh = messages.length === 0;
-  const faqRows = allFaq ? faq : faq.slice(0, FIRST_FAQ);
 
   return (
     <>
@@ -295,7 +272,7 @@ export default function ChatWidget({
           role="dialog"
           aria-modal="false"
           aria-label="NIGI · Ironwood Livigno"
-          className={`fixed z-[70] inset-0 sm:inset-auto sm:right-6 sm:bottom-6 sm:w-[400px] sm:h-[min(660px,calc(100dvh-3rem))] flex flex-col ${PANEL} text-mist sm:rounded-[1.75rem] overflow-hidden shadow-[0_40px_120px_-20px_rgba(0,0,0,0.6)] sm:ring-1 sm:ring-white/10 origin-bottom-right transition-all duration-300 ease-out motion-reduce:transition-none ${
+          className={`fixed z-[70] inset-0 sm:inset-auto sm:right-6 sm:bottom-6 sm:w-[400px] sm:max-h-[min(660px,calc(100dvh-3rem))] flex flex-col ${PANEL} text-mist sm:rounded-[1.75rem] overflow-hidden shadow-[0_40px_120px_-20px_rgba(0,0,0,0.6)] sm:ring-1 sm:ring-white/10 origin-bottom-right transition-all duration-300 ease-out motion-reduce:transition-none ${
             shown ? 'opacity-100 translate-y-0 sm:scale-100' : 'opacity-0 translate-y-6 sm:scale-95'
           }`}
         >
@@ -376,7 +353,7 @@ export default function ChatWidget({
             </div>
           </header>
 
-          <div ref={listRef} className="flex-1 overflow-y-auto overscroll-contain px-5 pt-3 pb-4 space-y-3 [scrollbar-width:thin] [scrollbar-color:rgba(247,243,236,0.2)_transparent]" aria-live="polite">
+          <div ref={listRef} className="flex-1 sm:flex-auto sm:min-h-[8rem] overflow-y-auto overscroll-contain px-5 pt-3 pb-4 space-y-3 [scrollbar-width:thin] [scrollbar-color:rgba(247,243,236,0.2)_transparent]" aria-live="polite">
             <Bubble role="assistant">{s.welcome}</Bubble>
             {messages.map((m, i) => (
               <Bubble key={i} role={m.role} error={m.kind === 'error'}>
@@ -402,54 +379,9 @@ export default function ChatWidget({
                 </div>
               </div>
             )}
-            {showFaq && (
-              <div className="pt-2">
-                <p className="flex items-center gap-2 text-gold tracking-[0.22em] uppercase text-[10px] font-semibold mb-2.5">
-                  <span aria-hidden>✦</span>
-                  {s.faqTitle}
-                </p>
-                <ul className="rounded-2xl ring-1 ring-white/10 divide-y divide-white/10 overflow-hidden bg-white/[0.03]">
-                  {faqRows.map((item) => (
-                    <li key={item.q}>
-                      <button
-                        type="button"
-                        onClick={() => askFaq(item)}
-                        className="group w-full flex items-center justify-between gap-3 px-4 py-3 text-left text-[13.5px] leading-snug text-mist/90 hover:bg-white/[0.06] hover:text-mist transition"
-                      >
-                        <span>{item.q}</span>
-                        <svg className="flex-none text-gold/70 group-hover:text-gold group-hover:translate-x-0.5 transition" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                          <path d="m9 6 6 6-6 6" />
-                        </svg>
-                      </button>
-                    </li>
-                  ))}
-                  {!allFaq && faq.length > FIRST_FAQ && (
-                    <li>
-                      <button
-                        type="button"
-                        onClick={() => setAllFaq(true)}
-                        className="w-full px-4 py-3 text-left text-[13px] font-semibold text-gold hover:bg-white/[0.06] transition"
-                      >
-                        {s.moreFaq} (+{faq.length - FIRST_FAQ})
-                      </button>
-                    </li>
-                  )}
-                </ul>
-              </div>
-            )}
           </div>
 
           <div className={`flex-none border-t border-white/10 ${PANEL} px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]`}>
-            {!showFaq && (
-              <button
-                type="button"
-                onClick={() => setShowFaq(true)}
-                className="mb-2.5 inline-flex items-center gap-1.5 text-[12px] font-medium text-gold hover:text-mist transition"
-              >
-                <span aria-hidden>✦</span>
-                {s.showFaq}
-              </button>
-            )}
             <form onSubmit={send} className="flex items-end gap-2">
               <label htmlFor="nigi-input" className="sr-only">
                 {s.placeholder}
