@@ -9,6 +9,7 @@ export default async function ChatWidgetServer({ locale }: { locale: string }) {
     chat: ChatStrings;
     booking_panel: { whatsapp_cta: string };
     request: { wa_intro: string };
+    hero: { cta_primary: string };
   };
-  return <ChatWidget locale={locale} strings={m.chat} whatsappLabel={m.booking_panel.whatsapp_cta} whatsappText={m.request.wa_intro} />;
+  return <ChatWidget locale={locale} strings={m.chat} whatsappLabel={m.booking_panel.whatsapp_cta} whatsappText={m.request.wa_intro} bookLabel={m.hero.cta_primary} />;
 }

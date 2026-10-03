@@ -108,12 +108,14 @@ export default function ChatWidget({
   locale,
   strings: s,
   whatsappLabel,
-  whatsappText
+  whatsappText,
+  bookLabel
 }: {
   locale: string;
   strings: ChatStrings;
   whatsappLabel: string;
   whatsappText: string;
+  bookLabel: string;
 }) {
   const [enabled, setEnabled] = useState(false);
   const [preview, setPreview] = useState(false);
@@ -376,6 +378,33 @@ export default function ChatWidget({
                 )}
               </Bubble>
             ))}
+            {/* Under NIGI's latest answer: the two ways to actually book. WhatsApp
+                opens with the visitor's last question already in the message. */}
+            {!busy && messages.length > 0 && messages[messages.length - 1].kind === 'ai' && (
+              <div className="flex flex-wrap gap-2 pl-1">
+                <a
+                  href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`${whatsappText}
+
+${[...messages].reverse().find((m) => m.role === 'user')?.content ?? ''}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-[#075E54] text-white text-[12px] font-semibold px-3 py-1.5 hover:bg-[#054942] transition-colors"
+                >
+                  <WaIcon className="w-3.5 h-3.5" /> WhatsApp
+                </a>
+                <a
+                  href={`/${locale}#prenota`}
+                  onClick={closeChat}
+                  className="inline-flex items-center gap-1.5 rounded-full ring-1 ring-gold/60 text-gold text-[12px] font-semibold px-3 py-1.5 hover:bg-white/[0.06] hover:ring-gold transition"
+                >
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                    <rect x="3" y="5" width="18" height="16" rx="2" />
+                    <path d="M3 10h18M8 3v4M16 3v4" />
+                  </svg>
+                  {bookLabel}
+                </a>
+              </div>
+            )}
             {busy && (
               <div className="flex justify-start" role="status" aria-label={s.typing}>
                 <div className="flex items-center gap-1.5 rounded-2xl rounded-tl-md bg-white/[0.07] ring-1 ring-white/10 px-4 py-3.5">

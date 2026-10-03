@@ -34,6 +34,7 @@ import { adminPage } from './admin';
 import { OFFER_KEY, isLive, parseOffer, publicOffer, type Offer } from './offer';
 import * as google from './google';
 import { HOME_PATHS, LAYOUT_KEY, SECTIONS, isDefault, layoutCss, parseLayout } from './layout';
+import { weatherFact } from './weather';
 import { EVENT_KINDS, pagePath, sourceName, type EventKind, type Stats } from './stats';
 import { CHAT_KEY, DAILY_NEURONS, KB_KEY, MAX_KB_ITEMS, askAI, parseKb, parseMessages, replyLanguageNote, siteLanguage, systemPrompt, type ChatSettings, type Kb } from './chat';
 
@@ -429,14 +430,14 @@ async function chatApi(request: Request, env: Env, ctx: ExecutionContext): Promi
   const stats = env.STATS.getByName('site');
   if (!(await stats.chatAllow(today, DAILY_NEURONS))) return json({ error: 'limit' }, 429);
 
-  const [offer, kb] = await Promise.all([readOffer(env), readKb(env)]);
+  const [offer, kb, weather] = await Promise.all([readOffer(env), readKb(env), weatherFact()]);
   const live = offer && isLive(offer, today) ? publicOffer(offer, today) : null;
   // The reply language goes as a note on the visitor's last message (see replyLanguageNote).
   const last = messages[messages.length - 1];
   const toAsk = [...messages.slice(0, -1), { ...last, content: `${last.content}
 
 ${replyLanguageNote(last.content, siteLanguage(body))}` }];
-  const reply = await askAI(env.AI, systemPrompt(today, live, kb.items), toAsk).catch((err) => {
+  const reply = await askAI(env.AI, systemPrompt(today, live, kb.items, weather), toAsk).catch((err) => {
     console.error(err);
     return null;
   });
