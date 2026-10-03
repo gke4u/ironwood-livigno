@@ -381,7 +381,7 @@ export default function ChatWidget({
             {/* Under NIGI's latest answer: the two ways to actually book. WhatsApp
                 opens with the visitor's last question already in the message. */}
             {!busy && messages.length > 0 && messages[messages.length - 1].kind === 'ai' && (
-              <div className="flex flex-wrap gap-2 pl-1">
+              <div className="flex flex-wrap gap-2 pl-9">
                 <a
                   href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`${whatsappText}
 
@@ -406,7 +406,7 @@ ${[...messages].reverse().find((m) => m.role === 'user')?.content ?? ''}`)}`}
               </div>
             )}
             {busy && (
-              <div className="flex justify-start" role="status" aria-label={s.typing}>
+              <div className="flex justify-start pl-9" role="status" aria-label={s.typing}>
                 <div className="flex items-center gap-1.5 rounded-2xl rounded-tl-md bg-white/[0.07] ring-1 ring-white/10 px-4 py-3.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-gold animate-bounce [animation-delay:-0.3s] motion-reduce:animate-none" />
                   <span className="w-1.5 h-1.5 rounded-full bg-gold animate-bounce [animation-delay:-0.15s] motion-reduce:animate-none" />
@@ -466,13 +466,20 @@ ${[...messages].reverse().find((m) => m.role === 'user')?.content ?? ''}`)}`}
   );
 }
 
+// One message. NIGI's carry its small mark on the left; each one fades in
+// as it arrives (keys are stable, so only new messages animate).
 function Bubble({ role, error, children }: { role: 'user' | 'assistant'; error?: boolean; children: ReactNode }) {
   const mine = role === 'user';
   return (
-    <div className={mine ? 'flex justify-end' : 'flex justify-start'}>
+    <div className={`flex items-end gap-2 animate-fadeIn motion-reduce:animate-none ${mine ? 'justify-end' : 'justify-start'}`}>
+      {!mine && (
+        <span className="grid place-items-center flex-none w-7 h-7 rounded-full bg-ink ring-1 ring-gold/40 mb-0.5" aria-hidden>
+          <BrandMark className="w-3.5 h-3.5 text-mist" />
+        </span>
+      )}
       <div
         className={
-          'max-w-[86%] whitespace-pre-line break-words px-4 py-2.5 text-[14px] leading-relaxed ' +
+          'max-w-[82%] whitespace-pre-line break-words px-4 py-2.5 text-[14px] leading-relaxed ' +
           (mine
             ? 'bg-gold text-ink font-medium rounded-2xl rounded-tr-md'
             : `bg-white/[0.07] text-mist/90 rounded-2xl rounded-tl-md ring-1 ${error ? 'ring-brick/60' : 'ring-white/10'}`)
