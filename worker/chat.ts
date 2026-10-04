@@ -21,7 +21,10 @@ export const CHAT_MODEL = '@cf/google/gemma-4-26b-a4b-it';
 // from each answer's real usage, so it stays free however long the facts and
 // the owner's questions get. One answer is ~41 Neurons (measured 2026-10-03
 // with the theme-page questions and 13 owner Q&A): about 220 answers a day.
-export const DAILY_NEURONS = 9000;
+// Since 2026-10-04 the free allowance is shared with the guanafoto.com assistant
+// (same Cloudflare account): the owner chose two thirds for NIGI, one third
+// for Guanafoto (which stops at 3,000).
+export const DAILY_NEURONS = 6000;
 // Gemma 4 26B on Workers AI: Neurons per million tokens (developers.cloudflare.com/workers-ai/platform/pricing).
 const NEURONS_PER_M_IN = 9091;
 const NEURONS_PER_M_OUT = 27273;
