@@ -87,6 +87,25 @@ export function adminPage(): string {
   .kbrow input, .kbrow textarea { font:inherit; width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:10px; margin-bottom:8px; background:#fff; color:var(--ink); }
   .kbrow textarea { min-height:70px; resize:vertical; }
   .kbrow .danger { margin-top:0; }
+  .qa-head { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; margin:8px 0 12px; }
+  .qa-head .sub { flex:1 1 260px; }
+  .conv { border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin-bottom:12px; background:#fdfbf8; }
+  .conv.mine { background:#f4f1ed; }
+  .conv-top { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; font-size:12px; color:#6b625b; margin-bottom:8px; }
+  .conv-top .tags { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+  .tag { display:inline-block; font-size:11px; font-weight:600; padding:2px 8px; border-radius:999px; background:#efe7dd; color:#6b4a3a; overflow-wrap:anywhere; }
+  .tag.ko { background:#fbe3e0; color:#a33; }
+  .tag.me { background:#e5e1dc; color:#57504a; }
+  .qitem { padding:8px 0; border-top:1px dashed var(--line); }
+  .conv-top + .qitem { border-top:0; padding-top:0; }
+  .qitem .q { font-weight:600; white-space:pre-wrap; overflow-wrap:anywhere; margin:0 0 6px; }
+  .qitem .q small { font-weight:400; color:#6b625b; margin-right:6px; }
+  .qitem .a { font-size:14px; color:#4a423c; white-space:pre-wrap; overflow-wrap:anywhere; margin:0; background:#fff; border-left:3px solid var(--line); padding:6px 10px; border-radius:0 8px 8px 0; }
+  .qitem .a.clip { max-height:4.6em; overflow:hidden; position:relative; cursor:pointer; }
+  .qitem .a.clip::after { content:'… tocca per leggere tutto'; position:absolute; left:0; right:0; bottom:0; padding:12px 10px 2px; font-size:12px; color:var(--brick); font-weight:600; background:linear-gradient(rgba(255,255,255,0), #fff 55%); }
+  .qitem .acts { display:flex; flex-wrap:wrap; gap:4px 16px; margin-top:6px; }
+  main button.linkbtn { background:none; border:0; padding:6px 0; min-height:32px; color:var(--brick); font-size:13px; font-weight:600; border-radius:0; }
+  main button.linkbtn.del { color:#a33; }
   .kpis { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-bottom:16px; }
   .kpi { background:#fbf6f2; border-radius:12px; padding:12px; text-align:center; }
   .kpi b { display:block; font-size:28px; line-height:1.1; }
@@ -176,6 +195,19 @@ export function adminPage(): string {
           <button type="button" id="kbSave">Salva</button>
         </div>
         <p id="kbMsg" class="sub"></p>
+      </details>
+      <details id="qaBox" class="kb">
+        <summary>Ultime domande dei visitatori <span id="qaCount" class="muted"></span></summary>
+        <div class="qa-head">
+          <p class="sub" style="margin:0">Cosa hanno chiesto a NIGI e cosa ha risposto, dalla più recente. Nessun dato del visitatore (né IP né nome): solo il testo, l’ora, la lingua e la pagina. Si cancellano da sole dopo <span id="qaDays">90</span> giorni.</p>
+          <button type="button" id="qaRefresh" class="secondary">Aggiorna</button>
+        </div>
+        <div id="qaList"><p class="sub">Caricamento…</p></div>
+        <div class="actions">
+          <button type="button" id="qaMore" class="secondary hidden">Mostra altre</button>
+          <button type="button" id="qaClear" class="danger hidden">Cancella tutte</button>
+        </div>
+        <p id="qaMsg" class="sub"></p>
       </details>
       <div class="actions"><a class="btn-link" href="/it?anteprima-nigi" target="_blank" rel="noopener">Prova NIGI →</a></div>
       <p id="chatMsg" class="sub"></p>
@@ -468,7 +500,7 @@ function showChat(data) {
     + '<p class="sub" style="margin:0 0 14px">Chat aperte: ' + d.open + ' oggi · ' + m.open + ' in 30 giorni. Quota AI gratuita usata oggi: ' + Math.min(100, Math.round(d.neurons / data.budget * 100)) + '%.</p>';
   if (d.limited) html += '<p class="warn">Oggi la quota AI gratuita è finita: a ' + d.limited + (d.limited === 1 ? ' visitatore' : ' visitatori') + ' NIGI ha proposto WhatsApp. Si azzera a mezzanotte.</p>';
   if (d.error) html += '<p class="sub">Oggi l’AI non ha risposto ' + d.error + ' volte (NIGI ha proposto WhatsApp).</p>';
-  html += '<p class="sub">Contiamo solo i numeri: quello che scrivono i visitatori non viene salvato. Le tue prove dall’admin non contano nelle chat aperte.</p>';
+  html += '<p class="sub">Le tue prove dall’admin non contano nelle chat aperte; nelle ultime domande qui sotto hanno l’etichetta “Tua prova”.</p>';
   $('chatStats').innerHTML = html;
 }
 
@@ -533,6 +565,138 @@ $('kbSave').addEventListener('click', async () => {
   } finally {
     btn.disabled = false;
   }
+});
+
+// ---- NIGI: the visitors' latest questions ----
+// Everything a visitor wrote goes in with textContent, never as HTML.
+const QA_LANGS = { it: 'Italiano', en: 'Inglese', 'en-us': 'Inglese (USA)', de: 'Tedesco', fr: 'Francese', da: 'Danese', pl: 'Polacco', cs: 'Ceco', no: 'Norvegese', nl: 'Olandese', zh: 'Cinese', ja: 'Giapponese' };
+let qaBefore = null;
+let qaTotal = 0;
+function qaEl(tag, cls, text) {
+  const el = document.createElement(tag);
+  if (cls) el.className = cls;
+  if (text != null) el.textContent = text;
+  return el;
+}
+function qaTime(iso) { return new Date(iso).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Rome' }); }
+function qaWhen(iso) {
+  const day = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Rome' }).format(new Date(iso));
+  const ago = dayNumber(romeToday()) - dayNumber(day);
+  if (ago === 0) return 'Oggi, ' + qaTime(iso);
+  if (ago === 1) return 'Ieri, ' + qaTime(iso);
+  return new Date(iso).toLocaleDateString('it-IT', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'Europe/Rome' }) + ', ' + qaTime(iso);
+}
+function qaCountText() {
+  $('qaCount').textContent = qaTotal ? '(' + qaTotal + ')' : '';
+  $('qaClear').classList.toggle('hidden', !qaTotal);
+  if (!$('qaList').querySelector('.conv')) {
+    $('qaList').innerHTML = '<p class="sub">Ancora nessuna domanda. Appena un visitatore scrive a NIGI, la trovi qui.</p>';
+    if (!qaTotal) $('qaMore').classList.add('hidden');
+  }
+}
+async function qaDelete(payload, confirmText, nodes, count) {
+  if (!confirm(confirmText)) return;
+  $('qaMsg').className = 'sub';
+  $('qaMsg').textContent = 'Cancellazione…';
+  try {
+    await api('chat/questions/delete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    nodes.forEach((n) => n.remove());
+    qaTotal = payload.all ? 0 : Math.max(0, qaTotal - count);
+    qaCountText();
+    $('qaMsg').className = 'okmsg';
+    $('qaMsg').textContent = count === 1 ? 'Domanda cancellata.' : 'Cancellate ' + count + ' domande.';
+  } catch (err) {
+    $('qaMsg').className = 'error';
+    $('qaMsg').textContent = 'Non è riuscito: ' + err.message;
+  }
+}
+// Opens "Cosa deve sapere NIGI" with the visitor's question, ready for the owner's answer.
+function qaTeach(question) {
+  if (kbRows().length >= kbMax) { $('qaMsg').className = 'error'; $('qaMsg').textContent = 'In “Cosa deve sapere NIGI” ci sono già ' + kbMax + ' domande: cancellane una prima.'; return; }
+  $('kbBox').open = true;
+  const row = addKbRow({ q: question.slice(0, 200), a: '' });
+  kbDirty();
+  row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  row.querySelector('textarea').focus({ preventScroll: true });
+}
+function qaConv(c) {
+  const box = qaEl('div', 'conv');
+  const first = c.questions[0];
+  const many = c.questions.length > 1;
+  if (c.questions.every((q) => q.owner)) box.classList.add('mine');
+  const top = qaEl('div', 'conv-top');
+  const tags = qaEl('div', 'tags');
+  tags.append(qaEl('span', '', qaWhen(first.at)));
+  if (first.lang) tags.append(qaEl('span', 'tag', QA_LANGS[first.lang] || first.lang));
+  if (first.page && first.page !== '(sconosciuta)') tags.append(qaEl('span', 'tag', first.page));
+  if (many) tags.append(qaEl('span', 'tag', c.questions.length + ' domande'));
+  if (c.questions.some((q) => q.owner)) tags.append(qaEl('span', 'tag me', 'Tua prova'));
+  const delConv = qaEl('button', 'linkbtn del', many ? 'Cancella conversazione' : 'Cancella');
+  delConv.type = 'button';
+  top.append(tags, delConv);
+  box.append(top);
+  c.questions.forEach((q) => {
+    const it = qaEl('div', 'qitem');
+    const qp = qaEl('p', 'q');
+    if (many) qp.append(qaEl('small', '', qaTime(q.at)));
+    qp.append(document.createTextNode(q.question));
+    it.append(qp);
+    if (q.status === 'ok' && q.answer) {
+      const a = qaEl('p', 'a', q.answer);
+      if (q.answer.length > 220) {
+        a.classList.add('clip');
+        a.addEventListener('click', () => a.classList.remove('clip'));
+      }
+      it.append(a);
+    } else {
+      it.append(qaEl('span', 'tag ko', q.status === 'limit' ? 'Senza risposta: quota AI del giorno finita (NIGI ha proposto WhatsApp)' : 'Senza risposta: l’AI non ha risposto (NIGI ha proposto WhatsApp)'));
+    }
+    const acts = qaEl('div', 'acts');
+    const teach = qaEl('button', 'linkbtn', '+ Insegna la risposta a NIGI');
+    teach.type = 'button';
+    teach.title = 'Aggiunge la domanda a “Cosa deve sapere NIGI”: scrivi la risposta giusta e premi Salva';
+    teach.addEventListener('click', () => qaTeach(q.question));
+    acts.append(teach);
+    if (many) {
+      const del = qaEl('button', 'linkbtn del', 'Cancella domanda');
+      del.type = 'button';
+      del.addEventListener('click', () => {
+        const last = box.querySelectorAll('.qitem').length === 1;
+        qaDelete({ id: q.id }, 'Cancellare questa domanda?', [last ? box : it], 1);
+      });
+      acts.append(del);
+    }
+    it.append(acts);
+    box.append(it);
+  });
+  delConv.addEventListener('click', () => {
+    const n = box.querySelectorAll('.qitem').length;
+    qaDelete({ conv: c.conv }, n > 1 ? 'Cancellare tutta la conversazione (' + n + ' domande)?' : 'Cancellare questa domanda?', [box], n);
+  });
+  return box;
+}
+async function loadQuestions(more) {
+  const btn = $('qaMore');
+  btn.disabled = true;
+  try {
+    const data = await api('chat/questions' + (more && qaBefore ? '?before=' + qaBefore : ''));
+    if (!more) $('qaList').innerHTML = '';
+    data.conversations.forEach((c) => $('qaList').append(qaConv(c)));
+    const last = data.conversations[data.conversations.length - 1];
+    if (last) qaBefore = last.conv;
+    qaTotal = data.total;
+    $('qaDays').textContent = data.days;
+    btn.classList.toggle('hidden', !data.more);
+    qaCountText();
+  } finally {
+    btn.disabled = false;
+  }
+}
+function qaLoadError(err) { $('qaMsg').className = 'error'; $('qaMsg').textContent = 'Impossibile leggere le domande: ' + err.message; }
+$('qaMore').addEventListener('click', () => loadQuestions(true).catch(qaLoadError));
+$('qaRefresh').addEventListener('click', () => { $('qaMsg').textContent = ''; loadQuestions(false).catch(qaLoadError); });
+$('qaClear').addEventListener('click', () => {
+  qaDelete({ all: true }, 'Cancellare TUTTE le ' + qaTotal + ' domande dei visitatori? Non si possono recuperare.', Array.from($('qaList').querySelectorAll('.conv')), qaTotal);
 });
 
 $('chatActive').addEventListener('change', async () => {
@@ -1020,6 +1184,7 @@ async function load() {
     window.offerLoaded = true;
     loadGoogle().catch(() => {}).finally(() => loadOffer().catch(() => {}));
     loadKb().catch((err) => { $('kbMsg').className = 'error'; $('kbMsg').textContent = 'Impossibile leggere le domande: ' + err.message; });
+    loadQuestions(false).catch(qaLoadError);
     loadChat().catch((err) => { $('chatStatus').className = 'status wait'; $('chatStatus').textContent = 'Impossibile leggere lo stato di NIGI: ' + err.message + '. Ricarica la pagina.'; });
   }
   if (document.activeElement !== $('newUser')) $('newUser').value = data.user;

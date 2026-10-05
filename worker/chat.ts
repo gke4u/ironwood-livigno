@@ -96,6 +96,17 @@ export function parseMessages(body: unknown): ChatMsg[] | null {
   return out;
 }
 
+// For the admin's list of questions: the visitor's own last message (as
+// typed, not joined with an earlier one) and NIGI's answer just before it,
+// which ties the question to the rest of its conversation. Call after
+// parseMessages has accepted the body.
+export function lastExchange(body: unknown): { question: string; prevAnswer: string | null } {
+  const list = ((body as { messages: { role: string; content: string }[] }).messages).slice(-MAX_TURNS);
+  const i = list.map((m) => m.role).lastIndexOf('user');
+  const prev = list.slice(0, i).reverse().find((m) => m.role === 'assistant');
+  return { question: list[i].content.trim().slice(0, MAX_CHARS), prevAnswer: prev ? prev.content.trim() : null };
+}
+
 
 // The live special offer (from the admin), if any, so NIGI can mention it.
 export type OfferFact = { stays: { checkIn: string; checkOut: string }[]; price: number; unit: 'stay' | 'night'; originalPrice: number | null; showUntil: string };

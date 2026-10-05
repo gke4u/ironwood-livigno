@@ -35,8 +35,8 @@ import { OFFER_KEY, isLive, parseOffer, publicOffer, type Offer } from './offer'
 import * as google from './google';
 import { HOME_PATHS, LAYOUT_KEY, SECTIONS, isDefault, layoutCss, parseLayout } from './layout';
 import { weatherFact } from './weather';
-import { EVENT_KINDS, pagePath, sourceName, type EventKind, type Stats } from './stats';
-import { CHAT_KEY, DAILY_NEURONS, KB_KEY, MAX_KB_ITEMS, askAI, parseKb, parseMessages, replyLanguageNote, siteLanguage, systemPrompt, type ChatSettings, type Kb } from './chat';
+import { EVENT_KINDS, pagePath, sourceName, type EventKind, type QuestionStatus, type Stats } from './stats';
+import { CHAT_KEY, DAILY_NEURONS, KB_KEY, MAX_KB_ITEMS, askAI, lastExchange, parseKb, parseMessages, replyLanguageNote, siteLanguage, systemPrompt, type ChatSettings, type Kb } from './chat';
 
 // The Durable Object class must be exported by the Worker's main module.
 export { Stats } from './stats';
@@ -428,7 +428,24 @@ async function chatApi(request: Request, env: Env, ctx: ExecutionContext): Promi
 
   const today = romeDate();
   const stats = env.STATS.getByName('site');
-  if (!(await stats.chatAllow(today, DAILY_NEURONS))) return json({ error: 'limit' }, 429);
+  // Every question goes to the admin's list, answered or not.
+  const log = (status: QuestionStatus, answer: string | null) =>
+    ctx.waitUntil(
+      stats
+        .logQuestion({
+          ...lastExchange(body),
+          answer,
+          status,
+          lang: siteLanguage(body),
+          page: pagePath(request.headers.get('Referer'), new URL(request.url).origin),
+          owner: isOwnerDevice(request)
+        })
+        .catch((err) => console.error(err))
+    );
+  if (!(await stats.chatAllow(today, DAILY_NEURONS))) {
+    log('limit', null);
+    return json({ error: 'limit' }, 429);
+  }
 
   const [offer, kb, weather] = await Promise.all([readOffer(env), readKb(env), weatherFact()]);
   const live = offer && isLive(offer, today) ? publicOffer(offer, today) : null;
@@ -443,9 +460,11 @@ ${replyLanguageNote(last.content, siteLanguage(body))}` }];
   });
   if (!reply) {
     ctx.waitUntil(stats.chatCount(today, 'error').catch((err) => console.error(err)));
+    log('error', null);
     return json({ error: 'busy' }, 503);
   }
   ctx.waitUntil(stats.chatCount(today, 'neurons', reply.neurons).catch((err) => console.error(err)));
+  log('ok', reply.text.trim());
   return json({ reply: reply.text });
 }
 
@@ -613,6 +632,19 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
 
   if (route === 'chat' && request.method === 'GET') {
     return json({ settings: await readChat(env, 0), budget: DAILY_NEURONS, stats: await env.STATS.getByName('site').chatSummary(romeDate()) });
+  }
+  // NIGI's latest questions: 20 conversations a page (?before=<conv> for the next).
+  if (route === 'chat/questions' && request.method === 'GET') {
+    const before = Number(new URL(request.url).searchParams.get('before'));
+    return json(await env.STATS.getByName('site').questions(Number.isSafeInteger(before) && before > 0 ? before : null, 20));
+  }
+  if (route === 'chat/questions/delete' && request.method === 'POST') {
+    const body = (await request.json().catch(() => ({}))) as { id?: unknown; conv?: unknown; all?: unknown };
+    const ok = (v: unknown): v is number => typeof v === 'number' && Number.isSafeInteger(v) && v > 0;
+    const what = body.all === true ? 'all' : ok(body.id) ? { id: body.id } : ok(body.conv) ? { conv: body.conv } : null;
+    if (!what) return json({ error: 'Richiesta non valida' }, 400);
+    await env.STATS.getByName('site').deleteQuestions(what);
+    return json({ ok: true });
   }
   if (route === 'chat/kb' && request.method === 'GET') return json({ kb: await readKb(env, 0), max: MAX_KB_ITEMS });
   if (route === 'chat/kb' && request.method === 'PUT') {

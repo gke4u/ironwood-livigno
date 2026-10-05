@@ -21,8 +21,7 @@ export type EventHit = { day: string; kind: EventKind; path: string };
 
 // NIGI, the site chat (worker/chat.ts): per day, how often it was opened,
 // FAQ buttons used, AI answers given, questions refused by the daily cap and
-// AI failures. Counts only: what visitors write is never stored.
-// 'neurons' is not a count of events but the Workers AI Neurons used that day.
+// AI failures. 'neurons' is not a count of events but the Workers AI Neurons used that day.
 export const CHAT_KINDS = ['open', 'faq', 'ai', 'limited', 'error', 'neurons'] as const;
 export type ChatKind = (typeof CHAT_KINDS)[number];
 export type ChatSummary = {
@@ -31,6 +30,27 @@ export type ChatSummary = {
   month: Record<ChatKind, number>; // last 30 days
   since: string | null;
 };
+
+// NIGI's latest questions, for the admin: what the visitor wrote and what
+// NIGI answered, with time, site language and page. Nothing about the
+// visitor (no IP, no cookie, no id): questions of one conversation are tied
+// together only because the browser sends NIGI's previous answer back with
+// the next question. Kept QUESTIONS_DAYS days, the owner can delete them.
+export const QUESTIONS_DAYS = 90;
+const QUESTIONS_MAX = 3000;
+export type QuestionStatus = 'ok' | 'limit' | 'error';
+export type QuestionIn = {
+  question: string;
+  answer: string | null;
+  prevAnswer: string | null; // NIGI's answer just before this question, if any
+  status: QuestionStatus;
+  lang: string | null;
+  page: string;
+  owner: boolean; // asked from the owner's own device (admin preview, tests)
+};
+export type Question = { id: number; at: string; question: string; answer: string | null; status: QuestionStatus; lang: string | null; page: string; owner: boolean };
+export type Conversation = { conv: number; questions: Question[] };
+export type QuestionsPage = { conversations: Conversation[]; more: boolean; total: number; days: number };
 
 export type StatsSummary = {
   since: string | null;
@@ -64,6 +84,13 @@ export class Stats extends DurableObject {
          day TEXT NOT NULL, kind TEXT NOT NULL,
          n INTEGER NOT NULL, PRIMARY KEY (day, kind))`
     );
+    ctx.storage.sql.exec(
+      `CREATE TABLE IF NOT EXISTS questions (
+         id INTEGER PRIMARY KEY AUTOINCREMENT, conv INTEGER NOT NULL, at TEXT NOT NULL,
+         question TEXT NOT NULL, answer TEXT, status TEXT NOT NULL, lang TEXT,
+         page TEXT NOT NULL, owner INTEGER NOT NULL)`
+    );
+    ctx.storage.sql.exec('CREATE INDEX IF NOT EXISTS questions_conv ON questions (conv)');
   }
 
   async hit(h: Hit): Promise<void> {
@@ -127,6 +154,55 @@ export class Stats extends DurableObject {
     }
     const since = sql.exec<{ d: string | null }>('SELECT MIN(day) AS d FROM chat').one().d;
     return { today: todayCounts, week, month, since };
+  }
+
+  async logQuestion(q: QuestionIn): Promise<void> {
+    const sql = this.ctx.storage.sql;
+    const now = new Date();
+    // Same conversation as the question NIGI answered just before (within 2 days).
+    const since = new Date(now.getTime() - 2 * 86400_000).toISOString();
+    const prev = q.prevAnswer
+      ? sql.exec<{ conv: number }>('SELECT conv FROM questions WHERE answer = ? AND at >= ? ORDER BY id DESC LIMIT 1', q.prevAnswer, since).toArray()[0]
+      : undefined;
+    const id = sql
+      .exec<{ id: number }>(
+        `INSERT INTO questions (conv, at, question, answer, status, lang, page, owner) VALUES (0, ?, ?, ?, ?, ?, ?, ?) RETURNING id`,
+        now.toISOString(), q.question, q.answer, q.status, q.lang, q.page, q.owner ? 1 : 0
+      )
+      .one().id;
+    sql.exec('UPDATE questions SET conv = ? WHERE id = ?', prev?.conv ?? id, id);
+    const cutoff = new Date(now.getTime() - QUESTIONS_DAYS * 86400_000).toISOString();
+    sql.exec('DELETE FROM questions WHERE at < ? OR id <= ?', cutoff, id - QUESTIONS_MAX);
+  }
+
+  // The latest conversations, newest started first, `limit` at a time: `before` is
+  // the last conversation of the previous page.
+  async questions(before: number | null, limit: number): Promise<QuestionsPage> {
+    const sql = this.ctx.storage.sql;
+    const convs = sql
+      .exec<{ conv: number }>('SELECT conv FROM questions WHERE conv < ? GROUP BY conv ORDER BY conv DESC LIMIT ?', before ?? Number.MAX_SAFE_INTEGER, limit + 1)
+      .toArray()
+      .map((r) => r.conv);
+    const more = convs.length > limit;
+    const page = convs.slice(0, limit);
+    const byConv = new Map<number, Question[]>(page.map((c) => [c, []]));
+    if (page.length) {
+      const rows = sql.exec<{ id: number; conv: number; at: string; question: string; answer: string | null; status: QuestionStatus; lang: string | null; page: string; owner: number }>(
+        `SELECT * FROM questions WHERE conv IN (${page.map(() => '?').join(',')}) ORDER BY id`,
+        ...page
+      );
+      for (const r of rows) byConv.get(r.conv)?.push({ id: r.id, at: r.at, question: r.question, answer: r.answer, status: r.status, lang: r.lang, page: r.page, owner: r.owner === 1 });
+    }
+    const total = sql.exec<{ n: number }>('SELECT COUNT(*) AS n FROM questions').one().n;
+    return { conversations: page.map((conv) => ({ conv, questions: byConv.get(conv) ?? [] })), more, total, days: QUESTIONS_DAYS };
+  }
+
+  // Admin delete: one question, one whole conversation, or everything.
+  async deleteQuestions(what: { id: number } | { conv: number } | 'all'): Promise<void> {
+    const sql = this.ctx.storage.sql;
+    if (what === 'all') sql.exec('DELETE FROM questions');
+    else if ('id' in what) sql.exec('DELETE FROM questions WHERE id = ?', what.id);
+    else sql.exec('DELETE FROM questions WHERE conv = ?', what.conv);
   }
 
   // Admin "Azzera statistiche": deletes every counted visit and click
