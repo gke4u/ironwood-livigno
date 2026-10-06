@@ -92,6 +92,19 @@ export class Stats extends DurableObject {
          page TEXT NOT NULL, owner INTEGER NOT NULL)`
     );
     ctx.storage.sql.exec('CREATE INDEX IF NOT EXISTS questions_conv ON questions (conv)');
+    // One-off clean-ups, each run once.
+    ctx.storage.sql.exec('CREATE TABLE IF NOT EXISTS cleanups (name TEXT PRIMARY KEY)');
+    // From 2 to 6 October 2026 Meta's AI crawler (no referrer, from the US)
+    // was counted as 200-300 direct visits a day, before isBot existed.
+    // There were no direct US visits on 1 October, so the rows go whole
+    // (the owner approved removing them on 6 October).
+    if (!ctx.storage.sql.exec("SELECT 1 FROM cleanups WHERE name = 'meta-crawler'").toArray().length) {
+      ctx.storage.sql.exec(
+        `DELETE FROM views WHERE country = 'US' AND source = 'Diretto o interno'
+         AND day BETWEEN '2026-10-02' AND '2026-10-06'`
+      );
+      ctx.storage.sql.exec("INSERT INTO cleanups (name) VALUES ('meta-crawler')");
+    }
   }
 
   async hit(h: Hit): Promise<void> {
