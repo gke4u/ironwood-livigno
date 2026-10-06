@@ -358,8 +358,18 @@ function isOwnerDevice(request: Request): boolean {
   return /(^|;\s*)iw_nostats=1(;|$)/.test(cookie) || cookie.includes(`${SESSION_COOKIE}=`);
 }
 
+// Crawlers that run the page's JavaScript like a browser, so they send the
+// beacons too. Meta's AI crawler (meta-externalagent, from the United States,
+// with no referrer) was most of the "direct" visits in October 2026.
+const BOT_UA = /bot|crawl|spider|slurp|externalagent|externalhit|headless|lighthouse|pagespeed|preview|python|curl|wget|httpclient|okhttp|go-http|java\/|scrapy|phantom|puppeteer|playwright|selenium/i;
+
+function isBot(request: Request): boolean {
+  const ua = request.headers.get('User-Agent') ?? '';
+  return ua.length < 20 || BOT_UA.test(ua);
+}
+
 async function countVisit(request: Request, env: Env): Promise<void> {
-  if (isOwnerDevice(request)) return;
+  if (isOwnerDevice(request) || isBot(request)) return;
   const url = new URL(request.url);
   const country = (request.cf?.country as string | undefined) ?? 'XX';
   await env.STATS.getByName('site').hit({
@@ -373,7 +383,7 @@ async function countVisit(request: Request, env: Env): Promise<void> {
 // A contact action or engagement click (WhatsApp, email, phone, form sent,
 // 360° tour or map opened): kind and page only, nothing about the visitor.
 async function countEvent(request: Request, env: Env): Promise<void> {
-  if (isOwnerDevice(request)) return;
+  if (isOwnerDevice(request) || isBot(request)) return;
   const url = new URL(request.url);
   const kind = url.searchParams.get('e');
   if (!kind || !(EVENT_KINDS as readonly string[]).includes(kind)) return;
@@ -472,7 +482,7 @@ ${replyLanguageNote(last.content, siteLanguage(body))}` }];
 async function countChat(request: Request, env: Env): Promise<void> {
   const kind = new URL(request.url).searchParams.get('k');
   if (kind !== 'open' && kind !== 'faq') return;
-  if (isOwnerDevice(request)) return;
+  if (isOwnerDevice(request) || isBot(request)) return;
   await env.STATS.getByName('site').chatCount(romeDate(), kind);
 }
 

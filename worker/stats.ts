@@ -4,7 +4,8 @@
 // Every page of the site sends a POST beacon to /api/visita once on load
 // (from the offer pop-up component, mounted on every page, see
 // src/components/OfferPopup.tsx): only real browsers running the page count,
-// not bots. One SQLite-backed Durable Object keeps the table (free plan:
+// not bots (crawlers that do run JavaScript are filtered by User-Agent in
+// worker/index.ts, see isBot). One SQLite-backed Durable Object keeps the table (free plan:
 // 100,000 writes a day).
 
 import { DurableObject } from 'cloudflare:workers';
