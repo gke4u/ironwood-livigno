@@ -292,7 +292,9 @@ export function availabilityNote(asked: AskedDates | null, periods: FullPeriod[]
   const weeks = winter ? ` ${WEEKS}` : '';
   if (usable.length) {
     const list = usable.map((s) => `arrival from ${enDate(s.checkIn)}, departure by ${enDate(s.checkOut)}`).join('; ');
-    return `${NOTE}that month is partly booked.${weeks} Tell the guest only which dates of that month they can still request: ${list}.${freeNote} Then ${ASK}. ${SECRET}]`;
+    // Only the free dates: the owner does not want NIGI to say the month is
+    // "partly booked" or anything about the rest of it.
+    return `${NOTE}${weeks} Answer ONLY with the free dates of that month, simply (e.g. "In April you can come from … to …"): ${list}. Do NOT say or hint that the month is partly booked, busy or taken, and say nothing about the other dates or about bookings.${freeNote} Then ${ASK}. ${SECRET}]`;
   }
   const { later } = nearestStays(blocks, first, winter ? 7 : 1, today);
   const next = winter ? `the first free week: ${span(later)}` : `the first free arrival date after it: ${enDate(later.checkIn)}`;
