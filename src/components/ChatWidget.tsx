@@ -74,12 +74,30 @@ function beacon(kind: 'open', preview: boolean) {
 // Their clicks are counted by the site-wide listener in OfferPopup.tsx, like
 // every other contact link.
 const TOKEN = /(\*\*[^*\n]+\*\*|https:\/\/(?:www\.)?ironwoodlivigno\.com[^\s<>()]*[^\s<>().,;:!?]|[\w.+-]+@[\w-]+\.[\w.-]*\w|\+39(?: ?\d){9,11})/g;
-function rich(text: string): ReactNode {
+// The booking form's name in an answer (NIGI is told to call it as the
+// page's button, hero.cta_primary, in quotes or not) becomes a link to it.
+type FormLink = { name: string; href: string; onClick: () => void };
+const LINK_CLS = 'text-mist underline underline-offset-[3px] decoration-gold/60 hover:decoration-gold break-words';
+function rich(text: string, form: FormLink): ReactNode {
+  const name = form.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const formRe = new RegExp(`([«„“"']?${name}[»“”"']?)`, 'i');
+  return text.split(formRe).map((part, i) =>
+    i % 2 === 0 ? (
+      <Fragment key={i}>{richPart(part)}</Fragment>
+    ) : (
+      <a key={i} href={form.href} onClick={form.onClick} className={`${LINK_CLS} font-semibold`}>
+        {part.replace(/^[«„“"']|[»“”"']$/g, '')}
+      </a>
+    )
+  );
+}
+
+function richPart(text: string): ReactNode {
   const clean = text.replace(/^#{1,6}\s+/gm, '').replace(/^\s*[*-]\s+/gm, '• ');
   return clean.split(TOKEN).map((part, i) => {
     if (i % 2 === 0) return <Fragment key={i}>{part}</Fragment>;
     if (part.startsWith('**')) return <strong key={i} className="font-semibold text-mist">{part.slice(2, -2)}</strong>;
-    const cls = 'text-mist underline underline-offset-[3px] decoration-gold/60 hover:decoration-gold break-words';
+    const cls = LINK_CLS;
     if (part.startsWith('https://')) {
       return (
         <a key={i} href={part} className={cls}>
@@ -365,7 +383,7 @@ export default function ChatWidget({
             <Bubble role="assistant">{s.welcome}</Bubble>
             {messages.map((m, i) => (
               <Bubble key={i} role={m.role} error={m.kind === 'error'}>
-                {m.role === 'assistant' ? rich(m.content) : m.content}
+                {m.role === 'assistant' ? rich(m.content, { name: bookLabel, href: `/${locale}#prenota`, onClick: closeChat }) : m.content}
                 {m.kind === 'error' && (
                   <a
                     href={waHref}
