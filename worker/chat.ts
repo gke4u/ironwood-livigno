@@ -70,11 +70,13 @@ function kbFact(items: KbItem[]): string {
   return `\n## Domande e risposte dei proprietari (valgono più di tutto il resto)\n${items.map((i) => `- D: ${oneLine(i.q)}\n  R: ${oneLine(i.a)}`).join('\n')}\n`;
 }
 
-// "Periodi al completo": date ranges the owner marks as fully booked in the
+// "Periodi al completo": stays already booked, entered by the owner in the
 // admin (KV key `chat_full`). For those dates NIGI says they're not available
-// and offers the nearest free date (see fullFact); for any other date it
-// still never says "free".
-// `from` and `to` are the first and last occupied day (YYYY-MM-DD, inclusive).
+// and offers the nearest free stay (see availabilityNote); for any other date
+// it still never says "free".
+// `from` is the booked guests' arrival day and `to` their departure day
+// (YYYY-MM-DD): the booked nights are from .. to-1, and since the owners clean
+// on the changeover day a new guest may arrive on `to`.
 export const FULL_KEY = 'chat_full';
 export const MAX_FULL = 30;
 export type FullPeriod = { from: string; to: string };
@@ -82,7 +84,8 @@ export type Full = { periods: FullPeriod[]; updated: string; ver: string };
 
 const ISO_DAY = /^\d{4}-\d{2}-\d{2}$/;
 
-// Validates what the admin sends; drops periods already over, sorts by date.
+// Validates what the admin sends; drops stays already over, sorts by date.
+// Without a departure day the stay is one night.
 export function parseFull(body: unknown, today: string): Full | string {
   const list = (body as { periods?: unknown } | null)?.periods;
   if (!Array.isArray(list)) return 'Richiesta non valida';
@@ -90,11 +93,12 @@ export function parseFull(body: unknown, today: string): Full | string {
   for (const raw of list) {
     const r = (raw ?? {}) as { from?: unknown; to?: unknown };
     const from = typeof r.from === 'string' ? r.from : '';
-    const to = typeof r.to === 'string' && r.to ? r.to : from;
-    if (!from && !to) continue; // row left empty
-    if (!ISO_DAY.test(from) || !ISO_DAY.test(to)) return 'Ogni periodo deve avere la data di inizio (oppure cancella la riga)';
-    if (to < from) return 'In un periodo la data finale è prima di quella iniziale';
-    if (to < today) continue; // already over
+    const rawTo = typeof r.to === 'string' ? r.to : '';
+    if (!from && !rawTo) continue; // row left empty
+    if (!ISO_DAY.test(from) || (rawTo && !ISO_DAY.test(rawTo))) return 'Ogni periodo deve avere la data di arrivo (oppure cancella la riga)';
+    const to = rawTo && rawTo !== from ? rawTo : addDay(from, 1);
+    if (to < from) return 'In un periodo la partenza è prima dell’arrivo';
+    if (to <= today) continue; // already over
     periods.push({ from, to });
   }
   if (periods.length > MAX_FULL) return `Puoi salvare al massimo ${MAX_FULL} periodi`;
@@ -110,6 +114,24 @@ function addDay(iso: string, n: number): string {
 
 function daysBetween(a: string, b: string): number {
   return Math.round((Date.parse(`${b}T12:00:00Z`) - Date.parse(`${a}T12:00:00Z`)) / 864e5);
+}
+
+// Winter (ski lifts open, as LIFT_MONTHS in worker/index.ts): the owners rent
+// from Saturday to Saturday, so in winter NIGI proposes whole weeks starting
+// on a Saturday.
+const WINTER_MONTHS = [12, 1, 2, 3, 4];
+function isWinter(iso: string): boolean {
+  return WINTER_MONTHS.includes(Number(iso.slice(5, 7)));
+}
+function weekday(iso: string): number {
+  return new Date(`${iso}T12:00:00Z`).getUTCDay(); // 6 = Saturday
+}
+// The Saturday on or after / on or before a day (the day itself in summer).
+function satUp(iso: string): string {
+  return isWinter(iso) ? addDay(iso, (6 - weekday(iso) + 7) % 7) : iso;
+}
+function satDown(iso: string): string {
+  return isWinter(iso) ? addDay(iso, -((weekday(iso) + 1) % 7)) : iso;
 }
 
 // The owner doesn't want visitors told when or for how long the flat is
@@ -129,7 +151,7 @@ const EXTRACT_PROMPT = (today: string) => `Today is ${today}. Read the conversat
 {"lang":"German"} if the last message is not about dates.
 A date without a year is the next one from today.`;
 
-// One short extra AI call (~5 Neurons), only when the owner has booked periods.
+// One short extra AI call (~5 Neurons) before every answer.
 // It also names the visitor's language: with an availability note the model
 // otherwise drifted into Italian or French for German questions.
 export async function extractStay(ai: Ai, messages: ChatMsg[], today: string): Promise<{ asked: AskedDates | null; lang: string | null; neurons: number }> {
@@ -145,46 +167,60 @@ export async function extractStay(ai: Ai, messages: ChatMsg[], today: string): P
   const { checkIn, checkOut, month } = data;
   const lang = typeof data.lang === 'string' && /^[A-Za-z ()-]{2,30}$/.test(data.lang) ? data.lang : null;
   const done = (asked: AskedDates | null) => ({ asked, lang, neurons: res.neurons });
+  // The model sometimes picks this year's February in October: a date
+  // already past means the next year's.
+  const nextYear = (iso: string) => `${Number(iso.slice(0, 4)) + 1}${iso.slice(4)}`;
   if (typeof checkIn === 'string' && ISO_DAY.test(checkIn)) {
     let out = typeof checkOut === 'string' && ISO_DAY.test(checkOut) ? checkOut : addDay(checkIn, 1);
     const nights = daysBetween(checkIn, out);
     if (nights < 1 || nights > 60) out = addDay(checkIn, 1);
-    return done(checkIn < today ? null : { checkIn, checkOut: out });
+    if (checkIn >= today) return done({ checkIn, checkOut: out });
+    return done(nextYear(checkIn) >= today ? { checkIn: nextYear(checkIn), checkOut: nextYear(out) } : null);
   }
-  if (typeof month === 'string' && /^\d{4}-\d{2}$/.test(month)) return done({ month });
+  if (typeof month === 'string' && /^\d{4}-\d{2}$/.test(month)) {
+    return done({ month: month >= today.slice(0, 7) ? month : nextYear(month) });
+  }
   return done(null);
 }
 
-// Booked periods joined into blocks of consecutive booked nights.
+// Booked stays still to come, joined where one starts on or before the
+// departure day of the previous one.
 function bookedBlocks(periods: FullPeriod[], today: string): FullPeriod[] {
   const blocks: FullPeriod[] = [];
-  for (const p of [...periods].filter((p) => p.to >= today).sort((a, b) => a.from.localeCompare(b.from))) {
+  for (const p of [...periods].filter((p) => p.to > today).sort((a, b) => a.from.localeCompare(b.from))) {
     const last = blocks[blocks.length - 1];
-    if (last && p.from <= addDay(last.to, 1)) {
+    if (last && p.from <= last.to) {
       if (p.to > last.to) last.to = p.to;
     } else blocks.push({ ...p });
   }
   return blocks;
 }
 
-// The booked block that a stay (nights checkIn .. checkOut-1) touches, if any.
+// The booked block whose nights a stay (nights checkIn .. checkOut-1) touches, if any.
 function clash(blocks: FullPeriod[], checkIn: string, checkOut: string): FullPeriod | undefined {
-  const lastNight = addDay(checkOut, -1);
-  return blocks.find((b) => checkIn <= b.to && lastNight >= b.from);
+  return blocks.find((b) => checkIn < b.to && checkOut > b.from);
 }
 
 type Stay = { checkIn: string; checkOut: string };
 
-// The first stay of the same length after the request that touches no booked
-// night, plus the last one before it if that is closer (and not in the past).
+// How many nights to offer: in winter whole weeks (at least one), Saturday to Saturday.
+function offerNights(checkIn: string, nights: number): number {
+  return isWinter(checkIn) ? Math.max(1, Math.round(nights / 7)) * 7 : nights;
+}
+
+// The first free stay of that length from the request onwards, and the last
+// one before it if that is closer (and not in the past). In winter both start
+// on a Saturday.
 function nearestStays(blocks: FullPeriod[], checkIn: string, nights: number, today: string): { later: Stay; earlier: Stay | null } {
-  let later = checkIn;
-  for (let b = clash(blocks, later, addDay(later, nights)); b; b = clash(blocks, later, addDay(later, nights))) later = addDay(b.to, 1);
-  let out = addDay(checkIn, nights);
-  for (let b = clash(blocks, addDay(out, -nights), out); b; b = clash(blocks, addDay(out, -nights), out)) out = b.from;
-  const start = addDay(out, -nights);
-  const closer = start > today && daysBetween(start, checkIn) < daysBetween(checkIn, later);
-  return { later: { checkIn: later, checkOut: addDay(later, nights) }, earlier: closer ? { checkIn: start, checkOut: out } : null };
+  let later = satUp(checkIn);
+  for (let b = clash(blocks, later, addDay(later, nights)); b; b = clash(blocks, later, addDay(later, nights))) later = satUp(b.to);
+  let start = satDown(checkIn);
+  for (let b = clash(blocks, start, addDay(start, nights)); b && start > today; b = clash(blocks, start, addDay(start, nights))) {
+    start = satDown(addDay(b.from, -nights));
+  }
+  const free = start > today && !clash(blocks, start, addDay(start, nights));
+  const closer = free && start !== later && daysBetween(start, checkIn) < daysBetween(checkIn, later);
+  return { later: { checkIn: later, checkOut: addDay(later, nights) }, earlier: closer ? { checkIn: start, checkOut: addDay(start, nights) } : null };
 }
 
 // Dates in the note are written out in English: the model translates them.
@@ -192,40 +228,60 @@ function enDate(iso: string): string {
   return new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 }
 
+const NOTE = '[Availability check (answer entirely in the reply language above): ';
 const SECRET = 'Never say when or for how long the apartment is booked.';
-const NOT_CONFIRMED = '[Availability check: these dates do not clash with known bookings, but availability is not confirmed: do not say they are free or available; invite the guest to send the request with the form or on WhatsApp.]';
+const ASK = 'invite the guest to send the request with the form or on WhatsApp';
+const NOT_CONFIRMED = `${NOTE}these dates do not clash with known bookings, but availability is not confirmed: do not say they are free or available; ${ASK}.]`;
+function span(s: Stay): string {
+  return `arrival ${enDate(s.checkIn)}, departure ${enDate(s.checkOut)}`;
+}
+const WEEKS = 'In winter the apartment is rented from Saturday to Saturday: mention it only to explain the dates you propose, never as the reason the requested dates are unavailable.';
 
 export function availabilityNote(asked: AskedDates | null, periods: FullPeriod[], today: string): string {
+  if (!asked) return '';
   const blocks = bookedBlocks(periods, today);
-  if (!asked || !blocks.length) return '';
   if ('checkIn' in asked) {
-    if (!clash(blocks, asked.checkIn, asked.checkOut)) return NOT_CONFIRMED;
     const nights = daysBetween(asked.checkIn, asked.checkOut);
-    const { later, earlier } = nearestStays(blocks, asked.checkIn, nights, today);
-    const stay = (s: Stay) => (nights > 1 ? `arrival ${enDate(s.checkIn)}, departure ${enDate(s.checkOut)}` : `arrival ${enDate(s.checkIn)}`);
+    const n = offerNights(asked.checkIn, nights);
+    if (!clash(blocks, asked.checkIn, asked.checkOut)) {
+      const satToSat = weekday(asked.checkIn) === 6 && n === nights;
+      if (!isWinter(asked.checkIn) || satToSat) return blocks.length ? NOT_CONFIRMED : '';
+      // A winter request not from Saturday to Saturday: the nearest week that is.
+      const { later, earlier } = nearestStays(blocks, asked.checkIn, n, today);
+      const best = earlier && daysBetween(earlier.checkIn, asked.checkIn) <= daysBetween(asked.checkIn, later.checkIn) ? earlier : later;
+      return `${NOTE}${WEEKS} Kindly explain this and propose the nearest Saturday-to-Saturday stay instead: ${span(best)}; ${ASK}. Do not say it is free or available: the owners confirm. ${SECRET}]`;
+    }
+    const { later, earlier } = nearestStays(blocks, asked.checkIn, n, today);
+    const weeks = isWinter(asked.checkIn) ? ` ${WEEKS}` : '';
     const offer = earlier
-      ? `propose ONLY these nearest alternatives with the same number of nights (${nights}): ${stay(earlier)}; or ${stay(later)}`
-      : `propose ONLY the first free alternative with the same number of nights (${nights}): ${stay(later)}`;
-    return `[Availability check (answer entirely in the reply language above): the requested dates are NOT available. Say so kindly, then ${offer}, and invite them to request it with the form or on WhatsApp. ${SECRET}]`;
+      ? `propose ONLY these nearest alternatives (${n} nights): ${span(earlier)}; or ${span(later)}`
+      : `propose ONLY the first free alternative (${n} nights): ${span(later)}`;
+    return `${NOTE}the requested dates are NOT available (already booked).${weeks} Say so kindly, then ${offer}, and ${ASK}. ${SECRET}]`;
   }
   // A month in general: the free stretches of nights in it, if any.
   const first = `${asked.month}-01`;
   const end = `${addDay(first, 31).slice(0, 7)}-01`; // first day of the next month
-  if (end <= addDay(today, 1)) return '';
-  const stretches: { from: string; to: string }[] = [];
+  if (end <= addDay(today, 1) || !blocks.some((b) => b.from < end && b.to > first)) return blocks.length ? NOT_CONFIRMED : '';
+  const winter = isWinter(first);
+  const stretches: Stay[] = [];
   for (let d = first > today ? first : addDay(today, 1); d < end; d = addDay(d, 1)) {
     if (clash(blocks, d, addDay(d, 1))) continue;
     const last = stretches[stretches.length - 1];
-    if (last && last.to === d) last.to = addDay(d, 1);
-    else stretches.push({ from: d, to: addDay(d, 1) });
+    if (last && last.checkOut === d) last.checkOut = addDay(d, 1);
+    else stretches.push({ checkIn: d, checkOut: addDay(d, 1) });
   }
-  if (!blocks.some((b) => b.from < end && b.to >= first)) return NOT_CONFIRMED;
-  if (stretches.length) {
-    const list = stretches.map((s) => `arrival from ${enDate(s.from)}, departure by ${enDate(s.to)}`).join('; ');
-    return `[Availability check (answer entirely in the reply language above): that month is partly booked. Tell the guest only which dates of that month they can still request: ${list}. Invite them to send the request with the form or on WhatsApp. ${SECRET}]`;
+  // In winter only whole weeks from Saturday to Saturday count.
+  const usable = stretches
+    .map((s) => (winter ? { checkIn: satUp(s.checkIn), checkOut: satDown(s.checkOut) } : s))
+    .filter((s) => daysBetween(s.checkIn, s.checkOut) >= (winter ? 7 : 1));
+  const weeks = winter ? ` ${WEEKS}` : '';
+  if (usable.length) {
+    const list = usable.map((s) => `arrival from ${enDate(s.checkIn)}, departure by ${enDate(s.checkOut)}`).join('; ');
+    return `${NOTE}that month is partly booked.${weeks} Tell the guest only which dates of that month they can still request: ${list}. Then ${ASK}. ${SECRET}]`;
   }
-  const { later } = nearestStays(blocks, first, 1, today);
-  return `[Availability check (answer entirely in the reply language above): there is no availability in that month. Say so kindly and propose ONLY the first free arrival date after it: ${enDate(later.checkIn)}, inviting them to request it with the form or on WhatsApp. ${SECRET}]`;
+  const { later } = nearestStays(blocks, first, winter ? 7 : 1, today);
+  const next = winter ? `the first free week: ${span(later)}` : `the first free arrival date after it: ${enDate(later.checkIn)}`;
+  return `${NOTE}there is no availability in that month.${weeks} Start by saying clearly and kindly that the month asked about is fully booked (no comments about the season), then propose ONLY ${next}; ${ASK}. ${SECRET}]`;
 }
 
 export type ChatMsg = { role: 'user' | 'assistant'; content: string };

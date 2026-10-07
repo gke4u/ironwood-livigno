@@ -464,14 +464,13 @@ async function chatApi(request: Request, env: Env, ctx: ExecutionContext): Promi
 
   const [offer, kb, weather, full] = await Promise.all([readOffer(env), readKb(env), weatherFact(), readFull(env)]);
   const live = offer && isLive(offer, today) ? publicOffer(offer, today) : null;
-  // With booked periods saved, the dates asked about are checked here, not by
-  // the model (see availabilityNote); a failed check just leaves the note out.
-  const check = full.periods.length
-    ? await extractStay(env.AI, messages, today).catch((err) => {
-        console.error(err);
-        return { asked: null, lang: null, neurons: 0 };
-      })
-    : { asked: null, lang: null, neurons: 0 };
+  // The dates asked about are checked here, not by the model: booked periods
+  // and Saturday-to-Saturday winter weeks (see availabilityNote). A failed
+  // check just leaves the note out.
+  const check = await extractStay(env.AI, messages, today).catch((err) => {
+    console.error(err);
+    return { asked: null, lang: null, neurons: 0 };
+  });
   const availability = availabilityNote(check.asked, full.periods, today);
   // The reply language goes as a note on the visitor's last message (see replyLanguageNote).
   const last = messages[messages.length - 1];
@@ -693,7 +692,7 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
   if (route === 'chat/full' && request.method === 'GET') {
     const full = await readFull(env, 0);
     const today = romeDate();
-    return json({ full: { ...full, periods: full.periods.filter((p) => p.to >= today) }, max: MAX_FULL, today });
+    return json({ full: { ...full, periods: full.periods.filter((p) => p.to > today) }, max: MAX_FULL, today });
   }
   if (route === 'chat/full' && request.method === 'PUT') {
     const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;

@@ -192,7 +192,7 @@ export function adminPage(): string {
       <div id="chatStats"></div>
       <details id="fullBox" class="kb">
         <summary>Periodi al completo <span id="fullCount" class="muted"></span></summary>
-        <p class="sub" style="margin-top:8px">Segna qui le date già prenotate. Se un visitatore chiede quei giorni, NIGI risponde che quelle date non sono disponibili e propone la data libera più vicina, senza dire per quanto tempo siete occupati; per tutte le altre date continua a rimandare al modulo o a WhatsApp. Per un giorno solo lascia vuota la seconda data. I periodi passati si cancellano da soli.</p>
+        <p class="sub" style="margin-top:8px">Segna qui i soggiorni già prenotati, con il giorno di arrivo e quello di partenza degli ospiti (il giorno di partenza un nuovo ospite può già arrivare). Se un visitatore chiede quelle date, NIGI risponde che non sono disponibili e propone il soggiorno libero più vicino, senza dire per quanto tempo siete occupati; da dicembre ad aprile propone sempre settimane da sabato a sabato. Per tutte le altre date continua a rimandare al modulo o a WhatsApp. Per una notte sola lascia vuota la partenza. I periodi passati si cancellano da soli.</p>
         <div id="fullList"></div>
         <div class="actions">
           <button type="button" id="fullAdd" class="secondary">+ Aggiungi periodo</button>
@@ -594,13 +594,13 @@ function fullDirty() { $('fullMsg').className = 'warn'; $('fullMsg').textContent
 function addFullRow(p) {
   const row = document.createElement('div');
   row.className = 'kbrow fullrow';
-  row.innerHTML = '<div><label>Dal (primo giorno occupato)</label><input type="date" class="ffrom"></div>'
-    + '<div><label>Al (ultimo giorno occupato)</label><input type="date" class="fto"></div>'
+  row.innerHTML = '<div><label>Arrivo degli ospiti</label><input type="date" class="ffrom"></div>'
+    + '<div><label>Partenza degli ospiti</label><input type="date" class="fto"></div>'
     + '<button type="button" class="danger">Elimina</button>';
   const [f, t] = [row.querySelector('.ffrom'), row.querySelector('.fto')];
   if (fullToday) { f.min = fullToday; t.min = fullToday; }
   f.value = p ? p.from : '';
-  t.value = p && p.to !== p.from ? p.to : '';
+  t.value = p ? p.to : '';
   if (f.value) t.min = f.value;
   f.addEventListener('input', () => { if (f.value) t.min = f.value; fullDirty(); });
   t.addEventListener('input', fullDirty);
