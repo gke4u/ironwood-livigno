@@ -228,12 +228,12 @@ function enDate(iso: string): string {
   return new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 }
 
-const NOTE = '[Availability check (answer entirely in the reply language above): ';
+const NOTE = '[Availability check (answer entirely in the reply language above, in 2-3 short, simple sentences): ';
 const SECRET = 'Never say when or for how long the apartment is booked.';
-const ASK = 'invite the guest to send the request with the form or on WhatsApp';
+const ASK = 'say in a few words that they can request it with the form or on WhatsApp';
 // The owners also want summer stays: whenever winter dates are full, NIGI
 // suggests July to September too, with one concrete reason from the facts.
-const SUMMER = 'Then add ONE short, inviting sentence suggesting a summer stay (July to September) as a lovely alternative, with one concrete reason taken from the information (e.g. mountain biking, hiking, the lake, the e-bikes).';
+const SUMMER = 'Then add a few words suggesting summer too (July to September), with one concrete reason from the information (e.g. mountain biking, hiking, the lake).';
 const NOT_CONFIRMED = `${NOTE}these dates do not clash with known bookings, but availability is not confirmed: do not say they are free or available; ${ASK}.]`;
 function span(s: Stay): string {
   return `arrival ${enDate(s.checkIn)}, departure ${enDate(s.checkOut)}`;
@@ -252,7 +252,7 @@ export function availabilityNote(asked: AskedDates | null, periods: FullPeriod[]
       // A winter request not from Saturday to Saturday: the nearest week that is.
       const { later, earlier } = nearestStays(blocks, asked.checkIn, n, today);
       const best = earlier && daysBetween(earlier.checkIn, asked.checkIn) <= daysBetween(asked.checkIn, later.checkIn) ? earlier : later;
-      return `${NOTE}${WEEKS} Kindly explain this and propose the nearest Saturday-to-Saturday stay instead: ${span(best)}; ${ASK}. Do not say it is free or available: the owners confirm. ${SECRET}]`;
+      return `${NOTE}${WEEKS} Say this briefly and propose the nearest Saturday-to-Saturday stay instead: ${span(best)}; ${ASK}. Do not say it is free or available: the owners confirm. ${SECRET}]`;
     }
     const { later, earlier } = nearestStays(blocks, asked.checkIn, n, today);
     const weeks = isWinter(asked.checkIn) ? ` ${WEEKS}` : '';
@@ -284,7 +284,7 @@ export function availabilityNote(asked: AskedDates | null, periods: FullPeriod[]
   }
   const { later } = nearestStays(blocks, first, winter ? 7 : 1, today);
   const next = winter ? `the first free week: ${span(later)}` : `the first free arrival date after it: ${enDate(later.checkIn)}`;
-  return `${NOTE}there is no availability in that month.${weeks} Start by saying clearly and kindly that the month asked about is fully booked (no comments about the season), then propose ONLY ${next}; ${ASK}.${winter ? ` ${SUMMER}` : ''} ${SECRET}]`;
+  return `${NOTE}there is no availability in that month.${weeks} Say simply that the month asked about is fully booked (no comments about the season), then propose ONLY ${next}; ${ASK}.${winter ? ` ${SUMMER}` : ''} ${SECRET}]`;
 }
 
 export type ChatMsg = { role: 'user' | 'assistant'; content: string };
@@ -405,12 +405,12 @@ export function systemPrompt(today: string, offer: OfferFact | null, kb: KbItem[
   return `Sei NIGI, l'assistente virtuale di Ironwood Livigno, un appartamento vacanze a Livigno. Rispondi alle domande dei potenziali ospiti usando SOLO le informazioni qui sotto. Oggi è ${longDate(today)}.
 
 Regole:
-- Tono: caldo, elegante e discreto, come il concierge di un piccolo hotel di montagna di qualità; usa la forma di cortesia abituale nella lingua dell’ospite (es. "Sie" in tedesco, "vous" in francese). Niente punti esclamativi a raffica, niente frasi fatte.
-- Breve e concreto: 2-4 frasi, testo semplice senza titoli né elenchi lunghi. Rispondi subito alla domanda, senza ripeterla.
+- Tono: cordiale, semplice e naturale, come il proprietario che risponde su WhatsApp. Parole di tutti i giorni, frasi brevi. Usa la forma di cortesia abituale nella lingua dell’ospite (es. "Lei" in italiano, "Sie" in tedesco, "vous" in francese), ma senza formule: niente "Gentile ospite", "La invito a", "Qualora desiderasse", "Sarà un piacere" e simili.
+- CORTO: di solito 1-2 frasi, al massimo 3 (circa 40 parole). Niente titoli, elenchi o paragrafi separati. Rispondi subito alla domanda, senza ripeterla e senza ripetere le date che l’ospite ha già scritto.
 - Contatti (WhatsApp, email, modulo) solo quando servono davvero: prezzi, date, disponibilità o un’informazione che non hai. Sotto ogni tua risposta il sito mostra già i pulsanti WhatsApp e richiesta disponibilità, quindi non ripeterli in ogni messaggio.
 - Non inventare mai nulla: prezzi, disponibilità di date, orari precisi o qualsiasi informazione assente qui sotto. In quei casi dillo con garbo e spiega che la confermano i proprietari su WhatsApp (+39 0342 929285) o via email (info@ironwoodlivigno.com).
 - Non vedi il calendario e non puoi prenotare né bloccare date. A volte in fondo al messaggio dell'ospite c'è un "[Availability check: …]" calcolato dal sito sul calendario dei proprietari: seguilo alla lettera, con le date che indica (tradotte nella lingua dell'ospite), senza aggiungerne altre.
-- Senza quel controllo, o se non segnala problemi, non dire mai che è libero o disponibile (lo confermano i proprietari): ripeti le date e il numero di ospiti che hanno indicato e invitali a inviarli con il modulo di richiesta disponibilità sul sito o su WhatsApp, così i proprietari rispondono con disponibilità e preventivo (di solito entro poche ore).
+- Senza quel controllo, o se non segnala problemi, non dire mai che è libero o disponibile (lo confermano i proprietari): di’ in breve che per disponibilità e prezzo basta mandare la richiesta con il modulo (o su WhatsApp) e che i proprietari rispondono in poche ore.
 - Solo se ti chiedono del meteo o della neve: usa i dati meteo qui sotto (se ci sono); per giorni più lontani o se mancano, invita a guardare la sezione meteo del sito. Non parlare di meteo se non te lo chiedono.
 - Se l'ospite è indeciso sul periodo o chiede quando conviene venire, ricorda con una frase anche l'estate (da luglio a settembre: mountain bike, trekking, lago), oltre all'inverno.
 - Se la domanda contiene più richieste, rispondi a tutte in poche frasi.
@@ -425,7 +425,7 @@ ${languageRule()}`;
 // One answer from Workers AI with the Neurons it used, or null if it failed,
 // timed out or came back empty.
 export function askAI(ai: Ai, system: string, messages: ChatMsg[]): Promise<{ text: string; neurons: number } | null> {
-  return runAI(ai, [{ role: 'system', content: system }, ...messages], 400, 0.3);
+  return runAI(ai, [{ role: 'system', content: system }, ...messages], 250, 0.3);
 }
 
 async function runAI(
