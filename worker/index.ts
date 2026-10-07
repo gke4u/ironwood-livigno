@@ -483,7 +483,7 @@ async function chatApi(request: Request, env: Env, ctx: ExecutionContext): Promi
   const synced = ical?.url ? await fetchIcal(ical.url, today) : [];
   const booked = [...full.periods, ...(Array.isArray(synced) ? synced : [])];
   if (typeof synced === 'string') console.error('ical:', synced);
-  const availability = availabilityNote(check.asked, booked, today);
+  const availability = availabilityNote(check.asked, booked, today, Array.isArray(synced) && Boolean(ical?.url));
   // The reply language goes as a note on the visitor's last message (see replyLanguageNote).
   const last = messages[messages.length - 1];
   const notes = [replyLanguageNote(last.content, siteLanguage(body), check.lang), availability].filter(Boolean).join('\n');

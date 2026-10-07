@@ -235,36 +235,48 @@ const ASK = 'say in a few words that they can request it with the form or on Wha
 // suggests July to September too, with one concrete reason from the facts.
 const SUMMER = 'Then add a few words suggesting summer too (July to September), with one concrete reason from the information (e.g. mountain biking, hiking, the lake).';
 const NOT_CONFIRMED = `${NOTE}these dates do not clash with known bookings, but availability is not confirmed: do not say they are free or available; ${ASK}.]`;
+// With the Holidu calendar read just now, free dates may be called free, as
+// the owner asked, but always "barring last-minute bookings".
+const LAST_MINUTE = 'barring last-minute bookings';
+const FREE_NOW = `${NOTE}at the moment these dates are free in the owners' calendar. Say so simply (e.g. "At the moment the apartment is free on those dates, ${LAST_MINUTE}.") and ${ASK} to book them and get the price.]`;
 function span(s: Stay): string {
   return `arrival ${enDate(s.checkIn)}, departure ${enDate(s.checkOut)}`;
 }
 const WEEKS = 'In winter the apartment is rented from Saturday to Saturday: mention it only to explain the dates you propose, never as the reason the requested dates are unavailable.';
 
-export function availabilityNote(asked: AskedDates | null, periods: FullPeriod[], today: string): string {
+// `live`: the owners' full calendar (Holidu) was read just now, so dates
+// outside the booked stays really are free at this moment.
+export function availabilityNote(asked: AskedDates | null, periods: FullPeriod[], today: string, live = false): string {
   if (!asked) return '';
+  const notBooked = live ? FREE_NOW : NOT_CONFIRMED;
+  const freeNote = live ? ` These proposed dates are free at the moment: you may say so, adding "${LAST_MINUTE}".` : '';
   const blocks = bookedBlocks(periods, today);
   if ('checkIn' in asked) {
     const nights = daysBetween(asked.checkIn, asked.checkOut);
     const n = offerNights(asked.checkIn, nights);
     if (!clash(blocks, asked.checkIn, asked.checkOut)) {
       const satToSat = weekday(asked.checkIn) === 6 && n === nights;
-      if (!isWinter(asked.checkIn) || satToSat) return blocks.length ? NOT_CONFIRMED : '';
+      if (!isWinter(asked.checkIn) || satToSat) return blocks.length || live ? notBooked : '';
       // A winter request not from Saturday to Saturday: the nearest week that is.
       const { later, earlier } = nearestStays(blocks, asked.checkIn, n, today);
       const best = earlier && daysBetween(earlier.checkIn, asked.checkIn) <= daysBetween(asked.checkIn, later.checkIn) ? earlier : later;
-      return `${NOTE}${WEEKS} Say this briefly and propose the nearest Saturday-to-Saturday stay instead: ${span(best)}; ${ASK}. Do not say it is free or available: the owners confirm. ${SECRET}]`;
+      return `${NOTE}${WEEKS} Say this briefly and propose the nearest Saturday-to-Saturday stay instead: ${span(best)}; ${ASK}.${live ? freeNote : ' Do not say it is free or available: the owners confirm.'} ${SECRET}]`;
     }
     const { later, earlier } = nearestStays(blocks, asked.checkIn, n, today);
     const weeks = isWinter(asked.checkIn) ? ` ${WEEKS}` : '';
     const offer = earlier
       ? `propose ONLY these nearest alternatives (${n} nights): ${span(earlier)}; or ${span(later)}`
       : `propose ONLY the first free alternative (${n} nights): ${span(later)}`;
-    return `${NOTE}the requested dates are NOT available (already booked).${weeks} Say so kindly, then ${offer}, and ${ASK}.${isWinter(asked.checkIn) ? ` ${SUMMER}` : ''} ${SECRET}]`;
+    return `${NOTE}the requested dates are NOT available (already booked).${weeks} Say so kindly, then ${offer}, and ${ASK}.${freeNote}${isWinter(asked.checkIn) ? ` ${SUMMER}` : ''} ${SECRET}]`;
   }
   // A month in general: the free stretches of nights in it, if any.
   const first = `${asked.month}-01`;
   const end = `${addDay(first, 31).slice(0, 7)}-01`; // first day of the next month
-  if (end <= addDay(today, 1) || !blocks.some((b) => b.from < end && b.to > first)) return blocks.length ? NOT_CONFIRMED : '';
+  if (end <= addDay(today, 1)) return '';
+  if (!blocks.some((b) => b.from < end && b.to > first)) {
+    if (!live) return blocks.length ? NOT_CONFIRMED : '';
+    return `${NOTE}at the moment that month is completely free in the owners' calendar. Say so simply (${LAST_MINUTE})${isWinter(first) ? ', mention that in winter stays go from Saturday to Saturday,' : ''} and ${ASK} with their dates.]`;
+  }
   const winter = isWinter(first);
   const stretches: Stay[] = [];
   for (let d = first > today ? first : addDay(today, 1); d < end; d = addDay(d, 1)) {
@@ -280,11 +292,11 @@ export function availabilityNote(asked: AskedDates | null, periods: FullPeriod[]
   const weeks = winter ? ` ${WEEKS}` : '';
   if (usable.length) {
     const list = usable.map((s) => `arrival from ${enDate(s.checkIn)}, departure by ${enDate(s.checkOut)}`).join('; ');
-    return `${NOTE}that month is partly booked.${weeks} Tell the guest only which dates of that month they can still request: ${list}. Then ${ASK}. ${SECRET}]`;
+    return `${NOTE}that month is partly booked.${weeks} Tell the guest only which dates of that month they can still request: ${list}.${freeNote} Then ${ASK}. ${SECRET}]`;
   }
   const { later } = nearestStays(blocks, first, winter ? 7 : 1, today);
   const next = winter ? `the first free week: ${span(later)}` : `the first free arrival date after it: ${enDate(later.checkIn)}`;
-  return `${NOTE}there is no availability in that month.${weeks} Say simply that the month asked about is fully booked (no comments about the season), then propose ONLY ${next}; ${ASK}.${winter ? ` ${SUMMER}` : ''} ${SECRET}]`;
+  return `${NOTE}there is no availability in that month.${weeks} Say simply that the month asked about is fully booked (no comments about the season), then propose ONLY ${next}; ${ASK}.${freeNote}${winter ? ` ${SUMMER}` : ''} ${SECRET}]`;
 }
 
 export type ChatMsg = { role: 'user' | 'assistant'; content: string };
@@ -390,14 +402,24 @@ function looksItalian(text: string): boolean {
 //     the language of the page the visitor chose on the site;
 //   - any other message gets its own language (a Pole on the German page).
 //   - with an availability check, the language it detected is named outright.
+// How to address the guest, as the chat's greeting does (messages/*.json
+// chat): informal everywhere except French and Czech. Stated in the note
+// because the prompt's rule alone was not always followed.
+function register(language: string | null): string {
+  if (language === 'French') return ' Address the guest with the formal "vous".';
+  if (language === 'Czech') return ' Address the guest with the formal "vy".';
+  if (!language || language === 'Japanese' || language === 'Chinese (Simplified)') return '';
+  return ' Address the guest informally ("tu" / "du" / "you"), as in the chat greeting.';
+}
+
 export function replyLanguageNote(lastUser: string, lang: string | null, detected: string | null = null): string {
   const page = lang ? SITE_LANGUAGES[lang] : null;
   const short = lastUser.trim().split(/s+/).length <= 2 && lastUser.trim().length <= 16;
   // On this page the booking form is called like this (used only if relevant).
   const form = lang ? ` Whenever you mention the booking form, write its exact name "${FORM_NAME[lang]}" (not just "the form").` : '';
-  if (page && (looksItalian(lastUser) || short)) return `[Reply in ${page}.${form}]`;
+  if (page && (looksItalian(lastUser) || short)) return `[Reply in ${page}.${register(page)}${form}]`;
   if (!page && short) return '[Reply in the language of this message; if unclear, in Italian.]';
-  if (detected && detected !== 'Italian') return `[Reply in ${detected}, the language of this message.${form}]`;
+  if (detected && detected !== 'Italian') return `[Reply in ${detected}, the language of this message.${register(detected)}${form}]`;
   return `[Reply in the same language this message is written in.${form}]`;
 }
 
@@ -417,7 +439,7 @@ Regole:
 - Contatti (WhatsApp, email, modulo) solo quando servono davvero: prezzi, date, disponibilità o un’informazione che non hai. Sotto ogni tua risposta il sito mostra già i pulsanti WhatsApp e richiesta disponibilità, quindi non ripeterli in ogni messaggio.
 - Non inventare mai nulla: prezzi, disponibilità di date, orari precisi o qualsiasi informazione assente qui sotto. In quei casi dillo con garbo e spiega che la confermano i proprietari su WhatsApp (+39 0342 929285) o via email (info@ironwoodlivigno.com).
 - Non vedi il calendario e non puoi prenotare né bloccare date. A volte in fondo al messaggio dell'ospite c'è un "[Availability check: …]" calcolato dal sito sul calendario dei proprietari: seguilo alla lettera, con le date che indica (tradotte nella lingua dell'ospite), senza aggiungerne altre.
-- Senza quel controllo, o se non segnala problemi, non dire mai che è libero o disponibile (lo confermano i proprietari): di’ in breve che per disponibilità e prezzo basta mandare la richiesta con il modulo (o su WhatsApp) e che i proprietari rispondono in poche ore.
+- Se il controllo dice che al momento le date sono libere, dillo come indica, sempre con "salvo prenotazioni dell'ultimo minuto" tradotto nella lingua dell'ospite (es. "vorbehaltlich Last-Minute-Buchungen", "barring last-minute bookings"). Senza quel controllo, o se non dice che sono libere, non dire mai che è libero o disponibile (lo confermano i proprietari): di’ in breve che per disponibilità e prezzo basta mandare la richiesta con il modulo (o su WhatsApp) e che i proprietari rispondono in poche ore.
 - Solo se ti chiedono del meteo o della neve: usa i dati meteo qui sotto (se ci sono); per giorni più lontani o se mancano, invita a guardare la sezione meteo del sito. Non parlare di meteo se non te lo chiedono.
 - Se l'ospite è indeciso sul periodo o chiede quando conviene venire, ricorda con una frase anche l'estate (da luglio a settembre: mountain bike, trekking, lago), oltre all'inverno.
 - Se l'ospite saluta soltanto (es. "ciao", "buongiorno"), rispondi al saluto e chiedi in poche parole cosa vuole sapere, senza parlare di date o prezzi.
