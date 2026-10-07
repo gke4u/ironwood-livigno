@@ -10,11 +10,11 @@ import { linkKind, trackEvent } from '@/lib/trackEvent';
 // /api/offer, which returns it only while it is switched on and inside its
 // dates — so the static pages never need rebuilding for a new offer.
 //
-// Opens by itself after 5 seconds of the page actually being on screen, on
-// every visit. Closing it only lasts for the rest of that visit
-// (sessionStorage, keyed by the offer id): moving between pages doesn't bring
-// it back each time, but the next visit does. Meanwhile a small "Offer"
-// button above the WhatsApp one lets visitors reopen it.
+// Opens by itself once the visitor has spent 5 seconds on the page AND
+// scrolled a little (not at a visitor who just landed: less intrusive on
+// phones, and what Google accepts), and then not again for 3 days unless the
+// owner saves a new offer (localStorage, keyed by the offer id). Meanwhile
+// the pulsing "Offer" button in the contact dock lets visitors reopen it.
 // `?anteprima-offerta` in the URL (the admin's preview link) opens it at
 // once and asks the Worker for the saved offer even if it isn't live yet.
 
@@ -62,9 +62,47 @@ type Offer = {
   endsAt: number;
 };
 
+// Before 2026-10-07 a closed pop-up was remembered under this key; forgotten now.
 const CLOSED_KEY = 'iw-offer-closed';
+// { id, at }: the offer last opened by itself, and when.
+const SEEN_KEY = 'iw-offer-seen';
+const SEEN_FOR_MS = 3 * 24 * 3600_000;
 // Seconds of the page being visible, counted from when it started loading.
 const OPEN_AFTER_MS = 5000;
+// How far the visitor must have scrolled, as a share of the window's height.
+const SCROLL_SHARE = 0.5;
+
+function seenRecently(id: string): boolean {
+  try {
+    const seen = JSON.parse(localStorage.getItem(SEEN_KEY) ?? 'null') as { id?: string; at?: number } | null;
+    return seen?.id === id && typeof seen.at === 'number' && Date.now() - seen.at < SEEN_FOR_MS;
+  } catch {
+    return false;
+  }
+}
+
+function markSeen(id: string) {
+  try {
+    localStorage.setItem(SEEN_KEY, JSON.stringify({ id, at: Date.now() }));
+  } catch {}
+}
+
+// Calls `cb` once the visitor has scrolled far enough (at once if already
+// there). Returns a cancel function.
+function afterScroll(cb: () => void) {
+  const far = () => window.scrollY >= window.innerHeight * SCROLL_SHARE;
+  if (far()) {
+    cb();
+    return () => {};
+  }
+  const onScroll = () => {
+    if (!far()) return;
+    window.removeEventListener('scroll', onScroll);
+    cb();
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  return () => window.removeEventListener('scroll', onScroll);
+}
 const WHATSAPP = '390342929285';
 const EMAIL = 'info@ironwoodlivigno.com';
 // Same @id as the LodgingBusiness in StructuredData.tsx (src/lib/structuredDataIds.ts).
@@ -174,12 +212,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
   const hide = useCallback(() => {
     setShown(false);
     setTimeout(() => setOpen(false), 350);
-    if (offer && !previewRef.current) {
-      try {
-        sessionStorage.setItem(CLOSED_KEY, offer.id);
-      } catch {}
-    }
-  }, [offer]);
+  }, []);
 
   // Counts this page view for the admin's visit stats (worker/stats.ts): a
   // POST beacon, never cached, so every page opened counts. `r` is only the
@@ -205,11 +238,12 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
     return () => document.removeEventListener('click', onClick, true);
   }, []);
 
-  // Fetch after the page has settled, then open after a short delay.
+  // Fetch after the page has settled, then open after a short delay and a little scrolling.
   useEffect(() => {
     const preview = new URLSearchParams(window.location.search).has('anteprima-offerta');
     previewRef.current = preview;
     let cancelOpen: (() => void) | undefined;
+    let cancelScroll: (() => void) | undefined;
     const fetchTimer = setTimeout(async () => {
       try {
         const res = await fetch(preview ? '/api/offer?preview=1' : '/api/offer', { credentials: 'same-origin' });
@@ -218,18 +252,21 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
         if (!data.offer) return;
         setOffer(data.offer);
         setPicked(0);
-        let closed = false;
         try {
-          // Earlier versions remembered a closed pop-up for ever; forget that.
           localStorage.removeItem(CLOSED_KEY);
-          closed = sessionStorage.getItem(CLOSED_KEY) === data.offer.id;
+          sessionStorage.removeItem(CLOSED_KEY);
         } catch {}
+        const id = data.offer.id;
         if (preview) show();
         // Not on top of a conversation with NIGI (ChatWidget.tsx marks
         // <html data-nigi="open">): the "Offer" button stays to reopen it.
-        else if (!closed)
+        else if (!seenRecently(id))
           cancelOpen = afterVisibleFor(Math.max(0, OPEN_AFTER_MS - performance.now()), () => {
-            if (document.documentElement.dataset.nigi !== 'open') show();
+            cancelScroll = afterScroll(() => {
+              if (document.documentElement.dataset.nigi === 'open' || seenRecently(id)) return;
+              markSeen(id);
+              show();
+            });
           });
       } catch {
         // No offer endpoint (e.g. local `next dev`): nothing to show.
@@ -238,6 +275,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
     return () => {
       clearTimeout(fetchTimer);
       cancelOpen?.();
+      cancelScroll?.();
     };
   }, [show]);
 
