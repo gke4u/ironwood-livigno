@@ -85,8 +85,15 @@ function rich(text: string, form: FormLink): ReactNode {
     i % 2 === 0 ? (
       <Fragment key={i}>{richPart(part)}</Fragment>
     ) : (
-      <a key={i} href={form.href} onClick={form.onClick} className={`${LINK_CLS} font-semibold`}>
-        {part.replace(/^[«„“"']|[»“”"']$/g, '')}
+      // Gold chip, as the site's other accents: the owner wanted it to stand out.
+      <a
+        key={i}
+        href={form.href}
+        onClick={form.onClick}
+        data-form-link
+        className="inline-block whitespace-nowrap rounded-full bg-gold/20 ring-1 ring-gold/70 text-gold font-semibold px-2.5 py-0.5 mx-0.5 leading-snug hover:bg-gold hover:text-[#3D3026] transition-colors"
+      >
+        {part.replace(/^[«„“"']|[»“”"']$/g, '')} →
       </a>
     )
   );
