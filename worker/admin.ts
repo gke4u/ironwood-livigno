@@ -193,6 +193,16 @@ export function adminPage(): string {
       <details id="fullBox" class="kb">
         <summary>Periodi al completo <span id="fullCount" class="muted"></span></summary>
         <p class="sub" style="margin-top:8px">Segna qui i soggiorni già prenotati, con il giorno di arrivo e quello di partenza degli ospiti (il giorno di partenza un nuovo ospite può già arrivare). Se un visitatore chiede quelle date, NIGI risponde che non sono disponibili e propone il soggiorno libero più vicino, senza dire per quanto tempo siete occupati; da dicembre ad aprile propone sempre settimane da sabato a sabato. Per tutte le altre date continua a rimandare al modulo o a WhatsApp. Per una notte sola lascia vuota la partenza. I periodi passati si cancellano da soli.</p>
+        <div class="kbrow">
+          <label for="icalUrl">Calendario Holidu (si aggiorna da solo)</label>
+          <input type="url" id="icalUrl" placeholder="https://… (link iCal di esportazione da Holidu)" autocomplete="off">
+          <p class="sub" style="margin:0 0 8px">Su Holidu: apri l’alloggio → Configurazione → <b>iCal</b> → “Configura” → copia il link iCal di Holidu (esportazione) e incollalo qui. NIGI legge le prenotazioni ogni 15 minuti; qui sotto aggiungi solo le date che non sono su Holidu.</p>
+          <div class="actions" style="margin-top:0">
+            <button type="button" id="icalSave">Collega</button>
+            <button type="button" id="icalRemove" class="secondary hidden">Scollega</button>
+          </div>
+          <p id="icalMsg" class="sub"></p>
+        </div>
         <div id="fullList"></div>
         <div class="actions">
           <button type="button" id="fullAdd" class="secondary">+ Aggiungi periodo</button>
@@ -617,6 +627,48 @@ function fillFull(data) {
   fullCountText();
 }
 async function loadFull() { fillFull(await api('chat/full')); }
+
+// ---- Holidu calendar (iCal link) ----
+function itDay(iso) {
+  return new Date(iso + 'T12:00:00Z').toLocaleDateString('it-IT', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+}
+function showIcal(data) {
+  $('icalUrl').value = data.url || '';
+  $('icalRemove').classList.toggle('hidden', !data.url);
+  const msg = $('icalMsg');
+  if (!data.url) { msg.className = 'sub'; msg.textContent = 'Nessun calendario collegato.'; return; }
+  if (data.error) { msg.className = 'error'; msg.textContent = data.error; return; }
+  const list = data.stays || [];
+  msg.className = 'okmsg';
+  msg.innerHTML = '';
+  msg.append(list.length
+    ? 'Collegato: NIGI vede ' + list.length + (list.length === 1 ? ' prenotazione' : ' prenotazioni') + ' in arrivo da Holidu:'
+    : 'Collegato: su Holidu non ci sono prenotazioni in arrivo.');
+  if (list.length) {
+    const ul = document.createElement('ul');
+    ul.style.margin = '6px 0 0'; ul.style.paddingLeft = '18px'; ul.style.color = 'var(--ink)';
+    list.slice(0, 30).forEach((s) => { const li = document.createElement('li'); li.textContent = itDay(s.from) + ' → ' + itDay(s.to); ul.append(li); });
+    if (list.length > 30) { const li = document.createElement('li'); li.textContent = '… e altre ' + (list.length - 30); ul.append(li); }
+    msg.append(ul);
+  }
+}
+async function loadIcal() { showIcal(await api('chat/ical')); }
+async function saveIcal(url) {
+  const btn = $('icalSave');
+  btn.disabled = true;
+  $('icalMsg').className = 'sub';
+  $('icalMsg').textContent = url ? 'Controllo il calendario…' : 'Scollego…';
+  try {
+    showIcal(await api('chat/ical', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url }) }));
+  } catch (err) {
+    $('icalMsg').className = 'error';
+    $('icalMsg').textContent = err.message;
+  } finally {
+    btn.disabled = false;
+  }
+}
+$('icalSave').addEventListener('click', () => saveIcal($('icalUrl').value.trim()));
+$('icalRemove').addEventListener('click', () => { if (confirm('Scollegare il calendario Holidu? NIGI userà solo le date inserite a mano.')) saveIcal(''); });
 
 $('fullAdd').addEventListener('click', () => {
   if (fullRows().length >= fullMax) { $('fullMsg').className = 'error'; $('fullMsg').textContent = 'Massimo ' + fullMax + ' periodi.'; return; }
@@ -1263,6 +1315,7 @@ async function load() {
     loadGoogle().catch(() => {}).finally(() => loadOffer().catch(() => {}));
     loadKb().catch((err) => { $('kbMsg').className = 'error'; $('kbMsg').textContent = 'Impossibile leggere le domande: ' + err.message; });
     loadFull().catch((err) => { $('fullMsg').className = 'error'; $('fullMsg').textContent = 'Impossibile leggere i periodi: ' + err.message; });
+    loadIcal().catch((err) => { $('icalMsg').className = 'error'; $('icalMsg').textContent = 'Impossibile leggere il calendario: ' + err.message; });
     loadQuestions(false).catch(qaLoadError);
     loadChat().catch((err) => { $('chatStatus').className = 'status wait'; $('chatStatus').textContent = 'Impossibile leggere lo stato di NIGI: ' + err.message + '. Ricarica la pagina.'; });
   }

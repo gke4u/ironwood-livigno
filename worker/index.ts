@@ -35,6 +35,7 @@ import { OFFER_KEY, isLive, parseOffer, publicOffer, type Offer } from './offer'
 import * as google from './google';
 import { HOME_PATHS, LAYOUT_KEY, SECTIONS, isDefault, layoutCss, parseLayout } from './layout';
 import { weatherFact } from './weather';
+import { ICAL_KEY, fetchIcal, parseIcalUrl, type IcalSettings } from './ical';
 import { EVENT_KINDS, pagePath, sourceName, type EventKind, type QuestionStatus, type Stats } from './stats';
 import { CHAT_KEY, DAILY_NEURONS, FULL_KEY, KB_KEY, MAX_FULL, MAX_KB_ITEMS, askAI, availabilityNote, extractStay, lastExchange, parseFull, parseKb, parseMessages, replyLanguageNote, siteLanguage, systemPrompt, type ChatSettings, type Full, type Kb } from './chat';
 
@@ -406,6 +407,11 @@ async function readKb(env: Env, cacheTtl = 60): Promise<Kb> {
   return raw ? (JSON.parse(raw) as Kb) : { items: [], updated: '', ver: '' };
 }
 
+async function readIcal(env: Env, cacheTtl = 60): Promise<IcalSettings | null> {
+  const raw = await env.PHOTOS.get(ICAL_KEY, cacheTtl ? { cacheTtl } : undefined);
+  return raw ? (JSON.parse(raw) as IcalSettings) : null;
+}
+
 async function readFull(env: Env, cacheTtl = 60): Promise<Full> {
   const raw = await env.PHOTOS.get(FULL_KEY, cacheTtl ? { cacheTtl } : undefined);
   return raw ? (JSON.parse(raw) as Full) : { periods: [], updated: '', ver: '' };
@@ -471,7 +477,13 @@ async function chatApi(request: Request, env: Env, ctx: ExecutionContext): Promi
     console.error(err);
     return { asked: null, lang: null, neurons: 0 };
   });
-  const availability = availabilityNote(check.asked, full.periods, today);
+  // Booked stays: the owner's own list plus the Holidu calendar, if linked
+  // (an unreadable calendar just leaves its stays out).
+  const ical = check.asked ? await readIcal(env) : null;
+  const synced = ical?.url ? await fetchIcal(ical.url, today) : [];
+  const booked = [...full.periods, ...(Array.isArray(synced) ? synced : [])];
+  if (typeof synced === 'string') console.error('ical:', synced);
+  const availability = availabilityNote(check.asked, booked, today);
   // The reply language goes as a note on the visitor's last message (see replyLanguageNote).
   const last = messages[messages.length - 1];
   const notes = [replyLanguageNote(last.content, siteLanguage(body), check.lang), availability].filter(Boolean).join('\n');
@@ -687,6 +699,27 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
       return kvWriteError(err);
     }
     return json({ kb: parsed, max: MAX_KB_ITEMS });
+  }
+  // The Holidu calendar link: GET shows it with the stays read from it right now.
+  if (route === 'chat/ical' && request.method === 'GET') {
+    const ical = await readIcal(env, 0);
+    if (!ical?.url) return json({ url: '' });
+    const stays = await fetchIcal(ical.url, romeDate(), true);
+    return json(typeof stays === 'string' ? { url: ical.url, error: stays } : { url: ical.url, stays });
+  }
+  if (route === 'chat/ical' && request.method === 'PUT') {
+    const parsed = parseIcalUrl(await request.json().catch(() => ({})));
+    if (typeof parsed === 'string') return json({ error: parsed }, 400);
+    // Check the link before saving it, so a wrong one is caught at once.
+    const stays = parsed.url ? await fetchIcal(parsed.url, romeDate(), true) : [];
+    if (typeof stays === 'string') return json({ error: stays }, 400);
+    try {
+      if (parsed.url) await env.PHOTOS.put(ICAL_KEY, JSON.stringify(parsed));
+      else await env.PHOTOS.delete(ICAL_KEY);
+    } catch (err) {
+      return kvWriteError(err);
+    }
+    return json({ url: parsed.url, stays });
   }
   // "Periodi al completo": dates NIGI tells visitors are already booked.
   if (route === 'chat/full' && request.method === 'GET') {
