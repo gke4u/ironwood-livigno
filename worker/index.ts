@@ -36,7 +36,7 @@ import * as google from './google';
 import { HOME_PATHS, LAYOUT_KEY, SECTIONS, isDefault, layoutCss, parseLayout } from './layout';
 import { weatherFact } from './weather';
 import { EVENT_KINDS, pagePath, sourceName, type EventKind, type QuestionStatus, type Stats } from './stats';
-import { CHAT_KEY, DAILY_NEURONS, KB_KEY, MAX_KB_ITEMS, askAI, lastExchange, parseKb, parseMessages, replyLanguageNote, siteLanguage, systemPrompt, type ChatSettings, type Kb } from './chat';
+import { CHAT_KEY, DAILY_NEURONS, FULL_KEY, KB_KEY, MAX_FULL, MAX_KB_ITEMS, askAI, lastExchange, parseFull, parseKb, parseMessages, replyLanguageNote, siteLanguage, systemPrompt, type ChatSettings, type Full, type Kb } from './chat';
 
 // The Durable Object class must be exported by the Worker's main module.
 export { Stats } from './stats';
@@ -406,6 +406,11 @@ async function readKb(env: Env, cacheTtl = 60): Promise<Kb> {
   return raw ? (JSON.parse(raw) as Kb) : { items: [], updated: '', ver: '' };
 }
 
+async function readFull(env: Env, cacheTtl = 60): Promise<Full> {
+  const raw = await env.PHOTOS.get(FULL_KEY, cacheTtl ? { cacheTtl } : undefined);
+  return raw ? (JSON.parse(raw) as Full) : { periods: [], updated: '', ver: '' };
+}
+
 // The admin's preview link (?anteprima-nigi) shows and runs the chat for the
 // logged-in owner even while it is switched off.
 async function isAdmin(request: Request, env: Env): Promise<boolean> {
@@ -457,14 +462,14 @@ async function chatApi(request: Request, env: Env, ctx: ExecutionContext): Promi
     return json({ error: 'limit' }, 429);
   }
 
-  const [offer, kb, weather] = await Promise.all([readOffer(env), readKb(env), weatherFact()]);
+  const [offer, kb, weather, full] = await Promise.all([readOffer(env), readKb(env), weatherFact(), readFull(env)]);
   const live = offer && isLive(offer, today) ? publicOffer(offer, today) : null;
   // The reply language goes as a note on the visitor's last message (see replyLanguageNote).
   const last = messages[messages.length - 1];
   const toAsk = [...messages.slice(0, -1), { ...last, content: `${last.content}
 
 ${replyLanguageNote(last.content, siteLanguage(body))}` }];
-  const reply = await askAI(env.AI, systemPrompt(today, live, kb.items, weather), toAsk).catch((err) => {
+  const reply = await askAI(env.AI, systemPrompt(today, live, kb.items, weather, full.periods), toAsk).catch((err) => {
     console.error(err);
     return null;
   });
@@ -672,6 +677,28 @@ async function adminApi(request: Request, env: Env, route: string): Promise<Resp
       return kvWriteError(err);
     }
     return json({ kb: parsed, max: MAX_KB_ITEMS });
+  }
+  // "Periodi al completo": dates NIGI tells visitors are already booked.
+  if (route === 'chat/full' && request.method === 'GET') {
+    const full = await readFull(env, 0);
+    const today = romeDate();
+    return json({ full: { ...full, periods: full.periods.filter((p) => p.to >= today) }, max: MAX_FULL, today });
+  }
+  if (route === 'chat/full' && request.method === 'PUT') {
+    const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;
+    const current = await readFull(env, 0);
+    if (current.ver && body.baseVer !== current.ver) {
+      return json({ error: 'I periodi sono stati modificati da un’altra pagina o da un altro dispositivo. Ricarica questa pagina e riprova.' }, 409);
+    }
+    const today = romeDate();
+    const parsed = parseFull(body, today);
+    if (typeof parsed === 'string') return json({ error: parsed }, 400);
+    try {
+      await env.PHOTOS.put(FULL_KEY, JSON.stringify(parsed));
+    } catch (err) {
+      return kvWriteError(err);
+    }
+    return json({ full: parsed, max: MAX_FULL, today });
   }
   if (route === 'chat' && request.method === 'PUT') {
     const body = (await request.json().catch(() => ({}))) as Record<string, unknown>;

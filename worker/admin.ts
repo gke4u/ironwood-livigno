@@ -87,6 +87,10 @@ export function adminPage(): string {
   .kbrow input, .kbrow textarea { font:inherit; width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:10px; margin-bottom:8px; background:#fff; color:var(--ink); }
   .kbrow textarea { min-height:70px; resize:vertical; }
   .kbrow .danger { margin-top:0; }
+  .fullrow { display:flex; flex-wrap:wrap; gap:8px 12px; align-items:flex-end; }
+  .fullrow > div { flex:1 1 140px; }
+  .fullrow input { margin-bottom:0; }
+  .fullrow .danger { flex:0 0 auto; }
   .qa-head { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; margin:8px 0 12px; }
   .qa-head .sub { flex:1 1 260px; }
   .conv { border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin-bottom:12px; background:#fdfbf8; }
@@ -182,10 +186,20 @@ export function adminPage(): string {
 
     <section class="card" id="nigi">
       <h2>Assistente NIGI (chat sul sito)</h2>
-      <p class="hint">NIGI risponde ai visitatori in tutte le lingue, 24 ore su 24. Le risposte usano l’intelligenza artificiale gratuita di Cloudflare (circa 200 risposte al giorno; quando la quota gratuita del giorno finisce, NIGI propone WhatsApp e non spendi nulla). Per date, prezzi e prenotazioni NIGI rimanda sempre a WhatsApp, email o al modulo.</p>
+      <p class="hint">NIGI risponde ai visitatori in tutte le lingue, 24 ore su 24. Le risposte usano l’intelligenza artificiale gratuita di Cloudflare (circa 200 risposte al giorno; quando la quota gratuita del giorno finisce, NIGI propone WhatsApp e non spendi nulla). Per date, prezzi e prenotazioni NIGI rimanda a WhatsApp, email o al modulo; per le date che segni in “Periodi al completo” risponde che siete già pieni.</p>
       <div id="chatStatus" class="status off">Caricamento…</div>
       <label class="switch"><input type="checkbox" id="chatActive" disabled><span class="track"></span><span id="chatSwitchText">…</span></label>
       <div id="chatStats"></div>
+      <details id="fullBox" class="kb">
+        <summary>Periodi al completo <span id="fullCount" class="muted"></span></summary>
+        <p class="sub" style="margin-top:8px">Segna qui le date già prenotate. Se un visitatore chiede quei giorni, NIGI risponde che siete al completo e lo invita a proporre altre date; per tutte le altre date continua a rimandare al modulo o a WhatsApp. Per un giorno solo lascia vuota la seconda data. I periodi passati si cancellano da soli.</p>
+        <div id="fullList"></div>
+        <div class="actions">
+          <button type="button" id="fullAdd" class="secondary">+ Aggiungi periodo</button>
+          <button type="button" id="fullSave">Salva</button>
+        </div>
+        <p id="fullMsg" class="sub"></p>
+      </details>
       <details id="kbBox" class="kb">
         <summary>Cosa deve sapere NIGI <span id="kbCount" class="muted"></span></summary>
         <p class="sub" style="margin-top:8px">Aggiungi domande e risposte: NIGI le usa subito, in tutte le lingue, riformulandole con parole sue. Valgono più delle informazioni del sito (es. un orario di check-in preciso).</p>
@@ -562,6 +576,70 @@ $('kbSave').addEventListener('click', async () => {
   } catch (err) {
     $('kbMsg').className = 'error';
     $('kbMsg').textContent = err.message;
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+// ---- "Periodi al completo": dates NIGI says are already booked ----
+let fullVer = '';
+let fullMax = 30;
+let fullToday = '';
+function fullRows() { return Array.from(document.querySelectorAll('#fullList .kbrow')); }
+function fullCountText() {
+  const n = fullRows().filter((r) => r.querySelector('.ffrom').value).length;
+  $('fullCount').textContent = n ? '(' + n + ')' : '';
+}
+function fullDirty() { $('fullMsg').className = 'warn'; $('fullMsg').textContent = 'Modifiche non salvate: premi “Salva”.'; fullCountText(); }
+function addFullRow(p) {
+  const row = document.createElement('div');
+  row.className = 'kbrow fullrow';
+  row.innerHTML = '<div><label>Dal (primo giorno occupato)</label><input type="date" class="ffrom"></div>'
+    + '<div><label>Al (ultimo giorno occupato)</label><input type="date" class="fto"></div>'
+    + '<button type="button" class="danger">Elimina</button>';
+  const [f, t] = [row.querySelector('.ffrom'), row.querySelector('.fto')];
+  if (fullToday) { f.min = fullToday; t.min = fullToday; }
+  f.value = p ? p.from : '';
+  t.value = p && p.to !== p.from ? p.to : '';
+  if (f.value) t.min = f.value;
+  f.addEventListener('input', () => { if (f.value) t.min = f.value; fullDirty(); });
+  t.addEventListener('input', fullDirty);
+  row.querySelector('.danger').addEventListener('click', () => { row.remove(); fullDirty(); });
+  $('fullList').append(row);
+  return row;
+}
+function fillFull(data) {
+  fullVer = data.full.ver || '';
+  fullMax = data.max || fullMax;
+  fullToday = data.today || '';
+  $('fullList').innerHTML = '';
+  data.full.periods.forEach(addFullRow);
+  fullCountText();
+}
+async function loadFull() { fillFull(await api('chat/full')); }
+
+$('fullAdd').addEventListener('click', () => {
+  if (fullRows().length >= fullMax) { $('fullMsg').className = 'error'; $('fullMsg').textContent = 'Massimo ' + fullMax + ' periodi.'; return; }
+  addFullRow(null).querySelector('input').focus();
+});
+
+$('fullSave').addEventListener('click', async () => {
+  const btn = $('fullSave');
+  btn.disabled = true;
+  $('fullMsg').className = 'sub';
+  $('fullMsg').textContent = 'Salvataggio…';
+  try {
+    const periods = fullRows().map((r) => ({ from: r.querySelector('.ffrom').value, to: r.querySelector('.fto').value }));
+    const data = await api('chat/full', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ baseVer: fullVer, periods }) });
+    fillFull(data);
+    const n = data.full.periods.length;
+    $('fullMsg').className = 'okmsg';
+    $('fullMsg').textContent = n
+      ? 'Salvato: NIGI sa che siete al completo in ' + n + (n === 1 ? ' periodo' : ' periodi') + ' (attivo entro 1–2 minuti).'
+      : 'Salvato: nessun periodo al completo.';
+  } catch (err) {
+    $('fullMsg').className = 'error';
+    $('fullMsg').textContent = err.message;
   } finally {
     btn.disabled = false;
   }
@@ -1184,6 +1262,7 @@ async function load() {
     window.offerLoaded = true;
     loadGoogle().catch(() => {}).finally(() => loadOffer().catch(() => {}));
     loadKb().catch((err) => { $('kbMsg').className = 'error'; $('kbMsg').textContent = 'Impossibile leggere le domande: ' + err.message; });
+    loadFull().catch((err) => { $('fullMsg').className = 'error'; $('fullMsg').textContent = 'Impossibile leggere i periodi: ' + err.message; });
     loadQuestions(false).catch(qaLoadError);
     loadChat().catch((err) => { $('chatStatus').className = 'status wait'; $('chatStatus').textContent = 'Impossibile leggere lo stato di NIGI: ' + err.message + '. Ricarica la pagina.'; });
   }
