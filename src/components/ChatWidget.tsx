@@ -308,8 +308,8 @@ export default function ChatWidget({
             }`}
           >
             <picture>
-              <source type="image/avif" srcSet="/images/hero-ironwood-480.avif" />
-              <img src="/images/hero-ironwood-480.webp" alt="" width={480} height={320} className="absolute inset-0 w-full h-full object-cover" />
+              <source type="image/avif" srcSet="/images/soggiorno-480.avif" />
+              <img src="/images/soggiorno-480.webp" alt="" width={480} height={320} className="absolute inset-0 w-full h-full object-cover" />
             </picture>
             <div
               className={`absolute inset-0 transition-colors duration-300 ${
