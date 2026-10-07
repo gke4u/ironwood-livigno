@@ -388,5 +388,25 @@
     "disclaimer": "Automatiske svar. Datoer og priser bekræfter vi personligt.",
     "moreFaq": "Flere spørgsmål",
     "cta": "Chat med os"
+  },
+  "dock": {
+    "aria": "Hurtig kontakt",
+    "help": "Hjælp",
+    "helpSub": "Svar med det samme",
+    "book": "Book",
+    "menuTitle": "Hvordan kan vi hjælpe?",
+    "close": "Luk",
+    "recommended": "Anbefalet",
+    "nigiTitle": "Chat med vores assistent",
+    "nigiSub": "NIGI svarer med det samme, også om natten: ledige datoer, lejligheden, Livigno.",
+    "nigiExample": "„Er der ledigt i august?“",
+    "instant": "Svar med det samme",
+    "ask": "Stil et spørgsmål",
+    "otherTitle": "Eller skriv eller ring til os",
+    "waSub": "Vi svarer selv, så snart vi kan",
+    "notInstant": "Ikke med det samme",
+    "call": "Ring",
+    "nudge": "Spørgsmål om ledige datoer eller lejligheden? Spørg mig bare, jeg svarer med det samme.",
+    "nudgeClose": "Luk beskeden"
   }
 }

@@ -200,7 +200,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
   const previewRef = useRef(false);
   const closeRef = useRef<HTMLButtonElement>(null);
   const pillRef = useRef<HTMLButtonElement>(null);
-  // The reopen button lives in the contact dock (FloatingDock.tsx), between NIGI and WhatsApp.
+  // The reopen button lives in the contact dock (FloatingDock.tsx), between "Help" and "Book".
   const [dockSlot, setDockSlot] = useState<HTMLElement | null>(null);
   useEffect(() => setDockSlot(document.getElementById(DOCK_SLOT_OFFER)), []);
 
@@ -282,6 +282,8 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
   // While open: lock page scroll, close on Escape, focus the close button, tick the countdown.
   useEffect(() => {
     if (!open) return;
+    // The dock's welcome bubble for NIGI (FloatingDock.tsx) waits while it is open.
+    document.documentElement.dataset.offer = 'open';
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && hide();
@@ -289,6 +291,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
     const focusTimer = setTimeout(() => closeRef.current?.focus(), 60);
     const tick = setInterval(() => setNow(Date.now()), 30_000);
     return () => {
+      delete document.documentElement.dataset.offer;
       document.body.style.overflow = previousOverflow;
       document.removeEventListener('keydown', onKey);
       clearTimeout(focusTimer);

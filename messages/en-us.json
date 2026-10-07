@@ -388,5 +388,25 @@
     "disclaimer": "Automatic answers. We’ll confirm dates and prices personally.",
     "moreFaq": "More questions",
     "cta": "Chat with us"
+  },
+  "dock": {
+    "aria": "Quick contacts",
+    "help": "Help",
+    "helpSub": "Instant answer",
+    "book": "Book",
+    "menuTitle": "How can we help?",
+    "close": "Close",
+    "recommended": "Recommended",
+    "nigiTitle": "Chat with our assistant",
+    "nigiSub": "NIGI answers right away, even at night: free dates, the apartment, Livigno.",
+    "nigiExample": "“Are you free in August?”",
+    "instant": "Instant answer",
+    "ask": "Ask a question",
+    "otherTitle": "Or message or call us",
+    "waSub": "We'll reply ourselves as soon as we can",
+    "notInstant": "Not instant",
+    "call": "Call",
+    "nudge": "Questions about free dates or the apartment? Just ask me, I answer right away.",
+    "nudgeClose": "Close the message"
   }
 }

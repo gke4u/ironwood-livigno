@@ -390,5 +390,25 @@
     "disclaimer": "Automatické odpovědi. Termíny a ceny vám potvrdíme osobně.",
     "moreFaq": "Další dotazy",
     "cta": "Napište nám"
+  },
+  "dock": {
+    "aria": "Rychlý kontakt",
+    "help": "Pomoc",
+    "helpSub": "Okamžitá odpověď",
+    "book": "Rezervovat",
+    "menuTitle": "Jak vám můžeme pomoci?",
+    "close": "Zavřít",
+    "recommended": "Doporučeno",
+    "nigiTitle": "Napište našemu asistentovi",
+    "nigiSub": "NIGI vám odpoví hned, i v noci: volné termíny, apartmán, Livigno.",
+    "nigiExample": "„Máte volno v srpnu?“",
+    "instant": "Okamžitá odpověď",
+    "ask": "Položit otázku",
+    "otherTitle": "Nebo nám napište či zavolejte",
+    "waSub": "Odpovíme vám osobně, jakmile to půjde",
+    "notInstant": "Ne hned",
+    "call": "Zavolat",
+    "nudge": "Máte otázky k volným termínům nebo apartmánu? Zeptejte se mě, odpovím hned.",
+    "nudgeClose": "Zavřít zprávu"
   }
 }

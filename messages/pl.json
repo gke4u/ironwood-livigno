@@ -390,5 +390,25 @@
     "disclaimer": "Odpowiedzi automatyczne. Terminy i ceny potwierdzamy osobiście.",
     "moreFaq": "Więcej pytań",
     "cta": "Czat z nami"
+  },
+  "dock": {
+    "aria": "Szybki kontakt",
+    "help": "Pomoc",
+    "helpSub": "Odpowiedź od razu",
+    "book": "Rezerwuj",
+    "menuTitle": "Jak możemy pomóc?",
+    "close": "Zamknij",
+    "recommended": "Polecane",
+    "nigiTitle": "Czat z naszym asystentem",
+    "nigiSub": "NIGI odpowiada od razu, także w nocy: wolne terminy, apartament, Livigno.",
+    "nigiExample": "„Macie wolne w sierpniu?”",
+    "instant": "Odpowiedź od razu",
+    "ask": "Zadaj pytanie",
+    "otherTitle": "Albo napisz lub zadzwoń",
+    "waSub": "Odpowiemy osobiście, gdy tylko będziemy mogli",
+    "notInstant": "Nie od razu",
+    "call": "Zadzwoń",
+    "nudge": "Pytania o wolne terminy lub apartament? Zapytaj mnie, odpowiem od razu.",
+    "nudgeClose": "Zamknij wiadomość"
   }
 }

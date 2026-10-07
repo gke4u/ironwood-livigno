@@ -388,5 +388,25 @@
     "disclaimer": "Réponses automatiques. Nous confirmons nous-mêmes dates et prix.",
     "moreFaq": "Autres questions",
     "cta": "Écrivez-nous"
+  },
+  "dock": {
+    "aria": "Contacts rapides",
+    "help": "Aide",
+    "helpSub": "Réponse immédiate",
+    "book": "Réserver",
+    "menuTitle": "Comment pouvons-nous vous aider ?",
+    "close": "Fermer",
+    "recommended": "Conseillé",
+    "nigiTitle": "Discutez avec notre assistant",
+    "nigiSub": "NIGI vous répond tout de suite, même la nuit : dates libres, l'appartement, Livigno.",
+    "nigiExample": "« C'est libre en août ? »",
+    "instant": "Réponse immédiate",
+    "ask": "Poser une question",
+    "otherTitle": "Ou écrivez-nous, appelez-nous",
+    "waSub": "Nous vous répondons nous-mêmes dès que possible",
+    "notInstant": "Réponse non immédiate",
+    "call": "Appeler",
+    "nudge": "Des questions sur les dates libres ou l'appartement ? Demandez-moi, je réponds tout de suite.",
+    "nudgeClose": "Fermer le message"
   }
 }

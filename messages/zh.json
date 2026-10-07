@@ -387,5 +387,25 @@
     "disclaimer": "自动回答。日期和价格将由我们亲自确认。",
     "moreFaq": "更多问题",
     "cta": "在线咨询"
+  },
+  "dock": {
+    "aria": "快速联系",
+    "help": "帮助",
+    "helpSub": "即时回复",
+    "book": "预订",
+    "menuTitle": "我们能帮您什么？",
+    "close": "关闭",
+    "recommended": "推荐",
+    "nigiTitle": "与我们的助手聊天",
+    "nigiSub": "NIGI 即时回复，夜间也可以：空闲日期、公寓、利维尼奥。",
+    "nigiExample": "“八月有空房吗？”",
+    "instant": "即时回复",
+    "ask": "提个问题",
+    "otherTitle": "或者给我们留言、打电话",
+    "waSub": "我们会尽快亲自回复您",
+    "notInstant": "非即时回复",
+    "call": "打电话",
+    "nudge": "想了解空闲日期或公寓情况？问我吧，马上回答。",
+    "nudgeClose": "关闭消息"
   }
 }

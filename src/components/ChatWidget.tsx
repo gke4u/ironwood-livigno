@@ -1,8 +1,7 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
-import { createPortal } from 'react-dom';
-import { DOCK_ICON, DOCK_ITEM, DOCK_SLOT_NIGI } from './FloatingDock';
+import { nigi } from '@/lib/nigi';
 
 // NIGI, the site's virtual assistant (free to run: Workers AI's daily allowance):
 //   - a question goes to /api/chat, where the Worker asks Workers AI
@@ -15,8 +14,9 @@ import { DOCK_ICON, DOCK_ITEM, DOCK_SLOT_NIGI } from './FloatingDock';
 // to page and is gone when the tab closes. Nothing typed is stored server-side.
 //
 // Look: the same visual language as the offer pop-up (OfferPopup.tsx) — warm
-// dark panel #3D3026, gold accents, Fraunces titles, pill buttons — and the
-// launcher is a pill in the same column as the "Offer" and WhatsApp ones.
+// dark panel #3D3026, gold accents, Fraunces titles, pill buttons. It has no
+// button of its own: it opens from the "Help" menu of the contact dock
+// (FloatingDock.tsx), through src/lib/nigi.ts.
 
 export type ChatStrings = {
   cta: string;
@@ -152,11 +152,7 @@ export default function ChatWidget({
   const [busy, setBusy] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const launcherRef = useRef<HTMLButtonElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  // NIGI's button lives in the contact dock (FloatingDock.tsx), next to the offer and WhatsApp.
-  const [dockSlot, setDockSlot] = useState<HTMLElement | null>(null);
-  useEffect(() => setDockSlot(document.getElementById(DOCK_SLOT_NIGI)), []);
 
   const openChat = useCallback(() => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -168,7 +164,12 @@ export default function ChatWidget({
     setShown(false);
     closeTimer.current = setTimeout(() => {
       setOpen(false);
-      requestAnimationFrame(() => launcherRef.current?.focus());
+      // Back to the visible "Help" button (the phone bar's or the computer's).
+      requestAnimationFrame(() =>
+        Array.from(document.querySelectorAll<HTMLElement>('[data-help]'))
+          .find((el) => el.offsetParent)
+          ?.focus()
+      );
     }, 260);
   }, []);
 
@@ -184,6 +185,7 @@ export default function ChatWidget({
       .then((d: { active?: boolean }) => {
         if (cancelled || !d.active) return;
         setEnabled(true);
+        nigi.setEnabled(true);
         if (isPreview) openChat();
       })
       .catch(() => {});
@@ -191,6 +193,8 @@ export default function ChatWidget({
       cancelled = true;
     };
   }, [openChat]);
+
+  useEffect(() => nigi.onOpen(openChat), [openChat]);
 
   useEffect(() => {
     if (enabled) save(messages);
@@ -287,23 +291,6 @@ export default function ChatWidget({
 
   return (
     <>
-      {!open &&
-        dockSlot &&
-        createPortal(
-          <button ref={launcherRef} type="button" onClick={openChat} aria-label={s.open} aria-haspopup="dialog" className={DOCK_ITEM}>
-            {/* A speech bubble, not the logo: the owner found "NIGI" alone said nothing about a chat. */}
-            <span className={`${DOCK_ICON} bg-ink ring-1 ring-gold/60 text-mist`}>
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.9A8 8 0 1 1 21 12Z" />
-                <path d="M8.5 12h.01M12 12h.01M15.5 12h.01" strokeWidth="3" />
-              </svg>
-              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[#4cc27a] ring-2 ring-[#3D3026]" aria-hidden />
-            </span>
-            <span className="truncate max-w-full">{s.cta}</span>
-          </button>,
-          dockSlot
-        )}
-
       {open && (
         <div
           role="dialog"
