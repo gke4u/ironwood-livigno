@@ -192,7 +192,7 @@ export function adminPage(): string {
       <div id="chatStats"></div>
       <details id="fullBox" class="kb">
         <summary>Periodi al completo <span id="fullCount" class="muted"></span></summary>
-        <p class="sub" style="margin-top:8px">Segna qui le date già prenotate. Se un visitatore chiede quei giorni, NIGI risponde che siete al completo e lo invita a proporre altre date; per tutte le altre date continua a rimandare al modulo o a WhatsApp. Per un giorno solo lascia vuota la seconda data. I periodi passati si cancellano da soli.</p>
+        <p class="sub" style="margin-top:8px">Segna qui le date già prenotate. Se un visitatore chiede quei giorni, NIGI risponde che quelle date non sono disponibili e propone la data libera più vicina, senza dire per quanto tempo siete occupati; per tutte le altre date continua a rimandare al modulo o a WhatsApp. Per un giorno solo lascia vuota la seconda data. I periodi passati si cancellano da soli.</p>
         <div id="fullList"></div>
         <div class="actions">
           <button type="button" id="fullAdd" class="secondary">+ Aggiungi periodo</button>

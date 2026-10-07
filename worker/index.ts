@@ -36,7 +36,7 @@ import * as google from './google';
 import { HOME_PATHS, LAYOUT_KEY, SECTIONS, isDefault, layoutCss, parseLayout } from './layout';
 import { weatherFact } from './weather';
 import { EVENT_KINDS, pagePath, sourceName, type EventKind, type QuestionStatus, type Stats } from './stats';
-import { CHAT_KEY, DAILY_NEURONS, FULL_KEY, KB_KEY, MAX_FULL, MAX_KB_ITEMS, askAI, lastExchange, parseFull, parseKb, parseMessages, replyLanguageNote, siteLanguage, systemPrompt, type ChatSettings, type Full, type Kb } from './chat';
+import { CHAT_KEY, DAILY_NEURONS, FULL_KEY, KB_KEY, MAX_FULL, MAX_KB_ITEMS, askAI, availabilityNote, extractStay, lastExchange, parseFull, parseKb, parseMessages, replyLanguageNote, siteLanguage, systemPrompt, type ChatSettings, type Full, type Kb } from './chat';
 
 // The Durable Object class must be exported by the Worker's main module.
 export { Stats } from './stats';
@@ -464,15 +464,26 @@ async function chatApi(request: Request, env: Env, ctx: ExecutionContext): Promi
 
   const [offer, kb, weather, full] = await Promise.all([readOffer(env), readKb(env), weatherFact(), readFull(env)]);
   const live = offer && isLive(offer, today) ? publicOffer(offer, today) : null;
+  // With booked periods saved, the dates asked about are checked here, not by
+  // the model (see availabilityNote); a failed check just leaves the note out.
+  const check = full.periods.length
+    ? await extractStay(env.AI, messages, today).catch((err) => {
+        console.error(err);
+        return { asked: null, lang: null, neurons: 0 };
+      })
+    : { asked: null, lang: null, neurons: 0 };
+  const availability = availabilityNote(check.asked, full.periods, today);
   // The reply language goes as a note on the visitor's last message (see replyLanguageNote).
   const last = messages[messages.length - 1];
+  const notes = [replyLanguageNote(last.content, siteLanguage(body), check.lang), availability].filter(Boolean).join('\n');
   const toAsk = [...messages.slice(0, -1), { ...last, content: `${last.content}
 
-${replyLanguageNote(last.content, siteLanguage(body))}` }];
-  const reply = await askAI(env.AI, systemPrompt(today, live, kb.items, weather, full.periods), toAsk).catch((err) => {
+${notes}` }];
+  const answer = await askAI(env.AI, systemPrompt(today, live, kb.items, weather), toAsk).catch((err) => {
     console.error(err);
     return null;
   });
+  const reply = answer && { ...answer, neurons: answer.neurons + check.neurons };
   if (!reply) {
     ctx.waitUntil(stats.chatCount(today, 'error').catch((err) => console.error(err)));
     log('error', null);
