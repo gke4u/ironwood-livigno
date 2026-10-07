@@ -291,8 +291,12 @@ export default function ChatWidget({
         dockSlot &&
         createPortal(
           <button ref={launcherRef} type="button" onClick={openChat} aria-label={s.open} aria-haspopup="dialog" className={DOCK_ITEM}>
-            <span className={`${DOCK_ICON} bg-ink ring-1 ring-gold/50`}>
-              <BrandMark className="w-4 h-4 text-mist" />
+            {/* A speech bubble, not the logo: the owner found "NIGI" alone said nothing about a chat. */}
+            <span className={`${DOCK_ICON} bg-ink ring-1 ring-gold/60 text-mist`}>
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.9A8 8 0 1 1 21 12Z" />
+                <path d="M8.5 12h.01M12 12h.01M15.5 12h.01" strokeWidth="3" />
+              </svg>
               <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[#4cc27a] ring-2 ring-[#3D3026]" aria-hidden />
             </span>
             <span className="truncate max-w-full">{s.cta}</span>
