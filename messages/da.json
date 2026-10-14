@@ -397,11 +397,7 @@
   "dock": {
     "aria": "Hurtig kontakt",
     "book": "Book",
-    "menuTitle": "Hvordan kan vi hjælpe?",
-    "close": "Luk",
     "nigiTitle": "Chat med vores assistent",
-    "instant": "Svar med det samme",
-    "waSub": "Vi svarer selv, så snart vi kan",
     "nudge": "Spørgsmål om ledige datoer eller lejligheden? Spørg mig bare, jeg svarer med det samme.",
     "nudgeClose": "Luk beskeden"
   }

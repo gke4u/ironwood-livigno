@@ -399,11 +399,7 @@
   "dock": {
     "aria": "Rychlý kontakt",
     "book": "Rezervovat",
-    "menuTitle": "Jak vám můžeme pomoci?",
-    "close": "Zavřít",
     "nigiTitle": "Napište našemu asistentovi",
-    "instant": "Okamžitá odpověď",
-    "waSub": "Odpovíme vám osobně, jakmile to půjde",
     "nudge": "Máte otázky k volným termínům nebo apartmánu? Zeptejte se mě, odpovím hned.",
     "nudgeClose": "Zavřít zprávu"
   }

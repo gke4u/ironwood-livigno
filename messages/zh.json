@@ -396,11 +396,7 @@
   "dock": {
     "aria": "快速联系",
     "book": "预订",
-    "menuTitle": "我们能帮您什么？",
-    "close": "关闭",
     "nigiTitle": "与我们的助手聊天",
-    "instant": "即时回复",
-    "waSub": "我们会尽快亲自回复您",
     "nudge": "想了解空闲日期或公寓情况？问我吧，马上回答。",
     "nudgeClose": "关闭消息"
   }

@@ -397,11 +397,7 @@
   "dock": {
     "aria": "Schnellkontakt",
     "book": "Buchen",
-    "menuTitle": "Wie können wir helfen?",
-    "close": "Schließen",
     "nigiTitle": "Chatte mit unserem Assistenten",
-    "instant": "Sofortige Antwort",
-    "waSub": "Wir antworten selbst, sobald wir können",
     "nudge": "Fragen zu freien Terminen oder zur Wohnung? Frag mich einfach, ich antworte sofort.",
     "nudgeClose": "Nachricht schließen"
   }

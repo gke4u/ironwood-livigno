@@ -399,11 +399,7 @@
   "dock": {
     "aria": "Szybki kontakt",
     "book": "Rezerwuj",
-    "menuTitle": "Jak możemy pomóc?",
-    "close": "Zamknij",
     "nigiTitle": "Czat z naszym asystentem",
-    "instant": "Odpowiedź od razu",
-    "waSub": "Odpowiemy osobiście, gdy tylko będziemy mogli",
     "nudge": "Pytania o wolne terminy lub apartament? Zapytaj mnie, odpowiem od razu.",
     "nudgeClose": "Zamknij wiadomość"
   }

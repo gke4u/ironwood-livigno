@@ -397,11 +397,7 @@
   "dock": {
     "aria": "Rask kontakt",
     "book": "Bestill",
-    "menuTitle": "Hvordan kan vi hjelpe?",
-    "close": "Lukk",
     "nigiTitle": "Chat med assistenten vår",
-    "instant": "Svar med en gang",
-    "waSub": "Vi svarer selv så snart vi kan",
     "nudge": "Spørsmål om ledige datoer eller leiligheten? Bare spør meg, jeg svarer med en gang.",
     "nudgeClose": "Lukk meldingen"
   }

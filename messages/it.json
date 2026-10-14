@@ -397,11 +397,7 @@
   "dock": {
     "aria": "Contatti rapidi",
     "book": "Prenota",
-    "menuTitle": "Come possiamo aiutarti?",
-    "close": "Chiudi",
     "nigiTitle": "Chatta con il nostro assistente",
-    "instant": "Risposta immediata",
-    "waSub": "Ti rispondiamo noi appena possiamo",
     "nudge": "Hai domande su date libere o sull'appartamento? Chiedimi pure, rispondo subito.",
     "nudgeClose": "Chiudi il messaggio"
   }

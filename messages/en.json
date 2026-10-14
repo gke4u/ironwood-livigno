@@ -397,11 +397,7 @@
   "dock": {
     "aria": "Quick contacts",
     "book": "Book",
-    "menuTitle": "How can we help?",
-    "close": "Close",
     "nigiTitle": "Chat with our assistant",
-    "instant": "Instant answer",
-    "waSub": "We'll reply ourselves as soon as we can",
     "nudge": "Questions about free dates or the apartment? Just ask me, I answer right away.",
     "nudgeClose": "Close the message"
   }

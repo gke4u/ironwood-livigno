@@ -397,11 +397,7 @@
   "dock": {
     "aria": "Contacts rapides",
     "book": "Réserver",
-    "menuTitle": "Comment pouvons-nous vous aider ?",
-    "close": "Fermer",
     "nigiTitle": "Discutez avec notre assistant",
-    "instant": "Réponse immédiate",
-    "waSub": "Nous vous répondons nous-mêmes dès que possible",
     "nudge": "Des questions sur les dates libres ou l'appartement ? Demandez-moi, je réponds tout de suite.",
     "nudgeClose": "Fermer le message"
   }
