@@ -153,8 +153,11 @@ function ContactPanel({ t, nigiOn, whatsappHref, onClose }: { t: DockStrings; ni
             </button>
           )}
           <a ref={setFirst} href={whatsappHref} target="_blank" rel="noopener noreferrer" onClick={onClose} className={row}>
-            <span className={`${icon} bg-[#25D366] text-white`}>
-              <WaIcon className="w-6 h-6" />
+            {/* Half the size of the other icons (the owner found it too big); same column width, so the text stays aligned. */}
+            <span className="grid place-items-center flex-none w-11 h-11">
+              <span className="grid place-items-center w-[22px] h-[22px] rounded-full bg-[#25D366] text-white">
+                <WaIcon className="w-3 h-3" />
+              </span>
             </span>
             <span className="min-w-0 flex-1">
               <span className={title}>WhatsApp</span>
