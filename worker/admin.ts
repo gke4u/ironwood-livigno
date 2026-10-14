@@ -111,6 +111,14 @@ export function adminPage(): string {
   main button.linkbtn { background:none; border:0; padding:6px 0; min-height:32px; color:var(--brick); font-size:13px; font-weight:600; border-radius:0; }
   main button.linkbtn.del { color:#a33; }
   .kpis { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-bottom:16px; }
+  /* NIGI's free AI allowance for today, at the top of the admin. */
+  #quota .qhead { display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  #quota .qpct { font-size:44px; font-weight:700; line-height:1; }
+  #quota .qbar { height:16px; border-radius:999px; background:#efe7df; overflow:hidden; margin:14px 0 10px; }
+  #quota .qbar span { display:block; height:100%; border-radius:999px; transition:width .4s; }
+  #quota.ok .qpct { color:#2e7d4f; } #quota.ok .qbar span { background:#3fa66a; }
+  #quota.mid .qpct { color:#a86a00; } #quota.mid .qbar span { background:#e0a020; }
+  #quota.high .qpct { color:#b3261e; } #quota.high .qbar span { background:#d9443a; }
   .kpi { background:#fbf6f2; border-radius:12px; padding:12px; text-align:center; }
   .kpi b { display:block; font-size:28px; line-height:1.1; }
   .kpi span { font-size:12px; color:#6b625b; }
@@ -177,6 +185,14 @@ export function adminPage(): string {
   </section>
 
   <div id="panel" class="hidden">
+    <section class="card" id="quota">
+      <div class="qhead">
+        <h2 style="margin:0">Credito AI gratuito di NIGI · oggi</h2>
+        <span class="qpct" id="quotaPct">–</span>
+      </div>
+      <div class="qbar"><span id="quotaBar" style="width:0"></span></div>
+      <p class="sub" id="quotaText">Caricamento…</p>
+    </section>
     <section class="card" id="visite">
       <h2>Visite al sito</h2>
       <div id="statsBox"><p class="hint">Caricamento…</p></div>
@@ -526,11 +542,30 @@ function showChat(data) {
   if (d.error) html += '<p class="sub">Oggi l’AI non ha risposto ' + d.error + ' volte (NIGI ha proposto WhatsApp).</p>';
   html += '<p class="sub">Le tue prove dall’admin non contano nelle chat aperte; nelle ultime domande qui sotto hanno l’etichetta “Tua prova”.</p>';
   $('chatStats').innerHTML = html;
+  showQuota(d, data.budget);
+}
+
+// The big meter at the top: today's share of the free AI allowance set aside
+// for NIGI (DAILY_NEURONS in worker/chat.ts). ~45 units per answer, measured.
+function showQuota(d, budget) {
+  const used = Math.max(0, d.neurons || 0);
+  const pct = Math.min(100, Math.round(used / budget * 100));
+  const left = Math.max(0, Math.floor((budget - used) / 45));
+  $('quota').className = 'card ' + (pct >= 90 ? 'high' : pct >= 70 ? 'mid' : 'ok');
+  $('quotaPct').textContent = pct + '%';
+  $('quotaBar').style.width = pct + '%';
+  $('quotaText').innerHTML = 'Usati oggi <b>' + used.toLocaleString('it-IT') + '</b> su ' + budget.toLocaleString('it-IT')
+    + ' (circa <b>' + left + '</b> risposte ancora disponibili). Si azzera ogni notte. È gratis: quando finisce, NIGI propone WhatsApp e non paghi nulla.'
+    + (d.limited ? '<br><b>Oggi è finito</b>: a ' + d.limited + (d.limited === 1 ? ' visitatore' : ' visitatori') + ' NIGI ha proposto WhatsApp.' : '');
 }
 
 async function loadChat() {
   showChat(await api('chat'));
 }
+// Fresh numbers whenever the admin tab comes back into view.
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && !$('panel').classList.contains('hidden')) loadChat().catch(() => {});
+});
 
 // ---- "Cosa deve sapere NIGI": owner's questions and answers ----
 let kbVer = '';
