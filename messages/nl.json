@@ -387,25 +387,21 @@
     "errorRate": "Je typt erg snel: wacht een paar seconden en probeer het opnieuw.",
     "disclaimer": "Automatische antwoorden. Data en prijzen bevestigen we persoonlijk.",
     "moreFaq": "Meer vragen",
-    "cta": "Chat met ons"
+    "cta": "Chat met ons",
+    "suggestions": [
+      "Wanneer is het deze winter vrij?",
+      "Wat is inbegrepen bij het verblijf?",
+      "Hoe kom ik in Livigno?"
+    ]
   },
   "dock": {
     "aria": "Snel contact",
-    "help": "Hulp",
-    "helpSub": "Direct antwoord",
     "book": "Boeken",
     "menuTitle": "Hoe kunnen we helpen?",
     "close": "Sluiten",
-    "recommended": "Aanbevolen",
     "nigiTitle": "Chat met onze assistent",
-    "nigiSub": "NIGI antwoordt meteen, ook 's nachts: vrije data, het appartement, Livigno.",
-    "nigiExample": "„Is het vrij in augustus?”",
     "instant": "Direct antwoord",
-    "ask": "Stel een vraag",
-    "otherTitle": "Of stuur ons een bericht of bel",
     "waSub": "We antwoorden zelf zodra we kunnen",
-    "notInstant": "Niet direct",
-    "call": "Bellen",
     "nudge": "Vragen over vrije data of het appartement? Vraag het me gerust, ik antwoord meteen.",
     "nudgeClose": "Bericht sluiten"
   }

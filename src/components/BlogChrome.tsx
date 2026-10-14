@@ -29,32 +29,36 @@ export async function BlogHeader({ locale = 'it' }: { locale?: Locale }) {
   const book = { href: `${home}#prenota`, label: t('book') };
 
   return (
-    <header className="sticky top-0 z-40 bg-ink py-6 shadow-soft">
-      <div className="max-w-content mx-auto px-6 md:px-10 flex items-center justify-between">
-        <Link href={home} aria-label="Ironwood Livigno — home">
-          <Logo className="text-mist" />
-        </Link>
-        {/* Below `lg`, four inline items (three text links plus a pill
-            button) had no room to breathe next to the logo on a phone —
-            no wrap handling, so they'd overflow or crowd together. Hidden
-            here in favour of BlogMobileMenu, same breakpoint and pattern
-            already used by the main site's Nav.tsx. */}
-        <nav className="hidden lg:flex items-center gap-6 text-mist/90 text-sm uppercase tracking-widest">
-          {links.map((link) => (
-            <Link key={link.href} href={link.href} className="hover:text-gold transition-colors">
-              {link.label}
-            </Link>
-          ))}
-          <Link
-            href={book.href}
-            className="border border-gold text-gold rounded-full px-5 py-2 hover:bg-gold hover:text-ink transition-colors"
-          >
-            {book.label}
+    <>
+      {/* Room for the special-offer strip, fixed at the top (OfferPopup.tsx). */}
+      <div aria-hidden className="bg-ink" style={{ height: 'var(--offer-h, 0px)' }} />
+      <header className="sticky z-40 bg-ink py-6 shadow-soft" style={{ top: 'var(--offer-h, 0px)' }}>
+        <div className="max-w-content mx-auto px-6 md:px-10 flex items-center justify-between">
+          <Link href={home} aria-label="Ironwood Livigno — home">
+            <Logo className="text-mist" />
           </Link>
-        </nav>
-        <BlogMobileMenu links={links} book={book} openLabel={t('menu_open')} closeLabel={t('menu_close')} />
-      </div>
-    </header>
+          {/* Below `lg`, four inline items (three text links plus a pill
+              button) had no room to breathe next to the logo on a phone —
+              no wrap handling, so they'd overflow or crowd together. Hidden
+              here in favour of BlogMobileMenu, same breakpoint and pattern
+              already used by the main site's Nav.tsx. */}
+          <nav className="hidden lg:flex items-center gap-6 text-mist/90 text-sm uppercase tracking-widest">
+            {links.map((link) => (
+              <Link key={link.href} href={link.href} className="hover:text-gold transition-colors">
+                {link.label}
+              </Link>
+            ))}
+            <Link
+              href={book.href}
+              className="border border-gold text-gold rounded-full px-5 py-2 hover:bg-gold hover:text-ink transition-colors"
+            >
+              {book.label}
+            </Link>
+          </nav>
+          <BlogMobileMenu links={links} book={book} openLabel={t('menu_open')} closeLabel={t('menu_close')} />
+        </div>
+      </header>
+    </>
   );
 }
 

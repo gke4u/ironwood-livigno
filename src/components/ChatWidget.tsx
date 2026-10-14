@@ -15,8 +15,11 @@ import { nigi } from '@/lib/nigi';
 //
 // Look: the same visual language as the offer pop-up (OfferPopup.tsx) — warm
 // dark panel #3D3026, gold accents, Fraunces titles, pill buttons. It has no
-// button of its own: it opens from the "Help" menu of the contact dock
-// (FloatingDock.tsx), through src/lib/nigi.ts.
+// button of its own: it opens from the contact dock (FloatingDock.tsx),
+// through src/lib/nigi.ts.
+// A new chat shows a few ready questions to tap (sent to the AI like typed
+// ones: an empty box was where most visitors stopped). WhatsApp is always
+// one tap away, in the footer and in the dock.
 
 export type ChatStrings = {
   cta: string;
@@ -32,6 +35,7 @@ export type ChatStrings = {
   errorLimit: string;
   errorRate: string;
   disclaimer: string;
+  suggestions: string[];
 };
 
 type Msg = { role: 'user' | 'assistant'; content: string; kind?: 'ai' | 'error' };
@@ -194,7 +198,19 @@ export default function ChatWidget({
     };
   }, [openChat]);
 
-  useEffect(() => nigi.onOpen(openChat), [openChat]);
+  // The welcome bubble can open the chat with a question already asked.
+  const sendRef = useRef<(e?: React.FormEvent, text?: string) => void>(() => {});
+  useEffect(() => {
+    sendRef.current = send;
+  });
+  useEffect(
+    () =>
+      nigi.onOpen((question) => {
+        openChat();
+        if (question) sendRef.current(undefined, question);
+      }),
+    [openChat]
+  );
 
   useEffect(() => {
     if (enabled) save(messages);
@@ -243,9 +259,9 @@ export default function ChatWidget({
     };
   }, [open, preview, closeChat]);
 
-  async function send(e?: React.FormEvent) {
+  async function send(e?: React.FormEvent, text?: string) {
     e?.preventDefault();
-    const q = input.trim().slice(0, MAX_INPUT);
+    const q = (text ?? input).trim().slice(0, MAX_INPUT);
     if (!q || busy) return;
     const next: Msg[] = [...messages, { role: 'user', content: q }];
     setMessages(next);
@@ -300,55 +316,28 @@ export default function ChatWidget({
             shown ? 'opacity-100 translate-y-0 sm:scale-100' : 'opacity-0 translate-y-6 sm:scale-95'
           }`}
         >
-          {/* Header: the apartment's living room as a photo band while the chat is
-              new; once the conversation starts it folds into a compact bar. */}
-          <header
-            className={`relative flex-none transition-[height] duration-300 ease-out motion-reduce:transition-none ${
-              fresh ? 'h-[calc(9.5rem+env(safe-area-inset-top))]' : 'h-[calc(4.25rem+env(safe-area-inset-top))]'
-            }`}
-          >
+          {/* Header: one compact bar over the living-room photo. */}
+          <header className="relative flex-none h-[calc(4.25rem+env(safe-area-inset-top))]">
             <picture>
               <source type="image/avif" srcSet="/images/soggiorno-480.avif" />
               <img src="/images/soggiorno-480.webp" alt="" width={480} height={320} className="absolute inset-0 w-full h-full object-cover" />
             </picture>
-            <div
-              className={`absolute inset-0 transition-colors duration-300 ${
-                fresh ? 'bg-gradient-to-t from-[#3D3026] via-[#3D3026]/70 to-[#3D3026]/10' : 'bg-[#3D3026]/90'
-              }`}
-              aria-hidden
-            />
-            {fresh ? (
-              <div className="absolute inset-x-0 bottom-0 flex items-end gap-3 px-5 pb-4">
-                <span className="grid place-items-center flex-none w-12 h-12 rounded-full bg-ink/80 ring-1 ring-gold/60 backdrop-blur-sm">
-                  <BrandMark className="w-6 h-6 text-mist" />
-                </span>
-                <div className="min-w-0 leading-tight">
-                  <p className="flex items-center gap-2 text-gold tracking-[0.22em] uppercase text-[10px] font-semibold">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#4cc27a]" aria-hidden />
-                    {s.subtitle}
-                  </p>
-                  <p className="font-display text-[1.7rem] mt-0.5">
-                    NIGI <span className="font-body text-sm text-mist/70">· Ironwood Livigno</span>
-                  </p>
-                </div>
+            <div className="absolute inset-0 bg-[#3D3026]/90" aria-hidden />
+            <div className="absolute inset-x-0 bottom-0 h-[4.25rem] flex items-center gap-3 pl-5 pr-28">
+              <span className="grid place-items-center flex-none w-10 h-10 rounded-full bg-ink/80 ring-1 ring-gold/60">
+                <BrandMark className="w-5 h-5 text-mist" />
+              </span>
+              <div className="min-w-0 leading-tight">
+                <p className="font-display text-lg truncate">
+                  NIGI <span className="font-body text-[13px] text-mist/70">· Ironwood Livigno</span>
+                </p>
+                <p className="flex items-center gap-1.5 text-[11px] text-mist/60 truncate">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#4cc27a]" aria-hidden />
+                  {s.subtitle}
+                </p>
               </div>
-            ) : (
-              <div className="absolute inset-x-0 bottom-0 h-[4.25rem] flex items-center gap-3 pl-5 pr-28">
-                <span className="grid place-items-center flex-none w-10 h-10 rounded-full bg-ink/80 ring-1 ring-gold/60">
-                  <BrandMark className="w-5 h-5 text-mist" />
-                </span>
-                <div className="min-w-0 leading-tight">
-                  <p className="font-display text-lg truncate">
-                    NIGI <span className="font-body text-[13px] text-mist/70">· Ironwood Livigno</span>
-                  </p>
-                  <p className="flex items-center gap-1.5 text-[11px] text-mist/60 truncate">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#4cc27a]" aria-hidden />
-                    {s.subtitle}
-                  </p>
-                </div>
-              </div>
-            )}
-            <div className={`absolute right-4 flex gap-2 ${fresh ? 'top-[calc(1rem+env(safe-area-inset-top))]' : 'bottom-[1.03rem]'}`}>
+            </div>
+            <div className="absolute right-4 bottom-[1.03rem] flex gap-2">
               {!fresh && (
                 <button
                   type="button"
@@ -379,6 +368,22 @@ export default function ChatWidget({
 
           <div ref={listRef} className="flex-1 sm:flex-auto sm:min-h-[8rem] overflow-y-auto overscroll-contain px-5 pt-3 pb-4 space-y-3 [scrollbar-width:thin] [scrollbar-color:rgba(247,243,236,0.2)_transparent]" aria-live="polite">
             <Bubble role="assistant">{s.welcome}</Bubble>
+            {fresh && !busy && (
+              <div className="pt-1 animate-fadeIn motion-reduce:animate-none">
+                <div className="flex flex-col items-end gap-2">
+                  {s.suggestions.map((q) => (
+                    <button
+                      key={q}
+                      type="button"
+                      onClick={() => send(undefined, q)}
+                      className="max-w-[88%] rounded-2xl rounded-tr-md bg-white/[0.04] ring-1 ring-gold/70 px-4 py-2.5 text-left text-[14px] font-medium leading-snug text-mist hover:bg-gold hover:text-ink hover:ring-gold transition-colors"
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
             {messages.map((m, i) => (
               <Bubble key={i} role={m.role} error={m.kind === 'error'}>
                 {m.role === 'assistant' ? rich(m.content, { name: bookLabel, href: `/${locale}#prenota`, onClick: closeChat }) : m.content}
@@ -470,9 +475,9 @@ ${[...messages].reverse().find((m) => m.role === 'user')?.content ?? ''}`)}`}
                 href={waHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-none inline-flex items-center gap-1.5 rounded-full ring-1 ring-white/25 px-3 py-1.5 text-[11px] font-medium text-mist hover:ring-gold transition"
+                className="flex-none inline-flex items-center gap-1.5 rounded-full bg-[#075E54] px-3.5 py-2 text-[12px] font-semibold text-white hover:bg-[#054942] transition-colors"
               >
-                <WaIcon className="w-3.5 h-3.5" /> WhatsApp
+                <WaIcon className="w-4 h-4" /> WhatsApp
               </a>
             </div>
           </div>

@@ -62,6 +62,7 @@ html {
    heading under either the header or the banner. */
 :root {
   --banner-h: 0px;
+  --offer-h: 0px;
 }
 
 #esperienza,
@@ -70,7 +71,7 @@ html {
 #prenota,
 #meteo,
 #servizi-extra {
-  scroll-margin-top: calc(var(--banner-h) + 88px);
+  scroll-margin-top: calc(var(--banner-h) + var(--offer-h) + 88px);
 }
 
 body {
@@ -214,6 +215,7 @@ body {
 
 /* While NIGI's chat panel is open (ChatWidget.tsx sets html[data-nigi]),
    the dock steps aside: on computers the panel sits in the same corner. */
-html[data-nigi='open'] #iw-dock {
+html[data-nigi='open'] #iw-dock,
+html[data-nigi='open'] #iw-launcher {
   visibility: hidden;
 }

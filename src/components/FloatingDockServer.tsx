@@ -8,12 +8,14 @@ export default async function FloatingDockServer({ locale }: { locale: string })
   const m = (await getMessages({ locale })) as unknown as {
     request: { wa_intro: string };
     dock: DockStrings;
+    chat: { suggestions: string[] };
   };
   return (
     <FloatingDock
       strings={m.dock}
       whatsappHref={`https://wa.me/390342929285?text=${encodeURIComponent(m.request.wa_intro)}`}
       bookHref={`/${locale}#prenota`}
+      firstQuestion={m.chat.suggestions[0]}
     />
   );
 }

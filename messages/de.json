@@ -387,25 +387,21 @@
     "errorRate": "Du schreibst sehr schnell: Bitte warte ein paar Sekunden und versuche es erneut.",
     "disclaimer": "Automatische Antworten. Termine und Preise bestätigen wir persönlich.",
     "moreFaq": "Weitere Fragen",
-    "cta": "Chatte mit uns"
+    "cta": "Chatte mit uns",
+    "suggestions": [
+      "Wann ist diesen Winter noch frei?",
+      "Was ist im Aufenthalt inbegriffen?",
+      "Wie komme ich nach Livigno?"
+    ]
   },
   "dock": {
     "aria": "Schnellkontakt",
-    "help": "Hilfe",
-    "helpSub": "Sofortige Antwort",
     "book": "Buchen",
     "menuTitle": "Wie können wir helfen?",
     "close": "Schließen",
-    "recommended": "Empfohlen",
     "nigiTitle": "Chatte mit unserem Assistenten",
-    "nigiSub": "NIGI antwortet sofort, auch nachts: freie Termine, die Wohnung, Livigno.",
-    "nigiExample": "„Ist im August noch frei?“",
     "instant": "Sofortige Antwort",
-    "ask": "Frage stellen",
-    "otherTitle": "Oder schreib uns oder ruf an",
     "waSub": "Wir antworten selbst, sobald wir können",
-    "notInstant": "Nicht sofort",
-    "call": "Anrufen",
     "nudge": "Fragen zu freien Terminen oder zur Wohnung? Frag mich einfach, ich antworte sofort.",
     "nudgeClose": "Nachricht schließen"
   }

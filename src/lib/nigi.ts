@@ -2,10 +2,11 @@
 
 import { useSyncExternalStore } from 'react';
 
-// The link between NIGI (ChatWidget.tsx) and the "Help" menu of the contact
-// dock (FloatingDock.tsx): the chat says whether it is switched on, the menu
-// asks it to open. No React context needed: both live on every page, mounted
-// side by side in the layout.
+// The link between NIGI (ChatWidget.tsx) and the contact corner
+// (FloatingDock.tsx): the chat says whether it is switched on, the corner
+// asks it to open — optionally with a first question to ask straight away
+// (the welcome bubble's ready button). No React context needed: both live on
+// every page, mounted side by side in the layout.
 
 const OPEN_EVENT = 'iw:nigi-open';
 let enabled = false;
@@ -17,12 +18,13 @@ export const nigi = {
     enabled = value;
     listeners.forEach((fn) => fn());
   },
-  open() {
-    window.dispatchEvent(new Event(OPEN_EVENT));
+  open(question?: string) {
+    window.dispatchEvent(new CustomEvent<string | undefined>(OPEN_EVENT, { detail: question }));
   },
-  onOpen(fn: () => void) {
-    window.addEventListener(OPEN_EVENT, fn);
-    return () => window.removeEventListener(OPEN_EVENT, fn);
+  onOpen(fn: (question?: string) => void) {
+    const handler = (e: Event) => fn((e as CustomEvent<string | undefined>).detail);
+    window.addEventListener(OPEN_EVENT, handler);
+    return () => window.removeEventListener(OPEN_EVENT, handler);
   }
 };
 

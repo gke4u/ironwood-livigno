@@ -1,8 +1,6 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { DOCK_ICON, DOCK_ITEM, DOCK_SLOT_OFFER } from './FloatingDock';
 import { linkKind, trackEvent } from '@/lib/trackEvent';
 import { contactEmail } from '@/lib/contactEmail';
 
@@ -200,9 +198,6 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
   const previewRef = useRef(false);
   const closeRef = useRef<HTMLButtonElement>(null);
   const pillRef = useRef<HTMLButtonElement>(null);
-  // The reopen button lives in the contact dock (FloatingDock.tsx), between "Help" and "Book".
-  const [dockSlot, setDockSlot] = useState<HTMLElement | null>(null);
-  useEffect(() => setDockSlot(document.getElementById(DOCK_SLOT_OFFER)), []);
 
   const show = useCallback(() => {
     setOpen(true);
@@ -330,6 +325,17 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
     };
   }, [offer, t.eyebrow]);
 
+  // The reopen strip sits at the top of the page, under the language banner:
+  // the fixed nav moves down by its height (--offer-h, read by Nav.tsx and
+  // BlogChrome.tsx). The owner found the offer confusing next to the contact
+  // buttons at the bottom.
+  useEffect(() => {
+    document.documentElement.style.setProperty('--offer-h', offer ? '36px' : '0px');
+    return () => {
+      document.documentElement.style.setProperty('--offer-h', '0px');
+    };
+  }, [offer]);
+
   // After closing, keyboard focus moves to the reopen button (rendered only once the dialog is gone).
   const wasOpen = useRef(false);
   useEffect(() => {
@@ -401,24 +407,23 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
 
   return (
     <>
-      {!open &&
-        dockSlot &&
-        createPortal(
-          <button ref={pillRef} type="button" onClick={show} className={DOCK_ITEM}>
-            <span className={`${DOCK_ICON} bg-gold text-ink`} aria-hidden>
-              <span className="absolute inline-flex h-full w-full rounded-full bg-gold opacity-60 animate-ping motion-reduce:animate-none" />
-              <svg className="relative w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z" />
-                <circle cx="7.5" cy="7.5" r="1.5" fill="currentColor" />
-              </svg>
-            </span>
-            <span className="truncate max-w-full">
-              <span>{t.pill} · </span>
-              <span className="text-gold tabular-nums">{money(offer.price)}</span>
-            </span>
-          </button>,
-          dockSlot
-        )}
+      <button
+        ref={pillRef}
+        type="button"
+        onClick={show}
+        style={{ top: 'var(--banner-h, 0px)' }}
+        className="fixed inset-x-0 z-[45] h-9 flex items-center justify-center gap-2 px-4 bg-gold text-ink text-[13px] sm:text-sm font-semibold hover:brightness-105 transition"
+      >
+        <svg className="flex-none w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+          <path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z" />
+          <circle cx="7.5" cy="7.5" r="1.5" fill="currentColor" />
+        </svg>
+        <span className="truncate">
+          {t.pill} · {dayRange(stays[0], { day: 'numeric', month: 'short' })}
+          {stays.length > 1 ? ' …' : ''} · <span className="tabular-nums">{money(offer.price)}</span>
+        </span>
+        <span aria-hidden>→</span>
+      </button>
 
       {open && (
         <div

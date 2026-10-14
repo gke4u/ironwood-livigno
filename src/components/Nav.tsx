@@ -87,7 +87,7 @@ export default function Nav({ locale, satellitePages }: { locale: Locale; satell
 
   return (
     <header
-      style={{ top: 'var(--banner-h, 0px)' }}
+      style={{ top: 'calc(var(--banner-h, 0px) + var(--offer-h, 0px))' }}
       className={`fixed left-0 right-0 z-40 transition-[background-color,box-shadow,top] duration-300 ${
         scrolled ? 'bg-ink/95 backdrop-blur-sm shadow-soft' : 'bg-transparent'
       }`}
