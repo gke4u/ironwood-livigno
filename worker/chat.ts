@@ -265,13 +265,26 @@ const EXACT = '[Availability check: reply with exactly this message, translated 
 function enRange(s: Stay): string {
   const part = (iso: string, opts: Intl.DateTimeFormatOptions) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-GB', { ...opts, timeZone: 'UTC' });
   const sameMonth = s.checkIn.slice(0, 7) === s.checkOut.slice(0, 7);
-  const from = `${part(s.checkIn, { weekday: 'long' })} ${part(s.checkIn, sameMonth ? { day: 'numeric' } : { day: 'numeric', month: 'long' })}`;
-  return `from ${from} to ${part(s.checkOut, { weekday: 'long' })} ${part(s.checkOut, { day: 'numeric', month: 'long' })}`;
+  // Weekdays only in winter, where they are always Saturdays and say so.
+  const wd = (iso: string) => (isWinter(s.checkIn) ? `${part(iso, { weekday: 'long' })} ` : '');
+  const from = `${wd(s.checkIn)}${part(s.checkIn, sameMonth ? { day: 'numeric' } : { day: 'numeric', month: 'long' })}`;
+  return `from ${from} to ${wd(s.checkOut)}${part(s.checkOut, { day: 'numeric', month: 'long' })}`;
 }
 // The free stays on offer, and the request to book them. `form`: the booking
 // form's button as named on the visitor's page (the chat turns it into a link).
-function offerLine(stays: Stay[], live: boolean, form: string): string {
-  const dates = stays.map(enRange).join(' or ');
+// With the booked blocks, a stay followed by at least another free week is
+// said as open ("from Saturday 10 April onwards"): "from 10 to 17 April"
+// sounded like the only free week when the whole rest of April was free.
+function offerLine(stays: Stay[], live: boolean, form: string, blocks: FullPeriod[] = []): string {
+  const open = (st: Stay) => {
+    const next = blocks.find((b) => b.from >= st.checkIn);
+    return blocks.length > 0 && (!next || daysBetween(st.checkIn, next.from) >= 2 * daysBetween(st.checkIn, st.checkOut));
+  };
+  const onwards = (st: Stay) => {
+    const part = (opts: Intl.DateTimeFormatOptions) => new Date(`${st.checkIn}T12:00:00Z`).toLocaleDateString('en-GB', { ...opts, timeZone: 'UTC' });
+    return `from ${isWinter(st.checkIn) ? `${part({ weekday: 'long' })} ` : ''}${part({ day: 'numeric', month: 'long' })} onwards`;
+  };
+  const dates = stays.map((st) => (open(st) ? onwards(st) : enRange(st))).join(' or ');
   const it = stays.length > 1 ? 'them' : 'it';
   return live
     ? `But the apartment is free ${dates} (barring last-minute bookings): if you like, ask for ${it} via "${form}".`
@@ -281,8 +294,8 @@ function offerLine(stays: Stay[], live: boolean, form: string): string {
 // list of dates straight away. NIGI offers to look for others; when the guest
 // says yes (extractStay's `suggest`) it proposes the nearest free ones.
 const OFFER_TO_CHECK = "Would you like me to check other dates? Just tell me when you'd like to come, or I can suggest the nearest free ones.";
-function suggestLine(stays: Stay[], live: boolean, form: string): string {
-  return offerLine(stays, live, form).replace(/^But the apartment is free /, 'The nearest free dates are ').replace(/^But we could offer you /, 'The nearest dates we could offer you are ');
+function suggestLine(stays: Stay[], live: boolean, form: string, blocks: FullPeriod[] = []): string {
+  return offerLine(stays, live, form, blocks).replace(/^But the apartment is free /, 'The nearest free dates are ').replace(/^But we could offer you /, 'The nearest dates we could offer you are ');
 }
 
 // `live`: the owners' full calendar (Holidu) was read just now, so dates
@@ -301,7 +314,7 @@ export function availabilityNote(asked: AskedDates | null, periods: FullPeriod[]
     if (!clash(blocks, asked.checkIn, asked.checkOut)) {
       const satToSat = weekday(asked.checkIn) === 6 && n === nights;
       // The guest asked NIGI to propose and the stay it picked is free: name its dates.
-      if (asked.suggest && (!isWinter(asked.checkIn) || satToSat)) return `${EXACT}"${suggestLine([{ checkIn: asked.checkIn, checkOut: asked.checkOut }], live, form)}"]`;
+      if (asked.suggest && (!isWinter(asked.checkIn) || satToSat)) return `${EXACT}"${suggestLine([{ checkIn: asked.checkIn, checkOut: asked.checkOut }], live, form, blocks)}"]`;
       if (!isWinter(asked.checkIn) || satToSat) return blocks.length || live ? notBooked : '';
       // A winter request not from Saturday to Saturday: the nearest week that is.
       const { later, earlier } = nearestStays(blocks, asked.checkIn, n, today);
@@ -310,8 +323,8 @@ export function availabilityNote(asked: AskedDates | null, periods: FullPeriod[]
     }
     const { later, earlier } = nearestStays(blocks, asked.checkIn, n, today);
     const stays = earlier ? [earlier, later] : [later];
-    if (asked.suggest) return `${EXACT}"${suggestLine(stays, live, form)}"]`;
-    if (followUp) return `${EXACT}"Unfortunately those dates are already booked. ${suggestLine(stays, live, form)}"]`;
+    if (asked.suggest) return `${EXACT}"${suggestLine(stays, live, form, blocks)}"]`;
+    if (followUp) return `${EXACT}"Unfortunately those dates are already booked. ${suggestLine(stays, live, form, blocks)}"]`;
     return `${EXACT}"Unfortunately we're already fully booked for those dates. ${OFFER_TO_CHECK}"]`;
   }
   // A month in general: the free stretches of nights in it, if any.
