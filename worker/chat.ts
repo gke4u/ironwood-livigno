@@ -224,7 +224,7 @@ function nearestStays(blocks: FullPeriod[], checkIn: string, nights: number, tod
 }
 
 // For the owners' answer to a request whose dates are taken (the requests
-// inbox in TORBERO asks /api/date-libere): up to three free stays of the same
+// inbox in TORBERO asks /api/date-libere, with the Holidu bookings): up to three free stays of the same
 // length near the asked ones, closest first, from Saturday to Saturday in
 // winter. The asked dates themselves are never proposed, even when the
 // calendar shows them free (the owner knows something it doesn't).

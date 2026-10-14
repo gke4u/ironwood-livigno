@@ -400,11 +400,13 @@ async function countEvent(request: Request, env: Env): Promise<void> {
 // ---------- Free dates for the owners' replies ----------
 
 // GET /api/date-libere?checkIn=YYYY-MM-DD&checkOut=YYYY-MM-DD
-//   -> { free, live, alternatives: [{ checkIn, checkOut }] }
+//   -> { free, alternatives: [{ checkIn, checkOut }] }
 // Called by TORBERO's requests inbox (gestione.ironwoodlivigno.com) to fill
-// the "not available" reply with real free dates. Same calendar as NIGI: the
-// periods set in the admin plus the Holidu calendar, if linked. It tells no
-// more than NIGI tells any visitor: only free dates, never who booked.
+// the "not available" reply with real free dates. Only the Holidu calendar:
+// the owners enter every booking there (TORBERO's own list is incomplete).
+// Without it (not linked or unreadable) there is nothing to propose and the
+// reply keeps its placeholder. It tells no more than NIGI tells any visitor:
+// only free dates, never who booked.
 const TORBERO_ORIGIN = 'https://gestione.ironwoodlivigno.com';
 
 async function freeDatesApi(request: Request, env: Env): Promise<Response> {
@@ -417,12 +419,14 @@ async function freeDatesApi(request: Request, env: Env): Promise<Response> {
   const day = /^\d{4}-\d{2}-\d{2}$/;
   if (!day.test(checkIn) || !day.test(checkOut) || checkOut <= checkIn) return json({ error: 'Date non valide' }, 400, cors);
   const today = romeDate();
-  const [full, ical] = await Promise.all([readFull(env), readIcal(env)]);
-  const synced = ical?.url ? await fetchIcal(ical.url, today) : [];
-  if (typeof synced === 'string') console.error('ical:', synced);
-  const booked = [...full.periods, ...(Array.isArray(synced) ? synced : [])];
-  const live = Array.isArray(synced) && Boolean(ical?.url);
-  return json({ ...freeAlternatives(booked, checkIn, checkOut, today), live }, 200, cors);
+  const ical = await readIcal(env);
+  if (!ical?.url) return json({ error: 'Calendario Holidu non collegato' }, 503, cors);
+  const booked = await fetchIcal(ical.url, today);
+  if (typeof booked === 'string') {
+    console.error('ical:', booked);
+    return json({ error: 'Calendario Holidu non leggibile' }, 503, cors);
+  }
+  return json(freeAlternatives(booked, checkIn, checkOut, today), 200, cors);
 }
 
 // ---------- NIGI chat (public) ----------
