@@ -142,13 +142,15 @@ function satDown(iso: string): string {
 // last message (availabilityNote), like the reply-language note.
 
 // What the visitor asks about: a stay (check-out = morning after the last
-// night) or a whole month in general.
-export type AskedDates = { checkIn: string; checkOut: string } | { month: string };
+// night) or a whole month in general. `suggest`: the visitor said yes to
+// NIGI's offer to look for other dates, so it now proposes the nearest free ones.
+export type AskedDates = ({ checkIn: string; checkOut: string } | { month: string }) & { suggest?: boolean };
 
 const EXTRACT_PROMPT = (today: string) => `Today is ${today}. Read the conversation between a guest and a holiday apartment's assistant and find the stay dates the guest asks about in their LAST message (use earlier messages only to complete missing parts, like the month). Reply with JSON only, nothing else, always including "lang", the English name of the language of the guest's LAST message:
 {"lang":"German","checkIn":"YYYY-MM-DD","checkOut":"YYYY-MM-DD"} for a stay (if they give a number of nights, compute checkOut; if they give only an arrival day, checkOut is the day after),
 {"lang":"German","month":"YYYY-MM"} if they ask about a month in general,
 {"lang":"German"} if the last message is not about dates.
+If the assistant just said those dates are booked and offered to suggest other free dates, and the guest's LAST message accepts or asks for them without giving new dates (e.g. "yes", "sure", "which ones are free?", "suggest some"), reply with the stay (or month) discussed before plus "suggest":true, e.g. {"lang":"German","checkIn":"YYYY-MM-DD","checkOut":"YYYY-MM-DD","suggest":true}.
 A date without a year is the next one from today.`;
 
 // One short extra AI call (~5 Neurons) before every answer.
@@ -158,7 +160,7 @@ export async function extractStay(ai: Ai, messages: ChatMsg[], today: string): P
   const transcript = messages.slice(-4).map((m) => `${m.role === 'user' ? 'Guest' : 'Assistant'}: ${m.content}`).join('\n');
   const res = await runAI(ai, [{ role: 'system', content: EXTRACT_PROMPT(today) }, { role: 'user', content: transcript }], 80, 0);
   if (!res) return { asked: null, lang: null, neurons: 0 };
-  let data: { checkIn?: unknown; checkOut?: unknown; month?: unknown; lang?: unknown } = {};
+  let data: { checkIn?: unknown; checkOut?: unknown; month?: unknown; lang?: unknown; suggest?: unknown } = {};
   try {
     data = JSON.parse(res.text.match(/\{[^{}]*\}/)?.[0] ?? '{}');
   } catch {
@@ -166,7 +168,8 @@ export async function extractStay(ai: Ai, messages: ChatMsg[], today: string): P
   }
   const { checkIn, checkOut, month } = data;
   const lang = typeof data.lang === 'string' && /^[A-Za-z ()-]{2,30}$/.test(data.lang) ? data.lang : null;
-  const done = (asked: AskedDates | null) => ({ asked, lang, neurons: res.neurons });
+  const suggest = data.suggest === true;
+  const done = (asked: AskedDates | null) => ({ asked: asked && suggest ? { ...asked, suggest } : asked, lang, neurons: res.neurons });
   // The model sometimes picks this year's February in October: a date
   // already past means the next year's.
   const nextYear = (iso: string) => `${Number(iso.slice(0, 4)) + 1}${iso.slice(4)}`;
@@ -247,8 +250,6 @@ function enDate(iso: string): string {
 const NOTE = '[Availability check (answer entirely in the reply language above, in 2-3 short, simple sentences): ';
 const SECRET = 'Never say when or for how long the apartment is booked.';
 const ASK = 'say in a few words that they can request it with the form or on WhatsApp';
-// The owners also want summer stays: whenever winter dates are full, NIGI
-// suggests summer too (SUMMER_LINE below).
 const NOT_CONFIRMED = `${NOTE}these dates do not clash with known bookings, but availability is not confirmed: do not say they are free or available; ${ASK}.]`;
 // With the Holidu calendar read just now, free dates may be called free, as
 // the owner asked, but always "barring last-minute bookings".
@@ -278,11 +279,20 @@ function offerLine(stays: Stay[], live: boolean, form: string): string {
     ? `But the apartment is free ${dates} (barring last-minute bookings): if you like, ask for ${it} via "${form}".`
     : `But we could offer you ${dates}: if you like, ask for ${it} via "${form}" and the owners will confirm.`;
 }
-const SUMMER_LINE = ' And summer in Livigno is wonderful too: hiking, mountain biking and the lake!';
+// Dates taken: the owner wants the guest drawn into the conversation, not a
+// list of dates straight away. NIGI offers to look for others; when the guest
+// says yes (extractStay's `suggest`) it proposes the nearest free ones.
+const OFFER_TO_CHECK = "Would you like me to check other dates? Just tell me when you'd like to come, or I can suggest the nearest free ones.";
+function suggestLine(stays: Stay[], live: boolean, form: string): string {
+  return offerLine(stays, live, form).replace(/^But the apartment is free /, 'The nearest free dates are ').replace(/^But we could offer you /, 'The nearest dates we could offer you are ');
+}
 
 // `live`: the owners' full calendar (Holidu) was read just now, so dates
 // outside the booked stays really are free at this moment.
-export function availabilityNote(asked: AskedDates | null, periods: FullPeriod[], today: string, live = false, lang: string | null = null): string {
+// `followUp`: the conversation already had an exchange (e.g. NIGI already
+// offered to look for other dates): taken dates then get the nearest free
+// ones straight away, instead of the same offer again.
+export function availabilityNote(asked: AskedDates | null, periods: FullPeriod[], today: string, live = false, lang: string | null = null, followUp = false): string {
   if (!asked) return '';
   const form = FORM_NAME[lang ?? 'it'] ?? FORM_NAME.it;
   const notBooked = live ? FREE_NOW : NOT_CONFIRMED;
@@ -293,6 +303,8 @@ export function availabilityNote(asked: AskedDates | null, periods: FullPeriod[]
     const n = offerNights(asked.checkIn, nights);
     if (!clash(blocks, asked.checkIn, asked.checkOut)) {
       const satToSat = weekday(asked.checkIn) === 6 && n === nights;
+      // The guest asked NIGI to propose and the stay it picked is free: name its dates.
+      if (asked.suggest && (!isWinter(asked.checkIn) || satToSat)) return `${EXACT}"${suggestLine([{ checkIn: asked.checkIn, checkOut: asked.checkOut }], live, form)}"]`;
       if (!isWinter(asked.checkIn) || satToSat) return blocks.length || live ? notBooked : '';
       // A winter request not from Saturday to Saturday: the nearest week that is.
       const { later, earlier } = nearestStays(blocks, asked.checkIn, n, today);
@@ -301,7 +313,9 @@ export function availabilityNote(asked: AskedDates | null, periods: FullPeriod[]
     }
     const { later, earlier } = nearestStays(blocks, asked.checkIn, n, today);
     const stays = earlier ? [earlier, later] : [later];
-    return `${EXACT}"Unfortunately we're already fully booked for those dates. ${offerLine(stays, live, form)}${isWinter(asked.checkIn) ? SUMMER_LINE : ''}"]`;
+    if (asked.suggest) return `${EXACT}"${suggestLine(stays, live, form)}"]`;
+    if (followUp) return `${EXACT}"Unfortunately those dates are already booked. ${suggestLine(stays, live, form)}"]`;
+    return `${EXACT}"Unfortunately we're already fully booked for those dates. ${OFFER_TO_CHECK}"]`;
   }
   // A month in general: the free stretches of nights in it, if any.
   const first = `${asked.month}-01`;
@@ -335,7 +349,9 @@ export function availabilityNote(asked: AskedDates | null, periods: FullPeriod[]
   const next = winter
     ? offerLine([later], live, form).replace(/^But the apartment is free /, 'The first free week is ').replace(/^But we could offer you /, 'The first week we could offer you is ')
     : `The first free day after it is ${enDate(later.checkIn).replace(/ \d{4}$/, '')}${live ? ', barring last-minute bookings' : ' (the owners will confirm)'}. If you're interested, request it via "${form}".`;
-  return `${EXACT}"Unfortunately ${month} is already fully booked. ${next}${winter ? SUMMER_LINE : ''}"]`;
+  if (asked.suggest) return `${EXACT}"${next}"]`;
+  if (followUp) return `${EXACT}"Unfortunately ${month} is already fully booked. ${next}"]`;
+  return `${EXACT}"Unfortunately ${month} is already fully booked. ${OFFER_TO_CHECK}"]`;
 }
 
 export type ChatMsg = { role: 'user' | 'assistant'; content: string };
@@ -481,7 +497,7 @@ Regole:
 - Non vedi il calendario e non puoi prenotare né bloccare date. A volte in fondo al messaggio dell'ospite c'è un "[Availability check: …]" calcolato dal sito sul calendario dei proprietari: seguilo alla lettera, con le date che indica (tradotte nella lingua dell'ospite), senza aggiungerne altre.
 - Se il controllo dice che al momento le date sono libere, dillo come indica, sempre con "salvo prenotazioni dell'ultimo minuto" tradotto nella lingua dell'ospite (es. "vorbehaltlich Last-Minute-Buchungen", "barring last-minute bookings"). Senza quel controllo, o se non dice che sono libere, non dire mai che è libero o disponibile (lo confermano i proprietari): di’ in breve che per disponibilità e prezzo basta mandare la richiesta con il modulo (o su WhatsApp) e che i proprietari rispondono in poche ore.
 - Solo se ti chiedono del meteo o della neve: usa i dati meteo qui sotto (se ci sono); per giorni più lontani o se mancano, invita a guardare la sezione meteo del sito. Non parlare di meteo se non te lo chiedono.
-- Se l'ospite è indeciso sul periodo o chiede quando conviene venire, ricorda con una frase anche l'estate (da luglio a settembre: mountain bike, trekking, lago), oltre all'inverno.
+- Se l'ospite è indeciso sul periodo o chiede quando conviene venire, ricorda con una frase anche l'estate (da luglio a settembre: mountain bike e trekking), oltre all'inverno.
 - Se l'ospite saluta soltanto (es. "ciao", "buongiorno"), rispondi al saluto e chiedi in poche parole cosa vuole sapere, senza parlare di date o prezzi.
 - Se la domanda contiene più richieste, rispondi a tutte in poche frasi.
 - Se la domanda non riguarda l'appartamento o un soggiorno a Livigno, riportala gentilmente sull'argomento.
