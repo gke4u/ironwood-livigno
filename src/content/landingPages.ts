@@ -385,7 +385,7 @@ export const landingPages: LandingPage[] = [
       },
       {
         q: 'Come posso contattarvi direttamente?',
-        a: 'Il modo più rapido è WhatsApp al +39 0342 929285, oppure via email a info@ironwoodlivigno.com o dal modulo di richiesta disponibilità sul sito.'
+        a: 'Il modo più rapido è WhatsApp al +39 0342 929285, oppure via email a info [at] ironwoodlivigno.com o dal modulo di richiesta disponibilità sul sito.'
       }
     ],
     highlights: [

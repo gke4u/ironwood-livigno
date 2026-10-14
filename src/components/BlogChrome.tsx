@@ -12,6 +12,7 @@ import { contactSlugs, type Locale } from '@/i18n/routing';
 import { getSatellitePages } from '@/data/satellite-pages';
 import { blogIndexHref } from '@/lib/blogIndex';
 import Logo from './Logo';
+import EmailLink from './EmailLink';
 import BlogMobileMenu from './BlogMobileMenu';
 import OfferPopupServer from './OfferPopupServer';
 import ChatWidgetServer from './ChatWidgetServer';
@@ -104,9 +105,7 @@ export async function BlogFooter({ locale = 'it' }: { locale?: Locale }) {
               +39 0342 929285
             </a>
             <span className="opacity-30">·</span>
-            <a href="mailto:info@ironwoodlivigno.com" className="hover:text-mist transition-colors">
-              info@ironwoodlivigno.com
-            </a>
+            <EmailLink className="hover:text-mist transition-colors" />
             <span className="opacity-30">·</span>
             <a
               href="https://instagram.com/ironwood_livigno"

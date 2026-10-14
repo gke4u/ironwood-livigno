@@ -2165,7 +2165,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         },
         {
           q: 'How can I contact you directly?',
-          a: 'The fastest way is WhatsApp at +39 0342 929285, or by email at info@ironwoodlivigno.com, or through the availability request form on the site.'
+          a: 'The fastest way is WhatsApp at +39 0342 929285, or by email at info [at] ironwoodlivigno.com, or through the availability request form on the site.'
         }
       ],
       internalLinkLabels: [
@@ -2242,7 +2242,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         },
         {
           q: 'How can I contact you directly?',
-          a: 'The fastest way is WhatsApp at +39 0342 929285, or by email at info@ironwoodlivigno.com, or through the availability request form on the site.'
+          a: 'The fastest way is WhatsApp at +39 0342 929285, or by email at info [at] ironwoodlivigno.com, or through the availability request form on the site.'
         }
       ],
       internalLinkLabels: [
@@ -2317,7 +2317,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         },
         {
           q: 'Wie kann ich Sie direkt kontaktieren?',
-          a: 'Am schnellsten erreichen Sie uns über WhatsApp unter +39 0342 929285, per E-Mail an info@ironwoodlivigno.com oder über das Verfügbarkeitsformular auf der Website.'
+          a: 'Am schnellsten erreichen Sie uns über WhatsApp unter +39 0342 929285, per E-Mail an info [at] ironwoodlivigno.com oder über das Verfügbarkeitsformular auf der Website.'
         }
       ],
       internalLinkLabels: [
@@ -2392,7 +2392,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         },
         {
           q: 'Comment puis-je vous contacter directement ?',
-          a: 'Le moyen le plus rapide est WhatsApp au +39 0342 929285, ou par e-mail à info@ironwoodlivigno.com, ou via le formulaire de demande de disponibilité sur le site.'
+          a: 'Le moyen le plus rapide est WhatsApp au +39 0342 929285, ou par e-mail à info [at] ironwoodlivigno.com, ou via le formulaire de demande de disponibilité sur le site.'
         }
       ],
       internalLinkLabels: [
@@ -2466,7 +2466,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         },
         {
           q: 'Hvordan kan jeg kontakte jer direkte?',
-          a: 'Den hurtigste måde er WhatsApp på +39 0342 929285, eller via e-mail til info@ironwoodlivigno.com, eller gennem formularen for tilgængelighedsforespørgsel på hjemmesiden.'
+          a: 'Den hurtigste måde er WhatsApp på +39 0342 929285, eller via e-mail til info [at] ironwoodlivigno.com, eller gennem formularen for tilgængelighedsforespørgsel på hjemmesiden.'
         }
       ],
       internalLinkLabels: [
@@ -2540,7 +2540,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         },
         {
           q: 'Jak mogę skontaktować się z wami bezpośrednio?',
-          a: 'Najszybszym sposobem jest WhatsApp pod numerem +39 0342 929285, e-mail na adres info@ironwoodlivigno.com, lub formularz zapytania o dostępność na stronie.'
+          a: 'Najszybszym sposobem jest WhatsApp pod numerem +39 0342 929285, e-mail na adres info [at] ironwoodlivigno.com, lub formularz zapytania o dostępność na stronie.'
         }
       ],
       internalLinkLabels: [
@@ -2614,7 +2614,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         },
         {
           q: 'Jak vás mohu kontaktovat přímo?',
-          a: 'Nejrychlejší je WhatsApp na čísle +39 0342 929285, e-mail na info@ironwoodlivigno.com, nebo formulář pro dotaz na dostupnost na webu.'
+          a: 'Nejrychlejší je WhatsApp na čísle +39 0342 929285, e-mail na info [at] ironwoodlivigno.com, nebo formulář pro dotaz na dostupnost na webu.'
         }
       ],
       internalLinkLabels: [
@@ -2688,7 +2688,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         },
         {
           q: 'Hvordan kan jeg kontakte dere direkte?',
-          a: 'Den raskeste måten er WhatsApp på +39 0342 929285, eller via e-post til info@ironwoodlivigno.com, eller gjennom skjemaet for tilgjengelighetsforespørsel på nettsiden.'
+          a: 'Den raskeste måten er WhatsApp på +39 0342 929285, eller via e-post til info [at] ironwoodlivigno.com, eller gjennom skjemaet for tilgjengelighetsforespørsel på nettsiden.'
         }
       ],
       internalLinkLabels: [
@@ -2762,7 +2762,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         },
         {
           q: 'Hoe kan ik jullie rechtstreeks contacteren?',
-          a: 'De snelste manier is WhatsApp op +39 0342 929285, of per e-mail naar info@ironwoodlivigno.com, of via het beschikbaarheidsformulier op de site.'
+          a: 'De snelste manier is WhatsApp op +39 0342 929285, of per e-mail naar info [at] ironwoodlivigno.com, of via het beschikbaarheidsformulier op de site.'
         }
       ],
       internalLinkLabels: [
@@ -2836,7 +2836,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         },
         {
           q: '我该如何直接联系你们?',
-          a: '最快捷的方式是通过WhatsApp联系+39 0342 929285,或发送邮件至info@ironwoodlivigno.com,也可以通过网站上的空房查询表单联系我们。'
+          a: '最快捷的方式是通过WhatsApp联系+39 0342 929285,或发送邮件至info [at] ironwoodlivigno.com,也可以通过网站上的空房查询表单联系我们。'
         }
       ],
       internalLinkLabels: [
@@ -2910,7 +2910,7 @@ export const landingPageTranslations: Record<string, Partial<Record<TranslatedLa
         },
         {
           q: '直接連絡するにはどうすればよいですか?',
-          a: '最も早い方法はWhatsApp(+39 0342 929285)です。メールはinfo@ironwoodlivigno.com、またはウェブサイトの空室確認フォームからもご連絡いただけます。'
+          a: '最も早い方法はWhatsApp(+39 0342 929285)です。メールはinfo [at] ironwoodlivigno.com、またはウェブサイトの空室確認フォームからもご連絡いただけます。'
         }
       ],
       internalLinkLabels: [

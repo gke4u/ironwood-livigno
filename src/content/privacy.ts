@@ -26,7 +26,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. Titolare del trattamento',
-        body: 'Titolare del trattamento è Ironwood Livigno, con sede in Via Saroch 767, 23041 Livigno (SO), Italia — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. Per qualsiasi richiesta relativa alla presente informativa o ai tuoi dati personali, puoi contattarci su WhatsApp al numero +39 0342 929285, oppure via email a info@ironwoodlivigno.com.'
+        body: 'Titolare del trattamento è Ironwood Livigno, con sede in Via Saroch 767, 23041 Livigno (SO), Italia — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. Per qualsiasi richiesta relativa alla presente informativa o ai tuoi dati personali, puoi contattarci su WhatsApp al numero +39 0342 929285, oppure via email a info [at] ironwoodlivigno.com.'
       },
       {
         heading: '2. Quali dati raccolgono e perché',
@@ -46,7 +46,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '6. I tuoi diritti',
-        body: 'In quanto interessato, hai diritto di: accedere ai tuoi dati personali; richiederne la rettifica o la cancellazione; richiedere la limitazione del trattamento; opporti al trattamento; richiedere la portabilità dei dati; revocare il consenso in qualsiasi momento, senza pregiudicare la liceità del trattamento basato sul consenso prima della revoca. Puoi esercitare questi diritti contattandoci su WhatsApp al numero +39 0342 929285, oppure via email a info@ironwoodlivigno.com.'
+        body: 'In quanto interessato, hai diritto di: accedere ai tuoi dati personali; richiederne la rettifica o la cancellazione; richiedere la limitazione del trattamento; opporti al trattamento; richiedere la portabilità dei dati; revocare il consenso in qualsiasi momento, senza pregiudicare la liceità del trattamento basato sul consenso prima della revoca. Puoi esercitare questi diritti contattandoci su WhatsApp al numero +39 0342 929285, oppure via email a info [at] ironwoodlivigno.com.'
       },
       {
         heading: '7. Trasferimento dei dati',
@@ -70,7 +70,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. Data controller',
-        body: 'The data controller is Ironwood Livigno, based at Via Saroch 767, 23041 Livigno (SO), Italy — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. For any request regarding this policy or your personal data, you can contact us on WhatsApp at +39 0342 929285, or by email at info@ironwoodlivigno.com.'
+        body: 'The data controller is Ironwood Livigno, based at Via Saroch 767, 23041 Livigno (SO), Italy — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. For any request regarding this policy or your personal data, you can contact us on WhatsApp at +39 0342 929285, or by email at info [at] ironwoodlivigno.com.'
       },
       {
         heading: '2. What data we collect and why',
@@ -90,7 +90,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '6. Your rights',
-        body: 'As a data subject, you have the right to: access your personal data; request its rectification or erasure; request restriction of processing; object to processing; request data portability; withdraw consent at any time, without affecting the lawfulness of consent-based processing carried out before withdrawal. You can exercise these rights by contacting us on WhatsApp at +39 0342 929285, or by email at info@ironwoodlivigno.com.'
+        body: 'As a data subject, you have the right to: access your personal data; request its rectification or erasure; request restriction of processing; object to processing; request data portability; withdraw consent at any time, without affecting the lawfulness of consent-based processing carried out before withdrawal. You can exercise these rights by contacting us on WhatsApp at +39 0342 929285, or by email at info [at] ironwoodlivigno.com.'
       },
       {
         heading: '7. Data transfers',
@@ -115,7 +115,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. Verantwortlicher',
-        body: 'Verantwortlicher ist Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Italien — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. Für Anfragen zu dieser Erklärung oder Ihren personenbezogenen Daten erreichen Sie uns per WhatsApp unter +39 0342 929285 oder per E-Mail an info@ironwoodlivigno.com.'
+        body: 'Verantwortlicher ist Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Italien — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. Für Anfragen zu dieser Erklärung oder Ihren personenbezogenen Daten erreichen Sie uns per WhatsApp unter +39 0342 929285 oder per E-Mail an info [at] ironwoodlivigno.com.'
       },
       {
         heading: '2. Welche Daten wir erheben und warum',
@@ -135,7 +135,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '6. Ihre Rechte',
-        body: 'Als betroffene Person haben Sie das Recht auf: Auskunft über Ihre personenbezogenen Daten; Berichtigung oder Löschung; Einschränkung der Verarbeitung; Widerspruch gegen die Verarbeitung; Datenübertragbarkeit; sowie den jederzeitigen Widerruf einer erteilten Einwilligung, ohne die Rechtmäßigkeit der bis zum Widerruf erfolgten Verarbeitung zu berühren. Sie können diese Rechte über WhatsApp unter +39 0342 929285 oder per E-Mail an info@ironwoodlivigno.com geltend machen.'
+        body: 'Als betroffene Person haben Sie das Recht auf: Auskunft über Ihre personenbezogenen Daten; Berichtigung oder Löschung; Einschränkung der Verarbeitung; Widerspruch gegen die Verarbeitung; Datenübertragbarkeit; sowie den jederzeitigen Widerruf einer erteilten Einwilligung, ohne die Rechtmäßigkeit der bis zum Widerruf erfolgten Verarbeitung zu berühren. Sie können diese Rechte über WhatsApp unter +39 0342 929285 oder per E-Mail an info [at] ironwoodlivigno.com geltend machen.'
       },
       {
         heading: '7. Datenübermittlung',
@@ -159,7 +159,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. Responsable du traitement',
-        body: 'Le responsable du traitement est Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Italie — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. Pour toute demande concernant cette politique ou vos données personnelles, contactez-nous sur WhatsApp au +39 0342 929285, ou par e-mail à info@ironwoodlivigno.com.'
+        body: 'Le responsable du traitement est Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Italie — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. Pour toute demande concernant cette politique ou vos données personnelles, contactez-nous sur WhatsApp au +39 0342 929285, ou par e-mail à info [at] ironwoodlivigno.com.'
       },
       {
         heading: '2. Quelles données nous collectons et pourquoi',
@@ -179,7 +179,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '6. Vos droits',
-        body: 'En tant que personne concernée, vous avez le droit : d\'accéder à vos données personnelles ; d\'en demander la rectification ou l\'effacement ; de demander la limitation du traitement ; de vous opposer au traitement ; de demander la portabilité des données ; de retirer votre consentement à tout moment, sans porter atteinte à la licéité du traitement fondé sur le consentement effectué avant ce retrait. Vous pouvez exercer ces droits en nous contactant sur WhatsApp au +39 0342 929285, ou par e-mail à info@ironwoodlivigno.com.'
+        body: 'En tant que personne concernée, vous avez le droit : d\'accéder à vos données personnelles ; d\'en demander la rectification ou l\'effacement ; de demander la limitation du traitement ; de vous opposer au traitement ; de demander la portabilité des données ; de retirer votre consentement à tout moment, sans porter atteinte à la licéité du traitement fondé sur le consentement effectué avant ce retrait. Vous pouvez exercer ces droits en nous contactant sur WhatsApp au +39 0342 929285, ou par e-mail à info [at] ironwoodlivigno.com.'
       },
       {
         heading: '7. Transferts de données',
@@ -203,7 +203,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. Dataansvarlig',
-        body: 'Dataansvarlig er Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Italien — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. For henvendelser om denne politik eller dine personoplysninger kan du kontakte os på WhatsApp på +39 0342 929285, eller via e-mail på info@ironwoodlivigno.com.'
+        body: 'Dataansvarlig er Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Italien — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. For henvendelser om denne politik eller dine personoplysninger kan du kontakte os på WhatsApp på +39 0342 929285, eller via e-mail på info [at] ironwoodlivigno.com.'
       },
       {
         heading: '2. Hvilke data vi indsamler, og hvorfor',
@@ -223,7 +223,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '6. Dine rettigheder',
-        body: 'Som registreret har du ret til: indsigt i dine personoplysninger; at anmode om berigtigelse eller sletning; at anmode om begrænsning af behandlingen; at gøre indsigelse mod behandlingen; at anmode om dataportabilitet; at trække samtykke tilbage når som helst, uden at det berører lovligheden af behandling baseret på samtykke inden tilbagetrækningen. Du kan udøve disse rettigheder ved at kontakte os på WhatsApp på +39 0342 929285, eller via e-mail på info@ironwoodlivigno.com.'
+        body: 'Som registreret har du ret til: indsigt i dine personoplysninger; at anmode om berigtigelse eller sletning; at anmode om begrænsning af behandlingen; at gøre indsigelse mod behandlingen; at anmode om dataportabilitet; at trække samtykke tilbage når som helst, uden at det berører lovligheden af behandling baseret på samtykke inden tilbagetrækningen. Du kan udøve disse rettigheder ved at kontakte os på WhatsApp på +39 0342 929285, eller via e-mail på info [at] ironwoodlivigno.com.'
       },
       {
         heading: '7. Dataoverførsler',
@@ -247,7 +247,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. Administrator danych',
-        body: 'Administratorem danych jest Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Włochy — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. W sprawie niniejszej polityki lub swoich danych osobowych możesz się z nami skontaktować przez WhatsApp pod numerem +39 0342 929285, lub e-mailem na adres info@ironwoodlivigno.com.'
+        body: 'Administratorem danych jest Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Włochy — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. W sprawie niniejszej polityki lub swoich danych osobowych możesz się z nami skontaktować przez WhatsApp pod numerem +39 0342 929285, lub e-mailem na adres info [at] ironwoodlivigno.com.'
       },
       {
         heading: '2. Jakie dane zbieramy i dlaczego',
@@ -267,7 +267,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '6. Twoje prawa',
-        body: 'Jako osoba, której dane dotyczą, masz prawo do: dostępu do swoich danych osobowych; żądania ich sprostowania lub usunięcia; żądania ograniczenia przetwarzania; wniesienia sprzeciwu wobec przetwarzania; żądania przenoszenia danych; wycofania zgody w dowolnym momencie, bez wpływu na zgodność z prawem przetwarzania dokonanego na podstawie zgody przed jej wycofaniem. Możesz skorzystać z tych praw, kontaktując się z nami przez WhatsApp pod numerem +39 0342 929285, lub e-mailem na adres info@ironwoodlivigno.com.'
+        body: 'Jako osoba, której dane dotyczą, masz prawo do: dostępu do swoich danych osobowych; żądania ich sprostowania lub usunięcia; żądania ograniczenia przetwarzania; wniesienia sprzeciwu wobec przetwarzania; żądania przenoszenia danych; wycofania zgody w dowolnym momencie, bez wpływu na zgodność z prawem przetwarzania dokonanego na podstawie zgody przed jej wycofaniem. Możesz skorzystać z tych praw, kontaktując się z nami przez WhatsApp pod numerem +39 0342 929285, lub e-mailem na adres info [at] ironwoodlivigno.com.'
       },
       {
         heading: '7. Przekazywanie danych',
@@ -291,7 +291,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. Správce údajů',
-        body: 'Správcem údajů je Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Itálie — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. S jakýmkoli dotazem ohledně těchto zásad nebo vašich osobních údajů nás můžete kontaktovat na WhatsApp na čísle +39 0342 929285, nebo e-mailem na info@ironwoodlivigno.com.'
+        body: 'Správcem údajů je Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Itálie — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. S jakýmkoli dotazem ohledně těchto zásad nebo vašich osobních údajů nás můžete kontaktovat na WhatsApp na čísle +39 0342 929285, nebo e-mailem na info [at] ironwoodlivigno.com.'
       },
       {
         heading: '2. Jaké údaje shromažďujeme a proč',
@@ -311,7 +311,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '6. Vaše práva',
-        body: 'Jako subjekt údajů máte právo: na přístup ke svým osobním údajům; požádat o jejich opravu nebo výmaz; požádat o omezení zpracování; vznést námitku proti zpracování; požádat o přenositelnost údajů; kdykoli odvolat souhlas, aniž by tím byla dotčena zákonnost zpracování založeného na souhlasu uděleném před jeho odvoláním. Tato práva můžete uplatnit kontaktováním nás na WhatsApp na čísle +39 0342 929285, nebo e-mailem na info@ironwoodlivigno.com.'
+        body: 'Jako subjekt údajů máte právo: na přístup ke svým osobním údajům; požádat o jejich opravu nebo výmaz; požádat o omezení zpracování; vznést námitku proti zpracování; požádat o přenositelnost údajů; kdykoli odvolat souhlas, aniž by tím byla dotčena zákonnost zpracování založeného na souhlasu uděleném před jeho odvoláním. Tato práva můžete uplatnit kontaktováním nás na WhatsApp na čísle +39 0342 929285, nebo e-mailem na info [at] ironwoodlivigno.com.'
       },
       {
         heading: '7. Předávání údajů',
@@ -335,7 +335,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. Behandlingsansvarlig',
-        body: 'Behandlingsansvarlig er Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Italia — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. For henvendelser om denne erklæringen eller dine personopplysninger kan du kontakte oss på WhatsApp på +39 0342 929285, eller på e-post til info@ironwoodlivigno.com.'
+        body: 'Behandlingsansvarlig er Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Italia — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. For henvendelser om denne erklæringen eller dine personopplysninger kan du kontakte oss på WhatsApp på +39 0342 929285, eller på e-post til info [at] ironwoodlivigno.com.'
       },
       {
         heading: '2. Hvilke data vi samler inn, og hvorfor',
@@ -355,7 +355,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '6. Dine rettigheter',
-        body: 'Som registrert har du rett til: innsyn i dine personopplysninger; å be om retting eller sletting; å be om begrensning av behandlingen; å protestere mot behandlingen; å be om dataportabilitet; å trekke tilbake samtykke når som helst, uten at det påvirker lovligheten av behandling basert på samtykke gitt før tilbaketrekningen. Du kan utøve disse rettighetene ved å kontakte oss på WhatsApp på +39 0342 929285, eller på e-post til info@ironwoodlivigno.com.'
+        body: 'Som registrert har du rett til: innsyn i dine personopplysninger; å be om retting eller sletting; å be om begrensning av behandlingen; å protestere mot behandlingen; å be om dataportabilitet; å trekke tilbake samtykke når som helst, uten at det påvirker lovligheten av behandling basert på samtykke gitt før tilbaketrekningen. Du kan utøve disse rettighetene ved å kontakte oss på WhatsApp på +39 0342 929285, eller på e-post til info [at] ironwoodlivigno.com.'
       },
       {
         heading: '7. Dataoverføringer',
@@ -379,7 +379,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. Verwerkingsverantwoordelijke',
-        body: 'De verwerkingsverantwoordelijke is Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Italië — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. Voor vragen over dit beleid of uw persoonsgegevens kunt u contact met ons opnemen via WhatsApp op +39 0342 929285, of per e-mail op info@ironwoodlivigno.com.'
+        body: 'De verwerkingsverantwoordelijke is Ironwood Livigno, Via Saroch 767, 23041 Livigno (SO), Italië — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. Voor vragen over dit beleid of uw persoonsgegevens kunt u contact met ons opnemen via WhatsApp op +39 0342 929285, of per e-mail op info [at] ironwoodlivigno.com.'
       },
       {
         heading: '2. Welke gegevens we verzamelen en waarom',
@@ -399,7 +399,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '6. Uw rechten',
-        body: 'Als betrokkene heeft u het recht om: uw persoonsgegevens in te zien; rectificatie of verwijdering ervan te vragen; beperking van de verwerking te vragen; bezwaar te maken tegen de verwerking; gegevensoverdraagbaarheid te vragen; op elk moment uw toestemming in te trekken, zonder dat dit afbreuk doet aan de rechtmatigheid van de verwerking op basis van toestemming vóór de intrekking. U kunt deze rechten uitoefenen door contact met ons op te nemen via WhatsApp op +39 0342 929285, of per e-mail op info@ironwoodlivigno.com.'
+        body: 'Als betrokkene heeft u het recht om: uw persoonsgegevens in te zien; rectificatie of verwijdering ervan te vragen; beperking van de verwerking te vragen; bezwaar te maken tegen de verwerking; gegevensoverdraagbaarheid te vragen; op elk moment uw toestemming in te trekken, zonder dat dit afbreuk doet aan de rechtmatigheid van de verwerking op basis van toestemming vóór de intrekking. U kunt deze rechten uitoefenen door contact met ons op te nemen via WhatsApp op +39 0342 929285, of per e-mail op info [at] ironwoodlivigno.com.'
       },
       {
         heading: '7. Gegevensoverdracht',
@@ -423,7 +423,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. Data controller',
-        body: 'The data controller is Ironwood Livigno, based at Via Saroch 767, 23041 Livigno (SO), Italy — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. For any request regarding this policy or your personal data, you can contact us on WhatsApp at +39 0342 929285, or by email at info@ironwoodlivigno.com.'
+        body: 'The data controller is Ironwood Livigno, based at Via Saroch 767, 23041 Livigno (SO), Italy — CIN IT014037C274OJ27T8, CIR 014037-CNI-01104. For any request regarding this policy or your personal data, you can contact us on WhatsApp at +39 0342 929285, or by email at info [at] ironwoodlivigno.com.'
       },
       {
         heading: '2. What data we collect and why',
@@ -443,7 +443,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '6. Your rights',
-        body: 'As a data subject, you have the right to: access your personal data; request its rectification or erasure; request restriction of processing; object to processing; request data portability; withdraw consent at any time, without affecting the lawfulness of consent-based processing carried out before withdrawal. You can exercise these rights by contacting us on WhatsApp at +39 0342 929285, or by email at info@ironwoodlivigno.com.'
+        body: 'As a data subject, you have the right to: access your personal data; request its rectification or erasure; request restriction of processing; object to processing; request data portability; withdraw consent at any time, without affecting the lawfulness of consent-based processing carried out before withdrawal. You can exercise these rights by contacting us on WhatsApp at +39 0342 929285, or by email at info [at] ironwoodlivigno.com.'
       },
       {
         heading: '7. Data transfers',
@@ -467,7 +467,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. 数据控制者',
-        body: '数据控制者为 Ironwood Livigno，地址位于意大利利维尼奥（Livigno）萨罗赫街767号，邮编23041（SO省）— CIN编号 IT014037C274OJ27T8，CIR编号 014037-CNI-01104。如对本政策或您的个人数据有任何疑问，可通过WhatsApp（+39 0342 929285）或电子邮件（info@ironwoodlivigno.com）与我们联系。'
+        body: '数据控制者为 Ironwood Livigno，地址位于意大利利维尼奥（Livigno）萨罗赫街767号，邮编23041（SO省）— CIN编号 IT014037C274OJ27T8，CIR编号 014037-CNI-01104。如对本政策或您的个人数据有任何疑问，可通过WhatsApp（+39 0342 929285）或电子邮件（info [at] ironwoodlivigno.com）与我们联系。'
       },
       {
         heading: '2. 我们收集哪些数据及原因',
@@ -487,7 +487,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '6. 您的权利',
-        body: '作为数据主体，您有权：访问您的个人数据；要求更正或删除数据；要求限制数据处理；反对数据处理；要求数据可携带；随时撤回同意，但不影响撤回前基于同意所进行处理的合法性。您可以通过WhatsApp（+39 0342 929285）或电子邮件（info@ironwoodlivigno.com）与我们联系以行使上述权利。'
+        body: '作为数据主体，您有权：访问您的个人数据；要求更正或删除数据；要求限制数据处理；反对数据处理；要求数据可携带；随时撤回同意，但不影响撤回前基于同意所进行处理的合法性。您可以通过WhatsApp（+39 0342 929285）或电子邮件（info [at] ironwoodlivigno.com）与我们联系以行使上述权利。'
       },
       {
         heading: '7. 数据传输',
@@ -511,7 +511,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
     sections: [
       {
         heading: '1. データ管理者',
-        body: 'データ管理者はIronwood Livignoであり、所在地はイタリア、Via Saroch 767, 23041 Livigno (SO) です — CIN番号 IT014037C274OJ27T8、CIR番号 014037-CNI-01104。本ポリシーまたはお客様の個人データに関するお問い合わせは、WhatsApp（+39 0342 929285）または電子メール（info@ironwoodlivigno.com）までご連絡ください。'
+        body: 'データ管理者はIronwood Livignoであり、所在地はイタリア、Via Saroch 767, 23041 Livigno (SO) です — CIN番号 IT014037C274OJ27T8、CIR番号 014037-CNI-01104。本ポリシーまたはお客様の個人データに関するお問い合わせは、WhatsApp（+39 0342 929285）または電子メール（info [at] ironwoodlivigno.com）までご連絡ください。'
       },
       {
         heading: '2. 収集するデータとその目的',
@@ -531,7 +531,7 @@ export const privacyContent: Record<string, PrivacyContent> = {
       },
       {
         heading: '6. お客様の権利',
-        body: 'データ主体として、お客様には以下の権利があります：ご自身の個人データへのアクセス権、訂正または削除の請求権、処理の制限を求める権利、処理に異議を唱える権利、データポータビリティを求める権利、いつでも同意を撤回する権利（撤回前に同意に基づき行われた処理の適法性には影響しません）。これらの権利は、WhatsApp（+39 0342 929285）または電子メール（info@ironwoodlivigno.com）を通じて行使いただけます。'
+        body: 'データ主体として、お客様には以下の権利があります：ご自身の個人データへのアクセス権、訂正または削除の請求権、処理の制限を求める権利、処理に異議を唱える権利、データポータビリティを求める権利、いつでも同意を撤回する権利（撤回前に同意に基づき行われた処理の適法性には影響しません）。これらの権利は、WhatsApp（+39 0342 929285）または電子メール（info [at] ironwoodlivigno.com）を通じて行使いただけます。'
       },
       {
         heading: '7. データの移転',

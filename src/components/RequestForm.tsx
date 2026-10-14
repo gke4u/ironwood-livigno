@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import DatePicker, { fromISO } from './DatePicker';
 import { trackEvent } from '@/lib/trackEvent';
+import { useContactEmail } from './EmailLink';
 
 // Submits to TORBERO's own public intake Worker (torbero-richieste, in the
 // separate `torberto` project — richieste-worker/src/index.js's /submit
@@ -17,7 +18,6 @@ import { trackEvent } from '@/lib/trackEvent';
 // exist inside that Worker, never in this client-side bundle).
 const FORMS_ENDPOINT = 'https://richieste.ironwoodlivigno.com/submit';
 const CONTACT_PHONE = '390342929285';
-const CONTACT_EMAIL = 'info@ironwoodlivigno.com';
 
 // Backend stores/reads dates as ISO (yyyy-mm-dd, same as the DatePicker's
 // own value), but the notification email and the mailto fallback below are
@@ -194,7 +194,8 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
     return lines;
   }
 
-  const mailtoHref = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+  const contactEmail = useContactEmail();
+  const mailtoHref = `mailto:${contactEmail}?subject=${encodeURIComponent(
     t('email_subject')
   )}&body=${encodeURIComponent(buildLines().join('\n'))}`;
   const telHref = `tel:+${CONTACT_PHONE}`;
@@ -645,7 +646,7 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
             <p className="text-ink/70 text-sm mb-3">{t('alt_methods_intro')}</p>
             <div className="flex flex-wrap gap-3">
               <a
-                href={mailtoHref}
+                href={contactEmail ? mailtoHref : undefined}
                 className="inline-flex items-center gap-2 border border-ink/20 text-ink rounded-full px-6 py-3 font-medium hover:bg-ink/5 transition-colors"
               >
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>

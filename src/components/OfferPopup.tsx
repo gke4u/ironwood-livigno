@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { DOCK_ICON, DOCK_ITEM, DOCK_SLOT_OFFER } from './FloatingDock';
 import { linkKind, trackEvent } from '@/lib/trackEvent';
+import { contactEmail } from '@/lib/contactEmail';
 
 // Special-offer pop-up. The offer itself (stay dates, price, visibility
 // window, on/off) is set by the owner at /admin and served by the Worker at
@@ -104,7 +105,6 @@ function afterScroll(cb: () => void) {
   return () => window.removeEventListener('scroll', onScroll);
 }
 const WHATSAPP = '390342929285';
-const EMAIL = 'info@ironwoodlivigno.com';
 // Same @id as the LodgingBusiness in StructuredData.tsx (src/lib/structuredDataIds.ts).
 const SITE_URL = 'https://ironwoodlivigno.com';
 // Site locale -> the tag Intl formats best with ('no' is Norwegian Bokmål).
@@ -385,7 +385,7 @@ export default function OfferPopup({ locale, strings: t }: { locale: string; str
   // Italian elides "al"/"dal" before 8 and 11: "dall’8 all’11 novembre".
   const waText = fill(t.waMessage, values).replace(/\b(d?al) (8|11) /g, (m, w, n) => (locale === 'it' ? `${w}l’${n} ` : m));
   const waHref = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(waText)}`;
-  const mailHref = `mailto:${EMAIL}?subject=${encodeURIComponent(fill(t.emailSubject, values))}&body=${encodeURIComponent(`${waText}\n\n${t.emailFields}`)}`;
+  const mailHref = `mailto:${contactEmail()}?subject=${encodeURIComponent(fill(t.emailSubject, values))}&body=${encodeURIComponent(`${waText}\n\n${t.emailFields}`)}`;
 
   const imageKey = offer.image ?? DEFAULT_IMAGE;
   const IMG = `/images/${imageKey}`;

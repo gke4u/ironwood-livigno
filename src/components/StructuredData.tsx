@@ -69,7 +69,6 @@ export default async function StructuredData({ locale }: { locale: Locale }) {
     logo: organizationRef(siteUrl).logo,
     image: propertyImages,
     telephone: F.contacts.phone,
-    email: F.contacts.email,
     priceRange: '€€€',
     // Only seasons with a real, confirmed price (src/data/rates.ts) turn
     // into an `Offer` here — a season still marked TODO (null price) is

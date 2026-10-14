@@ -31,7 +31,7 @@ export const F = {
   skiStorage: /deposito (?:per )?sci|ski (?:& bike |and bike )?storage|storage for skis|ski room|Abstellraum für Ski|Ski- und Fahrradabstellraum|opbevaring til ski|rum til ski|berging voor ski|fietsberging|Skiraum|Skiabstell|local à skis|skirum|skibod|przechowalni|lyžárn|skiberging|ski-opslag|滑雪储物|スキー保管|スキー置き場/i,
   whatsapp: /WhatsApp/i,
   phone: /\+39 0342 929285|0342 929285/,
-  email: /info@ironwoodlivigno\.com/,
+  email: /info(?:@| \[at\] )ironwoodlivigno\.com/,
   minStay: /2\s?[-–]\s?3/,
   checkin: /check-?in|Anreise|arrivée|indtjekning|innsjekk|zameldow|příjezd|inchecken|入住|チェックイン/i,
   cancellation: /cancellazion|cancell?ation|Stornierung|annulation|afbestilling|avbestilling|anulow|storno|annulering|取消|キャンセル/i,

@@ -8,6 +8,7 @@ import { getSatellitePages } from '@/data/satellite-pages';
 import Footer from '@/components/Footer';
 import Reveal from '@/components/Reveal';
 import RequestForm from '@/components/RequestForm';
+import EmailLink, { EmailAddress } from '@/components/EmailLink';
 import { OG_LOCALE, ogAlternates } from '@/lib/ogLocale';
 
 // Was a literal `contact/` folder — one English slug for all 12 locales.
@@ -20,7 +21,6 @@ import { OG_LOCALE, ogAlternates } from '@/lib/ogLocale';
 // only params returned here ever get a real HTML file.
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
 const CONTACT_PHONE = '390342929285';
-const CONTACT_EMAIL = 'info@ironwoodlivigno.com';
 const CONTACT_PHONE_DISPLAY = '+39 0342 929285';
 const MAP_LINK = 'https://www.google.com/maps?q=46.525061,10.126967';
 
@@ -77,7 +77,6 @@ export default async function ContactPage({ params }: { params: Params }) {
   const loc = await getTranslations({ locale, namespace: 'location' });
 
   const waText = encodeURIComponent(req('wa_intro'));
-  const mailHref = `mailto:${CONTACT_EMAIL}`;
   const telHref = `tel:+${CONTACT_PHONE}`;
   const waHref = `https://wa.me/${CONTACT_PHONE}?text=${waText}`;
 
@@ -85,8 +84,9 @@ export default async function ContactPage({ params }: { params: Params }) {
     {
       key: 'email',
       label: t('email_label'),
-      value: CONTACT_EMAIL,
-      href: mailHref,
+      // No href here: EmailLink adds the mailto: in the browser only.
+      value: <EmailAddress />,
+      href: undefined,
       icon: (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
           <rect x="2" y="4" width="20" height="16" rx="2" />
@@ -171,21 +171,34 @@ export default async function ContactPage({ params }: { params: Params }) {
         <Reveal>
           <h2 className="font-display text-xl md:text-2xl text-ink mb-6">{t('methods_title')}</h2>
           <div className="grid sm:grid-cols-2 gap-4 mb-16 max-w-2xl">
-            {methods.map((m) => (
-              <a
-                key={m.key}
-                href={m.href}
-                target={m.external ? '_blank' : undefined}
-                rel={m.external ? 'noopener noreferrer' : undefined}
-                className="flex items-start gap-4 rounded-2xl border border-ink/10 bg-white px-5 py-4 hover:border-brick/40 hover:shadow-soft transition-all"
-              >
-                <span className="text-brick shrink-0 mt-0.5">{m.icon}</span>
-                <span>
-                  <span className="block text-ink/65 text-xs uppercase tracking-widest mb-1">{m.label}</span>
-                  <span className="block text-ink font-medium">{m.value}</span>
-                </span>
-              </a>
-            ))}
+            {methods.map((m) => {
+              const cardClass =
+                'flex items-start gap-4 rounded-2xl border border-ink/10 bg-white px-5 py-4 hover:border-brick/40 hover:shadow-soft transition-all';
+              const inner = (
+                <>
+                  <span className="text-brick shrink-0 mt-0.5">{m.icon}</span>
+                  <span>
+                    <span className="block text-ink/65 text-xs uppercase tracking-widest mb-1">{m.label}</span>
+                    <span className="block text-ink font-medium">{m.value}</span>
+                  </span>
+                </>
+              );
+              return m.key === 'email' ? (
+                <EmailLink key={m.key} className={cardClass}>
+                  {inner}
+                </EmailLink>
+              ) : (
+                <a
+                  key={m.key}
+                  href={m.href}
+                  target={m.external ? '_blank' : undefined}
+                  rel={m.external ? 'noopener noreferrer' : undefined}
+                  className={cardClass}
+                >
+                  {inner}
+                </a>
+              );
+            })}
           </div>
         </Reveal>
 

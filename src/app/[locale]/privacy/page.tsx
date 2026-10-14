@@ -5,6 +5,7 @@ import { privacyContent } from '@/content/privacy';
 import Nav from '@/components/Nav';
 import { getSatellitePages } from '@/data/satellite-pages';
 import Footer from '@/components/Footer';
+import TextWithEmail from '@/components/TextWithEmail';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ironwoodlivigno.com';
 
@@ -53,7 +54,7 @@ export default async function PrivacyPage({ params }: { params: Params }) {
               <h2 className="font-display text-xl md:text-2xl text-ink mb-3">{section.heading}</h2>
               {section.body.split('\n\n').map((para, i) => (
                 <p key={i} className="text-ink/70 leading-relaxed whitespace-pre-line mb-3">
-                  {para}
+                  <TextWithEmail text={para} />
                 </p>
               ))}
             </div>

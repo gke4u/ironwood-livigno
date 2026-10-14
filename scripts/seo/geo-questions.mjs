@@ -73,7 +73,7 @@ q('de', 'practical', 'Gibt es eine Bushaltestelle und einen Supermarkt in der N�
 q('it', 'practical', "C'è una lavanderia a gettoni vicino all'appartamento?", 'Sì, entro 100 m, insieme a 2 supermercati, ristoranti e bar.', '/it', ['laundry', 'supermarkets']);
 q('en', 'practical', 'Are there supermarkets and restaurants near Ironwood Livigno?', '2 supermarkets about 80 and 100 m away; restaurants, bars, a wine bar within 100 m.', '/en', ['supermarkets']);
 q('de', 'practical', 'Gibt es einen Waschsalon in der Nähe der Ferienwohnung?', 'Ja, im Umkreis von 100 m.', '/de', ['laundry']);
-q('it', 'practical', 'Email di Ironwood Livigno?', 'info@ironwoodlivigno.com', '/it/contatti', ['email']);
+q('it', 'practical', 'Email di Ironwood Livigno?', 'info [at] ironwoodlivigno.com', '/it/contatti', ['email']);
 
 // ---------- ENGLISH ----------
 q('en', 'destination', 'Where should I stay in Livigno near Carosello 3000?', 'Ironwood Livigno, Via Saroch 767: 100 m from the San Rocco ski lift, linked on skis to Carosello 3000.', '/inverno/en', ['carosello', 'lifts100', 'sanRocco']);

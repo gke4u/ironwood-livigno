@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import { contactSlugs, locales, localeLabels, type Locale } from '@/i18n/routing';
 import { getSatellitePages } from '@/data/satellite-pages';
 import Logo from './Logo';
+import EmailLink from './EmailLink';
 import { blogIndexHref } from '@/lib/blogIndex';
 
 const CIN = 'IT014037C274OJ27T8';
@@ -10,7 +11,6 @@ const CIR = '014037-CNI-01104';
 // No VAT number — sole proprietor operating under a personal tax code
 // (confirmed by the site owner directly, not a placeholder).
 const TAX_CODE = 'GNUFNC74D07E621H';
-const EMAIL = 'info@ironwoodlivigno.com';
 const PHONE_DISPLAY = '+39 0342 929285';
 const PHONE_TEL = '+390342929285';
 const FULL_ADDRESS = 'Via Saroch 767, 23041 Livigno (SO), Italia';
@@ -56,9 +56,7 @@ export default function Footer({ locale }: { locale: Locale }) {
               {PHONE_DISPLAY}
             </a>
             <span className="opacity-30">·</span>
-            <a href={`mailto:${EMAIL}`} className="hover:text-mist transition-colors">
-              {EMAIL}
-            </a>
+            <EmailLink className="hover:text-mist transition-colors" />
             <span className="opacity-30">·</span>
             <a
               href="https://instagram.com/ironwood_livigno"

@@ -1,5 +1,6 @@
 import type { LandingPage } from '@/content/landingPages';
 import Pic from './Pic';
+import TextWithEmail from './TextWithEmail';
 
 export type LandingUiStrings = {
   backLabel: string;
@@ -127,7 +128,7 @@ export default function LandingPageBody({ page, ui, facts }: { page: LandingPage
               {page.faq.map((item) => (
                 <div key={item.q}>
                   <h3 className="font-medium text-ink mb-1.5">{item.q}</h3>
-                  <p className="text-ink/70 text-sm leading-relaxed">{item.a}</p>
+                  <p className="text-ink/70 text-sm leading-relaxed"><TextWithEmail text={item.a} /></p>
                 </div>
               ))}
             </div>
