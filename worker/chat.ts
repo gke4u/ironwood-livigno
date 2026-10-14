@@ -248,14 +248,12 @@ function enDate(iso: string): string {
 }
 
 const NOTE = '[Availability check (answer entirely in the reply language above, in 2-3 short, simple sentences): ';
-const SECRET = 'Never say when or for how long the apartment is booked.';
 const ASK = 'say in a few words that they can request it with the form or on WhatsApp';
 const NOT_CONFIRMED = `${NOTE}these dates do not clash with known bookings, but availability is not confirmed: do not say they are free or available; ${ASK}.]`;
 // With the Holidu calendar read just now, free dates may be called free, as
 // the owner asked, but always "barring last-minute bookings".
 const LAST_MINUTE = 'barring last-minute bookings';
 const FREE_NOW = `${NOTE}at the moment these dates are free in the owners' calendar. Say so simply (e.g. "At the moment the apartment is free on those dates, ${LAST_MINUTE}.") and ${ASK} to book them and get the price.]`;
-const WEEKS = 'In winter the apartment is rented from Saturday to Saturday: mention it only to explain the dates you propose, never as the reason the requested dates are unavailable.';
 
 // When the dates are taken, the model got a list of things to say (sorry,
 // alternatives, "barring last-minute bookings", form, WhatsApp, summer) and
@@ -296,7 +294,6 @@ export function availabilityNote(asked: AskedDates | null, periods: FullPeriod[]
   if (!asked) return '';
   const form = FORM_NAME[lang ?? 'it'] ?? FORM_NAME.it;
   const notBooked = live ? FREE_NOW : NOT_CONFIRMED;
-  const freeNote = live ? ` These proposed dates are free at the moment: you may say so, adding "${LAST_MINUTE}".` : '';
   const blocks = bookedBlocks(periods, today);
   if ('checkIn' in asked) {
     const nights = daysBetween(asked.checkIn, asked.checkOut);
@@ -321,11 +318,13 @@ export function availabilityNote(asked: AskedDates | null, periods: FullPeriod[]
   const first = `${asked.month}-01`;
   const end = `${addDay(first, 31).slice(0, 7)}-01`; // first day of the next month
   if (end <= addDay(today, 1)) return '';
+  const winter = isWinter(first);
+  const monthName = new Date(`${first}T12:00:00Z`).toLocaleDateString('en-GB', { month: 'long', timeZone: 'UTC' });
+  const askDates = `Tell me your dates, or ask via "${form}".`;
   if (!blocks.some((b) => b.from < end && b.to > first)) {
     if (!live) return blocks.length ? NOT_CONFIRMED : '';
-    return `${NOTE}at the moment that month is completely free in the owners' calendar. Say so simply (${LAST_MINUTE})${isWinter(first) ? ', mention that in winter stays go from Saturday to Saturday,' : ''} and ${ASK} with their dates.]`;
+    return `${EXACT}"At the moment ${monthName} is completely free (barring last-minute bookings)${winter ? '; in winter we rent from Saturday to Saturday' : ''}. ${askDates}"]`;
   }
-  const winter = isWinter(first);
   const stretches: Stay[] = [];
   for (let d = first > today ? first : addDay(today, 1); d < end; d = addDay(d, 1)) {
     if (clash(blocks, d, addDay(d, 1))) continue;
@@ -337,21 +336,41 @@ export function availabilityNote(asked: AskedDates | null, periods: FullPeriod[]
   const usable = stretches
     .map((s) => (winter ? { checkIn: satUp(s.checkIn), checkOut: satDown(s.checkOut) } : s))
     .filter((s) => daysBetween(s.checkIn, s.checkOut) >= (winter ? 7 : 1));
-  const weeks = winter ? ` ${WEEKS}` : '';
   if (usable.length) {
-    const list = usable.map((s) => `arrival from ${enDate(s.checkIn)}, departure by ${enDate(s.checkOut)}`).join('; ');
-    // Only the free dates: the owner does not want NIGI to say the month is
-    // "partly booked" or anything about the rest of it.
-    return `${NOTE}${weeks} Answer ONLY with the free dates of that month, simply (e.g. "In April you can come from … to …"): ${list}. Do NOT say or hint that the month is partly booked, busy or taken, and say nothing about the other dates or about bookings.${freeNote} Then ${ASK}. ${SECRET}]`;
+    // Said as when one can come, not as one long stay: "from 10 April to
+    // 1 May" read as a three-week booking. A stretch that reaches the end of
+    // the month is open ("from … onwards"); in winter the guest picks a
+    // Saturday to arrive and stays one week or more.
+    const day = (iso: string, opts: Intl.DateTimeFormatOptions) => new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-GB', { ...opts, timeZone: 'UTC' });
+    const dayMonth = (iso: string) => `${winter ? `${day(iso, { weekday: 'long' })} ` : ''}${day(iso, { day: 'numeric', month: 'long' })}`;
+    const reachesEnd = (u: Stay) => stretches.some((r) => r.checkOut === end && u.checkIn >= r.checkIn);
+    // "from 1 to 26 November" (the month once), "from Saturday 5 to Saturday 12 December".
+    const range = (u: Stay) =>
+      u.checkIn.slice(0, 7) === u.checkOut.slice(0, 7)
+        ? `from ${winter ? `${day(u.checkIn, { weekday: 'long' })} ` : ''}${day(u.checkIn, { day: 'numeric' })} to ${dayMonth(u.checkOut)}`
+        : `from ${dayMonth(u.checkIn)} to ${dayMonth(u.checkOut)}`;
+    const parts = usable.map((u) => (reachesEnd(u) ? `from ${dayMonth(u.checkIn)} onwards` : range(u)));
+    const barring = live ? ' (barring last-minute bookings)' : ' (the owners will confirm)';
+    const free = `In ${monthName} the apartment is free ${parts.join(' and ')}${barring}`;
+    if (!winter) return `${EXACT}"${free}. ${askDates}"]`;
+    const arrivals: string[] = [];
+    for (const u of usable) for (let d = u.checkIn; daysBetween(d, u.checkOut) >= 7; d = addDay(d, 7)) arrivals.push(d);
+    const longer = usable.some((u) => reachesEnd(u) || daysBetween(u.checkIn, u.checkOut) >= 14);
+    // Just one week free: said once, as that week.
+    if (arrivals.length === 1 && !longer) return `${EXACT}"In ${monthName} the apartment is free for one week, ${range(usable[0])}${barring}: if you like, ask for it via "${form}"."]`;
+    const sameMonth = arrivals.every((d) => d.slice(0, 7) === arrivals[0].slice(0, 7));
+    const names = sameMonth ? arrivals.map((d) => day(d, { day: 'numeric' })) : arrivals.map((d) => day(d, { day: 'numeric', month: 'long' }));
+    const list = names.length > 1 ? `${names.slice(0, -1).join(', ')} or ${names[names.length - 1]}` : names[0];
+    const when = `Saturday ${list}${sameMonth ? ` ${day(arrivals[0], { month: 'long' })}` : ''}`;
+    return `${EXACT}"${free}: you can arrive on ${when} and stay ${longer ? 'one week or more' : 'one week'}. ${askDates}"]`;
   }
   const { later } = nearestStays(blocks, first, winter ? 7 : 1, today);
-  const month = new Date(`${first}T12:00:00Z`).toLocaleDateString('en-GB', { month: 'long', timeZone: 'UTC' });
   const next = winter
     ? offerLine([later], live, form).replace(/^But the apartment is free /, 'The first free week is ').replace(/^But we could offer you /, 'The first week we could offer you is ')
     : `The first free day after it is ${enDate(later.checkIn).replace(/ \d{4}$/, '')}${live ? ', barring last-minute bookings' : ' (the owners will confirm)'}. If you're interested, request it via "${form}".`;
   if (asked.suggest) return `${EXACT}"${next}"]`;
-  if (followUp) return `${EXACT}"Unfortunately ${month} is already fully booked. ${next}"]`;
-  return `${EXACT}"Unfortunately ${month} is already fully booked. ${OFFER_TO_CHECK}"]`;
+  if (followUp) return `${EXACT}"Unfortunately ${monthName} is already fully booked. ${next}"]`;
+  return `${EXACT}"Unfortunately ${monthName} is already fully booked. ${OFFER_TO_CHECK}"]`;
 }
 
 export type ChatMsg = { role: 'user' | 'assistant'; content: string };
