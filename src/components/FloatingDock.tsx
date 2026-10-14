@@ -138,18 +138,25 @@ function ContactPanel({ t, nigiOn, whatsappHref, onClose }: { t: DockStrings; ni
                 onClose();
                 nigi.open();
               }}
-              className={row}
+              className={`${row} bg-gold/[0.07]`}
             >
+              {/* Animated to draw the eye (the owner's request): a gold ring
+                  pulsing out of the icon and a blinking "online" dot. Still
+                  for visitors who ask for reduced motion. */}
               <span className={`${icon} bg-gold text-ink`}>
-                <BubbleIcon className="w-5 h-5" />
+                <span className="absolute inset-0 rounded-full bg-gold opacity-60 animate-ping motion-reduce:hidden" aria-hidden />
+                <BubbleIcon className="relative w-5 h-5" />
               </span>
               <span className="min-w-0 flex-1">
                 <span className={title}>{t.nigiTitle}</span>
                 <span className={`${sub} flex items-center gap-1.5 !text-[#7fdca3]`}>
-                  <span className="w-1.5 h-1.5 rounded-full" style={{ background: GREEN }} aria-hidden />
+                  <span className="w-1.5 h-1.5 rounded-full animate-pulse motion-reduce:animate-none" style={{ background: GREEN }} aria-hidden />
                   {t.instant}
                 </span>
               </span>
+              <svg className="flex-none w-5 h-5 text-gold animate-pulse motion-reduce:animate-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
             </button>
           )}
           <a ref={setFirst} href={whatsappHref} target="_blank" rel="noopener noreferrer" onClick={onClose} className={row}>
