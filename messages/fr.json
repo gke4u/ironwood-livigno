@@ -395,8 +395,6 @@
     ]
   },
   "dock": {
-    "aria": "Contacts rapides",
-    "book": "Réserver",
     "nigiTitle": "Discutez avec notre assistant",
     "nudge": "Des questions sur les dates libres ou l'appartement ? Demandez-moi, je réponds tout de suite.",
     "nudgeClose": "Fermer le message"

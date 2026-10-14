@@ -30,7 +30,7 @@ export default function BackToTop() {
     <button
       onClick={scrollToTop}
       aria-label={t('back_to_top')}
-      className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom))] sm:bottom-6 left-4 sm:left-6 z-50 w-11 h-11 rounded-full bg-ink text-mist shadow-soft flex items-center justify-center hover:bg-ink/90 transition-colors"
+      className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] sm:bottom-6 left-4 sm:left-6 z-50 w-11 h-11 rounded-full bg-ink text-mist shadow-soft flex items-center justify-center hover:bg-ink/90 transition-colors"
     >
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
         <path d="m18 15-6-6-6 6" />

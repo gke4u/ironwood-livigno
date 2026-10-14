@@ -204,18 +204,8 @@ body {
   #sezioni > #faq { contain-intrinsic-size: auto 1590px; }
 }
 
-/* The contact dock (FloatingDock.tsx) is a bar along the bottom on phones:
-   the page gets the same room at the bottom, so the bar never covers the
-   end of the footer. */
-@media (max-width: 639px) {
-  body {
-    padding-bottom: calc(3.5rem + env(safe-area-inset-bottom));
-  }
-}
-
 /* While NIGI's chat panel is open (ChatWidget.tsx sets html[data-nigi]),
-   the dock steps aside: on computers the panel sits in the same corner. */
-html[data-nigi='open'] #iw-dock,
+   its launcher steps aside: on computers the panel sits in the same corner. */
 html[data-nigi='open'] #iw-launcher {
   visibility: hidden;
 }

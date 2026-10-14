@@ -8,5 +8,5 @@ export default async function FloatingDockServer({ locale }: { locale: string })
     dock: DockStrings;
     chat: { suggestions: string[] };
   };
-  return <FloatingDock strings={m.dock} bookHref={`/${locale}#prenota`} firstQuestion={m.chat.suggestions[0]} />;
+  return <FloatingDock strings={m.dock} firstQuestion={m.chat.suggestions[0]} />;
 }

@@ -395,8 +395,6 @@
     ]
   },
   "dock": {
-    "aria": "Quick contacts",
-    "book": "Book",
     "nigiTitle": "Chat with our assistant",
     "nudge": "Questions about free dates or the apartment? Just ask me, I answer right away.",
     "nudgeClose": "Close the message"
