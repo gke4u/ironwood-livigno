@@ -10,6 +10,7 @@
 //   /api/offer             the special offer to show in the site pop-up, if any
 //   /api/chat              NIGI, the site chat: on/off for the page, and AI answers (worker/chat.ts)
 //   /api/chat/evento       chat opened / FAQ button used, for the admin's chat counters
+//   /api/date-libere       free stays near some booked dates, for the owners' replies in TORBERO
 //   /it, /en, …            the homepages, to apply the section order (and hidden sections) chosen in the admin
 //   /recensione            short link to the "write a review" page on Google
 //   /api/sezioni           the homepage sections hidden in the admin (to hide links to them)
@@ -37,7 +38,7 @@ import { HOME_PATHS, LAYOUT_KEY, SECTIONS, isDefault, layoutCss, parseLayout } f
 import { weatherFact } from './weather';
 import { ICAL_KEY, fetchIcal, parseIcalUrl, type IcalSettings } from './ical';
 import { EVENT_KINDS, pagePath, sourceName, type EventKind, type QuestionStatus, type Stats } from './stats';
-import { CHAT_KEY, DAILY_NEURONS, FULL_KEY, KB_KEY, MAX_FULL, MAX_KB_ITEMS, askAI, availabilityNote, extractStay, lastExchange, parseFull, parseKb, parseMessages, replyLanguageNote, siteLanguage, systemPrompt, type ChatSettings, type Full, type Kb } from './chat';
+import { CHAT_KEY, DAILY_NEURONS, FULL_KEY, KB_KEY, MAX_FULL, MAX_KB_ITEMS, askAI, availabilityNote, extractStay, freeAlternatives, lastExchange, parseFull, parseKb, parseMessages, replyLanguageNote, siteLanguage, systemPrompt, type ChatSettings, type Full, type Kb } from './chat';
 
 // The Durable Object class must be exported by the Worker's main module.
 export { Stats } from './stats';
@@ -116,6 +117,7 @@ export default {
       if (path.startsWith('/foto-google/')) return await photoForGoogle(request, path.slice('/foto-google/'.length), env);
       if (path === '/api/offer') return await offerApi(request, env);
       if (path === '/api/chat') return await chatApi(request, env, ctx);
+      if (path === '/api/date-libere') return await freeDatesApi(request, env);
       if (path === '/api/chat/evento' && request.method === 'POST') {
         ctx.waitUntil(countChat(request, env).catch((err) => console.error(err)));
         return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
@@ -393,6 +395,34 @@ async function countEvent(request: Request, env: Env): Promise<void> {
     kind: kind as EventKind,
     path: pagePath(request.headers.get('Referer'), url.origin)
   });
+}
+
+// ---------- Free dates for the owners' replies ----------
+
+// GET /api/date-libere?checkIn=YYYY-MM-DD&checkOut=YYYY-MM-DD
+//   -> { free, live, alternatives: [{ checkIn, checkOut }] }
+// Called by TORBERO's requests inbox (gestione.ironwoodlivigno.com) to fill
+// the "not available" reply with real free dates. Same calendar as NIGI: the
+// periods set in the admin plus the Holidu calendar, if linked. It tells no
+// more than NIGI tells any visitor: only free dates, never who booked.
+const TORBERO_ORIGIN = 'https://gestione.ironwoodlivigno.com';
+
+async function freeDatesApi(request: Request, env: Env): Promise<Response> {
+  const cors = { 'Access-Control-Allow-Origin': TORBERO_ORIGIN, Vary: 'Origin', 'Cache-Control': 'no-store' };
+  if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: { ...cors, 'Access-Control-Allow-Methods': 'GET' } });
+  if (request.method !== 'GET') return json({ error: 'Metodo non consentito' }, 405, cors);
+  const url = new URL(request.url);
+  const checkIn = url.searchParams.get('checkIn') ?? '';
+  const checkOut = url.searchParams.get('checkOut') ?? '';
+  const day = /^\d{4}-\d{2}-\d{2}$/;
+  if (!day.test(checkIn) || !day.test(checkOut) || checkOut <= checkIn) return json({ error: 'Date non valide' }, 400, cors);
+  const today = romeDate();
+  const [full, ical] = await Promise.all([readFull(env), readIcal(env)]);
+  const synced = ical?.url ? await fetchIcal(ical.url, today) : [];
+  if (typeof synced === 'string') console.error('ical:', synced);
+  const booked = [...full.periods, ...(Array.isArray(synced) ? synced : [])];
+  const live = Array.isArray(synced) && Boolean(ical?.url);
+  return json({ ...freeAlternatives(booked, checkIn, checkOut, today), live }, 200, cors);
 }
 
 // ---------- NIGI chat (public) ----------

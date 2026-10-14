@@ -223,6 +223,22 @@ function nearestStays(blocks: FullPeriod[], checkIn: string, nights: number, tod
   return { later: { checkIn: later, checkOut: addDay(later, nights) }, earlier: closer ? { checkIn: start, checkOut: addDay(start, nights) } : null };
 }
 
+// For the owners' answer to a request whose dates are taken (the requests
+// inbox in TORBERO asks /api/date-libere): up to three free stays of the same
+// length near the asked ones, closest first, from Saturday to Saturday in
+// winter. The asked dates themselves are never proposed, even when the
+// calendar shows them free (the owner knows something it doesn't).
+export function freeAlternatives(periods: FullPeriod[], checkIn: string, checkOut: string, today: string): { free: boolean; alternatives: Stay[] } {
+  const free = !clash(bookedBlocks(periods, today), checkIn, checkOut);
+  const blocks = bookedBlocks([...periods, { from: checkIn, to: checkOut }], today);
+  const n = offerNights(checkIn, daysBetween(checkIn, checkOut));
+  const { later, earlier } = nearestStays(blocks, checkIn, n, today);
+  const next = nearestStays(blocks, later.checkOut, n, today).later;
+  const near = (s: Stay) => Math.abs(daysBetween(s.checkIn, checkIn));
+  const alternatives = [earlier, later, next].filter((s): s is Stay => Boolean(s)).sort((a, b) => near(a) - near(b));
+  return { free, alternatives };
+}
+
 // Dates in the note are written out in English: the model translates them.
 function enDate(iso: string): string {
   return new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
