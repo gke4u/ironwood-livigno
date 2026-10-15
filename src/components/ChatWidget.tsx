@@ -2,7 +2,7 @@
 
 import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { nigi } from '@/lib/nigi';
-import AssistantLogo from './AssistantLogo';
+import BrandBadge from './BrandBadge';
 
 // NIGI, the site's virtual assistant (free to run: Workers AI's daily allowance):
 //   - a question goes to /api/chat, where the Worker asks Workers AI
@@ -18,7 +18,7 @@ import AssistantLogo from './AssistantLogo';
 // chat. Header with the assistant's mark, "Ironwood Livigno", online (or
 // "writing…"), a small WhatsApp icon and the X; then bubbles with their time,
 // NIGI's welcome first, and the message box. No menus, no buttons under the
-// answers. It opens straight from the "Help" capsule (FloatingDock.tsx) and
+// answers. It opens straight from the round launcher (FloatingDock.tsx) and
 // the welcome bubble, through src/lib/nigi.ts.
 
 export type ChatStrings = {
@@ -319,8 +319,8 @@ export default function ChatWidget({
           <header className="flex-none bg-white/95 backdrop-blur pt-[env(safe-area-inset-top)] sm:pt-0 shadow-[0_1px_0_rgba(36,28,21,0.07)]">
             <div className="flex items-center gap-3 pl-4 pr-2 py-2.5">
               <span className="relative">
-                <AssistantLogo key={shown ? 'open' : 'closed'} size={38} appear typing={busy} />
-                <span className="absolute bottom-0.5 right-0 h-2.5 w-2.5 rounded-full bg-[#25D366] ring-2 ring-white" aria-hidden />
+                <BrandBadge size={38} />
+                <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-[#4cc27a] ring-2 ring-white" aria-hidden />
               </span>
               <div className="min-w-0 flex-1 leading-tight">
                 <p className="truncate text-[15px] font-semibold text-ink">Ironwood Livigno</p>

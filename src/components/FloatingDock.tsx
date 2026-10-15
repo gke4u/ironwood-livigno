@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { nigi, useNigiEnabled } from '@/lib/nigi';
-import AssistantLogo from './AssistantLogo';
+import BrandBadge from './BrandBadge';
 
-// The site's contact corner (15 October 2026): a white "Help" capsule in the
+// The site's contact corner (15 October 2026): the round launcher in the
 // bottom-right corner that opens NIGI's chat straight away (no menu: the
 // owner wanted it plain, like a WhatsApp chat; WhatsApp itself is a small
 // icon in the chat's header), and a welcome bubble above it once per visit.
-// Only while NIGI is switched on. While the chat is open the capsule steps
+// Only while NIGI is switched on. While the chat is open the launcher steps
 // aside (globals.css, html[data-nigi]).
 
 const LAUNCHER_ID = 'iw-launcher';
@@ -41,22 +41,25 @@ export default function FloatingDock({ strings: t }: { strings: DockStrings; loc
   return (
     <>
       <Nudge t={t} />
+      {/* The round launcher, as on 14 October (the owner's favourite): dark
+          disc, gold ring pulsing out of it, a green "online" dot. Still for
+          visitors who ask for reduced motion. */}
       <button
         id={LAUNCHER_ID}
         type="button"
         data-help
         onClick={() => nigi.open()}
         aria-haspopup="dialog"
+        aria-label={t.nigiTitle}
         title={t.nigiTitle}
-        className="group fixed z-[61] right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] flex items-center gap-2.5 rounded-full border border-ink/10 bg-white/95 py-1.5 pl-1.5 pr-5 text-left shadow-[0_18px_44px_-16px_rgba(36,28,21,0.55)] backdrop-blur transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-[0_22px_50px_-16px_rgba(36,28,21,0.6)] motion-reduce:hover:translate-y-0 sm:right-6 sm:bottom-6 sm:gap-3 sm:py-2 sm:pl-2 sm:pr-6"
+        className="fixed z-[61] right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] grid place-items-center w-14 h-14 rounded-full bg-[#3D3026] text-mist ring-2 ring-gold shadow-[0_14px_34px_-10px_rgba(0,0,0,0.6)] transition hover:scale-105 motion-reduce:hover:scale-100 sm:right-6 sm:bottom-6 sm:w-16 sm:h-16"
       >
-        <span className="flex h-10 w-10 items-center justify-center transition-transform group-hover:-rotate-3 group-hover:scale-105 sm:h-11 sm:w-11">
-          <AssistantLogo size={44} appear />
-        </span>
-        <span className="leading-tight">
-          <span className="block font-body text-[13.5px] font-semibold text-ink">{t.help}</span>
-          <span className="block font-body text-[11.5px] text-ink/55">{t.capsuleSub}</span>
-        </span>
+        <span className="absolute inset-0 rounded-full ring-2 ring-gold animate-ping motion-reduce:hidden" aria-hidden />
+        <svg viewBox="0 0 120 110" fill="none" className="relative w-7 h-7 sm:w-8 sm:h-8" aria-hidden>
+          <circle cx="10" cy="46" r="7" fill="#C9A059" />
+          <polyline points="24,60 46,26 66,50 94,10 118,60 118,96 20,96 20,64" stroke="currentColor" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <span className="absolute top-0.5 right-0.5 w-3.5 h-3.5 rounded-full bg-[#4cc27a] ring-2 ring-[#3D3026] animate-pulse motion-reduce:animate-none" aria-hidden />
       </button>
     </>
   );
@@ -67,7 +70,7 @@ const NUDGE_SEEN = 'iw-nudge-seen';
 const NUDGE_AFTER_MS = 6000;
 const NUDGE_FOR_MS = 15000;
 
-// Welcome bubble above the capsule: once per visit (sessionStorage), after a
+// Welcome bubble above the launcher: once per visit (sessionStorage), after a
 // few quiet seconds, only for visitors who have not opened NIGI yet, never
 // over the offer pop-up or the chat. Tapping it opens NIGI. (It used to wait
 // for the cookie banner's answer too, but that banner is not on the site, so
@@ -117,14 +120,14 @@ function Nudge({ t }: { t: DockStrings }) {
           }}
           className="flex min-w-0 flex-1 items-center gap-3 text-left"
         >
-          <AssistantLogo size={38} appear />
+          <BrandBadge size={36} />
           <span className="text-[13.5px] font-medium leading-snug text-ink">{t.nudge}</span>
         </button>
         <button type="button" onClick={() => setShow(false)} aria-label={t.nudgeClose} className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-ink/45 hover:bg-ink/5 hover:text-ink">
           <CloseIcon />
         </button>
-        {/* Points down at the capsule's mark. */}
-        <span className="absolute -bottom-[7px] right-[2.4rem] h-3.5 w-3.5 rotate-45 border-b border-r border-ink/10 bg-white sm:right-[2.6rem]" aria-hidden />
+        {/* Points down at the launcher. */}
+        <span className="absolute -bottom-[7px] right-[2.4rem] h-3.5 w-3.5 rotate-45 border-b border-r border-ink/10 bg-white sm:right-[3.05rem]" aria-hidden />
       </div>
     </div>
   );
