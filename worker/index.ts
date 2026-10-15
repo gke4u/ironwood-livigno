@@ -502,7 +502,10 @@ async function chatApi(request: Request, env: Env, ctx: ExecutionContext): Promi
     return json({ error: 'limit' }, 429);
   }
 
+  // Each step's time goes back in a Server-Timing header, to see where an answer is slow.
+  const t0 = Date.now();
   const [offer, kb, weather, full] = await Promise.all([readOffer(env), readKb(env), weatherFact(), readFull(env)]);
+  const t1 = Date.now();
   const live = offer && isLive(offer, today) ? publicOffer(offer, today) : null;
   // The dates asked about are checked here, not by the model: booked periods
   // and Saturday-to-Saturday winter weeks (see availabilityNote). A failed
@@ -511,12 +514,14 @@ async function chatApi(request: Request, env: Env, ctx: ExecutionContext): Promi
     console.error(err);
     return { asked: null, lang: null, neurons: 0 };
   });
+  const t2 = Date.now();
   // Booked stays: the owner's own list plus the Holidu calendar, if linked
   // (an unreadable calendar just leaves its stays out).
   const ical = check.asked ? await readIcal(env) : null;
   const synced = ical?.url ? await fetchIcal(ical.url, today) : [];
   const booked = [...full.periods, ...(Array.isArray(synced) ? synced : [])];
   if (typeof synced === 'string') console.error('ical:', synced);
+  const t3 = Date.now();
   const availability = availabilityNote(check.asked, booked, today, Array.isArray(synced) && Boolean(ical?.url), siteLanguage(body), messages.length > 1);
   // The reply language goes as a note on the visitor's last message (see replyLanguageNote).
   const last = messages[messages.length - 1];
@@ -528,15 +533,17 @@ ${notes}` }];
     console.error(err);
     return null;
   });
+  const t4 = Date.now();
+  const timing = { 'Server-Timing': `data;dur=${t1 - t0}, extract;dur=${t2 - t1}, ical;dur=${t3 - t2}, answer;dur=${t4 - t3}` };
   const reply = answer && { ...answer, neurons: answer.neurons + check.neurons };
   if (!reply) {
     ctx.waitUntil(stats.chatCount(today, 'error').catch((err) => console.error(err)));
     log('error', null);
-    return json({ error: 'busy' }, 503);
+    return json({ error: 'busy' }, 503, timing);
   }
   ctx.waitUntil(stats.chatCount(today, 'neurons', reply.neurons).catch((err) => console.error(err)));
   log('ok', reply.text.trim());
-  return json({ reply: reply.text });
+  return json({ reply: reply.text }, 200, timing);
 }
 
 // Chat opened, or a FAQ button used (answered in the browser): counts only.

@@ -32,6 +32,10 @@ const NEURONS_PER_M_OUT = 27273;
 const MAX_TURNS = 10;
 const MAX_CHARS = 600;
 const AI_TIMEOUT_MS = 20_000;
+// When a call that is still running gets a twin (see runAI): the date check is
+// a few words (normally ~1.5 s), the answer up to 250 tokens (normally ~2.5 s).
+const EXTRACT_HEDGE_MS = 1800;
+const ANSWER_HEDGE_MS = 3000;
 
 export type ChatSettings = { active: boolean; updated: string };
 
@@ -168,7 +172,7 @@ A date without a year is the next one from today.`;
 // otherwise drifted into Italian or French for German questions.
 export async function extractStay(ai: Ai, messages: ChatMsg[], today: string): Promise<{ asked: AskedDates | null; lang: string | null; neurons: number }> {
   const transcript = messages.slice(-4).map((m) => `${m.role === 'user' ? 'Guest' : 'Assistant'}: ${m.content}`).join('\n');
-  const res = await runAI(ai, [{ role: 'system', content: EXTRACT_PROMPT(today) }, { role: 'user', content: transcript }], 80, 0);
+  const res = await runAI(ai, [{ role: 'system', content: EXTRACT_PROMPT(today) }, { role: 'user', content: transcript }], 80, 0, EXTRACT_HEDGE_MS);
   if (!res) return { asked: null, lang: null, neurons: 0 };
   let data: { checkIn?: unknown; checkOut?: unknown; month?: unknown; lang?: unknown; suggest?: unknown } = {};
   try {
@@ -598,30 +602,61 @@ ${languageRule()}`;
 // One answer from Workers AI with the Neurons it used, or null if it failed,
 // timed out or came back empty.
 export function askAI(ai: Ai, system: string, messages: ChatMsg[]): Promise<{ text: string; neurons: number } | null> {
-  return runAI(ai, [{ role: 'system', content: system }, ...messages], 250, 0.3);
+  return runAI(ai, [{ role: 'system', content: system }, ...messages], 250, 0.3, ANSWER_HEDGE_MS);
 }
 
+// Workers AI's waiting time swings a lot: the same short call took 0.7 s or
+// 16 s (measured 15 October 2026), whatever the question. So if a call is not
+// back after `hedgeMs`, the same request goes out a second time and the first
+// good answer wins: visitors rarely wait more than a few seconds. A hedged
+// answer counts the Neurons of both calls, so the daily budget stays honest.
 async function runAI(
+  ai: Ai,
+  messages: { role: string; content: string }[],
+  maxTokens: number,
+  temperature: number,
+  hedgeMs: number
+): Promise<{ text: string; neurons: number } | null> {
+  const once = () => callAI(ai, messages, maxTokens, temperature).catch(() => null);
+  const timeout = new Promise<null>((resolve) => setTimeout(() => resolve(null), AI_TIMEOUT_MS));
+  const first = once();
+  const early = await Promise.race([first, new Promise<'wait'>((resolve) => setTimeout(() => resolve('wait'), hedgeMs))]);
+  if (early !== 'wait') return early ?? (await Promise.race([once(), timeout]));
+  const second = once();
+  const winner = await Promise.race([firstGood([first, second]), timeout]);
+  return winner && { ...winner, neurons: winner.neurons * 2 };
+}
+
+// The first answer that is not null, or null once all of them failed.
+function firstGood<T>(runs: Promise<T | null>[]): Promise<T | null> {
+  return new Promise((resolve) => {
+    let left = runs.length;
+    for (const run of runs) {
+      run.then((v) => {
+        if (v) resolve(v);
+        else if (--left === 0) resolve(null);
+      });
+    }
+  });
+}
+
+async function callAI(
   ai: Ai,
   messages: { role: string; content: string }[],
   maxTokens: number,
   temperature: number
 ): Promise<{ text: string; neurons: number } | null> {
-  const run = ai.run(CHAT_MODEL, {
+  const res = (await ai.run(CHAT_MODEL, {
     messages,
     max_tokens: maxTokens,
     temperature,
     // No hidden reasoning: answers in 1-2 seconds and never empty.
     chat_template_kwargs: { enable_thinking: false }
-  } as never) as Promise<unknown>;
-  const timeout = new Promise<null>((resolve) => setTimeout(() => resolve(null), AI_TIMEOUT_MS));
-  const res = (await Promise.race([run, timeout])) as
-    | {
-        response?: unknown;
-        choices?: { message?: { content?: unknown } }[];
-        usage?: { prompt_tokens?: number; completion_tokens?: number };
-      }
-    | null;
+  } as never)) as {
+    response?: unknown;
+    choices?: { message?: { content?: unknown } }[];
+    usage?: { prompt_tokens?: number; completion_tokens?: number };
+  } | null;
   if (!res) return null;
   const raw = res.choices?.[0]?.message?.content ?? res.response;
   if (typeof raw !== 'string') return null;
