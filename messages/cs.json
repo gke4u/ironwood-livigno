@@ -395,11 +395,30 @@
       "Kdy máte tuto zimu volno?",
       "Co je zahrnuto v pobytu?",
       "Jak se dostanu do Livigna?"
-    ]
+    ],
+    "title": "Zákaznická podpora",
+    "status": "Okamžitá odpověď",
+    "introTitle": "Jak vám můžeme pomoci?",
+    "intro": "Napište svou otázku: volné termíny, ceny, sauna a parní lázeň, jak se k nám dostat, co dělat v Livignu.",
+    "you": "Vy"
   },
   "dock": {
     "nigiTitle": "Napište našemu asistentovi",
-    "nudge": "Máte otázky k volným termínům nebo apartmánu? Zeptejte se mě, odpovím hned.",
-    "nudgeClose": "Zavřít zprávu"
+    "nudge": "Otázky k volným termínům, cenám nebo sauně? Zeptejte se mě.",
+    "nudgeClose": "Zavřít zprávu",
+    "help": "Pomoc",
+    "capsuleSub": "Okamžitá odpověď, kdykoli",
+    "menuTitle": "Jak vám můžeme pomoci?",
+    "close": "Zavřít",
+    "recommended": "Doporučeno",
+    "assistantTitle": "Zeptejte se asistenta",
+    "assistantBadge": "Okamžitá odpověď",
+    "assistantSub": "Volné termíny, ceny, sauna, jak se k nám dostat: kdykoli",
+    "askButton": "Položit otázku",
+    "otherTitle": "Nebo nás kontaktujte",
+    "waBadge": "Ne okamžitě",
+    "waSub": "Odpovíme osobně, jakmile to půjde, někdy až za pár hodin",
+    "callShort": "Zavolat",
+    "requestShort": "Poptat dostupnost"
   }
 }

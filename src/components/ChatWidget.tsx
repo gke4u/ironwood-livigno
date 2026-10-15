@@ -2,6 +2,7 @@
 
 import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { nigi } from '@/lib/nigi';
+import AssistantLogo from './AssistantLogo';
 
 // NIGI, the site's virtual assistant (free to run: Workers AI's daily allowance):
 //   - a question goes to /api/chat, where the Worker asks Workers AI
@@ -13,10 +14,12 @@ import { nigi } from '@/lib/nigi';
 // The conversation lives in sessionStorage: it follows the visitor from page
 // to page and is gone when the tab closes. Nothing typed is stored server-side.
 //
-// Look: the same visual language as the offer pop-up (OfferPopup.tsx) — warm
-// dark panel #3D3026, gold accents, Fraunces titles, pill buttons. It has no
-// button of its own: it opens from the contact dock (FloatingDock.tsx),
-// through src/lib/nigi.ts.
+// Look (since 15 October 2026): the light "guest support" panel of the
+// Guanafoto assistant the owner liked — white header with the assistant's
+// mark (AssistantLogo.tsx) and a gold line, answers as white cards, the
+// visitor's questions in dark boxes. It has no button of its own: it opens
+// from the "Help" panel of the contact dock (FloatingDock.tsx), through
+// src/lib/nigi.ts.
 // A new chat shows a few ready questions to tap (sent to the AI like typed
 // ones: an empty box was where most visitors stopped). WhatsApp is always
 // one tap away, in the footer and in the dock.
@@ -35,6 +38,11 @@ export type ChatStrings = {
   errorLimit: string;
   errorRate: string;
   disclaimer: string;
+  title: string;
+  status: string;
+  introTitle: string;
+  intro: string;
+  you: string;
   suggestions: string[];
 };
 
@@ -47,7 +55,6 @@ const WHATSAPP = '390342929285';
 const MAX_INPUT = 500;
 // Turns sent to the AI with each question (the Worker keeps at most 10 too).
 const CONTEXT_TURNS = 10;
-const PANEL = 'bg-[#3D3026]';
 
 function load(): Msg[] {
   try {
@@ -81,7 +88,7 @@ const TOKEN = /(\*\*[^*\n]+\*\*|https:\/\/(?:www\.)?ironwoodlivigno\.com[^\s<>()
 // The booking form's name in an answer (NIGI is told to call it as the
 // page's button, hero.cta_primary, in quotes or not) becomes a link to it.
 type FormLink = { name: string; href: string; onClick: () => void };
-const LINK_CLS = 'text-mist underline underline-offset-[3px] decoration-gold/60 hover:decoration-gold break-words';
+const LINK_CLS = 'font-medium text-wood underline underline-offset-2 decoration-gold/70 hover:decoration-wood break-words';
 function rich(text: string, form: FormLink): ReactNode {
   const name = form.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const formRe = new RegExp(`([«„“"']?${name}[»“”"']?)`, 'i');
@@ -95,7 +102,7 @@ function rich(text: string, form: FormLink): ReactNode {
         href={form.href}
         onClick={form.onClick}
         data-form-link
-        className="inline-block whitespace-nowrap rounded-full bg-gold/20 ring-1 ring-gold/70 text-gold font-semibold px-2.5 py-0.5 mx-0.5 leading-snug hover:bg-gold hover:text-[#3D3026] transition-colors"
+        className="inline-block whitespace-nowrap rounded-full bg-gold/25 ring-1 ring-gold text-ink font-semibold px-2.5 py-0.5 mx-0.5 leading-snug hover:bg-gold transition-colors"
       >
         {part.replace(/^[«„“"']|[»“”"']$/g, '')} →
       </a>
@@ -107,7 +114,7 @@ function richPart(text: string): ReactNode {
   const clean = text.replace(/^#{1,6}\s+/gm, '').replace(/^\s*[*-]\s+/gm, '• ');
   return clean.split(TOKEN).map((part, i) => {
     if (i % 2 === 0) return <Fragment key={i}>{part}</Fragment>;
-    if (part.startsWith('**')) return <strong key={i} className="font-semibold text-mist">{part.slice(2, -2)}</strong>;
+    if (part.startsWith('**')) return <strong key={i} className="font-semibold text-ink">{part.slice(2, -2)}</strong>;
     const cls = LINK_CLS;
     if (part.startsWith('https://')) {
       return (
@@ -311,42 +318,43 @@ export default function ChatWidget({
         <div
           role="dialog"
           aria-modal="false"
-          aria-label="NIGI · Ironwood Livigno"
-          className={`fixed z-[70] inset-0 sm:inset-auto sm:right-6 sm:bottom-6 sm:w-[400px] sm:max-h-[min(660px,calc(100dvh-3rem))] flex flex-col ${PANEL} text-mist sm:rounded-[1.75rem] overflow-hidden shadow-[0_40px_120px_-20px_rgba(0,0,0,0.6)] sm:ring-1 sm:ring-white/10 origin-bottom-right transition-all duration-300 ease-out motion-reduce:transition-none ${
+          aria-label={s.title}
+          className={`fixed z-[70] inset-0 sm:inset-auto sm:right-6 sm:bottom-6 sm:w-[410px] sm:h-[min(660px,calc(100dvh-3rem))] flex flex-col bg-[#f6f4f0] font-body text-ink sm:rounded-2xl overflow-hidden sm:border sm:border-ink/10 shadow-[0_24px_70px_-18px_rgba(36,28,21,0.4)] origin-bottom-right transition-all duration-300 ease-out motion-reduce:transition-none ${
             shown ? 'opacity-100 translate-y-0 sm:scale-100' : 'opacity-0 translate-y-6 sm:scale-95'
           }`}
         >
-          {/* Header: one compact bar over the living-room photo. */}
-          <header className="relative flex-none h-[calc(4.25rem+env(safe-area-inset-top))]">
-            <picture>
-              <source type="image/avif" srcSet="/images/soggiorno-480.avif" />
-              <img src="/images/soggiorno-480.webp" alt="" width={480} height={320} className="absolute inset-0 w-full h-full object-cover" />
-            </picture>
-            <div className="absolute inset-0 bg-[#3D3026]/90" aria-hidden />
-            <div className="absolute inset-x-0 bottom-0 h-[4.25rem] flex items-center gap-3 pl-5 pr-28">
-              <span className="grid place-items-center flex-none w-10 h-10 rounded-full bg-ink/80 ring-1 ring-gold/60">
-                <BrandMark className="w-5 h-5 text-mist" />
-              </span>
-              <div className="min-w-0 leading-tight">
-                <p className="font-display text-lg truncate">
-                  NIGI <span className="font-body text-[13px] text-mist/70">· Ironwood Livigno</span>
-                </p>
-                <p className="flex items-center gap-1.5 text-[11px] text-mist/60 truncate">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#4cc27a]" aria-hidden />
-                  {s.subtitle}
+          {/* Header: white, the assistant's mark (it swings in on every opening
+              and its dots move while NIGI writes), a thin gold line under it.
+              The same look as the Guanafoto assistant the owner liked. */}
+          <header className="flex-none bg-white pt-[env(safe-area-inset-top)] sm:pt-0">
+            <div className="flex items-center gap-3 px-4 py-3 sm:px-5">
+              <AssistantLogo key={shown ? 'open' : 'closed'} size={40} appear typing={busy} />
+              <div className="min-w-0 flex-1 leading-tight">
+                <p className="truncate text-[13.5px] font-semibold text-ink">{s.title}</p>
+                <p className="flex items-center gap-1.5 truncate text-[11.5px] text-ink/50">
+                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#4cc27a]" aria-hidden />
+                  {s.status}
                 </p>
               </div>
-            </div>
-            <div className="absolute right-4 bottom-[1.03rem] flex gap-2">
+              <a
+                href={waHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp"
+                title="WhatsApp"
+                className="grid h-9 w-9 place-items-center rounded-lg text-[#16733d] hover:bg-[#1f8f4e]/[0.08]"
+              >
+                <WaIcon className="h-[19px] w-[19px]" />
+              </a>
               {!fresh && (
                 <button
                   type="button"
                   onClick={restart}
                   aria-label={s.restart}
                   title={s.restart}
-                  className="grid place-items-center w-9 h-9 rounded-full bg-ink/40 backdrop-blur-sm ring-1 ring-white/20 text-mist/90 hover:text-mist hover:ring-gold transition"
+                  className="grid h-9 w-9 place-items-center rounded-lg text-ink/50 hover:bg-ink/5 hover:text-ink"
                 >
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                     <path d="M3 12a9 9 0 1 0 3-6.7" />
                     <path d="M3 4v5h5" />
                   </svg>
@@ -357,66 +365,73 @@ export default function ChatWidget({
                 onClick={closeChat}
                 aria-label={s.close}
                 title={s.close}
-                className="grid place-items-center w-9 h-9 rounded-full bg-ink/40 backdrop-blur-sm ring-1 ring-gold/60 text-mist hover:bg-ink/70 hover:ring-gold transition"
+                className="grid h-9 w-9 place-items-center rounded-lg text-ink/60 hover:bg-ink/5 hover:text-ink"
               >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
                   <path d="M6 6l12 12M18 6 6 18" />
                 </svg>
               </button>
             </div>
+            <div className="h-[2px] bg-gradient-to-r from-gold via-gold to-gold/30" aria-hidden />
           </header>
 
-          <div ref={listRef} className="flex-1 sm:flex-auto sm:min-h-[8rem] overflow-y-auto overscroll-contain px-5 pt-3 pb-4 space-y-3 [scrollbar-width:thin] [scrollbar-color:rgba(247,243,236,0.2)_transparent]" aria-live="polite">
-            <Bubble role="assistant">{s.welcome}</Bubble>
+          <div ref={listRef} className="flex-1 overflow-y-auto overscroll-contain px-4 py-5 space-y-4 [scrollbar-width:thin]" aria-live="polite">
+            <div className="px-1">
+              <p className="font-display text-[19px] text-ink">{s.introTitle}</p>
+              <p className="mt-1 text-[13px] leading-relaxed text-ink/60">{s.intro}</p>
+            </div>
             {fresh && !busy && (
-              <div className="pt-1 animate-fadeIn motion-reduce:animate-none">
-                <div className="flex flex-col items-end gap-2">
-                  {s.suggestions.map((q) => (
-                    <button
-                      key={q}
-                      type="button"
-                      onClick={() => send(undefined, q)}
-                      className="max-w-[88%] rounded-2xl rounded-tr-md bg-white/[0.04] ring-1 ring-gold/70 px-4 py-2.5 text-left text-[14px] font-medium leading-snug text-mist hover:bg-gold hover:text-ink hover:ring-gold transition-colors"
-                    >
-                      {q}
-                    </button>
-                  ))}
-                </div>
+              <div className="flex flex-col items-end gap-2 iw-fade-in">
+                {s.suggestions.map((q) => (
+                  <button
+                    key={q}
+                    type="button"
+                    onClick={() => send(undefined, q)}
+                    className="max-w-[88%] rounded-xl border border-gold/70 bg-white px-4 py-2.5 text-left text-[13.5px] font-medium leading-snug text-ink shadow-[0_1px_2px_rgba(36,28,21,0.05)] hover:bg-gold hover:border-gold transition-colors"
+                  >
+                    {q}
+                  </button>
+                ))}
               </div>
             )}
-            {messages.map((m, i) => (
-              <Bubble key={i} role={m.role} error={m.kind === 'error'}>
-                {m.role === 'assistant' ? rich(m.content, { name: bookLabel, href: `/${locale}#prenota`, onClick: closeChat }) : m.content}
-                {m.kind === 'error' && (
-                  <a
-                    href={waHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-3 flex w-fit items-center gap-2 rounded-full bg-gold text-ink text-[13px] font-semibold px-4 py-2 shadow-[0_8px_24px_-8px_rgba(201,160,89,0.6)] hover:brightness-105 transition no-underline"
-                  >
-                    <WaIcon className="w-4 h-4" /> {whatsappLabel}
-                  </a>
-                )}
-              </Bubble>
-            ))}
+            {messages.map((m, i) =>
+              m.role === 'user' ? (
+                <div key={i} className="flex flex-col items-end iw-fade-in">
+                  <span className="mb-1 text-[10.5px] font-semibold uppercase tracking-[0.09em] text-ink/40">{s.you}</span>
+                  <p className="max-w-[85%] whitespace-pre-wrap break-words rounded-lg bg-ink px-3.5 py-2 text-[13.5px] leading-snug text-mist">{m.content}</p>
+                </div>
+              ) : (
+                <div key={i} className="space-y-2 iw-fade-in">
+                  <span className="flex items-center gap-1.5 text-[10.5px] font-semibold uppercase tracking-[0.09em] text-ink/40">
+                    <AssistantLogo size={20} />
+                    NIGI
+                  </span>
+                  <div className={`rounded-xl border bg-white px-4 py-3 shadow-[0_1px_2px_rgba(36,28,21,0.04)] ${m.kind === 'error' ? 'border-brick/40' : 'border-ink/10'}`}>
+                    <p className="whitespace-pre-line break-words text-[13.5px] leading-relaxed text-ink/85">
+                      {rich(m.content, { name: bookLabel, href: `/${locale}#prenota`, onClick: closeChat })}
+                    </p>
+                    {m.kind === 'error' && (
+                      <a
+                        href={waHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-3 flex w-fit items-center gap-2 rounded-lg bg-[#25D366] text-white text-[13px] font-semibold px-4 py-2 hover:brightness-95 transition no-underline"
+                      >
+                        <WaIcon className="w-4 h-4" /> {whatsappLabel}
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )
+            )}
             {/* Under NIGI's latest answer: the two ways to actually book. WhatsApp
                 opens with the visitor's last question already in the message. */}
             {!busy && messages.length > 0 && messages[messages.length - 1].kind === 'ai' && (
-              <div className="flex flex-wrap gap-2 pl-9">
-                <a
-                  href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`${whatsappText}
-
-${[...messages].reverse().find((m) => m.role === 'user')?.content ?? ''}`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-full bg-[#075E54] text-white text-[12px] font-semibold px-3 py-1.5 hover:bg-[#054942] transition-colors"
-                >
-                  <WaIcon className="w-3.5 h-3.5" /> WhatsApp
-                </a>
+              <div className="flex flex-wrap gap-2">
                 <a
                   href={`/${locale}#prenota`}
                   onClick={closeChat}
-                  className="inline-flex items-center gap-1.5 rounded-full ring-1 ring-gold/60 text-gold text-[12px] font-semibold px-3 py-1.5 hover:bg-white/[0.06] hover:ring-gold transition"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-ink text-mist text-[12.5px] font-semibold px-3.5 py-2 hover:bg-wood transition-colors"
                 >
                   <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                     <rect x="3" y="5" width="18" height="16" rx="2" />
@@ -424,21 +439,33 @@ ${[...messages].reverse().find((m) => m.role === 'user')?.content ?? ''}`)}`}
                   </svg>
                   {bookLabel}
                 </a>
+                <a
+                  href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`${whatsappText}\n\n${[...messages].reverse().find((m) => m.role === 'user')?.content ?? ''}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-ink/15 bg-white text-ink text-[12.5px] font-semibold px-3.5 py-2 hover:border-[#25D366] transition-colors"
+                >
+                  <WaIcon className="w-3.5 h-3.5 text-[#16733d]" /> WhatsApp
+                </a>
               </div>
             )}
             {busy && (
-              <div className="flex justify-start pl-9" role="status" aria-label={s.typing}>
-                <div className="flex items-center gap-1.5 rounded-2xl rounded-tl-md bg-white/[0.07] ring-1 ring-white/10 px-4 py-3.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-gold animate-bounce [animation-delay:-0.3s] motion-reduce:animate-none" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-gold animate-bounce [animation-delay:-0.15s] motion-reduce:animate-none" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-gold animate-bounce motion-reduce:animate-none" />
+              <div className="space-y-2" role="status" aria-label={s.typing}>
+                <span className="flex items-center gap-1.5 text-[10.5px] font-semibold uppercase tracking-[0.09em] text-ink/40">
+                  <AssistantLogo size={20} typing />
+                  NIGI
+                </span>
+                <div className="space-y-2 rounded-xl border border-ink/10 bg-white p-4">
+                  {[72, 92, 56].map((w) => (
+                    <span key={w} className="block h-2.5 animate-pulse rounded bg-ink/[0.07]" style={{ width: `${w}%` }} />
+                  ))}
                 </div>
               </div>
             )}
           </div>
 
-          <div className={`flex-none border-t border-white/10 ${PANEL} px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]`}>
-            <form onSubmit={send} className="flex items-end gap-2">
+          <div className="flex-none border-t border-ink/10 bg-white px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+            <form onSubmit={send} className="flex items-end gap-2 rounded-xl border border-ink/15 bg-white px-2 py-1.5 transition-colors focus-within:border-ink/45">
               <label htmlFor="nigi-input" className="sr-only">
                 {s.placeholder}
               </label>
@@ -456,75 +483,24 @@ ${[...messages].reverse().find((m) => m.role === 'user')?.content ?? ''}`)}`}
                   }
                 }}
                 placeholder={s.placeholder}
-                className="flex-1 resize-none rounded-[1.4rem] bg-white/[0.07] ring-1 ring-white/15 px-4 py-3 text-[16px] sm:text-[14px] leading-snug text-mist placeholder:text-mist/40 focus:outline-none focus:ring-gold/80 transition"
+                className="flex-1 resize-none border-0 bg-transparent px-2 py-2 text-[16px] sm:text-[14px] leading-snug text-ink placeholder:text-ink/40 focus:outline-none"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || busy}
                 aria-label={s.send}
-                className="flex-none grid place-items-center w-12 h-12 rounded-full bg-gold text-ink shadow-[0_8px_24px_-8px_rgba(201,160,89,0.6)] hover:brightness-105 disabled:opacity-35 disabled:shadow-none transition"
+                className="mb-0.5 grid h-9 w-9 flex-none place-items-center rounded-lg bg-ink text-mist hover:bg-wood disabled:bg-ink/15 disabled:text-ink/40 transition-colors"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                   <path d="M5 12h14M13 6l6 6-6 6" />
                 </svg>
               </button>
             </form>
-            <div className="mt-2.5 flex items-center justify-between gap-3">
-              <p className="text-[11px] leading-snug text-mist/50">{s.disclaimer}</p>
-              <a
-                href={waHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-none inline-flex items-center gap-1.5 rounded-full bg-[#075E54] px-3.5 py-2 text-[12px] font-semibold text-white hover:bg-[#054942] transition-colors"
-              >
-                <WaIcon className="w-4 h-4" /> WhatsApp
-              </a>
-            </div>
+            <p className="mt-2 text-center text-[10.5px] leading-snug text-ink/45">{s.disclaimer}</p>
           </div>
         </div>
       )}
     </>
-  );
-}
-
-// One message. NIGI's carry its small mark on the left; each one fades in
-// as it arrives (keys are stable, so only new messages animate).
-function Bubble({ role, error, children }: { role: 'user' | 'assistant'; error?: boolean; children: ReactNode }) {
-  const mine = role === 'user';
-  return (
-    <div className={`flex items-end gap-2 animate-fadeIn motion-reduce:animate-none ${mine ? 'justify-end' : 'justify-start'}`}>
-      {!mine && (
-        <span className="grid place-items-center flex-none w-7 h-7 rounded-full bg-ink ring-1 ring-gold/40 mb-0.5" aria-hidden>
-          <BrandMark className="w-3.5 h-3.5 text-mist" />
-        </span>
-      )}
-      <div
-        className={
-          'max-w-[82%] whitespace-pre-line break-words px-4 py-2.5 text-[14px] leading-relaxed ' +
-          (mine
-            ? 'bg-gold text-ink font-medium rounded-2xl rounded-tr-md'
-            : `bg-white/[0.07] text-mist/90 rounded-2xl rounded-tl-md ring-1 ${error ? 'ring-brick/60' : 'ring-white/10'}`)
-        }
-      >
-        {children}
-      </div>
-    </div>
-  );
-}
-
-// The Ironwood roofline mark with its gold dot (same drawing as Logo.tsx).
-function BrandMark({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 120 110" fill="none" className={className} aria-hidden>
-      <circle cx="10" cy="46" r="7" fill="#C9A059" />
-      <polyline
-        points="24,60 46,26 66,50 94,10 118,60 118,96 20,96 20,64"
-        stroke="currentColor"
-        strokeWidth="9"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
   );
 }
 

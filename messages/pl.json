@@ -395,11 +395,30 @@
       "Kiedy macie wolne terminy tej zimy?",
       "Co jest wliczone w pobyt?",
       "Jak dojechać do Livigno?"
-    ]
+    ],
+    "title": "Obsługa gości",
+    "status": "Odpowiedź od razu",
+    "introTitle": "Jak możemy pomóc?",
+    "intro": "Napisz pytanie: wolne terminy, ceny, sauna i łaźnia parowa, dojazd, co robić w Livigno.",
+    "you": "Ty"
   },
   "dock": {
     "nigiTitle": "Czat z naszym asystentem",
-    "nudge": "Pytania o wolne terminy lub apartament? Zapytaj mnie, odpowiem od razu.",
-    "nudgeClose": "Zamknij wiadomość"
+    "nudge": "Pytania o wolne terminy, ceny lub saunę? Zapytaj mnie.",
+    "nudgeClose": "Zamknij wiadomość",
+    "help": "Pomoc",
+    "capsuleSub": "Odpowiedź od razu, o każdej porze",
+    "menuTitle": "Jak możemy pomóc?",
+    "close": "Zamknij",
+    "recommended": "Polecane",
+    "assistantTitle": "Zapytaj asystenta",
+    "assistantBadge": "Odpowiedź od razu",
+    "assistantSub": "Wolne terminy, ceny, sauna, dojazd: o każdej porze",
+    "askButton": "Zadaj pytanie",
+    "otherTitle": "Albo skontaktuj się z nami",
+    "waBadge": "Nie od razu",
+    "waSub": "Odpowiemy osobiście, gdy tylko będziemy mogli, czasem po kilku godzinach",
+    "callShort": "Zadzwoń",
+    "requestShort": "Zapytaj o dostępność"
   }
 }

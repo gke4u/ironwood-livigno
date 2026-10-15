@@ -393,11 +393,30 @@
       "Quand êtes-vous libres cet hiver ?",
       "Qu'est-ce qui est inclus dans le séjour ?",
       "Comment venir à Livigno ?"
-    ]
+    ],
+    "title": "Service clients",
+    "status": "Réponse immédiate",
+    "introTitle": "Comment pouvons-nous vous aider ?",
+    "intro": "Écrivez votre question : dates libres, prix, sauna et hammam, accès, que faire à Livigno.",
+    "you": "Vous"
   },
   "dock": {
     "nigiTitle": "Discutez avec notre assistant",
-    "nudge": "Des questions sur les dates libres ou l'appartement ? Demandez-moi, je réponds tout de suite.",
-    "nudgeClose": "Fermer le message"
+    "nudge": "Des questions sur les dates libres, les prix ou le sauna ? Demandez-moi.",
+    "nudgeClose": "Fermer le message",
+    "help": "Aide",
+    "capsuleSub": "Réponse immédiate, à toute heure",
+    "menuTitle": "Comment pouvons-nous vous aider ?",
+    "close": "Fermer",
+    "recommended": "Conseillé",
+    "assistantTitle": "Demandez à l'assistant",
+    "assistantBadge": "Réponse immédiate",
+    "assistantSub": "Dates libres, prix, sauna, accès : à toute heure",
+    "askButton": "Poser une question",
+    "otherTitle": "Ou contactez-nous",
+    "waBadge": "Réponse non immédiate",
+    "waSub": "Nous vous répondons dès que possible, parfois après quelques heures",
+    "callShort": "Appeler",
+    "requestShort": "Demander la disponibilité"
   }
 }

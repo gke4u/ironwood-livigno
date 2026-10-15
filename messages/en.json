@@ -393,11 +393,30 @@
       "When are you free this winter?",
       "What's included in the stay?",
       "How do I get to Livigno?"
-    ]
+    ],
+    "title": "Guest support",
+    "status": "Instant answer",
+    "introTitle": "How can we help?",
+    "intro": "Type your question: free dates, prices, sauna and steam room, getting here, things to do in Livigno.",
+    "you": "You"
   },
   "dock": {
     "nigiTitle": "Chat with our assistant",
-    "nudge": "Questions about free dates or the apartment? Just ask me, I answer right away.",
-    "nudgeClose": "Close the message"
+    "nudge": "Questions about free dates, prices or the sauna? Ask me.",
+    "nudgeClose": "Close the message",
+    "help": "Help",
+    "capsuleSub": "Instant answer, any time",
+    "menuTitle": "How can we help?",
+    "close": "Close",
+    "recommended": "Recommended",
+    "assistantTitle": "Ask our assistant",
+    "assistantBadge": "Instant answer",
+    "assistantSub": "Free dates, prices, sauna, getting here: at any hour",
+    "askButton": "Ask a question",
+    "otherTitle": "Or contact us",
+    "waBadge": "Not instant",
+    "waSub": "We'll reply in person as soon as we can, sometimes after a few hours",
+    "callShort": "Call",
+    "requestShort": "Check availability"
   }
 }

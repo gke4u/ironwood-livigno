@@ -392,11 +392,30 @@
       "今年冬天什么时候有空房？",
       "住宿包含哪些内容？",
       "怎么去利维尼奥？"
-    ]
+    ],
+    "title": "客户服务",
+    "status": "即时回复",
+    "introTitle": "我们能帮您什么？",
+    "intro": "请输入您的问题：空闲日期、价格、桑拿和蒸汽浴、交通方式、利维尼奥的活动。",
+    "you": "您"
   },
   "dock": {
     "nigiTitle": "与我们的助手聊天",
-    "nudge": "想了解空闲日期或公寓情况？问我吧，马上回答。",
-    "nudgeClose": "关闭消息"
+    "nudge": "想了解空闲日期、价格或桑拿？问我吧。",
+    "nudgeClose": "关闭消息",
+    "help": "帮助",
+    "capsuleSub": "即时回复，全天候",
+    "menuTitle": "我们能帮您什么？",
+    "close": "关闭",
+    "recommended": "推荐",
+    "assistantTitle": "询问我们的助手",
+    "assistantBadge": "即时回复",
+    "assistantSub": "空闲日期、价格、桑拿、交通：随时可问",
+    "askButton": "提出问题",
+    "otherTitle": "或联系我们",
+    "waBadge": "非即时回复",
+    "waSub": "我们会尽快亲自回复，有时需要几个小时",
+    "callShort": "致电",
+    "requestShort": "咨询空房情况"
   }
 }

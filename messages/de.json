@@ -393,11 +393,30 @@
       "Wann ist diesen Winter noch frei?",
       "Was ist im Aufenthalt inbegriffen?",
       "Wie komme ich nach Livigno?"
-    ]
+    ],
+    "title": "Gästeservice",
+    "status": "Sofortige Antwort",
+    "introTitle": "Wie können wir helfen?",
+    "intro": "Schreib deine Frage: freie Termine, Preise, Sauna und Dampfbad, Anreise, Aktivitäten in Livigno.",
+    "you": "Du"
   },
   "dock": {
     "nigiTitle": "Chatte mit unserem Assistenten",
-    "nudge": "Fragen zu freien Terminen oder zur Wohnung? Frag mich einfach, ich antworte sofort.",
-    "nudgeClose": "Nachricht schließen"
+    "nudge": "Fragen zu freien Terminen, Preisen oder der Sauna? Frag mich.",
+    "nudgeClose": "Nachricht schließen",
+    "help": "Hilfe",
+    "capsuleSub": "Sofortige Antwort, rund um die Uhr",
+    "menuTitle": "Wie können wir helfen?",
+    "close": "Schließen",
+    "recommended": "Empfohlen",
+    "assistantTitle": "Frag unseren Assistenten",
+    "assistantBadge": "Sofortige Antwort",
+    "assistantSub": "Freie Termine, Preise, Sauna, Anreise: zu jeder Uhrzeit",
+    "askButton": "Frage stellen",
+    "otherTitle": "Oder kontaktiere uns",
+    "waBadge": "Nicht sofort",
+    "waSub": "Wir antworten persönlich, sobald wir können, manchmal nach einigen Stunden",
+    "callShort": "Anrufen",
+    "requestShort": "Verfügbarkeit anfragen"
   }
 }

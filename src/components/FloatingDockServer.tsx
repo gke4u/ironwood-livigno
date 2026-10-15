@@ -6,7 +6,7 @@ import FloatingDock, { type DockStrings } from './FloatingDock';
 export default async function FloatingDockServer({ locale }: { locale: string }) {
   const m = (await getMessages({ locale })) as unknown as {
     dock: DockStrings;
-    chat: { suggestions: string[] };
+    request: { wa_intro: string };
   };
-  return <FloatingDock strings={m.dock} firstQuestion={m.chat.suggestions[0]} />;
+  return <FloatingDock strings={m.dock} locale={locale} whatsappText={m.request.wa_intro} />;
 }

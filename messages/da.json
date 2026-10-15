@@ -393,11 +393,30 @@
       "Hvornår er der ledigt i vinter?",
       "Hvad er inkluderet i opholdet?",
       "Hvordan kommer jeg til Livigno?"
-    ]
+    ],
+    "title": "Kundeservice",
+    "status": "Svar med det samme",
+    "introTitle": "Hvordan kan vi hjælpe?",
+    "intro": "Skriv dit spørgsmål: ledige datoer, priser, sauna og dampbad, hvordan du kommer hertil, hvad du kan lave i Livigno.",
+    "you": "Dig"
   },
   "dock": {
     "nigiTitle": "Chat med vores assistent",
-    "nudge": "Spørgsmål om ledige datoer eller lejligheden? Spørg mig bare, jeg svarer med det samme.",
-    "nudgeClose": "Luk beskeden"
+    "nudge": "Spørgsmål om ledige datoer, priser eller saunaen? Spørg mig.",
+    "nudgeClose": "Luk beskeden",
+    "help": "Hjælp",
+    "capsuleSub": "Svar med det samme, når som helst",
+    "menuTitle": "Hvordan kan vi hjælpe?",
+    "close": "Luk",
+    "recommended": "Anbefalet",
+    "assistantTitle": "Spørg vores assistent",
+    "assistantBadge": "Svar med det samme",
+    "assistantSub": "Ledige datoer, priser, sauna, hvordan du kommer hertil: døgnet rundt",
+    "askButton": "Stil et spørgsmål",
+    "otherTitle": "Eller kontakt os",
+    "waBadge": "Ikke med det samme",
+    "waSub": "Vi svarer selv, så snart vi kan, nogle gange efter et par timer",
+    "callShort": "Ring",
+    "requestShort": "Forespørg ledighed"
   }
 }

@@ -393,11 +393,30 @@
       "Wanneer is het deze winter vrij?",
       "Wat is inbegrepen bij het verblijf?",
       "Hoe kom ik in Livigno?"
-    ]
+    ],
+    "title": "Klantenservice",
+    "status": "Direct antwoord",
+    "introTitle": "Hoe kunnen we helpen?",
+    "intro": "Typ je vraag: vrije data, prijzen, sauna en stoombad, hoe je er komt, wat te doen in Livigno.",
+    "you": "Jij"
   },
   "dock": {
     "nigiTitle": "Chat met onze assistent",
-    "nudge": "Vragen over vrije data of het appartement? Vraag het me gerust, ik antwoord meteen.",
-    "nudgeClose": "Bericht sluiten"
+    "nudge": "Vragen over vrije data, prijzen of de sauna? Vraag het mij.",
+    "nudgeClose": "Bericht sluiten",
+    "help": "Hulp",
+    "capsuleSub": "Direct antwoord, op elk moment",
+    "menuTitle": "Hoe kunnen we helpen?",
+    "close": "Sluiten",
+    "recommended": "Aanbevolen",
+    "assistantTitle": "Vraag het onze assistent",
+    "assistantBadge": "Direct antwoord",
+    "assistantSub": "Vrije data, prijzen, sauna, hoe je er komt: op elk uur",
+    "askButton": "Stel een vraag",
+    "otherTitle": "Of neem contact op",
+    "waBadge": "Niet direct",
+    "waSub": "We antwoorden zelf zodra we kunnen, soms na een paar uur",
+    "callShort": "Bellen",
+    "requestShort": "Vraag beschikbaarheid aan"
   }
 }

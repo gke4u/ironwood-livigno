@@ -205,7 +205,51 @@ body {
 }
 
 /* While NIGI's chat panel is open (ChatWidget.tsx sets html[data-nigi]),
-   its launcher steps aside: on computers the panel sits in the same corner. */
+   the "Help" capsule steps aside: on computers the panel sits in the same corner. */
 html[data-nigi='open'] #iw-launcher {
   visibility: hidden;
+}
+
+/* Help panel and welcome bubble (FloatingDock.tsx): rise a little as they appear. */
+@keyframes iw-sheet-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes iw-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .iw-sheet-in { animation: iw-sheet-in 0.25s ease-out both; }
+  .iw-fade-in { animation: iw-fade-in 0.25s ease-out both; }
+}
+
+/* The assistant's mark (AssistantLogo.tsx): a tilted card that swings in while
+   the roofline lights up; its three dots move while NIGI is typing. */
+.iw-logo-card {
+  transform-origin: 32px 32px;
+  transform: rotate(-6deg);
+}
+.iw-logo-dot {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@keyframes iw-card-in {
+  from { opacity: 0; transform: rotate(-22deg) translateY(6px) scale(0.85); }
+  to { opacity: 1; transform: rotate(-6deg); }
+}
+@keyframes iw-light-up {
+  from { opacity: 0.15; }
+  to { opacity: 1; }
+}
+@keyframes iw-dot {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-3px); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .iw-logo-appear .iw-logo-card { animation: iw-card-in 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+  .iw-logo-appear .iw-logo-mark { animation: iw-light-up 1.4s ease-out 0.25s both; }
+  .iw-logo-typing .iw-logo-dot { animation: iw-dot 1s ease-in-out infinite; }
+  .iw-logo-typing .iw-logo-dot:nth-of-type(2) { animation-delay: 0.15s; }
+  .iw-logo-typing .iw-logo-dot:nth-of-type(3) { animation-delay: 0.3s; }
 }

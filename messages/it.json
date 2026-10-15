@@ -393,11 +393,30 @@
       "Quando siete liberi quest'inverno?",
       "Cosa è incluso nel soggiorno?",
       "Come arrivo a Livigno?"
-    ]
+    ],
+    "title": "Assistenza clienti",
+    "status": "Risposta immediata",
+    "introTitle": "Come possiamo aiutarti?",
+    "intro": "Scrivi la tua domanda: date libere, prezzi, sauna e bagno turco, come arrivare, cosa fare a Livigno.",
+    "you": "Tu"
   },
   "dock": {
     "nigiTitle": "Chatta con il nostro assistente",
-    "nudge": "Hai domande su date libere o sull'appartamento? Chiedimi pure, rispondo subito.",
-    "nudgeClose": "Chiudi il messaggio"
+    "nudge": "Domande su date libere, prezzi o la sauna? Chiedi a me.",
+    "nudgeClose": "Chiudi il messaggio",
+    "help": "Aiuto",
+    "capsuleSub": "Risposta immediata, a ogni ora",
+    "menuTitle": "Come possiamo aiutarti?",
+    "close": "Chiudi",
+    "recommended": "Consigliato",
+    "assistantTitle": "Chiedi all'assistente",
+    "assistantBadge": "Risposta immediata",
+    "assistantSub": "Date libere, prezzi, sauna, come arrivare: a qualsiasi ora",
+    "askButton": "Fai una domanda",
+    "otherTitle": "Oppure contattaci",
+    "waBadge": "Risposta non immediata",
+    "waSub": "Ti rispondiamo noi appena riusciamo, a volte dopo qualche ora",
+    "callShort": "Chiama",
+    "requestShort": "Richiedi disponibilità"
   }
 }
