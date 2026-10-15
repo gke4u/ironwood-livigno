@@ -20,9 +20,9 @@ import AssistantLogo from './AssistantLogo';
 // visitor's questions in dark boxes. It has no button of its own: it opens
 // from the "Help" panel of the contact dock (FloatingDock.tsx), through
 // src/lib/nigi.ts.
-// A new chat shows a few ready questions to tap (sent to the AI like typed
-// ones: an empty box was where most visitors stopped). WhatsApp is always
-// one tap away, in the footer and in the dock.
+// A new chat opens clean, without ready questions to tap (the owner wanted it
+// as plain as the Guanafoto one, 15 October 2026). WhatsApp is always one tap
+// away, in the header and in the "Help" panel.
 
 export type ChatStrings = {
   cta: string;
@@ -380,20 +380,6 @@ export default function ChatWidget({
               <p className="font-display text-[19px] text-ink">{s.introTitle}</p>
               <p className="mt-1 text-[13px] leading-relaxed text-ink/60">{s.intro}</p>
             </div>
-            {fresh && !busy && (
-              <div className="flex flex-col items-end gap-2 iw-fade-in">
-                {s.suggestions.map((q) => (
-                  <button
-                    key={q}
-                    type="button"
-                    onClick={() => send(undefined, q)}
-                    className="max-w-[88%] rounded-xl border border-gold/70 bg-white px-4 py-2.5 text-left text-[13.5px] font-medium leading-snug text-ink shadow-[0_1px_2px_rgba(36,28,21,0.05)] hover:bg-gold hover:border-gold transition-colors"
-                  >
-                    {q}
-                  </button>
-                ))}
-              </div>
-            )}
             {messages.map((m, i) =>
               m.role === 'user' ? (
                 <div key={i} className="flex flex-col items-end iw-fade-in">
