@@ -33,7 +33,7 @@ export type DockStrings = {
   requestShort: string;
 };
 
-export default function FloatingDock({ strings: t, label }: { strings: DockStrings; label: string; locale?: string; whatsappText?: string }) {
+export default function FloatingDock({ strings: t, label, sub }: { strings: DockStrings; label: string; sub: string; locale?: string; whatsappText?: string }) {
   const nigiOn = useNigiEnabled();
 
   if (!nigiOn) return null;
@@ -55,8 +55,17 @@ export default function FloatingDock({ strings: t, label }: { strings: DockStrin
         className="group fixed z-[61] right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] flex items-center gap-2.5 sm:right-6 sm:bottom-6"
       >
         {/* "Chat with us", always in view: the round mark alone did not say it is a chat (owner, 15 October 2026). */}
-        <span className="rounded-full bg-white px-4 py-2 font-body text-[13.5px] font-semibold text-ink shadow-[0_10px_28px_-10px_rgba(36,28,21,0.55)] ring-1 ring-ink/10 transition-transform group-hover:-translate-x-0.5 sm:text-[14px]">
-          {label}
+        <span className="iw-label-in relative rounded-2xl bg-white py-2 pl-4 pr-4 text-left shadow-[0_14px_34px_-12px_rgba(36,28,21,0.55)] ring-1 ring-gold/40 transition-transform duration-300 group-hover:-translate-x-1 motion-reduce:group-hover:translate-x-0">
+          <span className="block font-display text-[16px] leading-tight text-ink sm:text-[17px]">{label}</span>
+          <span className="mt-0.5 flex items-center gap-1.5 font-body text-[11px] font-medium leading-none text-ink/55">
+            <span className="relative flex h-1.5 w-1.5" aria-hidden>
+              <span className="absolute inset-0 rounded-full bg-[#4cc27a] animate-ping motion-reduce:hidden" />
+              <span className="relative h-1.5 w-1.5 rounded-full bg-[#4cc27a]" />
+            </span>
+            {sub}
+          </span>
+          {/* Small tail towards the round mark, like a speech bubble. */}
+          <span className="absolute -right-[5px] top-1/2 h-2.5 w-2.5 -translate-y-1/2 rotate-45 border-r border-t border-gold/40 bg-white" aria-hidden />
         </span>
         <span className="relative grid place-items-center w-14 h-14 rounded-full bg-[#3D3026] text-mist ring-2 ring-gold shadow-[0_14px_34px_-10px_rgba(0,0,0,0.6)] transition group-hover:scale-105 motion-reduce:group-hover:scale-100 sm:w-16 sm:h-16">
         <span className="absolute inset-0 rounded-full ring-2 ring-gold animate-ping motion-reduce:hidden" aria-hidden />
