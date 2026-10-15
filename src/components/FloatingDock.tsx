@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { nigi, useNigiEnabled } from '@/lib/nigi';
-import { COOKIE_CONSENT_KEY } from './CookieConsent';
 import AssistantLogo from './AssistantLogo';
 
 // The site's contact corner, the way the owner liked it on guanafoto.com
@@ -180,12 +179,15 @@ function HelpMenu({ t, locale, whatsappText, onClose }: { t: DockStrings; locale
 }
 
 const NUDGE_SEEN = 'iw-nudge-seen';
-const NUDGE_AFTER_MS = 8000;
-const NUDGE_FOR_MS = 20000;
+// Same timing as guanafoto.com: shows after ~6 s, goes away after ~15 s.
+const NUDGE_AFTER_MS = 6000;
+const NUDGE_FOR_MS = 15000;
 
 // Welcome bubble above the capsule: once per visit (sessionStorage), after a
 // few quiet seconds, only for visitors who have not opened NIGI yet, never
-// over the cookie banner, the offer pop-up or the chat. Tapping it opens NIGI.
+// over the offer pop-up or the chat. Tapping it opens NIGI. (It used to wait
+// for the cookie banner's answer too, but that banner is not on the site, so
+// for most visitors the bubble never appeared: fixed 15 October 2026.)
 // It goes away by itself, with the X, or as soon as something else opens.
 function Nudge({ t }: { t: DockStrings }) {
   const [show, setShow] = useState(false);
@@ -197,13 +199,7 @@ function Nudge({ t }: { t: DockStrings }) {
       return;
     }
     const html = document.documentElement;
-    const busy = () => {
-      let consent: string | null = 'x';
-      try {
-        consent = localStorage.getItem(COOKIE_CONSENT_KEY);
-      } catch {}
-      return !consent || 'nigi' in html.dataset || 'offer' in html.dataset;
-    };
+    const busy = () => 'nigi' in html.dataset || 'offer' in html.dataset;
     let quiet = 0;
     let shownAt = 0;
     const tick = window.setInterval(() => {
