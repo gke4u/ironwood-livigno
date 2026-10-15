@@ -325,3 +325,15 @@
 /benessere/nl /sauna-bagno-turco-privato-livigno/nl 301
 /benessere/zh /sauna-bagno-turco-privato-livigno/zh 301
 /benessere/ja /sauna-bagno-turco-privato-livigno/ja 301
+
+# ------------------------------------------------------------------
+# URLs that Search Console still showed on 15/10/2026 and that answered
+# 404 (old slugs and malformed links found by Google).
+/de/blog/natale-capodanno-a-livigno/de /blog/natale-capodanno-a-livigno/de 301
+/blog/natale-capodanno-capodanno-a-livigno/de /blog/natale-capodanno-a-livigno/de 301
+/blog/shopping-duty-free-livigno /blog/shopping-duty-free-livigno-cosa-comprare 301
+/blog/shopping-duty-free-livigno-comprare /blog/shopping-duty-free-livigno-cosa-comprare 301
+/blog/migliori-periodi-evitare-la-folla-a-livigno /blog/migliori-periodi-per-evitare-la-folla-a-livigno 301
+/nl/blog/duty-free-livigno /blog/shopping-duty-free-livigno-cosa-comprare 301
+/recensioni /it 301
+/nl/beoordelingen.html /nl 301
