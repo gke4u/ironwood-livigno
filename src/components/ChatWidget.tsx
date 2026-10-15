@@ -14,15 +14,12 @@ import AssistantLogo from './AssistantLogo';
 // The conversation lives in sessionStorage: it follows the visitor from page
 // to page and is gone when the tab closes. Nothing typed is stored server-side.
 //
-// Look (since 15 October 2026): the light "guest support" panel of the
-// Guanafoto assistant the owner liked — white header with the assistant's
-// mark (AssistantLogo.tsx) and a gold line, answers as white cards, the
-// visitor's questions in dark boxes. It has no button of its own: it opens
-// from the "Help" panel of the contact dock (FloatingDock.tsx), through
-// src/lib/nigi.ts.
-// A new chat opens clean, without ready questions to tap (the owner wanted it
-// as plain as the Guanafoto one, 15 October 2026). WhatsApp is always one tap
-// away, in the header and in the "Help" panel.
+// Look (since 15 October 2026, the owner's wish): a plain WhatsApp-style
+// chat. Header with the assistant's mark, "Ironwood Livigno", online (or
+// "writing…"), a small WhatsApp icon and the X; then bubbles with their time,
+// NIGI's welcome first, and the message box. No menus, no buttons under the
+// answers. It opens straight from the "Help" capsule (FloatingDock.tsx) and
+// the welcome bubble, through src/lib/nigi.ts.
 
 export type ChatStrings = {
   cta: string;
@@ -46,7 +43,7 @@ export type ChatStrings = {
   suggestions: string[];
 };
 
-type Msg = { role: 'user' | 'assistant'; content: string; kind?: 'ai' | 'error' };
+type Msg = { role: 'user' | 'assistant'; content: string; kind?: 'ai' | 'error'; at?: number };
 
 const STORE_KEY = 'iw-nigi';
 const OPENED_KEY = 'iw-nigi-opened';
@@ -270,7 +267,7 @@ export default function ChatWidget({
     e?.preventDefault();
     const q = (text ?? input).trim().slice(0, MAX_INPUT);
     if (!q || busy) return;
-    const next: Msg[] = [...messages, { role: 'user', content: q }];
+    const next: Msg[] = [...messages, { role: 'user', content: q, at: Date.now() }];
     setMessages(next);
     setInput('');
     setBusy(true);
@@ -288,29 +285,22 @@ export default function ChatWidget({
         body: JSON.stringify({ messages: history, lang: locale })
       });
       const data = (await res.json().catch(() => ({}))) as { reply?: string; error?: string };
-      if (data.reply) reply = { role: 'assistant', content: data.reply, kind: 'ai' };
-      else if (data.error === 'limit') reply = { role: 'assistant', content: s.errorLimit, kind: 'error' };
-      else if (data.error === 'busy' && res.status === 429) reply = { role: 'assistant', content: s.errorRate, kind: 'error' };
+      if (data.reply) reply = { role: 'assistant', content: data.reply, kind: 'ai', at: Date.now() };
+      else if (data.error === 'limit') reply = { role: 'assistant', content: s.errorLimit, kind: 'error', at: Date.now() };
+      else if (data.error === 'busy' && res.status === 429) reply = { role: 'assistant', content: s.errorRate, kind: 'error', at: Date.now() };
       // 'off' (switched off meanwhile), 'busy' (AI failed) or anything else:
       // the visitor keeps the open chat and gets the WhatsApp contact.
-      else reply = { role: 'assistant', content: s.errorBusy, kind: 'error' };
+      else reply = { role: 'assistant', content: s.errorBusy, kind: 'error', at: Date.now() };
     } catch {
-      reply = { role: 'assistant', content: s.errorBusy, kind: 'error' };
+      reply = { role: 'assistant', content: s.errorBusy, kind: 'error', at: Date.now() };
     }
     setMessages((m) => [...m, reply]);
     setBusy(false);
   }
 
-  function restart() {
-    setMessages([]);
-    setInput('');
-    inputRef.current?.focus();
-  }
-
   if (!enabled) return null;
 
   const waHref = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(whatsappText)}`;
-  const fresh = messages.length === 0;
 
   return (
     <>
@@ -319,22 +309,22 @@ export default function ChatWidget({
           role="dialog"
           aria-modal="false"
           aria-label={s.title}
-          className={`fixed z-[70] inset-0 sm:inset-auto sm:right-6 sm:bottom-6 sm:w-[410px] sm:h-[min(660px,calc(100dvh-3rem))] flex flex-col bg-[#f6f4f0] font-body text-ink sm:rounded-2xl overflow-hidden sm:border sm:border-ink/10 shadow-[0_24px_70px_-18px_rgba(36,28,21,0.4)] origin-bottom-right transition-all duration-300 ease-out motion-reduce:transition-none ${
+          className={`fixed z-[70] inset-0 sm:inset-auto sm:right-6 sm:bottom-6 sm:w-[380px] sm:h-[min(620px,calc(100dvh-3rem))] flex flex-col bg-[#efe8de] font-body text-ink sm:rounded-[22px] overflow-hidden shadow-[0_30px_80px_-20px_rgba(36,28,21,0.45),0_0_0_1px_rgba(36,28,21,0.06)] origin-bottom-right transition-all duration-300 ease-out motion-reduce:transition-none ${
             shown ? 'opacity-100 translate-y-0 sm:scale-100' : 'opacity-0 translate-y-6 sm:scale-95'
           }`}
         >
-          {/* Header: white, the assistant's mark (it swings in on every opening
-              and its dots move while NIGI writes), a thin gold line under it.
-              The same look as the Guanafoto assistant the owner liked. */}
-          <header className="flex-none bg-white pt-[env(safe-area-inset-top)] sm:pt-0">
-            <div className="flex items-center gap-3 px-4 py-3 sm:px-5">
-              <AssistantLogo key={shown ? 'open' : 'closed'} size={40} appear typing={busy} />
+          {/* Header, as in a WhatsApp chat: who you are talking to, "online"
+              (or "writing…" while NIGI answers), a small WhatsApp icon to talk
+              to the owners instead, and the X. Nothing else. */}
+          <header className="flex-none bg-white/95 backdrop-blur pt-[env(safe-area-inset-top)] sm:pt-0 shadow-[0_1px_0_rgba(36,28,21,0.07)]">
+            <div className="flex items-center gap-3 pl-4 pr-2 py-2.5">
+              <span className="relative">
+                <AssistantLogo key={shown ? 'open' : 'closed'} size={38} appear typing={busy} />
+                <span className="absolute bottom-0.5 right-0 h-2.5 w-2.5 rounded-full bg-[#25D366] ring-2 ring-white" aria-hidden />
+              </span>
               <div className="min-w-0 flex-1 leading-tight">
-                <p className="truncate text-[13.5px] font-semibold text-ink">{s.title}</p>
-                <p className="flex items-center gap-1.5 truncate text-[11.5px] text-ink/50">
-                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#4cc27a]" aria-hidden />
-                  {s.status}
-                </p>
+                <p className="truncate text-[15px] font-semibold text-ink">Ironwood Livigno</p>
+                <p className="truncate text-[12px] text-ink/50">{busy ? s.typing : s.status}</p>
               </div>
               <a
                 href={waHref}
@@ -342,116 +332,65 @@ export default function ChatWidget({
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"
                 title="WhatsApp"
-                className="grid h-9 w-9 place-items-center rounded-lg text-[#16733d] hover:bg-[#1f8f4e]/[0.08]"
+                className="grid h-9 w-9 place-items-center rounded-full text-[#25D366] hover:bg-[#25D366]/10 transition-colors"
               >
-                <WaIcon className="h-[19px] w-[19px]" />
+                <WaIcon className="h-[20px] w-[20px]" />
               </a>
-              {!fresh && (
-                <button
-                  type="button"
-                  onClick={restart}
-                  aria-label={s.restart}
-                  title={s.restart}
-                  className="grid h-9 w-9 place-items-center rounded-lg text-ink/50 hover:bg-ink/5 hover:text-ink"
-                >
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                    <path d="M3 12a9 9 0 1 0 3-6.7" />
-                    <path d="M3 4v5h5" />
-                  </svg>
-                </button>
-              )}
               <button
                 type="button"
                 onClick={closeChat}
                 aria-label={s.close}
                 title={s.close}
-                className="grid h-9 w-9 place-items-center rounded-lg text-ink/60 hover:bg-ink/5 hover:text-ink"
+                className="grid h-9 w-9 place-items-center rounded-full text-ink/45 hover:bg-ink/5 hover:text-ink transition-colors"
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
                   <path d="M6 6l12 12M18 6 6 18" />
                 </svg>
               </button>
             </div>
-            <div className="h-[2px] bg-gradient-to-r from-gold via-gold to-gold/30" aria-hidden />
           </header>
 
-          <div ref={listRef} className="flex-1 overflow-y-auto overscroll-contain px-4 py-5 space-y-4 [scrollbar-width:thin]" aria-live="polite">
-            <div className="px-1">
-              <p className="font-display text-[19px] text-ink">{s.introTitle}</p>
-              <p className="mt-1 text-[13px] leading-relaxed text-ink/60">{s.intro}</p>
-            </div>
-            {messages.map((m, i) =>
-              m.role === 'user' ? (
-                <div key={i} className="flex flex-col items-end iw-fade-in">
-                  <span className="mb-1 text-[10.5px] font-semibold uppercase tracking-[0.09em] text-ink/40">{s.you}</span>
-                  <p className="max-w-[85%] whitespace-pre-wrap break-words rounded-lg bg-ink px-3.5 py-2 text-[13.5px] leading-snug text-mist">{m.content}</p>
-                </div>
-              ) : (
-                <div key={i} className="space-y-2 iw-fade-in">
-                  <span className="flex items-center gap-1.5 text-[10.5px] font-semibold uppercase tracking-[0.09em] text-ink/40">
-                    <AssistantLogo size={20} />
-                    NIGI
-                  </span>
-                  <div className={`rounded-xl border bg-white px-4 py-3 shadow-[0_1px_2px_rgba(36,28,21,0.04)] ${m.kind === 'error' ? 'border-brick/40' : 'border-ink/10'}`}>
-                    <p className="whitespace-pre-line break-words text-[13.5px] leading-relaxed text-ink/85">
-                      {rich(m.content, { name: bookLabel, href: `/${locale}#prenota`, onClick: closeChat })}
-                    </p>
+          <div
+            ref={listRef}
+            className="iw-chat-bg flex-1 overflow-y-auto overscroll-contain px-3 py-4 [scrollbar-width:thin]"
+            aria-live="polite"
+          >
+            <p className="mx-auto mb-4 w-fit max-w-[85%] rounded-lg bg-[#fdf3d8] px-3 py-1.5 text-center text-[11px] leading-snug text-ink/60 shadow-[0_1px_0_rgba(36,28,21,0.05)]">
+              {s.disclaimer}
+            </p>
+            <Bubble mine={false} first>
+              {s.welcome}
+            </Bubble>
+            {messages.map((m, i) => (
+              <Bubble key={i} mine={m.role === 'user'} first={i === 0 ? m.role === 'user' : messages[i - 1].role !== m.role} at={m.at}>
+                {m.role === 'user' ? (
+                  m.content
+                ) : (
+                  <>
+                    {rich(m.content, { name: bookLabel, href: `/${locale}#prenota`, onClick: closeChat })}
                     {m.kind === 'error' && (
-                      <a
-                        href={waHref}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-3 flex w-fit items-center gap-2 rounded-lg bg-[#25D366] text-white text-[13px] font-semibold px-4 py-2 hover:brightness-95 transition no-underline"
-                      >
-                        <WaIcon className="w-4 h-4" /> {whatsappLabel}
+                      <a href={waHref} target="_blank" rel="noopener noreferrer" className="mt-2 flex w-fit items-center gap-1.5 font-semibold text-[#128c4a] no-underline">
+                        <WaIcon className="h-4 w-4" /> {whatsappLabel}
                       </a>
                     )}
-                  </div>
-                </div>
-              )
-            )}
-            {/* Under NIGI's latest answer: the two ways to actually book. WhatsApp
-                opens with the visitor's last question already in the message. */}
-            {!busy && messages.length > 0 && messages[messages.length - 1].kind === 'ai' && (
-              <div className="flex flex-wrap gap-2">
-                <a
-                  href={`/${locale}#prenota`}
-                  onClick={closeChat}
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-ink text-mist text-[12.5px] font-semibold px-3.5 py-2 hover:bg-wood transition-colors"
-                >
-                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                    <rect x="3" y="5" width="18" height="16" rx="2" />
-                    <path d="M3 10h18M8 3v4M16 3v4" />
-                  </svg>
-                  {bookLabel}
-                </a>
-                <a
-                  href={`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`${whatsappText}\n\n${[...messages].reverse().find((m) => m.role === 'user')?.content ?? ''}`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-ink/15 bg-white text-ink text-[12.5px] font-semibold px-3.5 py-2 hover:border-[#25D366] transition-colors"
-                >
-                  <WaIcon className="w-3.5 h-3.5 text-[#16733d]" /> WhatsApp
-                </a>
-              </div>
-            )}
+                  </>
+                )}
+              </Bubble>
+            ))}
             {busy && (
-              <div className="space-y-2" role="status" aria-label={s.typing}>
-                <span className="flex items-center gap-1.5 text-[10.5px] font-semibold uppercase tracking-[0.09em] text-ink/40">
-                  <AssistantLogo size={20} typing />
-                  NIGI
+              <div className="iw-bubble-in mt-2 flex justify-start" role="status" aria-label={s.typing}>
+                <span className="relative flex items-center gap-1 rounded-[10px] rounded-tl-none bg-white px-3.5 py-3 shadow-[0_1px_0_rgba(36,28,21,0.08)]">
+                  <Tail mine={false} />
+                  <span className="iw-typing-dot h-[7px] w-[7px] rounded-full bg-ink/35" />
+                  <span className="iw-typing-dot h-[7px] w-[7px] rounded-full bg-ink/35" />
+                  <span className="iw-typing-dot h-[7px] w-[7px] rounded-full bg-ink/35" />
                 </span>
-                <div className="space-y-2 rounded-xl border border-ink/10 bg-white p-4">
-                  {[72, 92, 56].map((w) => (
-                    <span key={w} className="block h-2.5 animate-pulse rounded bg-ink/[0.07]" style={{ width: `${w}%` }} />
-                  ))}
-                </div>
               </div>
             )}
           </div>
 
-          <div className="flex-none border-t border-ink/10 bg-white px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-            <form onSubmit={send} className="flex items-end gap-2 rounded-xl border border-ink/15 bg-white px-2 py-1.5 transition-colors focus-within:border-ink/45">
+          <div className="flex-none px-2.5 pt-2 pb-[max(0.6rem,env(safe-area-inset-bottom))]">
+            <form onSubmit={send} className="flex items-end gap-2">
               <label htmlFor="nigi-input" className="sr-only">
                 {s.placeholder}
               </label>
@@ -469,24 +408,64 @@ export default function ChatWidget({
                   }
                 }}
                 placeholder={s.placeholder}
-                className="flex-1 resize-none border-0 bg-transparent px-2 py-2 text-[16px] sm:text-[14px] leading-snug text-ink placeholder:text-ink/40 focus:outline-none"
+                className="min-h-[44px] flex-1 resize-none rounded-[22px] border-0 bg-white px-4 py-[11px] text-[16px] sm:text-[14.5px] leading-snug text-ink placeholder:text-ink/40 shadow-[0_1px_0_rgba(36,28,21,0.08)] focus:outline-none focus:ring-2 focus:ring-gold/50"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || busy}
                 aria-label={s.send}
-                className="mb-0.5 grid h-9 w-9 flex-none place-items-center rounded-lg bg-ink text-mist hover:bg-wood disabled:bg-ink/15 disabled:text-ink/40 transition-colors"
+                className="grid h-11 w-11 flex-none place-items-center rounded-full bg-ink text-mist shadow-[0_4px_12px_-4px_rgba(36,28,21,0.5)] transition-all hover:bg-wood active:scale-95 disabled:bg-ink/25 disabled:shadow-none"
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                  <path d="M5 12h14M13 6l6 6-6 6" />
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden className="translate-x-[1px]">
+                  <path d="M3.4 20.4 21 12 3.4 3.6l-.01 6.53L15 12 3.39 13.87z" />
                 </svg>
               </button>
             </form>
-            <p className="mt-2 text-center text-[10.5px] leading-snug text-ink/45">{s.disclaimer}</p>
           </div>
         </div>
       )}
     </>
+  );
+}
+
+// One message, as a WhatsApp bubble: NIGI on the left in white, the visitor
+// on the right in light green, the little tail only on the first of a run,
+// the time in the corner (and the two blue ticks on the visitor's).
+function Bubble({ mine, first, at, children }: { mine: boolean; first: boolean; at?: number; children: ReactNode }) {
+  const time = at ? new Date(at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+  return (
+    <div className={`iw-bubble-in flex ${mine ? 'justify-end' : 'justify-start'} ${first ? 'mt-2.5' : 'mt-1'}`}>
+      <div
+        className={`relative max-w-[82%] rounded-[10px] px-3 pt-1.5 pb-1.5 text-[14.5px] leading-[1.42] text-ink shadow-[0_1px_0_rgba(36,28,21,0.08)] ${
+          mine ? 'bg-[#dcf5d0]' : 'bg-white'
+        } ${first ? (mine ? 'rounded-tr-none' : 'rounded-tl-none') : ''}`}
+      >
+        {first && <Tail mine={mine} />}
+        <span className="whitespace-pre-line break-words">{children}</span>
+        <span className={`float-right ml-2.5 mt-1.5 -mb-0.5 inline-flex items-center gap-0.5 text-[10.5px] leading-none ${mine ? 'text-[#5f8a5a]' : 'text-ink/40'}`}>
+          {time}
+          {mine && (
+            <svg width="15" height="10" viewBox="0 0 16 11" fill="none" stroke="#3b9ee8" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M1 6l3 3 6-7M6.5 8.5 7.5 9.5l6-7" />
+            </svg>
+          )}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function Tail({ mine }: { mine: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 8 13"
+      width="8"
+      height="13"
+      aria-hidden
+      className={`absolute top-0 ${mine ? '-right-2 text-[#dcf5d0]' : '-left-2 text-white [transform:scaleX(-1)]'}`}
+    >
+      <path d="M0 0h8L1.2 9.6C.7 10.3 0 10 0 9.2z" fill="currentColor" />
+    </svg>
   );
 }
 
