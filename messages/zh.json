@@ -269,6 +269,7 @@
     "error_email_invalid": "请输入有效的电子邮件地址",
     "error_dates_invalid": "退房日期必须晚于入住日期",
     "privacy_consent_label": "我已阅读并同意<link>隐私政策</link>。",
+    "waitlist_label": "如果这些日期已被预订，有空出时请通知我",
     "error_privacy_required": "您必须同意隐私政策才能继续"
   },
   "rates": {

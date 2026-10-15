@@ -269,6 +269,7 @@
     "error_email_invalid": "有効なメールアドレスを入力してください",
     "error_dates_invalid": "チェックアウトはチェックインより後の日付にしてください",
     "privacy_consent_label": "<link>プライバシーポリシー</link>を読み、同意します。",
+    "waitlist_label": "ご希望の日程が満室の場合、空きが出たら知らせてください",
     "error_privacy_required": "続行するにはプライバシーポリシーに同意する必要があります"
   },
   "rates": {

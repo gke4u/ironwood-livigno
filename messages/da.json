@@ -269,6 +269,7 @@
     "error_email_invalid": "Indtast en gyldig e-mailadresse",
     "error_dates_invalid": "Udtjekning skal være efter indtjekning",
     "privacy_consent_label": "Jeg har læst og accepterer <link>privatlivspolitikken</link>.",
+    "waitlist_label": "Hvis datoerne allerede er optaget, så giv mig besked, hvis de bliver ledige",
     "error_privacy_required": "Du skal acceptere privatlivspolitikken for at fortsætte"
   },
   "rates": {

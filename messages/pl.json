@@ -269,6 +269,7 @@
     "error_email_invalid": "Podaj prawidłowy adres e-mail",
     "error_dates_invalid": "Data wymeldowania musi być późniejsza niż data zameldowania",
     "privacy_consent_label": "Przeczytałem/am i akceptuję <link>politykę prywatności</link>.",
+    "waitlist_label": "Jeśli ten termin jest już zajęty, dajcie mi znać, gdy się zwolni",
     "error_privacy_required": "Musisz zaakceptować politykę prywatności, aby kontynuować"
   },
   "rates": {

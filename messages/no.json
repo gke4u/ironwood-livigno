@@ -269,6 +269,7 @@
     "error_email_invalid": "Skriv inn en gyldig e-postadresse",
     "error_dates_invalid": "Utsjekking må være etter innsjekking",
     "privacy_consent_label": "Jeg har lest og godtar <link>personvernerklæringen</link>.",
+    "waitlist_label": "Hvis datoene allerede er opptatt, gi meg beskjed hvis de blir ledige",
     "error_privacy_required": "Du må godta personvernerklæringen for å fortsette"
   },
   "rates": {

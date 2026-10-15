@@ -269,6 +269,7 @@
     "error_email_invalid": "Zadejte platnou e-mailovou adresu",
     "error_dates_invalid": "Odjezd musí být po příjezdu",
     "privacy_consent_label": "Přečetl(a) jsem si a souhlasím se <link>zásadami ochrany osobních údajů</link>.",
+    "waitlist_label": "Pokud jsou tyto termíny už obsazené, dejte mi vědět, až se uvolní",
     "error_privacy_required": "Pro pokračování musíte souhlasit se zásadami ochrany osobních údajů"
   },
   "rates": {

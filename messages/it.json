@@ -269,6 +269,7 @@
     "error_email_invalid": "Inserisci un indirizzo email valido",
     "error_dates_invalid": "Il check-out deve essere dopo il check-in",
     "privacy_consent_label": "Ho letto e accetto l'<link>informativa sulla privacy</link>.",
+    "waitlist_label": "Se queste date sono già occupate, avvisatemi se si liberano",
     "error_privacy_required": "Devi accettare l'informativa privacy per continuare"
   },
   "rates": {

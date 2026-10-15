@@ -269,6 +269,7 @@
     "error_email_invalid": "Voer een geldig e-mailadres in",
     "error_dates_invalid": "Check-out moet na check-in zijn",
     "privacy_consent_label": "Ik heb het <link>privacybeleid</link> gelezen en ga ermee akkoord.",
+    "waitlist_label": "Als deze data al bezet zijn, laat het me weten als ze vrijkomen",
     "error_privacy_required": "Je moet het privacybeleid accepteren om door te gaan"
   },
   "rates": {

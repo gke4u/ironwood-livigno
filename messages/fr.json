@@ -269,6 +269,7 @@
     "error_email_invalid": "Veuillez saisir une adresse e-mail valide",
     "error_dates_invalid": "Le départ doit être après l'arrivée",
     "privacy_consent_label": "J'ai lu et j'accepte la <link>politique de confidentialité</link>.",
+    "waitlist_label": "Si ces dates sont déjà prises, prévenez-moi si elles se libèrent",
     "error_privacy_required": "Vous devez accepter la politique de confidentialité pour continuer"
   },
   "rates": {

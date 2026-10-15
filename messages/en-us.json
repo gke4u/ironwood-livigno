@@ -269,6 +269,7 @@
     "error_email_invalid": "Enter a valid email address",
     "error_dates_invalid": "Check-out must be after check-in",
     "privacy_consent_label": "I have read and accept the <link>privacy policy</link>.",
+    "waitlist_label": "If these dates are already taken, let me know if they open up",
     "error_privacy_required": "You must accept the privacy policy to continue"
   },
   "rates": {

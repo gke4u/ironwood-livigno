@@ -100,6 +100,11 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
   const [extraBreakfast, setExtraBreakfast] = useState(false);
   const [extraEbike, setExtraEbike] = useState(false);
   const [privacyConsent, setPrivacyConsent] = useState(false);
+  // Waiting list, ticked by default: most requests are for dates that are
+  // already booked (85% in autumn 2026). TORBERO's intake Worker stores the
+  // flag and an hourly check of the Holidu calendar tells the owners when
+  // those dates free up — the guest is never written to automatically.
+  const [waitlist, setWaitlist] = useState(true);
   const [company, setCompany] = useState(''); // honeypot — real users never fill this in
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
@@ -273,6 +278,7 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
           source: source || undefined,
           message: message.trim() || undefined,
           locale,
+          waitlist,
           company // honeypot, always empty here (the bot branch above already returned)
         })
       });
@@ -293,6 +299,7 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
         setExtraBreakfast(false);
         setExtraEbike(false);
         setPrivacyConsent(false);
+        setWaitlist(true);
         setErrors({});
         return;
       }
@@ -573,6 +580,18 @@ export default function RequestForm({ showAltMethods = true }: { showAltMethods?
           placeholder={t('placeholder_message')}
           className={`${INPUT_CLASS} resize-none`}
         />
+      </div>
+
+      <div className="sm:col-span-2">
+        <label className="flex items-start gap-2.5 text-sm text-ink cursor-pointer">
+          <input
+            type="checkbox"
+            checked={waitlist}
+            onChange={(e) => setWaitlist(e.target.checked)}
+            className="h-4 w-4 mt-0.5 rounded border-ink/25 text-brick focus:ring-brick/40 accent-brick shrink-0"
+          />
+          <span>{t('waitlist_label')}</span>
+        </label>
       </div>
 
       <div className="sm:col-span-2">

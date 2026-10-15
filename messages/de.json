@@ -269,6 +269,7 @@
     "error_email_invalid": "Bitte eine gültige E-Mail-Adresse eingeben",
     "error_dates_invalid": "Die Abreise muss nach der Anreise liegen",
     "privacy_consent_label": "Ich habe die <link>Datenschutzerklärung</link> gelesen und akzeptiere sie.",
+    "waitlist_label": "Falls diese Daten schon belegt sind, benachrichtigen Sie mich, wenn sie frei werden",
     "error_privacy_required": "Sie müssen die Datenschutzerklärung akzeptieren, um fortzufahren"
   },
   "rates": {
