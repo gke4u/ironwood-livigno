@@ -33,7 +33,7 @@ export type DockStrings = {
   requestShort: string;
 };
 
-export default function FloatingDock({ strings: t }: { strings: DockStrings; locale?: string; whatsappText?: string }) {
+export default function FloatingDock({ strings: t, label }: { strings: DockStrings; label: string; locale?: string; whatsappText?: string }) {
   const nigiOn = useNigiEnabled();
 
   if (!nigiOn) return null;
@@ -52,14 +52,20 @@ export default function FloatingDock({ strings: t }: { strings: DockStrings; loc
         aria-haspopup="dialog"
         aria-label={t.nigiTitle}
         title={t.nigiTitle}
-        className="fixed z-[61] right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] grid place-items-center w-14 h-14 rounded-full bg-[#3D3026] text-mist ring-2 ring-gold shadow-[0_14px_34px_-10px_rgba(0,0,0,0.6)] transition hover:scale-105 motion-reduce:hover:scale-100 sm:right-6 sm:bottom-6 sm:w-16 sm:h-16"
+        className="group fixed z-[61] right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] flex items-center gap-2.5 sm:right-6 sm:bottom-6"
       >
+        {/* "Chat with us", always in view: the round mark alone did not say it is a chat (owner, 15 October 2026). */}
+        <span className="rounded-full bg-white px-4 py-2 font-body text-[13.5px] font-semibold text-ink shadow-[0_10px_28px_-10px_rgba(36,28,21,0.55)] ring-1 ring-ink/10 transition-transform group-hover:-translate-x-0.5 sm:text-[14px]">
+          {label}
+        </span>
+        <span className="relative grid place-items-center w-14 h-14 rounded-full bg-[#3D3026] text-mist ring-2 ring-gold shadow-[0_14px_34px_-10px_rgba(0,0,0,0.6)] transition group-hover:scale-105 motion-reduce:group-hover:scale-100 sm:w-16 sm:h-16">
         <span className="absolute inset-0 rounded-full ring-2 ring-gold animate-ping motion-reduce:hidden" aria-hidden />
         <svg viewBox="0 0 120 110" fill="none" className="relative w-7 h-7 sm:w-8 sm:h-8" aria-hidden>
           <circle cx="10" cy="46" r="7" fill="#C9A059" />
           <polyline points="24,60 46,26 66,50 94,10 118,60 118,96 20,96 20,64" stroke="currentColor" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
         <span className="absolute top-0.5 right-0.5 w-3.5 h-3.5 rounded-full bg-[#4cc27a] ring-2 ring-[#3D3026] animate-pulse motion-reduce:animate-none" aria-hidden />
+        </span>
       </button>
     </>
   );
