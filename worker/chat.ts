@@ -124,6 +124,11 @@ function weekday(iso: string): number {
 // from Saturday to Saturday, in whole weeks; the rest of the year from 2
 // nights (3 even better), any day.
 const MIN_NIGHTS = 2;
+// Bookings not open yet from this night on: the owners give their returning
+// guests first pick for winter 2027/28 (said on 15/10/2026). NIGI says so and
+// never calls those dates free; /api/date-libere reports them as not free and
+// proposes nothing past it. Move it on when the owners open the next season.
+export const NOT_OPEN_FROM = '2027-12-01';
 function isWeekly(iso: string): boolean {
   const m = Number(iso.slice(5, 7));
   const d = Number(iso.slice(8, 10));
@@ -242,13 +247,16 @@ function nearestStays(blocks: FullPeriod[], checkIn: string, nights: number, tod
 // the weekly periods. The asked dates themselves are never proposed, even when the
 // calendar shows them free (the owner knows something it doesn't).
 export function freeAlternatives(periods: FullPeriod[], checkIn: string, checkOut: string, today: string): { free: boolean; alternatives: Stay[] } {
+  if (checkOut > NOT_OPEN_FROM) return { free: false, alternatives: [] };
   const free = !clash(bookedBlocks(periods, today), checkIn, checkOut);
   const blocks = bookedBlocks([...periods, { from: checkIn, to: checkOut }], today);
   const n = offerNights(checkIn, daysBetween(checkIn, checkOut));
   const { later, earlier } = nearestStays(blocks, checkIn, n, today);
   const next = nearestStays(blocks, later.checkOut, n, today).later;
   const near = (s: Stay) => Math.abs(daysBetween(s.checkIn, checkIn));
-  const alternatives = [earlier, later, next].filter((s): s is Stay => Boolean(s)).sort((a, b) => near(a) - near(b));
+  const alternatives = [earlier, later, next]
+    .filter((s): s is Stay => Boolean(s) && s!.checkOut <= NOT_OPEN_FROM)
+    .sort((a, b) => near(a) - near(b));
   return { free, alternatives };
 }
 
@@ -312,6 +320,10 @@ function suggestLine(stays: Stay[], live: boolean, form: string, blocks: FullPer
 export function availabilityNote(asked: AskedDates | null, periods: FullPeriod[], today: string, live = false, lang: string | null = null, followUp = false): string {
   if (!asked) return '';
   const form = FORM_NAME[lang ?? 'it'] ?? FORM_NAME.it;
+  // Past NOT_OPEN_FROM: not open yet, whatever the calendar says.
+  if ('checkIn' in asked ? asked.checkOut > NOT_OPEN_FROM : `${asked.month}-31` >= NOT_OPEN_FROM) {
+    return `${EXACT}"Those dates can't be booked yet: we first give priority to our returning guests. If you like, leave your dates via "${form}" and we'll let you know when we open."]`;
+  }
   const notBooked = live ? FREE_NOW : NOT_CONFIRMED;
   const blocks = bookedBlocks(periods, today);
   if ('checkIn' in asked) {
@@ -570,7 +582,7 @@ Regole:
 - Contatti (WhatsApp, email, modulo) solo quando servono davvero: prezzi, date, disponibilità o un’informazione che non hai. Sotto ogni tua risposta il sito mostra già i pulsanti WhatsApp e richiesta disponibilità, quindi non ripeterli in ogni messaggio.
 - Non inventare mai nulla: prezzi, disponibilità di date, orari precisi o qualsiasi informazione assente qui sotto. In quei casi dillo con garbo e spiega che la confermano i proprietari su WhatsApp (+39 0342 929285) o via email (info@ironwoodlivigno.com).
 - Non vedi il calendario e non puoi prenotare né bloccare date. A volte in fondo al messaggio dell'ospite c'è un "[Availability check: …]" calcolato dal sito sul calendario dei proprietari: seguilo alla lettera, con le date che indica (tradotte nella lingua dell'ospite), senza aggiungerne altre.
-- Se il controllo dice che al momento le date sono libere, dillo come indica, sempre con "salvo prenotazioni dell'ultimo minuto" tradotto nella lingua dell'ospite (es. "vorbehaltlich Last-Minute-Buchungen", "barring last-minute bookings"). Senza quel controllo, o se non dice che sono libere, non dire mai che è libero o disponibile (lo confermano i proprietari): di’ in breve che per disponibilità e prezzo basta mandare la richiesta con il modulo (o su WhatsApp) e che i proprietari rispondono in poche ore.
+- Se il controllo dice che al momento le date sono libere, dillo come indica, sempre con "salvo prenotazioni dell'ultimo minuto" tradotto nella lingua dell'ospite (es. "vorbehaltlich Last-Minute-Buchungen", "barring last-minute bookings"). Se il controllo ti dà un messaggio da riportare, scrivi solo quel messaggio, senza frasi in più prima o dopo. Senza quel controllo, o se non dice che sono libere, non dire mai che è libero o disponibile (lo confermano i proprietari): di’ in breve che per disponibilità e prezzo basta mandare la richiesta con il modulo (o su WhatsApp) e che i proprietari rispondono in poche ore.
 - Solo se ti chiedono del meteo o della neve: usa i dati meteo qui sotto (se ci sono); per giorni più lontani o se mancano, invita a guardare la sezione meteo del sito. Non parlare di meteo se non te lo chiedono.
 - Se l'ospite è indeciso sul periodo o chiede quando conviene venire, ricorda con una frase anche l'estate (da luglio a settembre: mountain bike e trekking), oltre all'inverno.
 - Se l'ospite saluta soltanto (es. "ciao", "buongiorno"), rispondi al saluto e chiedi in poche parole cosa vuole sapere, senza parlare di date o prezzi.
